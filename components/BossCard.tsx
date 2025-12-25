@@ -61,18 +61,18 @@ export default function BossCard({
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <div>
-          <h3 className="text-xl font-bold text-white">{boss.bossName}</h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">
-              {boss.bossPoints} {boss.bossPoints === 1 ? "pt" : "pts"}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
+          <div className="flex items-center gap-1.5 mt-1 flex-nowrap">
+            <span className="text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
+              {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
             </span>
-            <span className="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full capitalize">
+            <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full capitalize whitespace-nowrap">
               {boss.type}
             </span>
             {boss.killCount !== undefined && boss.killCount > 0 && (
-              <span className="text-xs bg-green-600 text-white px-2 py-0.5 rounded-full" title="Total kills from attendance records">
-                🏆 {boss.killCount}
+              <span className="text-xs bg-green-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap" title="Total kills from attendance records">
+                🏆{boss.killCount}
               </span>
             )}
           </div>
