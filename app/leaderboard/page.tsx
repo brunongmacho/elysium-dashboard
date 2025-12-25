@@ -28,22 +28,41 @@ export default function LeaderboardPage() {
     };
   });
 
-  // Generate last 8 weeks for dropdown
+  // Generate last 8 weeks for dropdown (using GMT+8 timezone like the bot)
   const weekOptions = Array.from({ length: 8 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (i * 7));
-    // Get start of week (Sunday)
-    const weekStart = new Date(date);
-    weekStart.setDate(date.getDate() - date.getDay());
-    weekStart.setHours(0, 0, 0, 0);
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekStart.getDate() + 6);
+    const gmt8Offset = 8 * 60 * 60 * 1000;
+    const now = new Date();
+
+    // Go back i weeks
+    const targetDate = new Date(now.getTime() - (i * 7 * 24 * 60 * 60 * 1000));
+
+    // Convert to GMT+8
+    const gmt8Time = new Date(targetDate.getTime() + gmt8Offset);
+    const day = gmt8Time.getUTCDay();
+
+    // Calculate Sunday of this week in GMT+8
+    const sunday = new Date(gmt8Time);
+    sunday.setUTCDate(gmt8Time.getUTCDate() - day);
+    sunday.setUTCHours(0, 0, 0, 0);
+
+    // Week start in UTC
+    const weekStart = new Date(sunday.getTime() - gmt8Offset);
+
+    // Week end (Saturday 23:59:59 GMT+8)
+    const saturdayGMT8 = new Date(sunday);
+    saturdayGMT8.setUTCDate(sunday.getUTCDate() + 6);
+    saturdayGMT8.setUTCHours(23, 59, 59, 999);
+    const weekEnd = new Date(saturdayGMT8.getTime() - gmt8Offset);
+
+    // Convert to GMT+8 for display
+    const displayStart = new Date(weekStart.getTime() + gmt8Offset);
+    const displayEnd = new Date(weekEnd.getTime() + gmt8Offset);
 
     return {
-      value: weekStart.toISOString().split('T')[0],
+      value: displayStart.toISOString().split('T')[0],
       label: i === 0
         ? 'This Week'
-        : `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+        : `${displayStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${displayEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`
     };
   });
 
