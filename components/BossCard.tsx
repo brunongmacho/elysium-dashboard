@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Countdown from "./Countdown";
+import MarkAsKilledModal from "./MarkAsKilledModal";
 import type { BossTimerDisplay } from "@/types/database";
 import { format } from "date-fns";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
-  onMarkAsKilled?: (bossName: string) => void;
+  onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string) => void;
   canMarkAsKilled?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function BossCard({
   canMarkAsKilled = false,
 }: BossCardProps) {
   const [isMarking, setIsMarking] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
@@ -38,12 +40,16 @@ export default function BossCard({
     unknown: "shadow-gray-500/20",
   }[boss.status];
 
-  const handleMarkAsKilled = async () => {
+  const handleMarkAsKilled = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmKill = async (killedBy: string, killTime?: string) => {
     if (!onMarkAsKilled) return;
 
     setIsMarking(true);
     try {
-      await onMarkAsKilled(boss.bossName);
+      await onMarkAsKilled(boss.bossName, killedBy, killTime);
     } finally {
       setIsMarking(false);
     }
@@ -64,6 +70,11 @@ export default function BossCard({
             <span className="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full capitalize">
               {boss.type}
             </span>
+            {boss.killCount !== undefined && boss.killCount > 0 && (
+              <span className="text-xs bg-green-600 text-white px-2 py-0.5 rounded-full" title="Total kills from attendance records">
+                🏆 {boss.killCount}
+              </span>
+            )}
           </div>
         </div>
 
@@ -94,7 +105,7 @@ export default function BossCard({
           {boss.lastKillTime && (
             <div className="text-gray-300">
               <span className="text-gray-400">🕐 Last Kill:</span>{" "}
-              <span>{format(new Date(boss.lastKillTime), "MMM dd, HH:mm")}</span>
+              <span>{format(new Date(boss.lastKillTime), "MMM dd, hh:mm a")}</span>
             </div>
           )}
         </div>
@@ -105,7 +116,7 @@ export default function BossCard({
         <div className="mb-3">
           <div className="text-sm text-gray-400 mb-1">⏰ Next Spawn:</div>
           <div className="text-gray-200 text-sm mb-2">
-            {format(new Date(boss.nextSpawnTime), "MMM dd, yyyy HH:mm")}
+            {format(new Date(boss.nextSpawnTime), "MMM dd, yyyy hh:mm a")}
           </div>
 
           {/* Countdown Timer */}
@@ -136,6 +147,14 @@ export default function BossCard({
           {isMarking ? "Marking..." : "Mark as Killed"}
         </button>
       )}
+
+      {/* Mark as Killed Modal */}
+      <MarkAsKilledModal
+        bossName={boss.bossName}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleConfirmKill}
+      />
     </div>
   );
 }

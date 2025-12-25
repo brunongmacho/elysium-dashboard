@@ -38,6 +38,26 @@ export async function GET() {
       timerMap.set(timer.bossName, timer);
     });
 
+    // Fetch kill counts from attendance records for all bosses
+    const killCountPipeline = [
+      {
+        $group: {
+          _id: "$bossName",
+          count: { $sum: 1 }
+        }
+      }
+    ];
+    const killCounts = await db
+      .collection("attendance")
+      .aggregate(killCountPipeline)
+      .toArray();
+
+    // Create a map for kill counts
+    const killCountMap = new Map<string, number>();
+    killCounts.forEach((item: any) => {
+      killCountMap.set(item._id, item.count);
+    });
+
     // Build display data for each boss
     const bossDisplayData: BossTimerDisplay[] = [];
 
@@ -84,6 +104,9 @@ export async function GET() {
       const timeRemaining = getTimeRemaining(nextSpawnTime);
       const status = getBossStatus(timeRemaining);
 
+      // Get kill count for this boss (case-insensitive match)
+      const killCount = killCountMap.get(bossName) || 0;
+
       bossDisplayData.push({
         bossName,
         bossPoints,
@@ -94,6 +117,7 @@ export async function GET() {
         interval: bossType === "timer" ? getBossSpawnInterval(bossName) || undefined : undefined,
         timeRemaining: timeRemaining || undefined,
         status,
+        killCount,
       });
     }
 
