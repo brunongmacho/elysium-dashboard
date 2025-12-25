@@ -342,8 +342,13 @@ export default function LeaderboardPage() {
                         entry.rank
                       )}
                     </td>
-                    <td className="px-4 py-3 text-white font-medium">
-                      {entry.username}
+                    <td className="px-4 py-3">
+                      <a
+                        href={`/profile/${entry.memberId}`}
+                        className="text-blue-400 hover:text-blue-300 font-medium hover:underline transition-colors"
+                      >
+                        {entry.username}
+                      </a>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
