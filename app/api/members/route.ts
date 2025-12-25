@@ -23,42 +23,89 @@ export async function GET(request: Request) {
     const db = await getDatabase();
 
     if (type === "attendance") {
-      // Fetch attendance leaderboard
-      let attendanceData = await db
-        .collection("members")
-        .find(
-          search
-            ? { username: { $regex: search, $options: "i" } }
-            : {}
-        )
-        .project({
-          _id: 1,
-          username: 1,
-          attendance: 1,
-          pointsEarned: 1,
-        })
+      // Calculate date ranges for period filters
+      const now = new Date();
+      let dateFilter = {};
+
+      if (period === "monthly") {
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        dateFilter = { timestamp: { $gte: monthStart } };
+      } else if (period === "weekly") {
+        const weekStart = new Date(now);
+        weekStart.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
+        weekStart.setHours(0, 0, 0, 0);
+        dateFilter = { timestamp: { $gte: weekStart } };
+      }
+
+      // Build aggregation pipeline to count attendance from attendance collection
+      const pipeline: any[] = [
+        ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
+        {
+          $group: {
+            _id: "$memberId",
+            memberName: { $first: "$memberName" },
+            totalKills: { $sum: 1 },
+            pointsEarned: { $sum: "$bossPoints" }
+          }
+        },
+        {
+          $lookup: {
+            from: "members",
+            localField: "_id",
+            foreignField: "_id",
+            as: "memberData"
+          }
+        },
+        {
+          $unwind: {
+            path: "$memberData",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            username: { $ifNull: ["$memberData.username", "$memberName"] },
+            totalKills: 1,
+            pointsEarned: 1,
+            currentStreak: { $ifNull: ["$memberData.attendance.streak.current", 0] }
+          }
+        }
+      ];
+
+      // Add search filter if provided
+      if (search) {
+        pipeline.push({
+          $match: {
+            username: { $regex: search, $options: "i" }
+          }
+        });
+      }
+
+      // Sort by total kills
+      pipeline.push({ $sort: { totalKills: -1 } });
+
+      // Apply limit
+      if (limit > 0) {
+        pipeline.push({ $limit: limit });
+      }
+
+      const attendanceData = await db
+        .collection("attendance")
+        .aggregate(pipeline)
         .toArray();
 
-      // Calculate attendance metrics based on period
-      const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member) => {
-        let totalKills = 0;
-
-        if (period === "all") {
-          totalKills = member.attendance?.total || 0;
-        } else if (period === "monthly") {
-          totalKills = member.attendance?.thisMonth || 0;
-        } else if (period === "weekly") {
-          totalKills = member.attendance?.thisWeek || 0;
-        }
-
+      // Calculate leaderboard with ranks
+      const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
+        const totalKills = member.totalKills || 0;
         const pointsEarned = member.pointsEarned || 0;
-        const currentStreak = member.attendance?.streak?.current || 0;
+        const currentStreak = member.currentStreak || 0;
 
-        // Calculate attendance rate (simplified - could be enhanced)
+        // Calculate attendance rate (simplified)
         const attendanceRate = totalKills > 0 ? Math.round((totalKills / (totalKills + 10)) * 100) : 0;
 
         return {
-          rank: 0, // Will be calculated after sorting
+          rank: index + 1,
           username: member.username,
           memberId: member._id,
           totalKills,
@@ -68,24 +115,13 @@ export async function GET(request: Request) {
         };
       });
 
-      // Sort by total kills descending
-      leaderboard.sort((a, b) => b.totalKills - a.totalKills);
-
-      // Assign ranks
-      leaderboard.forEach((entry, index) => {
-        entry.rank = index + 1;
-      });
-
-      // Apply limit
-      const limitedLeaderboard = limit > 0 ? leaderboard.slice(0, limit) : leaderboard;
-
       return NextResponse.json({
         success: true,
         type: "attendance",
         period,
-        count: limitedLeaderboard.length,
+        count: leaderboard.length,
         total: leaderboard.length,
-        data: limitedLeaderboard,
+        data: leaderboard,
         timestamp: new Date().toISOString(),
       });
     } else {
