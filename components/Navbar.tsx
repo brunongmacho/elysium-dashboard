@@ -38,8 +38,11 @@ export default function Navbar() {
                 <div className="text-gray-400 text-sm">Loading...</div>
               ) : session ? (
                 <div className="flex items-center gap-3">
-                  {/* User Info */}
-                  <div className="flex items-center gap-2">
+                  {/* User Info - Clickable to Profile */}
+                  <a
+                    href={`/profile/${session.userId}`}
+                    className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                  >
                     {session.user?.image && (
                       <Image
                         src={session.user.image}
@@ -50,7 +53,7 @@ export default function Navbar() {
                       />
                     )}
                     <div className="flex flex-col">
-                      <span className="text-white text-sm font-medium">
+                      <span className="text-white text-sm font-medium hover:text-blue-400 transition-colors">
                         {session.user?.name}
                       </span>
                       {!session.isInGuild && (
@@ -64,7 +67,7 @@ export default function Navbar() {
                         </span>
                       )}
                     </div>
-                  </div>
+                  </a>
 
                   {/* Sign Out Button */}
                   <button
