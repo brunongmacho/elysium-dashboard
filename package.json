@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch-icon": "node scripts/fetch-guild-icon.js"
   },
   "dependencies": {
     "date-fns": "^4.1.0",

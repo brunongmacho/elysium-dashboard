@@ -6,6 +6,15 @@ import Navbar from "@/components/Navbar";
 export const metadata: Metadata = {
   title: "Elysium Dashboard",
   description: "Boss timer and guild management dashboard for Elysium guild",
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png', sizes: '256x256' },
+    ],
+    apple: [
+      { url: '/icon.png', sizes: '256x256', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({
