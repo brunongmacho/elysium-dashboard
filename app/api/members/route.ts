@@ -95,17 +95,38 @@ export async function GET(request: Request) {
         .aggregate(pipeline)
         .toArray();
 
-      // Calculate leaderboard with ranks
-      // Use top player's kills as baseline (100%)
-      const maxKills = attendanceData.length > 0 ? (attendanceData[0].totalKills || 0) : 1;
+      // Count total unique boss kill events in the period
+      // Group by bossName + timestamp since each boss kill is unique by these two fields
+      const totalBossKillsPipeline = [
+        ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
+        {
+          $group: {
+            _id: {
+              bossName: "$bossName",
+              timestamp: "$timestamp"
+            }
+          }
+        },
+        {
+          $count: "totalBossKills"
+        }
+      ];
 
+      const totalBossKillsResult = await db
+        .collection("attendance")
+        .aggregate(totalBossKillsPipeline)
+        .toArray();
+
+      const totalBossKills = totalBossKillsResult.length > 0 ? totalBossKillsResult[0].totalBossKills : 1;
+
+      // Calculate leaderboard with ranks
       const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
         const totalKills = member.totalKills || 0;
         const pointsEarned = member.pointsEarned || 0;
         const currentStreak = member.currentStreak || 0;
 
-        // Calculate attendance rate as percentage of top player's kills
-        const attendanceRate = maxKills > 0 ? Math.round((totalKills / maxKills) * 100) : 0;
+        // Calculate attendance rate as percentage of total boss kills that occurred
+        const attendanceRate = totalBossKills > 0 ? Math.round((totalKills / totalBossKills) * 100) : 0;
 
         return {
           rank: index + 1,
