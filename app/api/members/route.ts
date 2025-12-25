@@ -58,31 +58,23 @@ export async function GET(request: Request) {
         }
       } else if (period === "weekly") {
         if (weekParam) {
-          // Parse specific week start date (YYYY-MM-DD) in GMT+8 timezone
+          // Filter by weekStartDate field (matches bot's filtering logic)
           const [year, month, day] = weekParam.split('-').map(Number);
-
-          // Week start: day 00:00:00 GMT+8 -> convert to UTC
           const weekStartGMT8 = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
           const weekStart = new Date(weekStartGMT8.getTime() - (8 * 60 * 60 * 1000));
 
-          // Week end: day+6 23:59:59 GMT+8 -> convert to UTC
-          const weekEndGMT8 = new Date(Date.UTC(year, month - 1, day + 6, 23, 59, 59, 999));
-          const weekEnd = new Date(weekEndGMT8.getTime() - (8 * 60 * 60 * 1000));
-
           dateFilter = {
-            timestamp: {
-              $gte: weekStart,
-              $lte: weekEnd
-            }
+            weekStartDate: weekStart
           };
         } else {
-          // Current week in GMT+8 - only use lower bound
+          // Current week - filter by weekStartDate
           const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
           const weekStart = new Date(gmtPlusEightNow);
           weekStart.setUTCDate(gmtPlusEightNow.getUTCDate() - gmtPlusEightNow.getUTCDay());
           weekStart.setUTCHours(0, 0, 0, 0);
           const weekStartUTC = new Date(weekStart.getTime() - (8 * 60 * 60 * 1000));
-          dateFilter = { timestamp: { $gte: weekStartUTC } };
+
+          dateFilter = { weekStartDate: weekStartUTC };
         }
       }
 
