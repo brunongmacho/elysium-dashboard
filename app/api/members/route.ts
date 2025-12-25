@@ -10,7 +10,8 @@ import type {
   PointsLeaderboardEntry
 } from "@/types/database";
 
-export const dynamic = "force-dynamic";
+// Cache for 60 seconds - leaderboard doesn't need real-time updates
+export const revalidate = 60;
 
 export async function GET(request: Request) {
   try {
@@ -247,15 +248,22 @@ export async function GET(request: Request) {
         leaderboard = leaderboard.slice(0, limit);
       }
 
-      return NextResponse.json({
-        success: true,
-        type: "attendance",
-        period,
-        count: leaderboard.length,
-        total: leaderboard.length,
-        data: leaderboard,
-        timestamp: new Date().toISOString(),
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          type: "attendance",
+          period,
+          count: leaderboard.length,
+          total: leaderboard.length,
+          data: leaderboard,
+          timestamp: new Date().toISOString(),
+        },
+        {
+          headers: {
+            'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+          },
+        }
+      );
     } else {
       // Fetch points leaderboard from members collection (authoritative source for points)
       // First, get ALL members to calculate true ranks
@@ -313,15 +321,22 @@ export async function GET(request: Request) {
         leaderboard = leaderboard.slice(0, limit);
       }
 
-      return NextResponse.json({
-        success: true,
-        type: "points",
-        period: "all", // Points don't have period filters
-        count: leaderboard.length,
-        total: leaderboard.length,
-        data: leaderboard,
-        timestamp: new Date().toISOString(),
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          type: "points",
+          period: "all", // Points don't have period filters
+          count: leaderboard.length,
+          total: leaderboard.length,
+          data: leaderboard,
+          timestamp: new Date().toISOString(),
+        },
+        {
+          headers: {
+            'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+          },
+        }
+      );
     }
   } catch (error) {
     console.error("Error fetching leaderboard:", error);

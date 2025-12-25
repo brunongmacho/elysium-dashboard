@@ -2,6 +2,7 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
+import ThemeSelector from "./ThemeSelector";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -32,8 +33,11 @@ export default function Navbar() {
               Leaderboards
             </a>
 
+            {/* Theme Selector */}
+            <ThemeSelector />
+
             {/* Auth Section */}
-            <div className="ml-4 pl-4 border-l border-gray-700">
+            <div className="pl-4 border-l border-gray-700">
               {status === "loading" ? (
                 <div className="text-gray-400 text-sm">Loading...</div>
               ) : session ? (
