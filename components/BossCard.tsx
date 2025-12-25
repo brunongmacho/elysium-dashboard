@@ -95,7 +95,7 @@ export default function BossCard({
         <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
           {boss.killedBy && (
             <div className="text-gray-300">
-              <span className="text-gray-400">👤 Killed by:</span>{" "}
+              <span className="text-gray-400">👤 Set by:</span>{" "}
               <span className="font-semibold">{boss.killedBy}</span>
             </div>
           )}
