@@ -152,6 +152,7 @@ export default function Home() {
           bosses={data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
           canMarkAsKilled={session?.canMarkAsKilled || false}
+          userName={session?.user?.name || ""}
         />
       )}
 

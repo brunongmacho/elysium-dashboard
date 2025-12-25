@@ -8,12 +8,14 @@ interface BossTimerGridProps {
   bosses: BossTimerDisplay[];
   onMarkAsKilled?: (bossName: string) => Promise<void>;
   canMarkAsKilled?: boolean;
+  userName?: string;
 }
 
 export default function BossTimerGrid({
   bosses,
   onMarkAsKilled,
   canMarkAsKilled = false,
+  userName = "",
 }: BossTimerGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"all" | "timer" | "schedule">("all");
@@ -129,6 +131,7 @@ export default function BossTimerGrid({
               boss={boss}
               onMarkAsKilled={onMarkAsKilled}
               canMarkAsKilled={canMarkAsKilled}
+              userName={userName}
             />
           ))}
         </div>

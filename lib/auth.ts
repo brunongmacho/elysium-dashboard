@@ -77,6 +77,11 @@ export const authOptions: NextAuthOptions = {
               const member = await memberResponse.json();
               session.user.roles = member.roles || [];
 
+              // Use server nickname if available, otherwise use display name from token
+              if (member.nick) {
+                session.user.name = member.nick;
+              }
+
               // Check roles and determine badge
               const elysiumRoleId = process.env.DISCORD_ELYSIUM_ROLE_ID;
               const adminRoleIds = process.env.DISCORD_ADMIN_ROLE_ID;

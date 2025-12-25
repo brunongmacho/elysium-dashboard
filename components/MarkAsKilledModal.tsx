@@ -9,6 +9,7 @@ interface MarkAsKilledModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (killedBy: string, killTime?: string, spawnTime?: string) => void;
+  defaultKilledBy?: string;
 }
 
 export default function MarkAsKilledModal({
@@ -16,6 +17,7 @@ export default function MarkAsKilledModal({
   isOpen,
   onClose,
   onConfirm,
+  defaultKilledBy = "",
 }: MarkAsKilledModalProps) {
   const [killedBy, setKilledBy] = useState("");
   const [useCurrentTime, setUseCurrentTime] = useState(true);
@@ -29,7 +31,7 @@ export default function MarkAsKilledModal({
     setMounted(true);
   }, []);
 
-  // Initialize with current time when modal opens
+  // Initialize with current time and default name when modal opens
   useEffect(() => {
     if (isOpen) {
       const now = new Date();
@@ -37,11 +39,11 @@ export default function MarkAsKilledModal({
       const formattedTime = format(now, "yyyy-MM-dd'T'HH:mm");
       setKillTime(formattedTime);
       setSpawnTime(formattedTime);
-      setKilledBy("");
+      setKilledBy(defaultKilledBy);
       setUseCurrentTime(true);
       setSetMode("kill");
     }
-  }, [isOpen]);
+  }, [isOpen, defaultKilledBy]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
