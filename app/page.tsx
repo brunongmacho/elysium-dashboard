@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import BossTimerGrid from "@/components/BossTimerGrid";
 import type { BossTimerDisplay } from "@/types/database";
@@ -8,6 +9,7 @@ import type { BossTimerDisplay } from "@/types/database";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
+  const { data: session } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
@@ -149,7 +151,7 @@ export default function Home() {
         <BossTimerGrid
           bosses={data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
-          canMarkAsKilled={true} // TODO: Check user permissions
+          canMarkAsKilled={session?.canMarkAsKilled || false}
         />
       )}
 
