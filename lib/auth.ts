@@ -24,10 +24,12 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, account, profile }) {
-      // Store Discord access token for API calls
-      if (account) {
+      // Store Discord access token and user data for API calls
+      if (account && profile) {
         token.accessToken = account.access_token;
-        token.discordId = profile?.id;
+        token.discordId = profile.id;
+        // Store display name (global_name) or fallback to username
+        token.displayName = (profile as any).global_name || profile.username || profile.name;
       }
       return token;
     },
@@ -36,6 +38,7 @@ export const authOptions: NextAuthOptions = {
       // Add Discord data to session
       if (session.user) {
         session.user.id = token.discordId as string;
+        session.user.name = token.displayName as string; // Use display name
         session.accessToken = token.accessToken as string;
       }
 
@@ -51,8 +54,12 @@ export const authOptions: NextAuthOptions = {
           const guilds = await guildsResponse.json();
           const guildId = process.env.DISCORD_GUILD_ID!;
 
+          console.log("[Auth Debug] User guilds:", guilds.map((g: any) => ({ id: g.id, name: g.name })));
+          console.log("[Auth Debug] Looking for guild ID:", guildId);
+
           // Check if user is in the required guild
           const isInGuild = guilds.some((guild: any) => guild.id === guildId);
+          console.log("[Auth Debug] Is in guild:", isInGuild);
           session.isInGuild = isInGuild;
 
           if (isInGuild) {
@@ -70,14 +77,32 @@ export const authOptions: NextAuthOptions = {
               const member = await memberResponse.json();
               session.user.roles = member.roles || [];
 
-              // Check if user has ELYSIUM role or is admin
+              // Check roles and determine badge
               const elysiumRoleId = process.env.DISCORD_ELYSIUM_ROLE_ID;
-              const adminRoleId = process.env.DISCORD_ADMIN_ROLE_ID;
+              const adminRoleIds = process.env.DISCORD_ADMIN_ROLE_ID;
+              const leaderRoleId = process.env.DISCORD_LEADER_ROLE_ID;
+              const viceLeaderRoleId = process.env.DISCORD_VICE_LEADER_ROLE_ID;
+              const coreRoleId = process.env.DISCORD_CORE_ROLE_ID;
 
               const hasElysiumRole = elysiumRoleId && member.roles.includes(elysiumRoleId);
-              const hasAdminRole = adminRoleId && member.roles.includes(adminRoleId);
+
+              // Support multiple admin roles (comma-separated)
+              const hasAdminRole = adminRoleIds
+                ? adminRoleIds.split(',').map(id => id.trim()).some(roleId => member.roles.includes(roleId))
+                : false;
 
               session.canMarkAsKilled = hasElysiumRole || hasAdminRole;
+
+              // Determine role badge (priority: Leader > Vice Leader > Core > Member)
+              if (leaderRoleId && member.roles.includes(leaderRoleId)) {
+                session.roleBadge = "Elysium Leader";
+              } else if (viceLeaderRoleId && member.roles.includes(viceLeaderRoleId)) {
+                session.roleBadge = "Elysium Vice Leader";
+              } else if (coreRoleId && member.roles.includes(coreRoleId)) {
+                session.roleBadge = "Elysium Core";
+              } else if (hasElysiumRole) {
+                session.roleBadge = "Elysium Member";
+              }
             }
           } else {
             session.canMarkAsKilled = false;
