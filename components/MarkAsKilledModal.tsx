@@ -19,7 +19,6 @@ export default function MarkAsKilledModal({
   onConfirm,
   defaultKilledBy = "",
 }: MarkAsKilledModalProps) {
-  const [killedBy, setKilledBy] = useState("");
   const [useCurrentTime, setUseCurrentTime] = useState(true);
   const [killTime, setKillTime] = useState("");
   const [spawnTime, setSpawnTime] = useState("");
@@ -31,7 +30,7 @@ export default function MarkAsKilledModal({
     setMounted(true);
   }, []);
 
-  // Initialize with current time and default name when modal opens
+  // Initialize with current time when modal opens
   useEffect(() => {
     if (isOpen) {
       const now = new Date();
@@ -39,26 +38,21 @@ export default function MarkAsKilledModal({
       const formattedTime = format(now, "yyyy-MM-dd'T'HH:mm");
       setKillTime(formattedTime);
       setSpawnTime(formattedTime);
-      setKilledBy(defaultKilledBy);
       setUseCurrentTime(true);
       setSetMode("kill");
     }
-  }, [isOpen, defaultKilledBy]);
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!killedBy.trim()) {
-      alert("Please enter who killed the boss");
-      return;
-    }
 
     if (setMode === "kill") {
       // Set kill time mode - spawn time will be calculated
       const timeToSend = useCurrentTime ? undefined : killTime;
-      onConfirm(killedBy.trim(), timeToSend, undefined);
+      onConfirm(defaultKilledBy, timeToSend, undefined);
     } else {
       // Set spawn time mode - directly set when boss will spawn
-      onConfirm(killedBy.trim(), undefined, spawnTime);
+      onConfirm(defaultKilledBy, undefined, spawnTime);
     }
     onClose();
   };
@@ -73,20 +67,10 @@ export default function MarkAsKilledModal({
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Killed By Input */}
-          <div className="mb-4">
-            <label className="block text-gray-300 text-sm font-semibold mb-2">
-              Who killed the boss? *
-            </label>
-            <input
-              type="text"
-              value={killedBy}
-              onChange={(e) => setKilledBy(e.target.value)}
-              placeholder="Enter player name"
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              autoFocus
-              required
-            />
+          {/* Display who is marking it as killed */}
+          <div className="mb-4 p-3 bg-gray-700/50 rounded-md">
+            <div className="text-gray-400 text-sm">Killed by:</div>
+            <div className="text-white font-semibold">{defaultKilledBy || "Unknown"}</div>
           </div>
 
           {/* Mode Selection */}
