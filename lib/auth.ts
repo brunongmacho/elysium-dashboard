@@ -35,11 +35,22 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
+      // Initialize session defaults
+      session.isInGuild = false;
+      session.canMarkAsKilled = false;
+      session.roleBadge = undefined;
+
       // Add Discord data to session
       if (session.user) {
         session.user.id = token.discordId as string;
         session.user.name = token.displayName as string; // Use display name
         session.accessToken = token.accessToken as string;
+      }
+
+      // Check if we have an access token
+      if (!token.accessToken) {
+        console.error("[Auth Error] No access token available");
+        return session;
       }
 
       // Fetch user's guilds and check membership
@@ -49,6 +60,13 @@ export const authOptions: NextAuthOptions = {
             Authorization: `Bearer ${token.accessToken}`,
           },
         });
+
+        if (!guildsResponse.ok) {
+          console.error("[Auth Error] Failed to fetch guilds:", guildsResponse.status, guildsResponse.statusText);
+          const errorText = await guildsResponse.text();
+          console.error("[Auth Error] Response:", errorText);
+          return session; // Return with defaults
+        }
 
         if (guildsResponse.ok) {
           const guilds = await guildsResponse.json();
@@ -72,6 +90,14 @@ export const authOptions: NextAuthOptions = {
                 },
               }
             );
+
+            if (!memberResponse.ok) {
+              console.error("[Auth Error] Failed to fetch member data:", memberResponse.status, memberResponse.statusText);
+              const errorText = await memberResponse.text();
+              console.error("[Auth Error] Response:", errorText);
+              // User is in guild but we can't get member data - keep isInGuild true but no roles
+              return session;
+            }
 
             if (memberResponse.ok) {
               const member = await memberResponse.json();
