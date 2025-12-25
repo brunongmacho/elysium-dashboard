@@ -18,6 +18,7 @@ declare module "next-auth" {
     accessToken?: string;
     isInGuild: boolean;
     canMarkAsKilled: boolean;
+    roleBadge?: string;
   }
 
   interface User {

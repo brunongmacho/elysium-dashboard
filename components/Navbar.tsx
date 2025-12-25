@@ -64,9 +64,9 @@ export default function Navbar() {
                           Not in guild
                         </span>
                       )}
-                      {session.isInGuild && session.canMarkAsKilled && (
+                      {session.roleBadge && (
                         <span className="text-green-400 text-xs">
-                          ELYSIUM Member
+                          {session.roleBadge}
                         </span>
                       )}
                     </div>

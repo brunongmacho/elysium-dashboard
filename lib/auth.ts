@@ -77,9 +77,12 @@ export const authOptions: NextAuthOptions = {
               const member = await memberResponse.json();
               session.user.roles = member.roles || [];
 
-              // Check if user has ELYSIUM role or is admin
+              // Check roles and determine badge
               const elysiumRoleId = process.env.DISCORD_ELYSIUM_ROLE_ID;
               const adminRoleIds = process.env.DISCORD_ADMIN_ROLE_ID;
+              const leaderRoleId = process.env.DISCORD_LEADER_ROLE_ID;
+              const viceLeaderRoleId = process.env.DISCORD_VICE_LEADER_ROLE_ID;
+              const coreRoleId = process.env.DISCORD_CORE_ROLE_ID;
 
               const hasElysiumRole = elysiumRoleId && member.roles.includes(elysiumRoleId);
 
@@ -89,6 +92,17 @@ export const authOptions: NextAuthOptions = {
                 : false;
 
               session.canMarkAsKilled = hasElysiumRole || hasAdminRole;
+
+              // Determine role badge (priority: Leader > Vice Leader > Core > Member)
+              if (leaderRoleId && member.roles.includes(leaderRoleId)) {
+                session.roleBadge = "Elysium Leader";
+              } else if (viceLeaderRoleId && member.roles.includes(viceLeaderRoleId)) {
+                session.roleBadge = "Elysium Vice Leader";
+              } else if (coreRoleId && member.roles.includes(coreRoleId)) {
+                session.roleBadge = "Elysium Core";
+              } else if (hasElysiumRole) {
+                session.roleBadge = "Elysium Member";
+              }
             }
           } else {
             session.canMarkAsKilled = false;
