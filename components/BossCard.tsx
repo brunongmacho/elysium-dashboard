@@ -96,7 +96,9 @@ export default function BossCard({
           {boss.killedBy && (
             <div className="text-gray-300">
               <span className="text-gray-400">👤 Set by:</span>{" "}
-              <span className="font-semibold">{boss.killedBy}</span>
+              <span className="font-semibold">
+                {boss.isPredicted ? "Attendance" : boss.killedBy}
+              </span>
             </div>
           )}
           {boss.lastKillTime && (
