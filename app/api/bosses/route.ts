@@ -102,15 +102,26 @@ export async function GET() {
 
       if (bossType === "timer") {
         // Timer-based boss
+        let useTimer = false;
+
         if (timer && timer.nextSpawnTime) {
-          // Use existing timer data
-          nextSpawnTime = new Date(timer.nextSpawnTime);
-          lastKillTime = timer.lastKillTime
-            ? new Date(timer.lastKillTime)
-            : null;
-          killedBy = timer.killedBy;
-        } else {
-          // Fallback: Calculate from last attendance record
+          // Check if we're still within the grace period (35 minutes after expected spawn)
+          const now = new Date();
+          const spawnTime = new Date(timer.nextSpawnTime);
+          const gracePeriodMs = 35 * 60 * 1000; // 35 minutes in milliseconds
+          const gracePeriodEnd = new Date(spawnTime.getTime() + gracePeriodMs);
+
+          // Use timer data if we're still within grace period
+          if (now <= gracePeriodEnd) {
+            useTimer = true;
+            nextSpawnTime = spawnTime;
+            lastKillTime = timer.lastKillTime ? new Date(timer.lastKillTime) : null;
+            killedBy = timer.killedBy;
+          }
+        }
+
+        // If no timer or past grace period, fallback to attendance collection
+        if (!useTimer) {
           const lastAttendance = await db
             .collection("attendance")
             .find({ bossName: { $regex: new RegExp(`^${bossName}$`, "i") } })
