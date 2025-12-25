@@ -184,91 +184,6 @@ export async function GET(
 
     const thisMonth = thisMonthResult.length > 0 ? thisMonthResult[0].total : 0;
 
-    // Fetch recent attendance (last 20 records) with cleaned boss names
-    const recentAttendancePipeline = [
-      { $match: { memberId } },
-      { $sort: { timestamp: -1 } },
-      { $limit: 20 },
-      {
-        $addFields: {
-          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
-        }
-      },
-      {
-        $addFields: {
-          bossName: {
-            $cond: {
-              if: "$regexMatch",
-              then: {
-                $trim: {
-                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
-                }
-              },
-              else: "$bossName"
-            }
-          }
-        }
-      },
-      {
-        $project: {
-          regexMatch: 0
-        }
-      }
-    ];
-
-    const recentAttendance = await db
-      .collection("attendance")
-      .aggregate(recentAttendancePipeline)
-      .toArray();
-
-    // Calculate boss breakdown (attendance count per boss) - case-insensitive
-    const bossBreakdownPipeline = [
-      { $match: { memberId } },
-      {
-        $addFields: {
-          // Remove "#1", "#2", etc. and trim whitespace
-          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
-        }
-      },
-      {
-        $addFields: {
-          cleanBossName: {
-            $cond: {
-              if: "$regexMatch",
-              then: {
-                $trim: {
-                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
-                }
-              },
-              else: "$bossName"
-            }
-          }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            bossName: { $toLower: "$cleanBossName" },
-            timestamp: "$timestamp"
-          },
-          displayName: { $first: "$cleanBossName" }
-        }
-      },
-      {
-        $group: {
-          _id: "$_id.bossName",
-          displayName: { $first: "$displayName" },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { count: -1 } }
-    ];
-
-    const bossBreakdown = await db
-      .collection("attendance")
-      .aggregate(bossBreakdownPipeline)
-      .toArray();
-
     // Get member rank (based on points available)
     const membersAbove = await db
       .collection("members")
@@ -290,11 +205,6 @@ export async function GET(
         byBoss: member.attendance?.byBoss || {},
         streak: member.attendance?.streak || { current: 0, longest: 0 }
       },
-      recentAttendance,
-      bossBreakdown: bossBreakdown.map((item: any) => ({
-        bossName: item.displayName,
-        count: item.count
-      })),
       rank,
       totalMembers
     };
