@@ -6,6 +6,7 @@ import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry,
 } from "@/types/database";
+import { toLocaleStringGMT8 } from "@/lib/timezone";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -399,7 +400,7 @@ export default function LeaderboardPage() {
       {/* Last Update Time */}
       {data && (
         <div className="text-center text-xs text-gray-500">
-          Last updated: {new Date(data.timestamp).toLocaleString()}
+          Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>
       )}
     </div>
