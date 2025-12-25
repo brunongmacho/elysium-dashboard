@@ -24,10 +24,12 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, account, profile }) {
-      // Store Discord access token for API calls
-      if (account) {
+      // Store Discord access token and user data for API calls
+      if (account && profile) {
         token.accessToken = account.access_token;
-        token.discordId = profile?.id;
+        token.discordId = profile.id;
+        // Store display name (global_name) or fallback to username
+        token.displayName = (profile as any).global_name || profile.username || profile.name;
       }
       return token;
     },
@@ -36,6 +38,7 @@ export const authOptions: NextAuthOptions = {
       // Add Discord data to session
       if (session.user) {
         session.user.id = token.discordId as string;
+        session.user.name = token.displayName as string; // Use display name
         session.accessToken = token.accessToken as string;
       }
 
@@ -51,8 +54,12 @@ export const authOptions: NextAuthOptions = {
           const guilds = await guildsResponse.json();
           const guildId = process.env.DISCORD_GUILD_ID!;
 
+          console.log("[Auth Debug] User guilds:", guilds.map((g: any) => ({ id: g.id, name: g.name })));
+          console.log("[Auth Debug] Looking for guild ID:", guildId);
+
           // Check if user is in the required guild
           const isInGuild = guilds.some((guild: any) => guild.id === guildId);
+          console.log("[Auth Debug] Is in guild:", isInGuild);
           session.isInGuild = isInGuild;
 
           if (isInGuild) {
