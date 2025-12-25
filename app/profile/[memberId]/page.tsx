@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { format } from "date-fns";
+import { formatInGMT8 } from "@/lib/timezone";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -198,7 +198,7 @@ export default function MemberProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
               <span className="text-gray-400">Last Active:</span>{" "}
-              <span className="text-white">{format(new Date(profile.lastActive), "MMM dd, yyyy hh:mm a")}</span>
+              <span className="text-white">{formatInGMT8(profile.lastActive, "MMM dd, yyyy hh:mm a")}</span>
             </div>
             <div>
               <span className="text-gray-400">This Week:</span>{" "}

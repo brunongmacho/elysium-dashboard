@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import BossTimerGrid from "@/components/BossTimerGrid";
 import type { BossTimerDisplay } from "@/types/database";
+import { toLocaleStringGMT8 } from "@/lib/timezone";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -34,7 +35,7 @@ export default function Home() {
       const result = await response.json();
 
       if (result.success) {
-        alert(`${bossName} marked as killed! Next spawn: ${new Date(result.data.nextSpawnTime).toLocaleString()}`);
+        alert(`${bossName} marked as killed! Next spawn: ${toLocaleStringGMT8(result.data.nextSpawnTime)}`);
         // Refresh the data
         mutate();
         setRefreshKey((k) => k + 1);
@@ -159,7 +160,7 @@ export default function Home() {
       {/* Last Update Time */}
       {data && (
         <div className="text-center text-xs text-gray-500">
-          Last updated: {new Date(data.timestamp).toLocaleString()}
+          Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>
       )}
     </div>

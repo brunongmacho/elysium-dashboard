@@ -5,7 +5,7 @@ import Image from "next/image";
 import Countdown from "./Countdown";
 import MarkAsKilledModal from "./MarkAsKilledModal";
 import type { BossTimerDisplay } from "@/types/database";
-import { format } from "date-fns";
+import { formatInGMT8 } from "@/lib/timezone";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -104,7 +104,7 @@ export default function BossCard({
           {boss.lastKillTime && (
             <div className="text-gray-300">
               <span className="text-gray-400">🕐 Last Kill:</span>{" "}
-              <span>{format(new Date(boss.lastKillTime), "MMM dd, hh:mm a")}</span>
+              <span>{formatInGMT8(boss.lastKillTime, "MMM dd, hh:mm a")}</span>
             </div>
           )}
         </div>
@@ -117,7 +117,7 @@ export default function BossCard({
             {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
           </div>
           <div className="text-white text-lg font-bold mb-3">
-            {format(new Date(boss.nextSpawnTime), "MMM dd, yyyy hh:mm a")}
+            {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
           </div>
 
           {/* Countdown Timer */}
