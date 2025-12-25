@@ -48,8 +48,9 @@ export async function GET(request: Request) {
         }
       } else if (period === "weekly") {
         if (weekParam) {
-          // Parse specific week start date (YYYY-MM-DD) - use both bounds
-          const weekStart = new Date(weekParam);
+          // Parse specific week start date (YYYY-MM-DD) in local timezone - use both bounds
+          const [year, month, day] = weekParam.split('-').map(Number);
+          const weekStart = new Date(year, month - 1, day);
           weekStart.setHours(0, 0, 0, 0);
           const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekStart.getDate() + 6);
