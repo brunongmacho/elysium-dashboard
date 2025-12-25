@@ -132,20 +132,22 @@ export async function GET(
       .limit(20)
       .toArray();
 
-    // Calculate boss breakdown (attendance count per boss)
+    // Calculate boss breakdown (attendance count per boss) - case-insensitive
     const bossBreakdownPipeline = [
       { $match: { memberId } },
       {
         $group: {
           _id: {
-            bossName: "$bossName",
+            bossName: { $toLower: "$bossName" },
             timestamp: "$timestamp"
-          }
+          },
+          displayName: { $first: "$bossName" }
         }
       },
       {
         $group: {
           _id: "$_id.bossName",
+          displayName: { $first: "$displayName" },
           count: { $sum: 1 }
         }
       },
@@ -180,7 +182,7 @@ export async function GET(
       },
       recentAttendance,
       bossBreakdown: bossBreakdown.map((item: any) => ({
-        bossName: item._id,
+        bossName: item.displayName,
         count: item.count
       })),
       rank,

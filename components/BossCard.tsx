@@ -72,6 +72,11 @@ export default function BossCard({
             <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full capitalize whitespace-nowrap">
               {boss.type}
             </span>
+            {boss.killCount !== undefined && boss.killCount > 0 && (
+              <span className="text-xs bg-green-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                {boss.killCount} {boss.killCount === 1 ? "kill" : "kills"}
+              </span>
+            )}
           </div>
         </div>
 

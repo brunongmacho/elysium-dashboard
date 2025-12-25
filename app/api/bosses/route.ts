@@ -38,6 +38,34 @@ export async function GET() {
       timerMap.set(timer.bossName, timer);
     });
 
+    // Calculate kill counts for all bosses (case-insensitive)
+    const killCountPipeline = [
+      {
+        $group: {
+          _id: {
+            bossName: "$bossName",
+            timestamp: "$timestamp"
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $toLower: "$_id.bossName" },
+          count: { $sum: 1 }
+        }
+      }
+    ];
+
+    const killCountResults = await db
+      .collection("attendance")
+      .aggregate(killCountPipeline)
+      .toArray();
+
+    const killCountMap = new Map<string, number>();
+    killCountResults.forEach((result: any) => {
+      killCountMap.set(result._id, result.count);
+    });
+
     // Build display data for each boss
     const bossDisplayData: BossTimerDisplay[] = [];
 
@@ -84,6 +112,9 @@ export async function GET() {
       const timeRemaining = getTimeRemaining(nextSpawnTime);
       const status = getBossStatus(timeRemaining);
 
+      // Get kill count (case-insensitive)
+      const killCount = killCountMap.get(bossName.toLowerCase()) || 0;
+
       bossDisplayData.push({
         bossName,
         bossPoints,
@@ -94,6 +125,7 @@ export async function GET() {
         interval: bossType === "timer" ? getBossSpawnInterval(bossName) || undefined : undefined,
         timeRemaining: timeRemaining || undefined,
         status,
+        killCount,
       });
     }
 
