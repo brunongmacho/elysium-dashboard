@@ -6,7 +6,7 @@ import type { BossTimerDisplay } from "@/types/database";
 
 interface BossTimerGridProps {
   bosses: BossTimerDisplay[];
-  onMarkAsKilled?: (bossName: string) => Promise<void>;
+  onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => Promise<void>;
   canMarkAsKilled?: boolean;
   userName?: string;
 }
