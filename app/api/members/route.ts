@@ -68,6 +68,7 @@ export async function GET(request: Request) {
             username: { $ifNull: ["$memberData.username", "$memberName"] },
             totalKills: 1,
             pointsEarned: 1,
+            // Streak is maintained by the bot in members collection
             currentStreak: { $ifNull: ["$memberData.attendance.streak.current", 0] }
           }
         }
