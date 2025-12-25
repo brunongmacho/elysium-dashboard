@@ -44,8 +44,7 @@ export async function GET(request: Request) {
           $group: {
             _id: "$memberId",
             memberName: { $first: "$memberName" },
-            totalKills: { $sum: 1 },
-            pointsEarned: { $sum: "$bossPoints" }
+            totalKills: { $sum: 1 }
           }
         },
         {
@@ -67,7 +66,7 @@ export async function GET(request: Request) {
             _id: 1,
             username: { $ifNull: ["$memberData.username", "$memberName"] },
             totalKills: 1,
-            pointsEarned: 1,
+            pointsEarned: { $ifNull: ["$memberData.pointsEarned", 0] },
             // Streak is maintained by the bot in members collection
             currentStreak: { $ifNull: ["$memberData.attendance.streak.current", 0] }
           }
@@ -96,16 +95,34 @@ export async function GET(request: Request) {
         .aggregate(pipeline)
         .toArray();
 
-      // Calculate leaderboard with ranks
-      const maxKills = attendanceData.length > 0 ? (attendanceData[0].totalKills || 0) : 1;
+      // Calculate total unique boss kills in the period (count distinct timestamps)
+      const uniqueKillsPipeline = [
+        ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
+        {
+          $group: {
+            _id: "$timestamp"
+          }
+        },
+        {
+          $count: "totalUniqueKills"
+        }
+      ];
 
+      const uniqueKillsResult = await db
+        .collection("attendance")
+        .aggregate(uniqueKillsPipeline)
+        .toArray();
+
+      const totalUniqueKills = uniqueKillsResult.length > 0 ? uniqueKillsResult[0].totalUniqueKills : 1;
+
+      // Calculate leaderboard with ranks
       const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
         const totalKills = member.totalKills || 0;
         const pointsEarned = member.pointsEarned || 0;
         const currentStreak = member.currentStreak || 0;
 
-        // Calculate attendance rate as percentage of top player's kills
-        const attendanceRate = maxKills > 0 ? Math.round((totalKills / maxKills) * 100) : 0;
+        // Calculate attendance rate as percentage of total unique boss kills attended
+        const attendanceRate = totalUniqueKills > 0 ? Math.round((totalKills / totalUniqueKills) * 100) : 0;
 
         return {
           rank: index + 1,
