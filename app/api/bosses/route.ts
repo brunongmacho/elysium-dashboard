@@ -103,12 +103,49 @@ export async function GET() {
       if (bossType === "timer") {
         // Timer-based boss
         if (timer && timer.nextSpawnTime) {
-          // Use existing timer data
-          nextSpawnTime = new Date(timer.nextSpawnTime);
-          lastKillTime = timer.lastKillTime
-            ? new Date(timer.lastKillTime)
-            : null;
-          killedBy = timer.killedBy;
+          // Check if we're past the grace period (35 minutes after expected spawn)
+          const now = new Date();
+          const spawnTime = new Date(timer.nextSpawnTime);
+          const gracePeriodMs = 35 * 60 * 1000; // 35 minutes in milliseconds
+          const gracePeriodEnd = new Date(spawnTime.getTime() + gracePeriodMs);
+
+          // If we're past the grace period, check attendance for newer kills
+          if (now > gracePeriodEnd) {
+            const lastAttendance = await db
+              .collection("attendance")
+              .find({ bossName: { $regex: new RegExp(`^${bossName}$`, "i") } })
+              .sort({ timestamp: -1 })
+              .limit(1)
+              .toArray();
+
+            // If attendance has a newer kill than our timer, use attendance data
+            if (lastAttendance.length > 0) {
+              const attendanceKillTime = new Date(lastAttendance[0].timestamp);
+              const timerKillTime = timer.lastKillTime ? new Date(timer.lastKillTime) : new Date(0);
+
+              if (attendanceKillTime > timerKillTime) {
+                // Use attendance data (newer kill found)
+                lastKillTime = attendanceKillTime;
+                killedBy = lastAttendance[0].memberName;
+                nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
+              } else {
+                // Use existing timer data (no newer kill in attendance)
+                nextSpawnTime = spawnTime;
+                lastKillTime = timerKillTime;
+                killedBy = timer.killedBy;
+              }
+            } else {
+              // No attendance records, use timer data
+              nextSpawnTime = spawnTime;
+              lastKillTime = timer.lastKillTime ? new Date(timer.lastKillTime) : null;
+              killedBy = timer.killedBy;
+            }
+          } else {
+            // Still within grace period, use existing timer data
+            nextSpawnTime = spawnTime;
+            lastKillTime = timer.lastKillTime ? new Date(timer.lastKillTime) : null;
+            killedBy = timer.killedBy;
+          }
         } else {
           // Fallback: Calculate from last attendance record
           const lastAttendance = await db
