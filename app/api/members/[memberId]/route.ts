@@ -25,12 +25,22 @@ export async function GET(
 
     const db = await getDatabase();
 
-    // Fetch member data (case-insensitive)
-    // Escape special regex characters to prevent injection
-    const escapedMemberId = memberId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const member = await db
+    // Fetch member data (case-insensitive using aggregation)
+    const memberResult = await db
       .collection<Member>("members")
-      .findOne({ _id: { $regex: new RegExp(`^${escapedMemberId}$`, 'i') } });
+      .aggregate([
+        {
+          $match: {
+            $expr: {
+              $eq: [{ $toLower: "$_id" }, memberId.toLowerCase()]
+            }
+          }
+        },
+        { $limit: 1 }
+      ])
+      .toArray();
+
+    const member = memberResult[0];
 
     if (!member) {
       return NextResponse.json(
