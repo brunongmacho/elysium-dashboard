@@ -25,10 +25,12 @@ export async function GET(
 
     const db = await getDatabase();
 
-    // Fetch member data
+    // Fetch member data (case-insensitive)
+    // Escape special regex characters to prevent injection
+    const escapedMemberId = memberId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const member = await db
       .collection<Member>("members")
-      .findOne({ _id: memberId });
+      .findOne({ _id: { $regex: new RegExp(`^${escapedMemberId}$`, 'i') } });
 
     if (!member) {
       return NextResponse.json(
@@ -39,8 +41,9 @@ export async function GET(
 
     // Calculate actual attendance totals from attendance collection
     // Total attendance (all time) - count unique boss kills
+    // Use member._id to ensure case-insensitive matching works correctly
     const totalAttendancePipeline = [
-      { $match: { memberId } },
+      { $match: { memberId: member._id } },
       {
         $addFields: {
           regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
@@ -92,7 +95,7 @@ export async function GET(
     const thisWeekPipeline = [
       {
         $match: {
-          memberId,
+          memberId: member._id,
           timestamp: { $gte: weekStart }
         }
       },
@@ -142,7 +145,7 @@ export async function GET(
     const thisMonthPipeline = [
       {
         $match: {
-          memberId,
+          memberId: member._id,
           timestamp: { $gte: monthStart }
         }
       },
