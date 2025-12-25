@@ -25,45 +25,17 @@ export async function GET(
 
     const db = await getDatabase();
 
-    console.log("[Member Profile] Looking for member:", memberId);
-
-    // Try to find member with exact match first
-    let member = await db
+    // Fetch member data
+    const member = await db
       .collection<Member>("members")
       .findOne({ _id: memberId });
 
-    // If not found, try case-insensitive match
     if (!member) {
-      console.log("[Member Profile] Exact match not found, trying case-insensitive...");
-      const memberResult = await db
-        .collection<Member>("members")
-        .aggregate([
-          {
-            $match: {
-              $expr: {
-                $eq: [{ $toLower: "$_id" }, memberId.toLowerCase()]
-              }
-            }
-          },
-          { $limit: 1 }
-        ])
-        .toArray();
-
-      member = memberResult[0];
-    }
-
-    if (!member) {
-      // Debug: List all members to help troubleshoot
-      const allMembers = await db.collection("members").find({}).project({ _id: 1 }).limit(10).toArray();
-      console.log("[Member Profile] Member not found. Sample members:", allMembers.map(m => m._id));
-
       return NextResponse.json(
         { success: false, error: "Member not found" },
         { status: 404 }
       );
     }
-
-    console.log("[Member Profile] Found member:", member._id);
 
     // Calculate actual attendance totals from attendance collection
     // Total attendance (all time) - count unique boss kills
