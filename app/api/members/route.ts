@@ -33,13 +33,15 @@ export async function GET(request: Request) {
         if (monthParam) {
           // Parse specific month (YYYY-MM) in GMT+8 timezone
           const [year, month] = monthParam.split('-').map(Number);
-          // Create start of month in GMT+8 (as UTC)
-          const monthStart = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
-          monthStart.setUTCHours(monthStart.getUTCHours() - 8); // Offset for GMT+8
 
-          // Create end of month in GMT+8 (as UTC)
-          const monthEnd = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
-          monthEnd.setUTCHours(monthEnd.getUTCHours() - 8); // Offset for GMT+8
+          // Month start: 1st day 00:00:00 GMT+8 -> convert to UTC
+          const monthStartGMT8 = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+          const monthStart = new Date(monthStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+
+          // Month end: last day 23:59:59 GMT+8 -> convert to UTC
+          const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate(); // Get last day of month
+          const monthEndGMT8 = new Date(Date.UTC(year, month - 1, lastDay, 23, 59, 59, 999));
+          const monthEnd = new Date(monthEndGMT8.getTime() - (8 * 60 * 60 * 1000));
 
           dateFilter = {
             timestamp: {
@@ -49,22 +51,23 @@ export async function GET(request: Request) {
           };
         } else {
           // Current month in GMT+8 - only use lower bound
-          const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0, 0));
-          monthStart.setUTCHours(monthStart.getUTCHours() - 8);
+          const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+          const monthStartGMT8 = new Date(Date.UTC(gmtPlusEightNow.getUTCFullYear(), gmtPlusEightNow.getUTCMonth(), 1, 0, 0, 0, 0));
+          const monthStart = new Date(monthStartGMT8.getTime() - (8 * 60 * 60 * 1000));
           dateFilter = { timestamp: { $gte: monthStart } };
         }
       } else if (period === "weekly") {
         if (weekParam) {
           // Parse specific week start date (YYYY-MM-DD) in GMT+8 timezone
           const [year, month, day] = weekParam.split('-').map(Number);
-          // Create week start in GMT+8 (as UTC)
-          const weekStart = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
-          weekStart.setUTCHours(weekStart.getUTCHours() - 8); // Offset for GMT+8
 
-          // Create week end in GMT+8 (as UTC)
-          const weekEnd = new Date(weekStart);
-          weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
-          weekEnd.setUTCHours(23, 59, 59, 999);
+          // Week start: day 00:00:00 GMT+8 -> convert to UTC
+          const weekStartGMT8 = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+          const weekStart = new Date(weekStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+
+          // Week end: day+6 23:59:59 GMT+8 -> convert to UTC
+          const weekEndGMT8 = new Date(Date.UTC(year, month - 1, day + 6, 23, 59, 59, 999));
+          const weekEnd = new Date(weekEndGMT8.getTime() - (8 * 60 * 60 * 1000));
 
           dateFilter = {
             timestamp: {
@@ -78,8 +81,8 @@ export async function GET(request: Request) {
           const weekStart = new Date(gmtPlusEightNow);
           weekStart.setUTCDate(gmtPlusEightNow.getUTCDate() - gmtPlusEightNow.getUTCDay());
           weekStart.setUTCHours(0, 0, 0, 0);
-          weekStart.setUTCHours(weekStart.getUTCHours() - 8);
-          dateFilter = { timestamp: { $gte: weekStart } };
+          const weekStartUTC = new Date(weekStart.getTime() - (8 * 60 * 60 * 1000));
+          dateFilter = { timestamp: { $gte: weekStartUTC } };
         }
       }
 
