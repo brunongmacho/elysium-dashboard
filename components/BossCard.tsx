@@ -9,7 +9,7 @@ import { format } from "date-fns";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
-  onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string) => void;
+  onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => void;
   canMarkAsKilled?: boolean;
 }
 
@@ -44,12 +44,12 @@ export default function BossCard({
     setShowModal(true);
   };
 
-  const handleConfirmKill = async (killedBy: string, killTime?: string) => {
+  const handleConfirmKill = async (killedBy: string, killTime?: string, spawnTime?: string) => {
     if (!onMarkAsKilled) return;
 
     setIsMarking(true);
     try {
-      await onMarkAsKilled(boss.bossName, killedBy, killTime);
+      await onMarkAsKilled(boss.bossName, killedBy, killTime, spawnTime);
     } finally {
       setIsMarking(false);
     }

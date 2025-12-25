@@ -7,7 +7,7 @@ interface MarkAsKilledModalProps {
   bossName: string;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (killedBy: string, killTime?: string) => void;
+  onConfirm: (killedBy: string, killTime?: string, spawnTime?: string) => void;
 }
 
 export default function MarkAsKilledModal({
@@ -19,6 +19,8 @@ export default function MarkAsKilledModal({
   const [killedBy, setKilledBy] = useState("");
   const [useCurrentTime, setUseCurrentTime] = useState(true);
   const [killTime, setKillTime] = useState("");
+  const [spawnTime, setSpawnTime] = useState("");
+  const [setMode, setSetMode] = useState<"kill" | "spawn">("kill");
 
   // Initialize with current time when modal opens
   useEffect(() => {
@@ -27,8 +29,10 @@ export default function MarkAsKilledModal({
       // Format for datetime-local input: YYYY-MM-DDThh:mm
       const formattedTime = format(now, "yyyy-MM-dd'T'HH:mm");
       setKillTime(formattedTime);
+      setSpawnTime(formattedTime);
       setKilledBy("");
       setUseCurrentTime(true);
+      setSetMode("kill");
     }
   }, [isOpen]);
 
@@ -39,9 +43,14 @@ export default function MarkAsKilledModal({
       return;
     }
 
-    // If using current time, don't pass killTime
-    const timeToSend = useCurrentTime ? undefined : killTime;
-    onConfirm(killedBy.trim(), timeToSend);
+    if (setMode === "kill") {
+      // Set kill time mode - spawn time will be calculated
+      const timeToSend = useCurrentTime ? undefined : killTime;
+      onConfirm(killedBy.trim(), timeToSend, undefined);
+    } else {
+      // Set spawn time mode - directly set when boss will spawn
+      onConfirm(killedBy.trim(), undefined, spawnTime);
+    }
     onClose();
   };
 
@@ -71,34 +80,89 @@ export default function MarkAsKilledModal({
             />
           </div>
 
-          {/* Use Current Time Checkbox */}
+          {/* Mode Selection */}
           <div className="mb-4">
-            <label className="flex items-center text-gray-300 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={useCurrentTime}
-                onChange={(e) => setUseCurrentTime(e.target.checked)}
-                className="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
-              />
-              <span className="text-sm">Use current time (now)</span>
+            <label className="block text-gray-300 text-sm font-semibold mb-2">
+              What do you want to set?
             </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setSetMode("kill")}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  setMode === "kill"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }`}
+              >
+                Kill Time
+              </button>
+              <button
+                type="button"
+                onClick={() => setSetMode("spawn")}
+                className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  setMode === "spawn"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }`}
+              >
+                Spawn Time
+              </button>
+            </div>
           </div>
 
-          {/* Kill Time Input (only shown when not using current time) */}
-          {!useCurrentTime && (
+          {/* Kill Time Mode */}
+          {setMode === "kill" && (
+            <>
+              {/* Use Current Time Checkbox */}
+              <div className="mb-4">
+                <label className="flex items-center text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useCurrentTime}
+                    onChange={(e) => setUseCurrentTime(e.target.checked)}
+                    className="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm">Use current time (now)</span>
+                </label>
+              </div>
+
+              {/* Kill Time Input */}
+              {!useCurrentTime && (
+                <div className="mb-4">
+                  <label className="block text-gray-300 text-sm font-semibold mb-2">
+                    When was it killed?
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={killTime}
+                    onChange={(e) => setKillTime(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required={!useCurrentTime}
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    Spawn time will be calculated automatically
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Spawn Time Mode */}
+          {setMode === "spawn" && (
             <div className="mb-4">
               <label className="block text-gray-300 text-sm font-semibold mb-2">
-                When was it killed?
+                When will it spawn?
               </label>
               <input
                 type="datetime-local"
-                value={killTime}
-                onChange={(e) => setKillTime(e.target.value)}
+                value={spawnTime}
+                onChange={(e) => setSpawnTime(e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required={!useCurrentTime}
+                required
               />
               <p className="text-xs text-gray-400 mt-1">
-                For late entries or corrections
+                Set exact spawn time directly
               </p>
             </div>
           )}
@@ -116,7 +180,7 @@ export default function MarkAsKilledModal({
               type="submit"
               className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors duration-200"
             >
-              Confirm Kill
+              Confirm
             </button>
           </div>
         </form>
