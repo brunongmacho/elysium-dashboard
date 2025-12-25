@@ -42,9 +42,29 @@ export async function GET(
     const totalAttendancePipeline = [
       { $match: { memberId } },
       {
+        $addFields: {
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          cleanBossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
+      {
         $group: {
           _id: {
-            bossName: "$bossName",
+            bossName: "$cleanBossName",
             timestamp: "$timestamp"
           }
         }
@@ -77,9 +97,29 @@ export async function GET(
         }
       },
       {
+        $addFields: {
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          cleanBossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
+      {
         $group: {
           _id: {
-            bossName: "$bossName",
+            bossName: "$cleanBossName",
             timestamp: "$timestamp"
           }
         }
@@ -107,9 +147,29 @@ export async function GET(
         }
       },
       {
+        $addFields: {
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          cleanBossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
+      {
         $group: {
           _id: {
-            bossName: "$bossName",
+            bossName: "$cleanBossName",
             timestamp: "$timestamp"
           }
         }
@@ -124,24 +184,74 @@ export async function GET(
 
     const thisMonth = thisMonthResult.length > 0 ? thisMonthResult[0].total : 0;
 
-    // Fetch recent attendance (last 20 records)
+    // Fetch recent attendance (last 20 records) with cleaned boss names
+    const recentAttendancePipeline = [
+      { $match: { memberId } },
+      { $sort: { timestamp: -1 } },
+      { $limit: 20 },
+      {
+        $addFields: {
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          bossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          regexMatch: 0
+        }
+      }
+    ];
+
     const recentAttendance = await db
-      .collection<AttendanceRecord>("attendance")
-      .find({ memberId })
-      .sort({ timestamp: -1 })
-      .limit(20)
+      .collection("attendance")
+      .aggregate(recentAttendancePipeline)
       .toArray();
 
     // Calculate boss breakdown (attendance count per boss) - case-insensitive
     const bossBreakdownPipeline = [
       { $match: { memberId } },
       {
+        $addFields: {
+          // Remove "#1", "#2", etc. and trim whitespace
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          cleanBossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
+      {
         $group: {
           _id: {
-            bossName: { $toLower: "$bossName" },
+            bossName: { $toLower: "$cleanBossName" },
             timestamp: "$timestamp"
           },
-          displayName: { $first: "$bossName" }
+          displayName: { $first: "$cleanBossName" }
         }
       },
       {

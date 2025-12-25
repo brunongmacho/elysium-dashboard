@@ -99,10 +99,30 @@ export async function GET(request: Request) {
       const pipeline: any[] = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
         {
+          $addFields: {
+            regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+          }
+        },
+        {
+          $addFields: {
+            cleanBossName: {
+              $cond: {
+                if: "$regexMatch",
+                then: {
+                  $trim: {
+                    input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                  }
+                },
+                else: "$bossName"
+              }
+            }
+          }
+        },
+        {
           $group: {
             _id: {
               memberId: "$memberId",
-              bossName: "$bossName",
+              bossName: "$cleanBossName",
               timestamp: "$timestamp"
             },
             memberName: { $first: "$memberName" }
@@ -168,9 +188,29 @@ export async function GET(request: Request) {
       const totalBossKillsPipeline = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
         {
+          $addFields: {
+            regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+          }
+        },
+        {
+          $addFields: {
+            cleanBossName: {
+              $cond: {
+                if: "$regexMatch",
+                then: {
+                  $trim: {
+                    input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                  }
+                },
+                else: "$bossName"
+              }
+            }
+          }
+        },
+        {
           $group: {
             _id: {
-              bossName: "$bossName",
+              bossName: "$cleanBossName",
               timestamp: "$timestamp"
             }
           }
