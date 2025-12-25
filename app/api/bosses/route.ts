@@ -39,10 +39,19 @@ export async function GET() {
     });
 
     // Fetch kill counts from attendance records for all bosses
+    // Count unique kills (group by bossName + timestamp, since each kill has one timestamp)
     const killCountPipeline = [
       {
         $group: {
-          _id: "$bossName",
+          _id: {
+            bossName: "$bossName",
+            timestamp: "$timestamp"
+          }
+        }
+      },
+      {
+        $group: {
+          _id: "$_id.bossName",
           count: { $sum: 1 }
         }
       }

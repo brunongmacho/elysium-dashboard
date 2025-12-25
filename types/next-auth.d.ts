@@ -31,5 +31,13 @@ declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string;
     discordId?: string;
+    displayName?: string;
+    // Cached Discord data to avoid rate limiting
+    cachedIsInGuild?: boolean;
+    cachedRoles?: string[];
+    cachedNickname?: string;
+    cachedRoleBadge?: string;
+    cachedCanMarkAsKilled?: boolean;
+    lastFetched?: number; // Timestamp of last Discord API fetch
   }
 }
