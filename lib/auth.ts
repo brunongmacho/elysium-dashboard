@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.discordId = (profile as any).id;
         // Store display name (global_name) or fallback to username
-        token.displayName = (profile as any).global_name || profile.username || profile.name;
+        token.displayName = (profile as any).global_name || (profile as any).username || profile.name;
         // Reset cache on new login
         token.lastFetched = 0;
       }
