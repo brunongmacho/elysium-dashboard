@@ -14,7 +14,7 @@ export async function POST(
   try {
     const bossName = decodeURIComponent(params.name);
     const body = await request.json();
-    const { killedBy } = body;
+    const { killedBy, killTime } = body;
 
     // Validate boss type (only timer-based bosses can be marked as killed)
     const bossType = getBossType(bossName);
@@ -31,8 +31,11 @@ export async function POST(
     const db = await getDatabase();
     const now = new Date();
 
+    // Use provided kill time or current time
+    const lastKillTime = killTime ? new Date(killTime) : now;
+
     // Calculate next spawn time
-    const nextSpawnTime = calculateNextSpawn(bossName, now);
+    const nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
 
     if (!nextSpawnTime) {
       return NextResponse.json(
@@ -50,7 +53,7 @@ export async function POST(
       {
         $set: {
           bossName,
-          lastKillTime: now.toISOString(),
+          lastKillTime: lastKillTime.toISOString(),
           nextSpawnTime: nextSpawnTime.toISOString(),
           killedBy: killedBy || "Unknown",
           serverDown: false,
@@ -61,7 +64,7 @@ export async function POST(
     );
 
     console.log(
-      `✅ Boss marked as killed: ${bossName} by ${killedBy || "Unknown"}, next spawn: ${nextSpawnTime.toISOString()}`
+      `✅ Boss marked as killed: ${bossName} by ${killedBy || "Unknown"} at ${lastKillTime.toISOString()}, next spawn: ${nextSpawnTime.toISOString()}`
     );
 
     return NextResponse.json({
@@ -69,7 +72,7 @@ export async function POST(
       message: `${bossName} marked as killed`,
       data: {
         bossName,
-        lastKillTime: now.toISOString(),
+        lastKillTime: lastKillTime.toISOString(),
         nextSpawnTime: nextSpawnTime.toISOString(),
         killedBy: killedBy || "Unknown",
       },

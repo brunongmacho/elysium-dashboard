@@ -21,15 +21,12 @@ export default function Home() {
     revalidateOnFocus: true,
   });
 
-  const handleMarkAsKilled = async (bossName: string) => {
+  const handleMarkAsKilled = async (bossName: string, killedBy: string, killTime?: string) => {
     try {
-      const killedBy = prompt(`Who killed ${bossName}?`);
-      if (!killedBy) return;
-
       const response = await fetch(`/api/bosses/${encodeURIComponent(bossName)}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ killedBy }),
+        body: JSON.stringify({ killedBy, killTime }),
       });
 
       const result = await response.json();

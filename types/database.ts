@@ -306,6 +306,7 @@ export interface BossTimerDisplay {
   schedules?: BossSchedule[];
   timeRemaining?: number; // milliseconds
   status: "ready" | "soon" | "spawned" | "unknown";
+  killCount?: number; // Total number of kills from attendance records
 }
 
 export interface MemberProfile extends Member {
