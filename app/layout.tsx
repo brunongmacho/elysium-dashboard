@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
+import GuildHeader from "@/components/GuildHeader";
 
 export const metadata: Metadata = {
-  title: "Elysium Dashboard",
-  description: "Boss timer and guild management dashboard for Elysium guild",
+  title: "Elysium Dashboard - Guild Management & Boss Timers",
+  description: "Real-time boss timer tracking, leaderboards, and guild management for Elysium guild members",
+  keywords: "Elysium, guild, boss timers, leaderboard, dashboard",
+  authors: [{ name: "Elysium Guild" }],
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -26,11 +29,31 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <Providers>
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+          <div className="min-h-screen animated-gradient">
+            {/* Navigation */}
             <Navbar />
+
+            {/* Guild Header Banner */}
+            <GuildHeader />
+
+            {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              {children}
+              <div className="relative">
+                {children}
+              </div>
             </main>
+
+            {/* Footer */}
+            <footer className="mt-auto py-8 border-t border-gray-800">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center text-gray-400 text-sm">
+                  <p>© {new Date().getFullYear()} Elysium Guild. All rights reserved.</p>
+                  <p className="mt-2 text-xs text-gray-500">
+                    Built with ❤️ for the guild
+                  </p>
+                </div>
+              </div>
+            </footer>
           </div>
         </Providers>
       </body>
