@@ -4,6 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { getDatabase } from "@/lib/mongodb";
 import { calculateNextSpawn, getBossType } from "@/lib/boss-config";
 
@@ -12,6 +14,39 @@ export async function POST(
   { params }: { params: { name: string } }
 ) {
   try {
+    // Check authentication and permissions
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required. Please sign in with Discord.",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (!session.isInGuild) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You must be a member of the ELYSIUM guild to perform this action.",
+        },
+        { status: 403 }
+      );
+    }
+
+    if (!session.canMarkAsKilled) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You don't have permission to mark bosses as killed. ELYSIUM role or admin role required.",
+        },
+        { status: 403 }
+      );
+    }
+
     const bossName = decodeURIComponent(params.name);
     const body = await request.json();
     const { killedBy, killTime, spawnTime } = body;
