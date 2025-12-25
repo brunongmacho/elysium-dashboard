@@ -14,7 +14,7 @@ export async function POST(
   try {
     const bossName = decodeURIComponent(params.name);
     const body = await request.json();
-    const { killedBy, killTime } = body;
+    const { killedBy, killTime, spawnTime } = body;
 
     // Validate boss type (only timer-based bosses can be marked as killed)
     const bossType = getBossType(bossName);
@@ -34,8 +34,15 @@ export async function POST(
     // Use provided kill time or current time
     const lastKillTime = killTime ? new Date(killTime) : now;
 
-    // Calculate next spawn time
-    const nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
+    // Use provided spawn time or calculate it from kill time
+    let nextSpawnTime: Date | null;
+    if (spawnTime) {
+      // Direct spawn time override
+      nextSpawnTime = new Date(spawnTime);
+    } else {
+      // Calculate next spawn time from kill time
+      nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
+    }
 
     if (!nextSpawnTime) {
       return NextResponse.json(
