@@ -17,7 +17,8 @@ import {
 } from "@/lib/boss-config";
 import type { BossTimer, BossTimerDisplay } from "@/types/database";
 
-export const dynamic = "force-dynamic"; // Disable caching for real-time data
+// Cache for 30 seconds to reduce database load while staying relatively real-time
+export const revalidate = 30;
 
 export async function GET() {
   try {
@@ -173,12 +174,19 @@ export async function GET() {
       return a.nextSpawnTime.getTime() - b.nextSpawnTime.getTime();
     });
 
-    return NextResponse.json({
-      success: true,
-      count: bossDisplayData.length,
-      bosses: bossDisplayData,
-      timestamp: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: bossDisplayData.length,
+        bosses: bossDisplayData,
+        timestamp: new Date().toISOString(),
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching boss timers:", error);
 
