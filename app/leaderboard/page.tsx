@@ -192,9 +192,6 @@ export default function LeaderboardPage() {
                     <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
                       Attendance Rate
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
-                      Current Streak
-                    </th>
                   </tr>
                 ) : (
                   <tr>
@@ -247,9 +244,6 @@ export default function LeaderboardPage() {
                         </td>
                         <td className="px-4 py-3 text-right text-blue-400">
                           {(entry as AttendanceLeaderboardEntry).attendanceRate}%
-                        </td>
-                        <td className="px-4 py-3 text-right text-yellow-400">
-                          🔥 {(entry as AttendanceLeaderboardEntry).currentStreak}
                         </td>
                       </>
                     ) : (

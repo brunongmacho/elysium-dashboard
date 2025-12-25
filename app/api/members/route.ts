@@ -97,13 +97,15 @@ export async function GET(request: Request) {
         .toArray();
 
       // Calculate leaderboard with ranks
+      const maxKills = attendanceData.length > 0 ? (attendanceData[0].totalKills || 0) : 1;
+
       const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
         const totalKills = member.totalKills || 0;
         const pointsEarned = member.pointsEarned || 0;
         const currentStreak = member.currentStreak || 0;
 
-        // Calculate attendance rate (simplified)
-        const attendanceRate = totalKills > 0 ? Math.round((totalKills / (totalKills + 10)) * 100) : 0;
+        // Calculate attendance rate as percentage of top player's kills
+        const attendanceRate = maxKills > 0 ? Math.round((totalKills / maxKills) * 100) : 0;
 
         return {
           rank: index + 1,
@@ -126,24 +128,63 @@ export async function GET(request: Request) {
         timestamp: new Date().toISOString(),
       });
     } else {
-      // Fetch points leaderboard
-      let pointsData = await db
-        .collection("members")
-        .find(
-          search
-            ? { username: { $regex: search, $options: "i" } }
-            : {}
-        )
-        .project({
-          _id: 1,
-          username: 1,
-          pointsAvailable: 1,
-          pointsEarned: 1,
-          pointsSpent: 1,
-        })
+      // Fetch points leaderboard - calculate points earned from attendance
+      const pointsPipeline: any[] = [
+        {
+          $group: {
+            _id: "$memberId",
+            memberName: { $first: "$memberName" },
+            pointsEarnedFromAttendance: { $sum: "$bossPoints" }
+          }
+        },
+        {
+          $lookup: {
+            from: "members",
+            localField: "_id",
+            foreignField: "_id",
+            as: "memberData"
+          }
+        },
+        {
+          $unwind: {
+            path: "$memberData",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            username: { $ifNull: ["$memberData.username", "$memberName"] },
+            pointsAvailable: { $ifNull: ["$memberData.pointsAvailable", 0] },
+            pointsEarned: "$pointsEarnedFromAttendance",
+            pointsSpent: { $ifNull: ["$memberData.pointsSpent", 0] }
+          }
+        }
+      ];
+
+      // Add search filter if provided
+      if (search) {
+        pointsPipeline.push({
+          $match: {
+            username: { $regex: search, $options: "i" }
+          }
+        });
+      }
+
+      // Sort by points available
+      pointsPipeline.push({ $sort: { pointsAvailable: -1 } });
+
+      // Apply limit
+      if (limit > 0) {
+        pointsPipeline.push({ $limit: limit });
+      }
+
+      const pointsData = await db
+        .collection("attendance")
+        .aggregate(pointsPipeline)
         .toArray();
 
-      const leaderboard: PointsLeaderboardEntry[] = pointsData.map((member) => {
+      const leaderboard: PointsLeaderboardEntry[] = pointsData.map((member, index) => {
         const pointsAvailable = member.pointsAvailable || 0;
         const pointsEarned = member.pointsEarned || 0;
         const pointsSpent = member.pointsSpent || 0;
@@ -154,7 +195,7 @@ export async function GET(request: Request) {
           : 0;
 
         return {
-          rank: 0, // Will be calculated after sorting
+          rank: index + 1,
           username: member.username,
           memberId: member._id,
           pointsAvailable,
@@ -164,24 +205,13 @@ export async function GET(request: Request) {
         };
       });
 
-      // Sort by points available descending
-      leaderboard.sort((a, b) => b.pointsAvailable - a.pointsAvailable);
-
-      // Assign ranks
-      leaderboard.forEach((entry, index) => {
-        entry.rank = index + 1;
-      });
-
-      // Apply limit
-      const limitedLeaderboard = limit > 0 ? leaderboard.slice(0, limit) : leaderboard;
-
       return NextResponse.json({
         success: true,
         type: "points",
         period: "all", // Points don't have period filters
-        count: limitedLeaderboard.length,
+        count: leaderboard.length,
         total: leaderboard.length,
-        data: limitedLeaderboard,
+        data: leaderboard,
         timestamp: new Date().toISOString(),
       });
     }
