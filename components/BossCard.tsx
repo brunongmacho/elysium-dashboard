@@ -72,11 +72,6 @@ export default function BossCard({
             <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full capitalize whitespace-nowrap">
               {boss.type}
             </span>
-            {boss.killCount !== undefined && boss.killCount > 0 && (
-              <span className="text-xs bg-green-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap" title="Total kills from attendance records">
-                🏆{boss.killCount}
-              </span>
-            )}
           </div>
         </div>
 
@@ -100,7 +95,7 @@ export default function BossCard({
         <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
           {boss.killedBy && (
             <div className="text-gray-300">
-              <span className="text-gray-400">👤 Killed by:</span>{" "}
+              <span className="text-gray-400">👤 Set by:</span>{" "}
               <span className="font-semibold">{boss.killedBy}</span>
             </div>
           )}
