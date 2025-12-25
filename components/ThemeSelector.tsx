@@ -32,12 +32,12 @@ export default function ThemeSelector() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-40"
+            className="fixed inset-0 z-[9998]"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Dropdown Menu */}
-          <div className="absolute right-0 mt-2 w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 z-50 overflow-hidden">
+          <div className="absolute right-0 mt-2 w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 z-[9999] overflow-hidden">
             <div className="p-3 border-b border-gray-700">
               <h3 className="text-sm font-semibold text-white">Choose Theme</h3>
               <p className="text-xs text-gray-400 mt-1">Select your guild's color scheme</p>
