@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
       // Store Discord access token and user data for API calls
       if (account && profile) {
         token.accessToken = account.access_token;
-        token.discordId = profile.id;
+        token.discordId = (profile as any).id;
         // Store display name (global_name) or fallback to username
         token.displayName = (profile as any).global_name || profile.username || profile.name;
         // Reset cache on new login
