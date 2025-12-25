@@ -12,9 +12,40 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
+  const [selectedMonth, setSelectedMonth] = useState<string>(""); // Format: YYYY-MM
+  const [selectedWeek, setSelectedWeek] = useState<string>(""); // Format: YYYY-MM-DD (week start date)
   const [limit, setLimit] = useState<number>(50);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Generate last 12 months for dropdown
+  const monthOptions = Array.from({ length: 12 }, (_, i) => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - i);
+    return {
+      value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+      label: date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    };
+  });
+
+  // Generate last 8 weeks for dropdown
+  const weekOptions = Array.from({ length: 8 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() - (i * 7));
+    // Get start of week (Sunday)
+    const weekStart = new Date(date);
+    weekStart.setDate(date.getDate() - date.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+
+    return {
+      value: weekStart.toISOString().split('T')[0],
+      label: i === 0
+        ? 'This Week'
+        : `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+    };
+  });
 
   // Debounce search
   const handleSearch = (value: string) => {
@@ -23,7 +54,13 @@ export default function LeaderboardPage() {
   };
 
   // Build API URL
-  const apiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=${limit}&search=${debouncedSearch}`;
+  let apiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=${limit}&search=${debouncedSearch}`;
+
+  if (period === "monthly" && selectedMonth) {
+    apiUrl += `&month=${selectedMonth}`;
+  } else if (period === "weekly" && selectedWeek) {
+    apiUrl += `&week=${selectedWeek}`;
+  }
 
   const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
     refreshInterval: 30000, // Refresh every 30 seconds
@@ -71,20 +108,71 @@ export default function LeaderboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Time Period
-              </label>
-              <select
-                value={period}
-                onChange={(e) => setPeriod(e.target.value as "all" | "monthly" | "weekly")}
-                className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Time</option>
-                <option value="monthly">This Month</option>
-                <option value="weekly">This Week</option>
-              </select>
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Time Period
+                </label>
+                <select
+                  value={period}
+                  onChange={(e) => {
+                    const newPeriod = e.target.value as "all" | "monthly" | "weekly";
+                    setPeriod(newPeriod);
+                    // Reset selections when changing period
+                    if (newPeriod === "monthly") {
+                      setSelectedMonth(monthOptions[0].value);
+                    } else if (newPeriod === "weekly") {
+                      setSelectedWeek(weekOptions[0].value);
+                    }
+                  }}
+                  className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All Time</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="weekly">Weekly</option>
+                </select>
+              </div>
+
+              {/* Month Selector */}
+              {period === "monthly" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Select Month
+                  </label>
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(e.target.value)}
+                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {monthOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Week Selector */}
+              {period === "weekly" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Select Week
+                  </label>
+                  <select
+                    value={selectedWeek}
+                    onChange={(e) => setSelectedWeek(e.target.value)}
+                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {weekOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
           )}
 
           {/* Top N Filter */}
@@ -106,7 +194,11 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Search */}
-          <div className={leaderboardType === "attendance" ? "md:col-span-2" : "md:col-span-3"}>
+          <div className={
+            leaderboardType === "points" ? "md:col-span-3" :
+            period === "all" ? "md:col-span-2" :
+            "md:col-span-1"
+          }>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Search Member
             </label>
