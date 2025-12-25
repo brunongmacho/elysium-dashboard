@@ -11,12 +11,14 @@ interface BossCardProps {
   boss: BossTimerDisplay;
   onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => void;
   canMarkAsKilled?: boolean;
+  userName?: string;
 }
 
 export default function BossCard({
   boss,
   onMarkAsKilled,
   canMarkAsKilled = false,
+  userName = "",
 }: BossCardProps) {
   const [isMarking, setIsMarking] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -154,6 +156,7 @@ export default function BossCard({
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirmKill}
+        defaultKilledBy={userName}
       />
     </div>
   );
