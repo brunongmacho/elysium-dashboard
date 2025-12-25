@@ -52,10 +52,11 @@ export async function GET() {
       .aggregate(killCountPipeline)
       .toArray();
 
-    // Create a map for kill counts
+    // Create a map for kill counts (case-insensitive)
     const killCountMap = new Map<string, number>();
     killCounts.forEach((item: any) => {
-      killCountMap.set(item._id, item.count);
+      // Store with lowercase key for case-insensitive matching
+      killCountMap.set(item._id.toLowerCase(), item.count);
     });
 
     // Build display data for each boss
@@ -105,7 +106,7 @@ export async function GET() {
       const status = getBossStatus(timeRemaining);
 
       // Get kill count for this boss (case-insensitive match)
-      const killCount = killCountMap.get(bossName) || 0;
+      const killCount = killCountMap.get(bossName.toLowerCase()) || 0;
 
       bossDisplayData.push({
         bossName,
