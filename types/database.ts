@@ -307,6 +307,7 @@ export interface BossTimerDisplay {
   timeRemaining?: number; // milliseconds
   status: "ready" | "soon" | "spawned" | "unknown";
   killCount?: number; // Total number of kills from attendance records
+  isPredicted?: boolean; // True if spawn time is predicted from attendance, false if from timer
 }
 
 export interface MemberProfile extends Member {
