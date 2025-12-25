@@ -40,7 +40,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                   {/* User Info - Clickable to Profile */}
                   <a
-                    href={`/profile/${session.userId}`}
+                    href={`/profile/${session.user?.name}`}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                   >
                     {session.user?.image && (
