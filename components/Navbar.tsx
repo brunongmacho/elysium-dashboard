@@ -31,12 +31,6 @@ export default function Navbar() {
             >
               Leaderboards
             </a>
-            <a
-              href="/auctions"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            >
-              Auctions
-            </a>
 
             {/* Auth Section */}
             <div className="ml-4 pl-4 border-l border-gray-700">
