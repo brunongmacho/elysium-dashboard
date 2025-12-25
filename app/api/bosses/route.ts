@@ -38,12 +38,32 @@ export async function GET() {
       timerMap.set(timer.bossName, timer);
     });
 
-    // Calculate kill counts for all bosses (case-insensitive)
+    // Calculate kill counts for all bosses (case-insensitive, remove #1 suffix)
     const killCountPipeline = [
+      {
+        $addFields: {
+          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
+        }
+      },
+      {
+        $addFields: {
+          cleanBossName: {
+            $cond: {
+              if: "$regexMatch",
+              then: {
+                $trim: {
+                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
+                }
+              },
+              else: "$bossName"
+            }
+          }
+        }
+      },
       {
         $group: {
           _id: {
-            bossName: "$bossName",
+            bossName: "$cleanBossName",
             timestamp: "$timestamp"
           }
         }
