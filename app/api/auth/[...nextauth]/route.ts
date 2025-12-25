@@ -4,7 +4,8 @@
  */
 
 import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth";
+// Temporarily using simplified auth for testing
+import { authOptions } from "@/lib/auth-simple";
 
 const handler = NextAuth(authOptions);
 
