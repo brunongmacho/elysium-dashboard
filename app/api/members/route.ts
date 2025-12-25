@@ -128,41 +128,10 @@ export async function GET(request: Request) {
         timestamp: new Date().toISOString(),
       });
     } else {
-      // Fetch points leaderboard - calculate points earned from attendance
-      const pointsPipeline: any[] = [
-        {
-          $group: {
-            _id: "$memberId",
-            memberName: { $first: "$memberName" },
-            pointsEarnedFromAttendance: { $sum: "$bossPoints" }
-          }
-        },
-        {
-          $lookup: {
-            from: "members",
-            localField: "_id",
-            foreignField: "_id",
-            as: "memberData"
-          }
-        },
-        {
-          $unwind: {
-            path: "$memberData",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            _id: 1,
-            username: { $ifNull: ["$memberData.username", "$memberName"] },
-            pointsAvailable: { $ifNull: ["$memberData.pointsAvailable", 0] },
-            pointsEarned: "$pointsEarnedFromAttendance",
-            pointsSpent: { $ifNull: ["$memberData.pointsSpent", 0] }
-          }
-        }
-      ];
+      // Fetch points leaderboard from members collection (authoritative source for points)
+      const pointsPipeline: any[] = [];
 
-      // Add search filter if provided
+      // Match filter if search provided
       if (search) {
         pointsPipeline.push({
           $match: {
@@ -170,6 +139,17 @@ export async function GET(request: Request) {
           }
         });
       }
+
+      // Project fields
+      pointsPipeline.push({
+        $project: {
+          _id: 1,
+          username: 1,
+          pointsAvailable: { $ifNull: ["$pointsAvailable", 0] },
+          pointsEarned: { $ifNull: ["$pointsEarned", 0] },
+          pointsSpent: { $ifNull: ["$pointsSpent", 0] }
+        }
+      });
 
       // Sort by points available
       pointsPipeline.push({ $sort: { pointsAvailable: -1 } });
@@ -180,7 +160,7 @@ export async function GET(request: Request) {
       }
 
       const pointsData = await db
-        .collection("attendance")
+        .collection("members")
         .aggregate(pointsPipeline)
         .toArray();
 
