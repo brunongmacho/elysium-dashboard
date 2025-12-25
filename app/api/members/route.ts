@@ -161,22 +161,8 @@ export async function GET(request: Request) {
         }
       ];
 
-      // Add search filter if provided
-      if (search) {
-        pipeline.push({
-          $match: {
-            username: { $regex: search, $options: "i" }
-          }
-        });
-      }
-
-      // Sort by total kills
+      // Sort by total kills (don't apply search filter yet to get correct ranks)
       pipeline.push({ $sort: { totalKills: -1 } });
-
-      // Apply limit
-      if (limit > 0) {
-        pipeline.push({ $limit: limit });
-      }
 
       const attendanceData = await db
         .collection("attendance")
@@ -227,8 +213,8 @@ export async function GET(request: Request) {
 
       const totalBossKills = totalBossKillsResult.length > 0 ? totalBossKillsResult[0].totalBossKills : 1;
 
-      // Calculate leaderboard with ranks
-      const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
+      // Calculate leaderboard with ranks for all members
+      const allMembersWithRank: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
         const totalKills = member.totalKills || 0;
         const pointsEarned = member.pointsEarned || 0;
         const currentStreak = member.currentStreak || 0;
@@ -247,6 +233,20 @@ export async function GET(request: Request) {
         };
       });
 
+      // Filter by search if provided
+      let leaderboard = allMembersWithRank;
+      if (search) {
+        const searchLower = search.toLowerCase();
+        leaderboard = allMembersWithRank.filter(member =>
+          member.username.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Apply limit
+      if (limit > 0) {
+        leaderboard = leaderboard.slice(0, limit);
+      }
+
       return NextResponse.json({
         success: true,
         type: "attendance",
@@ -258,42 +258,27 @@ export async function GET(request: Request) {
       });
     } else {
       // Fetch points leaderboard from members collection (authoritative source for points)
-      const pointsPipeline: any[] = [];
-
-      // Match filter if search provided
-      if (search) {
-        pointsPipeline.push({
-          $match: {
-            username: { $regex: search, $options: "i" }
+      // First, get ALL members to calculate true ranks
+      const allMembersPipeline: any[] = [
+        {
+          $project: {
+            _id: 1,
+            username: 1,
+            pointsAvailable: { $ifNull: ["$pointsAvailable", 0] },
+            pointsEarned: { $ifNull: ["$pointsEarned", 0] },
+            pointsSpent: { $ifNull: ["$pointsSpent", 0] }
           }
-        });
-      }
+        },
+        { $sort: { pointsAvailable: -1 } }
+      ];
 
-      // Project fields
-      pointsPipeline.push({
-        $project: {
-          _id: 1,
-          username: 1,
-          pointsAvailable: { $ifNull: ["$pointsAvailable", 0] },
-          pointsEarned: { $ifNull: ["$pointsEarned", 0] },
-          pointsSpent: { $ifNull: ["$pointsSpent", 0] }
-        }
-      });
-
-      // Sort by points available
-      pointsPipeline.push({ $sort: { pointsAvailable: -1 } });
-
-      // Apply limit
-      if (limit > 0) {
-        pointsPipeline.push({ $limit: limit });
-      }
-
-      const pointsData = await db
+      const allMembersData = await db
         .collection("members")
-        .aggregate(pointsPipeline)
+        .aggregate(allMembersPipeline)
         .toArray();
 
-      const leaderboard: PointsLeaderboardEntry[] = pointsData.map((member, index) => {
+      // Calculate ranks for all members
+      const allMembersWithRank = allMembersData.map((member, index) => {
         const pointsAvailable = member.pointsAvailable || 0;
         const pointsEarned = member.pointsEarned || 0;
         const pointsSpent = member.pointsSpent || 0;
@@ -313,6 +298,20 @@ export async function GET(request: Request) {
           consumptionRate,
         };
       });
+
+      // Filter by search if provided
+      let leaderboard = allMembersWithRank;
+      if (search) {
+        const searchLower = search.toLowerCase();
+        leaderboard = allMembersWithRank.filter(member =>
+          member.username.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Apply limit
+      if (limit > 0) {
+        leaderboard = leaderboard.slice(0, limit);
+      }
 
       return NextResponse.json({
         success: true,
