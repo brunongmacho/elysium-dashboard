@@ -31,10 +31,16 @@ export async function GET(request: Request) {
 
       if (period === "monthly") {
         if (monthParam) {
-          // Parse specific month (YYYY-MM) - use both bounds
+          // Parse specific month (YYYY-MM) in GMT+8 timezone
           const [year, month] = monthParam.split('-').map(Number);
-          const monthStart = new Date(year, month - 1, 1);
-          const monthEnd = new Date(year, month, 0, 23, 59, 59, 999); // Last day of month
+          // Create start of month in GMT+8 (as UTC)
+          const monthStart = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+          monthStart.setUTCHours(monthStart.getUTCHours() - 8); // Offset for GMT+8
+
+          // Create end of month in GMT+8 (as UTC)
+          const monthEnd = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
+          monthEnd.setUTCHours(monthEnd.getUTCHours() - 8); // Offset for GMT+8
+
           dateFilter = {
             timestamp: {
               $gte: monthStart,
@@ -42,19 +48,24 @@ export async function GET(request: Request) {
             }
           };
         } else {
-          // Current month - only use lower bound to avoid excluding recent records
-          const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+          // Current month in GMT+8 - only use lower bound
+          const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0, 0));
+          monthStart.setUTCHours(monthStart.getUTCHours() - 8);
           dateFilter = { timestamp: { $gte: monthStart } };
         }
       } else if (period === "weekly") {
         if (weekParam) {
-          // Parse specific week start date (YYYY-MM-DD) in local timezone - use both bounds
+          // Parse specific week start date (YYYY-MM-DD) in GMT+8 timezone
           const [year, month, day] = weekParam.split('-').map(Number);
-          const weekStart = new Date(year, month - 1, day);
-          weekStart.setHours(0, 0, 0, 0);
+          // Create week start in GMT+8 (as UTC)
+          const weekStart = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+          weekStart.setUTCHours(weekStart.getUTCHours() - 8); // Offset for GMT+8
+
+          // Create week end in GMT+8 (as UTC)
           const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekStart.getDate() + 6);
-          weekEnd.setHours(23, 59, 59, 999);
+          weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
+          weekEnd.setUTCHours(23, 59, 59, 999);
+
           dateFilter = {
             timestamp: {
               $gte: weekStart,
@@ -62,20 +73,33 @@ export async function GET(request: Request) {
             }
           };
         } else {
-          // Current week - only use lower bound to avoid excluding recent records
-          const weekStart = new Date(now);
-          weekStart.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
-          weekStart.setHours(0, 0, 0, 0);
+          // Current week in GMT+8 - only use lower bound
+          const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+          const weekStart = new Date(gmtPlusEightNow);
+          weekStart.setUTCDate(gmtPlusEightNow.getUTCDate() - gmtPlusEightNow.getUTCDay());
+          weekStart.setUTCHours(0, 0, 0, 0);
+          weekStart.setUTCHours(weekStart.getUTCHours() - 8);
           dateFilter = { timestamp: { $gte: weekStart } };
         }
       }
 
       // Build aggregation pipeline to count attendance from attendance collection
+      // Count unique boss kill events (bossName + timestamp) per member
       const pipeline: any[] = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
         {
           $group: {
-            _id: "$memberId",
+            _id: {
+              memberId: "$memberId",
+              bossName: "$bossName",
+              timestamp: "$timestamp"
+            },
+            memberName: { $first: "$memberName" }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id.memberId",
             memberName: { $first: "$memberName" },
             totalKills: { $sum: 1 }
           }
