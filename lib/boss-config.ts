@@ -125,8 +125,9 @@ export function getNextScheduledSpawn(bossName: string, fromTime: Date = new Dat
  */
 export function getAllBossNames(): string[] {
   const config = getBossSpawnConfig();
-  const timerBosses = Object.keys(config.timerBasedBosses);
-  const scheduleBosses = Object.keys(config.scheduleBasedBosses);
+  // Filter out JSON comment fields (keys starting with "_")
+  const timerBosses = Object.keys(config.timerBasedBosses).filter(key => !key.startsWith("_"));
+  const scheduleBosses = Object.keys(config.scheduleBasedBosses).filter(key => !key.startsWith("_"));
   return [...timerBosses, ...scheduleBosses];
 }
 

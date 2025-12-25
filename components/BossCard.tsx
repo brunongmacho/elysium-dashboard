@@ -76,7 +76,7 @@ export default function BossCard({
             className="object-contain"
             onError={(e) => {
               // Fallback to placeholder if image doesn't exist
-              (e.target as HTMLImageElement).src = "/bosses/placeholder.png";
+              (e.target as HTMLImageElement).src = "/bosses/placeholder.svg";
             }}
           />
         </div>
