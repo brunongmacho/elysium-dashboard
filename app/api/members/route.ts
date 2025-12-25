@@ -30,51 +30,43 @@ export async function GET(request: Request) {
       let dateFilter = {};
 
       if (period === "monthly") {
-        let monthStart: Date;
-        let monthEnd: Date;
-
         if (monthParam) {
-          // Parse specific month (YYYY-MM)
+          // Parse specific month (YYYY-MM) - use both bounds
           const [year, month] = monthParam.split('-').map(Number);
-          monthStart = new Date(year, month - 1, 1);
-          monthEnd = new Date(year, month, 0, 23, 59, 59, 999); // Last day of month
+          const monthStart = new Date(year, month - 1, 1);
+          const monthEnd = new Date(year, month, 0, 23, 59, 59, 999); // Last day of month
+          dateFilter = {
+            timestamp: {
+              $gte: monthStart,
+              $lte: monthEnd
+            }
+          };
         } else {
-          // Current month
-          monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-          monthEnd = now;
+          // Current month - only use lower bound to avoid excluding recent records
+          const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+          dateFilter = { timestamp: { $gte: monthStart } };
         }
-
-        dateFilter = {
-          timestamp: {
-            $gte: monthStart,
-            $lte: monthEnd
-          }
-        };
       } else if (period === "weekly") {
-        let weekStart: Date;
-        let weekEnd: Date;
-
         if (weekParam) {
-          // Parse specific week start date (YYYY-MM-DD)
-          weekStart = new Date(weekParam);
+          // Parse specific week start date (YYYY-MM-DD) - use both bounds
+          const weekStart = new Date(weekParam);
           weekStart.setHours(0, 0, 0, 0);
-          weekEnd = new Date(weekStart);
+          const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekStart.getDate() + 6);
           weekEnd.setHours(23, 59, 59, 999);
+          dateFilter = {
+            timestamp: {
+              $gte: weekStart,
+              $lte: weekEnd
+            }
+          };
         } else {
-          // Current week
-          weekStart = new Date(now);
+          // Current week - only use lower bound to avoid excluding recent records
+          const weekStart = new Date(now);
           weekStart.setDate(now.getDate() - now.getDay()); // Start of week (Sunday)
           weekStart.setHours(0, 0, 0, 0);
-          weekEnd = now;
+          dateFilter = { timestamp: { $gte: weekStart } };
         }
-
-        dateFilter = {
-          timestamp: {
-            $gte: weekStart,
-            $lte: weekEnd
-          }
-        };
       }
 
       // Build aggregation pipeline to count attendance from attendance collection
