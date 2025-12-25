@@ -11,7 +11,7 @@ import type { BossSpawnConfig, BossPointsConfig, BossTimerDisplay, BossSchedule 
  * Get boss spawn configuration
  */
 export function getBossSpawnConfig(): BossSpawnConfig {
-  return bossSpawnConfig as BossSpawnConfig;
+  return bossSpawnConfig as unknown as BossSpawnConfig;
 }
 
 /**
