@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { format } from "date-fns";
 
 interface MarkAsKilledModalProps {
@@ -21,6 +22,12 @@ export default function MarkAsKilledModal({
   const [killTime, setKillTime] = useState("");
   const [spawnTime, setSpawnTime] = useState("");
   const [setMode, setSetMode] = useState<"kill" | "spawn">("kill");
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting for SSR compatibility
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Initialize with current time when modal opens
   useEffect(() => {
@@ -54,9 +61,9 @@ export default function MarkAsKilledModal({
     onClose();
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 relative z-[10000]">
         <h2 className="text-2xl font-bold text-white mb-4">
@@ -187,4 +194,6 @@ export default function MarkAsKilledModal({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
