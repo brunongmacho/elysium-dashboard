@@ -37,6 +37,93 @@ export async function GET(
       );
     }
 
+    // Calculate actual attendance totals from attendance collection
+    // Total attendance (all time) - count unique boss kills
+    const totalAttendancePipeline = [
+      { $match: { memberId } },
+      {
+        $group: {
+          _id: {
+            bossName: "$bossName",
+            timestamp: "$timestamp"
+          }
+        }
+      },
+      { $count: "total" }
+    ];
+
+    const totalAttendanceResult = await db
+      .collection("attendance")
+      .aggregate(totalAttendancePipeline)
+      .toArray();
+
+    const totalAttendance = totalAttendanceResult.length > 0 ? totalAttendanceResult[0].total : 0;
+
+    // This week attendance (using GMT+8 timezone)
+    const gmt8Offset = 8 * 60 * 60 * 1000;
+    const now = new Date();
+    const gmt8Time = new Date(now.getTime() + gmt8Offset);
+    const day = gmt8Time.getUTCDay();
+    const sunday = new Date(gmt8Time);
+    sunday.setUTCDate(gmt8Time.getUTCDate() - day);
+    sunday.setUTCHours(0, 0, 0, 0);
+    const weekStart = new Date(sunday.getTime() - gmt8Offset);
+
+    const thisWeekPipeline = [
+      {
+        $match: {
+          memberId,
+          timestamp: { $gte: weekStart }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            bossName: "$bossName",
+            timestamp: "$timestamp"
+          }
+        }
+      },
+      { $count: "total" }
+    ];
+
+    const thisWeekResult = await db
+      .collection("attendance")
+      .aggregate(thisWeekPipeline)
+      .toArray();
+
+    const thisWeek = thisWeekResult.length > 0 ? thisWeekResult[0].total : 0;
+
+    // This month attendance (using GMT+8 timezone)
+    const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+    const monthStartGMT8 = new Date(Date.UTC(gmtPlusEightNow.getUTCFullYear(), gmtPlusEightNow.getUTCMonth(), 1, 0, 0, 0, 0));
+    const monthStart = new Date(monthStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+
+    const thisMonthPipeline = [
+      {
+        $match: {
+          memberId,
+          timestamp: { $gte: monthStart }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            bossName: "$bossName",
+            timestamp: "$timestamp"
+          }
+        }
+      },
+      { $count: "total" }
+    ];
+
+    const thisMonthResult = await db
+      .collection("attendance")
+      .aggregate(thisMonthPipeline)
+      .toArray();
+
+    const thisMonth = thisMonthResult.length > 0 ? thisMonthResult[0].total : 0;
+
     // Fetch recent attendance (last 20 records)
     const recentAttendance = await db
       .collection<AttendanceRecord>("attendance")
@@ -81,9 +168,16 @@ export async function GET(
 
     const rank = membersAbove + 1;
 
-    // Build profile response
+    // Build profile response with calculated attendance values
     const profile = {
       ...member,
+      attendance: {
+        total: totalAttendance,
+        thisWeek: thisWeek,
+        thisMonth: thisMonth,
+        byBoss: member.attendance?.byBoss || {},
+        streak: member.attendance?.streak || { current: 0, longest: 0 }
+      },
       recentAttendance,
       bossBreakdown: bossBreakdown.map((item: any) => ({
         bossName: item._id,
