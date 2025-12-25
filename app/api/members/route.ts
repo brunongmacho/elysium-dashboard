@@ -71,11 +71,22 @@ export async function GET(request: Request) {
       }
 
       // Build aggregation pipeline to count attendance from attendance collection
+      // Count unique boss kill events (bossName + timestamp) per member
       const pipeline: any[] = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
         {
           $group: {
-            _id: "$memberId",
+            _id: {
+              memberId: "$memberId",
+              bossName: "$bossName",
+              timestamp: "$timestamp"
+            },
+            memberName: { $first: "$memberName" }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id.memberId",
             memberName: { $first: "$memberName" },
             totalKills: { $sum: 1 }
           }
