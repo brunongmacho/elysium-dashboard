@@ -57,24 +57,40 @@ export async function GET(request: Request) {
           dateFilter = { timestamp: { $gte: monthStart } };
         }
       } else if (period === "weekly") {
+        const gmt8Offset = 8 * 60 * 60 * 1000;
+
         if (weekParam) {
-          // Filter by weekStartDate field (matches bot's filtering logic)
+          // Parse specific week and calculate range in GMT+8 (matches bot logic)
           const [year, month, day] = weekParam.split('-').map(Number);
+
+          // Create week start date in GMT+8
           const weekStartGMT8 = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
-          const weekStart = new Date(weekStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+          const weekStart = new Date(weekStartGMT8.getTime() - gmt8Offset);
+
+          // Create week end date (start + 6 days, 23:59:59) in GMT+8
+          const weekEndGMT8 = new Date(weekStartGMT8);
+          weekEndGMT8.setUTCDate(weekEndGMT8.getUTCDate() + 6);
+          weekEndGMT8.setUTCHours(23, 59, 59, 999);
+          const weekEnd = new Date(weekEndGMT8.getTime() - gmt8Offset);
 
           dateFilter = {
-            weekStartDate: weekStart
+            timestamp: {
+              $gte: weekStart,
+              $lte: weekEnd
+            }
           };
         } else {
-          // Current week - filter by weekStartDate
-          const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
-          const weekStart = new Date(gmtPlusEightNow);
-          weekStart.setUTCDate(gmtPlusEightNow.getUTCDate() - gmtPlusEightNow.getUTCDay());
-          weekStart.setUTCHours(0, 0, 0, 0);
-          const weekStartUTC = new Date(weekStart.getTime() - (8 * 60 * 60 * 1000));
+          // Current week - calculate from current time in GMT+8
+          const gmt8Time = new Date(now.getTime() + gmt8Offset);
+          const day = gmt8Time.getUTCDay();
 
-          dateFilter = { weekStartDate: weekStartUTC };
+          // Calculate Sunday of this week in GMT+8
+          const sunday = new Date(gmt8Time);
+          sunday.setUTCDate(gmt8Time.getUTCDate() - day);
+          sunday.setUTCHours(0, 0, 0, 0);
+          const weekStart = new Date(sunday.getTime() - gmt8Offset);
+
+          dateFilter = { timestamp: { $gte: weekStart } };
         }
       }
 
