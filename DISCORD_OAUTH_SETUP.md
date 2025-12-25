@@ -66,12 +66,14 @@ This guide will help you set up Discord OAuth2 authentication for your Elysium D
 6. Click **Copy Role ID**
 7. Save this as your `DISCORD_ELYSIUM_ROLE_ID`
 
-### Admin Role ID (Optional):
+### Admin Role IDs (Optional):
 1. In Server Settings → Roles
-2. Find your admin/moderator role
-3. Right-click the role name
-4. Click **Copy Role ID**
-5. Save this as your `DISCORD_ADMIN_ROLE_ID`
+2. Find your admin/moderator roles (e.g., Guild Leader, Elite)
+3. For each role:
+   - Right-click the role name
+   - Click **Copy Role ID**
+4. Save the role IDs as comma-separated values for `DISCORD_ADMIN_ROLE_ID`
+   - Example: If you have "Guild Leader" and "Elite" roles, copy both IDs
 
 ## Step 7: Generate NextAuth Secret
 
@@ -94,7 +96,7 @@ DISCORD_GUILD_ID=your-guild-id-from-step-5
 
 # Discord Roles
 DISCORD_ELYSIUM_ROLE_ID=your-elysium-role-id-from-step-6
-DISCORD_ADMIN_ROLE_ID=your-admin-role-id-from-step-6
+DISCORD_ADMIN_ROLE_ID=guild-leader-role-id,elite-role-id
 
 # NextAuth
 NEXTAUTH_SECRET=your-generated-secret-from-step-7

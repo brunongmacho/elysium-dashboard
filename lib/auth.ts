@@ -79,10 +79,14 @@ export const authOptions: NextAuthOptions = {
 
               // Check if user has ELYSIUM role or is admin
               const elysiumRoleId = process.env.DISCORD_ELYSIUM_ROLE_ID;
-              const adminRoleId = process.env.DISCORD_ADMIN_ROLE_ID;
+              const adminRoleIds = process.env.DISCORD_ADMIN_ROLE_ID;
 
               const hasElysiumRole = elysiumRoleId && member.roles.includes(elysiumRoleId);
-              const hasAdminRole = adminRoleId && member.roles.includes(adminRoleId);
+
+              // Support multiple admin roles (comma-separated)
+              const hasAdminRole = adminRoleIds
+                ? adminRoleIds.split(',').map(id => id.trim()).some(roleId => member.roles.includes(roleId))
+                : false;
 
               session.canMarkAsKilled = hasElysiumRole || hasAdminRole;
             }
