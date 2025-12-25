@@ -40,20 +40,9 @@ export async function GET(request: Request) {
       // Build aggregation pipeline to count attendance from attendance collection
       const pipeline: any[] = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
-        // First group by memberId + timestamp to get unique boss kills per member
         {
           $group: {
-            _id: {
-              memberId: "$memberId",
-              timestamp: "$timestamp"
-            },
-            memberName: { $first: "$memberName" }
-          }
-        },
-        // Then count unique timestamps per member
-        {
-          $group: {
-            _id: "$_id.memberId",
+            _id: "$memberId",
             memberName: { $first: "$memberName" },
             totalKills: { $sum: 1 }
           }
@@ -106,25 +95,29 @@ export async function GET(request: Request) {
         .aggregate(pipeline)
         .toArray();
 
-      // Calculate total unique boss kills in the period (count distinct timestamps)
-      const uniqueKillsPipeline = [
+      // Count total unique boss kill events in the period
+      // Group by bossName + timestamp since each boss kill is unique by these two fields
+      const totalBossKillsPipeline = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
         {
           $group: {
-            _id: "$timestamp"
+            _id: {
+              bossName: "$bossName",
+              timestamp: "$timestamp"
+            }
           }
         },
         {
-          $count: "totalUniqueKills"
+          $count: "totalBossKills"
         }
       ];
 
-      const uniqueKillsResult = await db
+      const totalBossKillsResult = await db
         .collection("attendance")
-        .aggregate(uniqueKillsPipeline)
+        .aggregate(totalBossKillsPipeline)
         .toArray();
 
-      const totalUniqueKills = uniqueKillsResult.length > 0 ? uniqueKillsResult[0].totalUniqueKills : 1;
+      const totalBossKills = totalBossKillsResult.length > 0 ? totalBossKillsResult[0].totalBossKills : 1;
 
       // Calculate leaderboard with ranks
       const leaderboard: AttendanceLeaderboardEntry[] = attendanceData.map((member, index) => {
@@ -132,8 +125,8 @@ export async function GET(request: Request) {
         const pointsEarned = member.pointsEarned || 0;
         const currentStreak = member.currentStreak || 0;
 
-        // Calculate attendance rate as percentage of total unique boss kills attended
-        const attendanceRate = totalUniqueKills > 0 ? Math.round((totalKills / totalUniqueKills) * 100) : 0;
+        // Calculate attendance rate as percentage of total boss kills that occurred
+        const attendanceRate = totalBossKills > 0 ? Math.round((totalKills / totalBossKills) * 100) : 0;
 
         return {
           rank: index + 1,
