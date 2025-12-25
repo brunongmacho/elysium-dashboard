@@ -6,6 +6,9 @@
 import bossSpawnConfig from "../boss_spawn_config.json";
 import bossPointsConfig from "../boss_points.json";
 import type { BossSpawnConfig, BossPointsConfig, BossTimerDisplay, BossSchedule } from "@/types/database";
+import { toZonedTime, fromZonedTime } from "date-fns-tz";
+
+const GMT8_TIMEZONE = "Asia/Manila";
 
 /**
  * Get boss spawn configuration
@@ -81,17 +84,18 @@ export function getNextScheduledSpawn(bossName: string, fromTime: Date = new Dat
   const schedules = getBossSchedules(bossName);
   if (!schedules || schedules.length === 0) return null;
 
-  const now = fromTime;
+  // Convert current time to GMT+8 for comparison
+  const nowGMT8 = toZonedTime(fromTime, GMT8_TIMEZONE);
   const nextSpawns: Date[] = [];
 
   for (const schedule of schedules) {
     const [hours, minutes] = schedule.time.split(":").map(Number);
 
-    // Find next occurrence of this day/time
-    const nextSpawn = new Date(now);
+    // Create a date in GMT+8 timezone
+    const nextSpawnGMT8 = new Date(nowGMT8);
 
     // Calculate days until next occurrence
-    const currentDay = now.getDay();
+    const currentDay = nowGMT8.getDay();
     const targetDay = schedule.dayOfWeek;
     let daysUntil = targetDay - currentDay;
 
@@ -99,18 +103,20 @@ export function getNextScheduledSpawn(bossName: string, fromTime: Date = new Dat
       daysUntil += 7; // Next week
     } else if (daysUntil === 0) {
       // Same day - check if time has passed
-      const todayAtTime = new Date(now);
-      todayAtTime.setHours(hours, minutes, 0, 0);
+      const todayAtTimeGMT8 = new Date(nowGMT8);
+      todayAtTimeGMT8.setHours(hours, minutes, 0, 0);
 
-      if (now > todayAtTime) {
+      if (nowGMT8 > todayAtTimeGMT8) {
         daysUntil = 7; // Next week
       }
     }
 
-    nextSpawn.setDate(nextSpawn.getDate() + daysUntil);
-    nextSpawn.setHours(hours, minutes, 0, 0);
+    nextSpawnGMT8.setDate(nextSpawnGMT8.getDate() + daysUntil);
+    nextSpawnGMT8.setHours(hours, minutes, 0, 0);
 
-    nextSpawns.push(nextSpawn);
+    // Convert back to UTC for storage
+    const nextSpawnUTC = fromZonedTime(nextSpawnGMT8, GMT8_TIMEZONE);
+    nextSpawns.push(nextSpawnUTC);
   }
 
   // Return the soonest spawn
