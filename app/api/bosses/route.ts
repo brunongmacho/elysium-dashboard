@@ -100,6 +100,8 @@ export async function GET() {
       let lastKillTime: Date | null = null;
       let killedBy: string | undefined;
 
+      let isPredicted = false;
+
       if (bossType === "timer") {
         // Timer-based boss
         let useTimer = false;
@@ -114,6 +116,7 @@ export async function GET() {
           // Use timer data if we're still within grace period
           if (now <= gracePeriodEnd) {
             useTimer = true;
+            isPredicted = false;
             nextSpawnTime = spawnTime;
             lastKillTime = timer.lastKillTime ? new Date(timer.lastKillTime) : null;
             killedBy = timer.killedBy;
@@ -130,6 +133,7 @@ export async function GET() {
             .toArray();
 
           if (lastAttendance.length > 0) {
+            isPredicted = true;
             lastKillTime = new Date(lastAttendance[0].timestamp);
             killedBy = lastAttendance[0].memberName;
             nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
@@ -137,6 +141,7 @@ export async function GET() {
         }
       } else {
         // Schedule-based boss
+        isPredicted = false;
         nextSpawnTime = getNextScheduledSpawn(bossName);
       }
 
@@ -157,6 +162,7 @@ export async function GET() {
         timeRemaining: timeRemaining || undefined,
         status,
         killCount,
+        isPredicted,
       });
     }
 

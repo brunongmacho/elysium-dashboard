@@ -69,8 +69,8 @@ export default function BossCard({
             <span className="text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
             </span>
-            <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full capitalize whitespace-nowrap">
-              {boss.type}
+            <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
+              {boss.type === "timer" ? "Timed" : "Scheduled"}
             </span>
           </div>
         </div>
@@ -111,7 +111,9 @@ export default function BossCard({
       {/* Next Spawn Info */}
       {boss.nextSpawnTime ? (
         <div className="mb-3">
-          <div className="text-base font-semibold text-gray-300 mb-2">⏰ Next Spawn:</div>
+          <div className="text-base font-semibold text-gray-300 mb-2">
+            {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
+          </div>
           <div className="text-white text-lg font-bold mb-3">
             {format(new Date(boss.nextSpawnTime), "MMM dd, yyyy hh:mm a")}
           </div>
