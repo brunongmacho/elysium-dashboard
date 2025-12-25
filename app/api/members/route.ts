@@ -185,9 +185,11 @@ export async function GET(request: Request) {
         .toArray();
 
       const leaderboard: PointsLeaderboardEntry[] = pointsData.map((member, index) => {
-        const pointsAvailable = member.pointsAvailable || 0;
         const pointsEarned = member.pointsEarned || 0;
         const pointsSpent = member.pointsSpent || 0;
+
+        // Calculate points available (don't use cached value)
+        const pointsAvailable = pointsEarned - pointsSpent;
 
         // Calculate consumption rate
         const consumptionRate = pointsEarned > 0
