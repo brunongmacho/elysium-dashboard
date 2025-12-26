@@ -6,9 +6,23 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: '.env.local' });
 
-const GUILD_ID = process.env.DISCORD_GUILD_ID;
+// Read GUILD_ID from environment or .env.local manually
+let GUILD_ID = process.env.DISCORD_GUILD_ID;
+
+// If not in environment, try to read from .env.local manually
+if (!GUILD_ID) {
+  try {
+    const envPath = path.join(__dirname, '..', '.env.local');
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    const match = envContent.match(/DISCORD_GUILD_ID=(.+)/);
+    if (match) {
+      GUILD_ID = match[1].trim();
+    }
+  } catch (err) {
+    // Ignore if file doesn't exist
+  }
+}
 
 if (!GUILD_ID) {
   console.error('❌ DISCORD_GUILD_ID not found in .env.local');
