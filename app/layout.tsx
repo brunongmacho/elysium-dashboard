@@ -1,9 +1,25 @@
 import type { Metadata } from "next";
+import { Cinzel, Cinzel_Decorative } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import GuildHeader from "@/components/GuildHeader";
 import BackToTop from "@/components/BackToTop";
+
+// Fantasy RPG-style fonts for Lordnine Infinite Class theme
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  weight: ["400", "600", "700", "900"],
+  display: "swap",
+});
+
+const cinzelDecorative = Cinzel_Decorative({
+  subsets: ["latin"],
+  variable: "--font-cinzel-decorative",
+  weight: ["400", "700", "900"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Elysium Dashboard - Guild Management & Boss Timers",
@@ -27,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className={`${cinzel.variable} ${cinzelDecorative.variable}`}>
+      <body className="antialiased font-game">
         <Providers>
           <div className="min-h-screen animated-gradient">
             {/* Navigation */}

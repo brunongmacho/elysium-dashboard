@@ -73,7 +73,7 @@ export default function LeaderboardPodium({ entries, type }: LeaderboardPodiumPr
 
   return (
     <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6">
-      <h2 className="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
+      <h2 className="text-lg sm:text-2xl font-bold text-gold text-rpg-title mb-4 sm:mb-6 text-center">
         🏆 Top 3 {type === "attendance" ? "Attendance" : "Points"}
       </h2>
 
@@ -105,23 +105,23 @@ export default function LeaderboardPodium({ entries, type }: LeaderboardPodiumPr
                 <div className="text-4xl sm:text-5xl mb-2 animate-bounce">{colors.medal}</div>
 
                 {/* Rank */}
-                <div className={`text-base sm:text-lg font-bold ${colors.text} mb-2`}>
+                <div className={`text-base sm:text-lg font-bold ${colors.text} mb-2 font-game-decorative`}>
                   #{entry.rank}
                 </div>
 
                 {/* Username */}
                 <Link
                   href={`/profile/${entry.memberId}`}
-                  className="block text-sm sm:text-base text-white font-semibold mb-2 hover:text-primary active:scale-95 transition-all truncate"
+                  className="block text-sm sm:text-base text-white font-semibold mb-2 hover:text-primary active:scale-95 transition-all truncate font-game"
                 >
                   {entry.username}
                 </Link>
 
                 {/* Value */}
-                <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+                <div className="text-xl sm:text-2xl font-bold text-white mb-1 font-game-decorative">
                   <AnimatedCounter value={entry.value} duration={1500} />
                 </div>
-                <div className="text-xs sm:text-sm text-gray-400">{entry.label}</div>
+                <div className="text-xs sm:text-sm text-gray-400 font-game">{entry.label}</div>
               </div>
 
               {/* Podium Base */}
@@ -135,7 +135,7 @@ export default function LeaderboardPodium({ entries, type }: LeaderboardPodiumPr
                   transition-all duration-300
                 `}
               >
-                <div className={`text-2xl sm:text-3xl font-bold ${colors.text} opacity-50`}>
+                <div className={`text-2xl sm:text-3xl font-bold ${colors.text} opacity-50 font-game-decorative`}>
                   {entry.rank}
                 </div>
               </div>

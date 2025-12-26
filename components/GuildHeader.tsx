@@ -33,10 +33,10 @@ export default function GuildHeader() {
 
             {/* Guild name and tagline */}
             <div className="text-center sm:text-left flex-1">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-glow mb-1 md:mb-2 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gold text-rpg-title mb-1 md:mb-2 leading-tight">
                 {guildTheme.branding.name}
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-300 font-medium">
+              <p className="text-base sm:text-lg md:text-xl text-silver font-game">
                 {guildTheme.branding.tagline}
               </p>
             </div>
@@ -46,16 +46,16 @@ export default function GuildHeader() {
           <div className="hidden lg:block glass rounded-lg p-4 border border-primary/30">
             <div className="flex items-center gap-3">
               <div className="text-center px-4 border-r border-gray-600">
-                <div className="text-2xl font-bold text-primary">∞</div>
-                <div className="text-xs text-gray-400">Active</div>
+                <div className="text-2xl font-bold text-primary font-game-decorative">∞</div>
+                <div className="text-xs text-gray-400 font-game">Active</div>
               </div>
               <div className="text-center px-4 border-r border-gray-600">
-                <div className="text-2xl font-bold text-accent">⚔️</div>
-                <div className="text-xs text-gray-400">Victories</div>
+                <div className="text-2xl font-bold text-accent font-game-decorative">⚔️</div>
+                <div className="text-xs text-gray-400 font-game">Victories</div>
               </div>
               <div className="text-center px-4">
-                <div className="text-2xl font-bold text-success">🏆</div>
-                <div className="text-xs text-gray-400">Glory</div>
+                <div className="text-2xl font-bold text-success font-game-decorative">🏆</div>
+                <div className="text-xs text-gray-400 font-game">Glory</div>
               </div>
             </div>
           </div>

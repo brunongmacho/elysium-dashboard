@@ -32,11 +32,17 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Game-like Typography - Lordnine Infinite Class Theme */
+.font-game {
+  font-family: var(--font-cinzel), serif;
+}
+
+.font-game-decorative {
+  font-family: var(--font-cinzel-decorative), serif;
 }
 
 /* Guild-themed scrollbar */
@@ -117,9 +123,195 @@ body {
   box-shadow: 0 0 20px color-mix(in srgb, var(--color-danger) 30%, transparent);
 }
 
-/* Text glow */
+/* Enhanced Game-like Text Effects */
 .text-glow {
-  text-shadow: 0 0 10px currentColor;
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Dramatic RPG Title - Embossed with strong shadow */
+.text-rpg-title {
+  font-family: var(--font-cinzel-decorative), serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 1),
+    0 2px 0 rgba(0, 0, 0, 0.9),
+    0 3px 0 rgba(0, 0, 0, 0.8),
+    0 4px 0 rgba(0, 0, 0, 0.7),
+    0 5px 0 rgba(0, 0, 0, 0.6),
+    0 6px 1px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(59, 130, 246, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 3px 5px rgba(0, 0, 0, 0.5),
+    0 5px 10px rgba(0, 0, 0, 0.4),
+    0 10px 20px rgba(0, 0, 0, 0.3),
+    0 20px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Golden/Metallic Text - For important headers */
+.text-gold {
+  background: linear-gradient(
+    180deg,
+    #ffd700 0%,
+    #ffed4e 20%,
+    #f4a460 40%,
+    #daa520 60%,
+    #b8860b 80%,
+    #8b6914 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(255, 215, 0, 0.5);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+}
+
+/* Silver/Platinum Text - For secondary headers */
+.text-silver {
+  background: linear-gradient(
+    180deg,
+    #e8e8e8 0%,
+    #ffffff 20%,
+    #c0c0c0 40%,
+    #a8a8a8 60%,
+    #909090 80%,
+    #787878 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(192, 192, 192, 0.5);
+  filter: drop-shadow(0 0 6px rgba(192, 192, 192, 0.3));
+}
+
+/* Glowing Energy Text - For active/spawned bosses */
+.text-energy {
+  animation: energy-pulse 2s ease-in-out infinite;
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor,
+    0 0 20px currentColor,
+    0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes energy-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 15px currentColor,
+      0 0 20px currentColor,
+      0 2px 8px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    text-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      0 0 40px currentColor,
+      0 2px 8px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Embossed/Carved Text Effect */
+.text-embossed {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+  color: #d1d5db;
+}
+
+/* Neon Glow Text - For critical alerts */
+.text-neon {
+  animation: neon-flicker 3s ease-in-out infinite;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px currentColor,
+    0 0 82px currentColor,
+    0 0 92px currentColor,
+    0 0 102px currentColor,
+    0 0 151px currentColor;
+}
+
+@keyframes neon-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px currentColor,
+      0 0 82px currentColor,
+      0 0 92px currentColor,
+      0 0 102px currentColor,
+      0 0 151px currentColor;
+  }
+  20%, 24%, 55% {
+    text-shadow:
+      0 0 4px #fff,
+      0 0 6px #fff,
+      0 0 10px #fff,
+      0 0 21px currentColor,
+      0 0 41px currentColor;
+  }
+}
+
+/* Game UI Header Style - With corner decorations */
+.game-header {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+}
+
+.game-header::before,
+.game-header::after,
+.game-header .corner-tl,
+.game-header .corner-tr,
+.game-header .corner-bl,
+.game-header .corner-br {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+}
+
+.game-header::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.game-header::after {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.game-header .corner-bl {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.game-header .corner-br {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
 }
 
 /* Shimmer effect for loading states */

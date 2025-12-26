@@ -125,7 +125,7 @@ function BossCard({
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg sm:text-xl font-bold text-white truncate">{boss.bossName}</h3>
+          <h3 className={`text-lg sm:text-xl font-bold truncate font-game-decorative ${boss.status === 'spawned' ? 'text-energy text-danger' : 'text-white'}`}>{boss.bossName}</h3>
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
             <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
@@ -213,8 +213,8 @@ function BossCard({
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-gray-400 mb-1">Countdown</div>
-                    <div className="font-mono text-lg sm:text-xl font-bold text-white leading-tight">
+                    <div className="text-xs text-gray-400 mb-1 font-game">Countdown</div>
+                    <div className="font-mono text-lg sm:text-xl font-bold text-white leading-tight font-game-decorative">
                       {timeRemaining !== null
                         ? formatTimeRemaining(timeRemaining)
                         : "--:--:--"}
