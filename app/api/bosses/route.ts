@@ -17,8 +17,8 @@ import {
 } from "@/lib/boss-config";
 import type { BossTimer, BossTimerDisplay } from "@/types/database";
 
-// API routes are dynamic by default - we use Cache-Control headers for HTTP caching
-// This avoids Next.js ISR which can cause deployment issues
+// Force dynamic rendering - ensures route is not statically generated
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {

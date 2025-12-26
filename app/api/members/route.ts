@@ -10,8 +10,8 @@ import type {
   PointsLeaderboardEntry
 } from "@/types/database";
 
-// API routes are dynamic by default - we use Cache-Control headers for HTTP caching
-// Removed 'export const revalidate' to fix: Dynamic server usage error with request.url
+// Force dynamic rendering - this route uses request.url for query parameters
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
