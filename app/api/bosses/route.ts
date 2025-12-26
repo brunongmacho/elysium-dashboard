@@ -120,6 +120,16 @@ export async function GET() {
             lastKillTime = new Date(lastAttendance[0].timestamp);
             killedBy = lastAttendance[0].memberName;
             nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
+
+            // Auto-advance predicted spawn if it has already passed
+            // Keep adding intervals until we get a future spawn time
+            const now = new Date();
+            const interval = getBossSpawnInterval(bossName);
+            if (nextSpawnTime && interval) {
+              while (nextSpawnTime.getTime() <= now.getTime()) {
+                nextSpawnTime = new Date(nextSpawnTime.getTime() + interval * 60 * 60 * 1000);
+              }
+            }
           }
         }
       } else {
