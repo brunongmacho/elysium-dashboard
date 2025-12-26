@@ -17,8 +17,8 @@ import {
 } from "@/lib/boss-config";
 import type { BossTimer, BossTimerDisplay } from "@/types/database";
 
-// Cache for 30 seconds to reduce database load while staying relatively real-time
-export const revalidate = 30;
+// API routes are dynamic by default - we use Cache-Control headers for HTTP caching
+// This avoids Next.js ISR which can cause deployment issues
 
 export async function GET() {
   try {

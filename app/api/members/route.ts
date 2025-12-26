@@ -10,8 +10,8 @@ import type {
   PointsLeaderboardEntry
 } from "@/types/database";
 
-// Cache for 60 seconds - leaderboard doesn't need real-time updates
-export const revalidate = 60;
+// API routes are dynamic by default - we use Cache-Control headers for HTTP caching
+// Removed 'export const revalidate' to fix: Dynamic server usage error with request.url
 
 export async function GET(request: Request) {
   try {
