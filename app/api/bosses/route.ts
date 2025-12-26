@@ -70,6 +70,21 @@ export async function GET() {
       killCountMap.set(result._id, result.count);
     });
 
+    // Fetch rotation data for all bosses
+    const rotationCollection = db.collection('bossRotation');
+    const allRotations = await rotationCollection.find({}).toArray();
+    const rotationMap = new Map<string, any>();
+    allRotations.forEach((rotation: any) => {
+      rotationMap.set(rotation.bossName, {
+        isRotating: true,
+        currentIndex: rotation.currentIndex,
+        currentGuild: rotation.currentGuild,
+        isOurTurn: rotation.isOurTurn,
+        guilds: rotation.guilds,
+        nextGuild: rotation.nextGuild,
+      });
+    });
+
     // Build display data for each boss
     const bossDisplayData: BossTimerDisplay[] = [];
 
@@ -144,6 +159,9 @@ export async function GET() {
       // Get kill count (case-insensitive)
       const killCount = killCountMap.get(bossName.toLowerCase()) || 0;
 
+      // Get rotation data if available
+      const rotation = rotationMap.get(bossName) || { isRotating: false };
+
       bossDisplayData.push({
         bossName,
         bossPoints,
@@ -156,6 +174,7 @@ export async function GET() {
         status,
         killCount,
         isPredicted,
+        rotation,
       });
     }
 

@@ -161,7 +161,7 @@ export function calculateBossGlow(timeRemaining: number | null): GlowResult {
       color: blendedColor,
       intensity: 10,
       borderColor: 'border-accent-light',
-      tailwindStroke: 'border-accent-light',
+      tailwindStroke: 'stroke-accent-light',
     };
   }
 

@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import GuildHeader from "@/components/GuildHeader";
+import BackToTop from "@/components/BackToTop";
 
 export const metadata: Metadata = {
   title: "Elysium Dashboard - Guild Management & Boss Timers",
@@ -54,6 +55,9 @@ export default function RootLayout({
                 </div>
               </div>
             </footer>
+
+            {/* Back to Top Button */}
+            <BackToTop />
           </div>
         </Providers>
       </body>
