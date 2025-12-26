@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { calculateBossGlow, generateDropShadow } from "@/lib/boss-glow";
 
 interface CircularProgressProps {
   percentage: number; // 0-100
@@ -30,55 +31,14 @@ export default function CircularProgress({
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (percentage / 100) * circumference;
 
-  // Calculate dynamic glow intensity and color based on time remaining
+  // Calculate dynamic, theme-aware glow based on time remaining
   const { glowColor, glowIntensity, strokeColor } = useMemo(() => {
-    if (!timeRemaining || timeRemaining <= 0) {
-      // Spawned - bright red glow
-      return {
-        glowColor: "#ef4444",
-        glowIntensity: 12,
-        strokeColor: "stroke-danger",
-      };
-    }
-
-    const minutesRemaining = timeRemaining / (1000 * 60);
-
-    if (minutesRemaining < 10) {
-      // Very close (<10 min) - red glow, high intensity
-      return {
-        glowColor: "#ef4444",
-        glowIntensity: 10,
-        strokeColor: "stroke-danger",
-      };
-    } else if (minutesRemaining < 30) {
-      // Close (<30 min) - orange glow
-      return {
-        glowColor: "#f59e0b",
-        glowIntensity: 8,
-        strokeColor: "stroke-warning",
-      };
-    } else if (minutesRemaining < 60) {
-      // Approaching (<1 hour) - light orange
-      return {
-        glowColor: "#fb923c",
-        glowIntensity: 6,
-        strokeColor: "stroke-warning",
-      };
-    } else if (minutesRemaining < 180) {
-      // Soon (<3 hours) - yellow/white glow
-      return {
-        glowColor: "#fbbf24",
-        glowIntensity: 4,
-        strokeColor: "stroke-success",
-      };
-    } else {
-      // Far away - subtle white/green glow
-      return {
-        glowColor: "#10b981",
-        glowIntensity: 3,
-        strokeColor: "stroke-success",
-      };
-    }
+    const glowData = calculateBossGlow(timeRemaining);
+    return {
+      glowColor: glowData.color,
+      glowIntensity: glowData.intensity,
+      strokeColor: glowData.tailwindStroke,
+    };
   }, [timeRemaining]);
 
   return (

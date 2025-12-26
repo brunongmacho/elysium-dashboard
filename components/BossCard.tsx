@@ -8,6 +8,7 @@ import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
+import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -104,91 +105,20 @@ function BossCard({
     return { progressPercentage: percentage, timeRemaining: remaining };
   }, [boss.nextSpawnTime, currentTime]);
 
-  // Calculate progressive border and glow colors based on time remaining
-  const { borderColor, glowColor, glowStyle } = useMemo(() => {
-    if (!timeRemaining || timeRemaining <= 0) {
-      // Spawned - bright red
-      return {
-        borderColor: "border-red-500",
-        glowColor: "shadow-red-500/50",
-        glowStyle: "0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3)",
-      };
-    }
-
-    const minutesRemaining = timeRemaining / (1000 * 60);
-
-    if (minutesRemaining < 10) {
-      // Very close (<10 min) - red
-      return {
-        borderColor: "border-red-500",
-        glowColor: "shadow-red-500/40",
-        glowStyle: "0 0 16px rgba(239, 68, 68, 0.4), 0 0 32px rgba(239, 68, 68, 0.2)",
-      };
-    } else if (minutesRemaining < 30) {
-      // Close (<30 min) - orange-red
-      return {
-        borderColor: "border-orange-500",
-        glowColor: "shadow-orange-500/40",
-        glowStyle: "0 0 14px rgba(249, 115, 22, 0.4), 0 0 28px rgba(249, 115, 22, 0.2)",
-      };
-    } else if (minutesRemaining < 60) {
-      // Approaching (<1 hour) - orange
-      return {
-        borderColor: "border-orange-400",
-        glowColor: "shadow-orange-400/30",
-        glowStyle: "0 0 12px rgba(251, 146, 60, 0.3), 0 0 24px rgba(251, 146, 60, 0.15)",
-      };
-    } else if (minutesRemaining < 180) {
-      // Soon (<3 hours) - yellow
-      return {
-        borderColor: "border-yellow-400",
-        glowColor: "shadow-yellow-400/30",
-        glowStyle: "0 0 10px rgba(251, 191, 36, 0.3), 0 0 20px rgba(251, 191, 36, 0.15)",
-      };
-    } else if (minutesRemaining < 360) {
-      // Approaching (<6 hours) - light yellow/white
-      return {
-        borderColor: "border-yellow-300",
-        glowColor: "shadow-yellow-300/20",
-        glowStyle: "0 0 8px rgba(253, 224, 71, 0.2), 0 0 16px rgba(253, 224, 71, 0.1)",
-      };
-    } else {
-      // Far away - subtle green
-      return {
-        borderColor: "border-success",
-        glowColor: "shadow-success/20",
-        glowStyle: "0 0 6px rgba(16, 185, 129, 0.2), 0 0 12px rgba(16, 185, 129, 0.1)",
-      };
-    }
-  }, [timeRemaining]);
-
-  // Calculate pulse speed based on time remaining
-  const pulseSpeed = useMemo(() => {
-    if (!timeRemaining || timeRemaining <= 0) {
-      return "0.8s"; // Very fast when spawned
-    }
-
-    const minutesRemaining = timeRemaining / (1000 * 60);
-
-    if (minutesRemaining < 10) {
-      return "1s"; // Very fast when <10 min
-    } else if (minutesRemaining < 30) {
-      return "1.5s"; // Fast when <30 min
-    } else if (minutesRemaining < 60) {
-      return "2s"; // Normal when <1 hour
-    } else if (minutesRemaining < 180) {
-      return "2.5s"; // Slower when <3 hours
-    } else {
-      return "3s"; // Slowest when far away
-    }
+  // Calculate dynamic, theme-aware glow based on time remaining
+  const { borderColor, glowStyle } = useMemo(() => {
+    const glowData = calculateBossGlow(timeRemaining);
+    return {
+      borderColor: glowData.borderColor,
+      glowStyle: generateGlowStyle(glowData.color, glowData.intensity),
+    };
   }, [timeRemaining]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} boss-card-pulse shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
       style={{
         boxShadow: glowStyle,
-        animationDuration: pulseSpeed,
       }}
     >
       {/* Header */}
