@@ -18,6 +18,12 @@ function getCSSVariable(variableName: string): string {
   if (typeof window === 'undefined') {
     // Server-side fallback values
     const fallbacks: Record<string, string> = {
+      '--color-primary': '#3b82f6',
+      '--color-primary-dark': '#1d4ed8',
+      '--color-primary-light': '#93c5fd',
+      '--color-accent': '#d946ef',
+      '--color-accent-dark': '#a21caf',
+      '--color-accent-light': '#f0abfc',
       '--color-success': '#10b981',
       '--color-warning': '#f59e0b',
       '--color-danger': '#ef4444',
@@ -67,142 +73,138 @@ function interpolateColor(color1: string, color2: string, factor: number): strin
 /**
  * Calculates dynamic glow properties based on time remaining
  * Time brackets become progressively shorter as spawn approaches
- * Reads colors from CSS variables to support dynamic theme changes
+ * Uses full theme palette (primary, accent, danger) for visual cohesion
  */
 export function calculateBossGlow(timeRemaining: number | null): GlowResult {
-  // Read theme colors from CSS variables (updates when theme changes)
-  const whiteColor = getCSSVariable('--color-text-primary');
-  const successColor = getCSSVariable('--color-success');
-  const warningColor = getCSSVariable('--color-warning');
-  const dangerColor = getCSSVariable('--color-danger');
+  // Read full theme palette from CSS variables
+  const primaryLight = getCSSVariable('--color-primary-light');
+  const primary = getCSSVariable('--color-primary');
+  const primaryDark = getCSSVariable('--color-primary-dark');
+  const accentLight = getCSSVariable('--color-accent-light');
+  const accent = getCSSVariable('--color-accent');
+  const accentDark = getCSSVariable('--color-accent-dark');
+  const danger = getCSSVariable('--color-danger');
 
-  // Already spawned - maximum intensity red
+  // Already spawned - maximum intensity danger with accent blend
   if (!timeRemaining || timeRemaining <= 0) {
     return {
-      color: dangerColor,
+      color: danger,
       intensity: 30,
-      borderColor: 'border-red-500',
+      borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
     };
   }
 
   const minutesRemaining = timeRemaining / (1000 * 60);
 
-  // Imminent: 0-5 minutes - Pure danger red, very high intensity
+  // Imminent: 0-5 minutes - Pure danger, very high intensity
   if (minutesRemaining < 5) {
     return {
-      color: dangerColor,
+      color: danger,
       intensity: 25,
-      borderColor: 'border-red-500',
+      borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
     };
   }
 
-  // Very soon: 5-10 minutes - Blend danger to orange (90% danger)
+  // Very soon: 5-10 minutes - Blend danger to accent-dark (intense warning)
   if (minutesRemaining < 10) {
     const factor = (minutesRemaining - 5) / 5; // 0 to 1
-    const orangeRed = '#ff6b35'; // Orange-red midpoint
-    const blendedColor = interpolateColor(dangerColor, orangeRed, factor);
+    const blendedColor = interpolateColor(danger, accentDark, factor);
     return {
       color: blendedColor,
       intensity: 22,
-      borderColor: 'border-red-500',
+      borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
     };
   }
 
-  // Soon: 10-20 minutes - Blend orange to warning (orange-yellow)
+  // Soon: 10-20 minutes - Blend accent-dark to accent (vibrant urgency)
   if (minutesRemaining < 20) {
     const factor = (minutesRemaining - 10) / 10; // 0 to 1
-    const orangeRed = '#ff6b35';
-    const blendedColor = interpolateColor(orangeRed, warningColor, factor);
+    const blendedColor = interpolateColor(accentDark, accent, factor);
     return {
       color: blendedColor,
       intensity: 18,
-      borderColor: 'border-orange-500',
-      tailwindStroke: 'stroke-warning',
+      borderColor: 'border-accent-dark',
+      tailwindStroke: 'stroke-accent-dark',
     };
   }
 
-  // Approaching: 20-30 minutes - Warning yellow with high intensity
+  // Approaching: 20-30 minutes - Pure accent (high visibility)
   if (minutesRemaining < 30) {
     return {
-      color: warningColor,
+      color: accent,
       intensity: 15,
-      borderColor: 'border-orange-400',
-      tailwindStroke: 'stroke-warning',
+      borderColor: 'border-accent',
+      tailwindStroke: 'stroke-accent',
     };
   }
 
-  // Medium-close: 30-60 minutes - Blend warning to light yellow
+  // Medium-close: 30-60 minutes - Blend accent to accent-light
   if (minutesRemaining < 60) {
     const factor = (minutesRemaining - 30) / 30; // 0 to 1
-    const lightYellow = '#fbbf24'; // Lighter yellow
-    const blendedColor = interpolateColor(warningColor, lightYellow, factor);
+    const blendedColor = interpolateColor(accent, accentLight, factor);
     return {
       color: blendedColor,
       intensity: 12,
-      borderColor: 'border-yellow-400',
-      tailwindStroke: 'stroke-warning',
+      borderColor: 'border-accent',
+      tailwindStroke: 'stroke-accent',
     };
   }
 
-  // Medium: 1-2 hours - Blend light yellow to success (yellow-green)
+  // Medium: 1-2 hours - Blend accent-light to primary-dark
   if (minutesRemaining < 120) {
     const factor = (minutesRemaining - 60) / 60; // 0 to 1
-    const lightYellow = '#fbbf24';
-    const blendedColor = interpolateColor(lightYellow, successColor, factor);
+    const blendedColor = interpolateColor(accentLight, primaryDark, factor);
     return {
       color: blendedColor,
       intensity: 10,
-      borderColor: 'border-yellow-300',
-      tailwindStroke: 'stroke-success',
+      borderColor: 'border-accent-light',
+      tailwindStroke: 'border-accent-light',
     };
   }
 
-  // Medium-far: 2-4 hours - Success green with moderate intensity
+  // Medium-far: 2-4 hours - Blend primary-dark to primary
   if (minutesRemaining < 240) {
+    const factor = (minutesRemaining - 120) / 120; // 0 to 1
+    const blendedColor = interpolateColor(primaryDark, primary, factor);
     return {
-      color: successColor,
+      color: blendedColor,
       intensity: 8,
-      borderColor: 'border-success',
-      tailwindStroke: 'stroke-success',
+      borderColor: 'border-primary-dark',
+      tailwindStroke: 'stroke-primary-dark',
     };
   }
 
-  // Far: 4-8 hours - Blend success to cyan-green
+  // Far: 4-8 hours - Blend primary to primary-light
   if (minutesRemaining < 480) {
     const factor = (minutesRemaining - 240) / 240; // 0 to 1
-    const cyanGreen = '#14b8a6'; // Teal/cyan
-    const blendedColor = interpolateColor(successColor, cyanGreen, factor);
+    const blendedColor = interpolateColor(primary, primaryLight, factor);
     return {
       color: blendedColor,
       intensity: 6,
-      borderColor: 'border-success',
-      tailwindStroke: 'stroke-success',
+      borderColor: 'border-primary',
+      tailwindStroke: 'stroke-primary',
     };
   }
 
-  // Very far: 8-24 hours - Blend cyan to white/light blue
+  // Very far: 8-24 hours - Subtle primary-light
   if (minutesRemaining < 1440) {
-    const factor = (minutesRemaining - 480) / 960; // 0 to 1
-    const cyanGreen = '#14b8a6';
-    const lightBlue = '#93c5fd'; // Light blue (close to white)
-    const blendedColor = interpolateColor(cyanGreen, lightBlue, factor);
     return {
-      color: blendedColor,
+      color: primaryLight,
       intensity: 4,
-      borderColor: 'border-success',
-      tailwindStroke: 'stroke-success',
+      borderColor: 'border-primary-light',
+      tailwindStroke: 'stroke-primary-light',
     };
   }
 
-  // Extremely far: >24 hours - Subtle white/light glow
+  // Extremely far: >24 hours - Very subtle primary-light glow
   return {
-    color: whiteColor,
+    color: primaryLight,
     intensity: 3,
-    borderColor: 'border-gray-400',
-    tailwindStroke: 'stroke-gray-400',
+    borderColor: 'border-primary-light',
+    tailwindStroke: 'stroke-primary-light',
   };
 }
 
