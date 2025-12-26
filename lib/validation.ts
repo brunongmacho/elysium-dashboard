@@ -24,12 +24,22 @@ export const searchSchema = z.string()
 export const leaderboardQuerySchema = z.object({
   type: z.enum(['attendance', 'points']).nullable().transform(val => val ?? 'attendance'),
   period: z.enum(['all', 'monthly', 'weekly']).nullable().transform(val => val ?? 'all'),
-  limit: z.coerce.number()
-    .int()
-    .min(1)
-    .max(LEADERBOARD.MAX_LIMIT)
+  limit: z.string()
+    .nullable()
     .optional()
-    .default(LEADERBOARD.DEFAULT_LIMIT),
+    .transform(val => {
+      if (!val || val === '' || val === 'null' || val === 'undefined') {
+        return LEADERBOARD.DEFAULT_LIMIT;
+      }
+      const parsed = parseInt(val, 10);
+      return isNaN(parsed) ? LEADERBOARD.DEFAULT_LIMIT : parsed;
+    })
+    .pipe(
+      z.number()
+        .int()
+        .min(1, 'Too small: expected number to be >=1')
+        .max(LEADERBOARD.MAX_LIMIT)
+    ),
   search: z.string().nullable().transform(val => val ?? ''),
   month: z.string().regex(/^\d{4}-\d{2}$/).nullable().optional(), // YYYY-MM format
   week: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(), // YYYY-MM-DD format
