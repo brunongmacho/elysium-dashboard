@@ -71,7 +71,7 @@ export default function ThemeSelector() {
         aria-haspopup="menu"
       >
         <span className="text-xl">{themes[currentTheme].icon}</span>
-        <span className="hidden sm:inline text-sm text-gray-300">Theme</span>
+        <span className="hidden sm:inline text-sm text-gray-300 font-game">Theme</span>
         <svg
           className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -106,8 +106,8 @@ export default function ThemeSelector() {
             aria-label="Theme selection menu"
           >
             <div className="p-3 border-b border-gray-700">
-              <h3 className="text-sm font-semibold text-white">Choose Theme</h3>
-              <p className="text-xs text-gray-400 mt-1">Select your guild's color scheme</p>
+              <h3 className="text-sm font-semibold text-white font-game-decorative">Choose Theme</h3>
+              <p className="text-xs text-gray-400 mt-1 font-game">Select your guild's color scheme</p>
             </div>
 
             <div className="p-2 max-h-[60vh] sm:max-h-96 overflow-y-auto">
@@ -134,16 +134,16 @@ export default function ThemeSelector() {
                     {/* Theme Info */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-white">
+                        <span className="text-sm font-semibold text-white font-game">
                           {theme.label}
                         </span>
                         {currentTheme === theme.name && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white">
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-game">
                             Active
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-gray-400 mt-0.5 font-game">
                         {theme.description}
                       </p>
                     </div>
@@ -168,7 +168,7 @@ export default function ThemeSelector() {
 
             {/* Footer */}
             <div className="p-3 border-t border-gray-700 bg-gray-900/50">
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-gray-500 text-center font-game">
                 Theme saved to your browser
               </p>
             </div>
