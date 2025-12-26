@@ -17,6 +17,7 @@ export default function CircularProgress({
   size = 120,
   strokeWidth = 8,
   status = "ready",
+  timeRemaining = null,
   showPercentage = false,
   className = "",
 }: CircularProgressProps) {
@@ -29,32 +30,56 @@ export default function CircularProgress({
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (percentage / 100) * circumference;
 
-  // Color based on status
-  const strokeColor = useMemo(() => {
-    switch (status) {
-      case "spawned":
-        return "stroke-danger";
-      case "soon":
-        return "stroke-warning";
-      case "ready":
-        return "stroke-success";
-      default:
-        return "stroke-gray-500";
+  // Calculate dynamic glow intensity and color based on time remaining
+  const { glowColor, glowIntensity, strokeColor } = useMemo(() => {
+    if (!timeRemaining || timeRemaining <= 0) {
+      // Spawned - bright red glow
+      return {
+        glowColor: "#ef4444",
+        glowIntensity: 12,
+        strokeColor: "stroke-danger",
+      };
     }
-  }, [status]);
 
-  const glowColor = useMemo(() => {
-    switch (status) {
-      case "spawned":
-        return "#ef4444";
-      case "soon":
-        return "#f59e0b";
-      case "ready":
-        return "#10b981";
-      default:
-        return "#6b7280";
+    const minutesRemaining = timeRemaining / (1000 * 60);
+
+    if (minutesRemaining < 10) {
+      // Very close (<10 min) - red glow, high intensity
+      return {
+        glowColor: "#ef4444",
+        glowIntensity: 10,
+        strokeColor: "stroke-danger",
+      };
+    } else if (minutesRemaining < 30) {
+      // Close (<30 min) - orange glow
+      return {
+        glowColor: "#f59e0b",
+        glowIntensity: 8,
+        strokeColor: "stroke-warning",
+      };
+    } else if (minutesRemaining < 60) {
+      // Approaching (<1 hour) - light orange
+      return {
+        glowColor: "#fb923c",
+        glowIntensity: 6,
+        strokeColor: "stroke-warning",
+      };
+    } else if (minutesRemaining < 180) {
+      // Soon (<3 hours) - yellow/white glow
+      return {
+        glowColor: "#fbbf24",
+        glowIntensity: 4,
+        strokeColor: "stroke-success",
+      };
+    } else {
+      // Far away - subtle white/green glow
+      return {
+        glowColor: "#10b981",
+        glowIntensity: 3,
+        strokeColor: "stroke-success",
+      };
     }
-  }, [status]);
+  }, [timeRemaining]);
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
@@ -85,9 +110,9 @@ export default function CircularProgress({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className={`${strokeColor} transition-all duration-500 ease-out`}
+          className={`${strokeColor} transition-all duration-1000 ease-out`}
           style={{
-            filter: `drop-shadow(0 0 6px ${glowColor})`,
+            filter: `drop-shadow(0 0 ${glowIntensity}px ${glowColor}) drop-shadow(0 0 ${glowIntensity * 0.5}px ${glowColor})`,
           }}
         />
       </svg>

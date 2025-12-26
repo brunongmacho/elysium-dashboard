@@ -43,22 +43,6 @@ function BossCard({
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
 
-  // Determine card border color based on status (uses theme colors)
-  const borderColor = {
-    spawned: "border-danger",
-    soon: "border-warning",
-    ready: "border-success",
-    unknown: "border-gray-500",
-  }[boss.status];
-
-  // Determine background glow effect (uses theme colors)
-  const glowColor = {
-    spawned: "glow-danger",
-    soon: "glow-warning",
-    ready: "glow-success",
-    unknown: "shadow-gray-500/20",
-  }[boss.status];
-
   const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
   }, []);
@@ -120,25 +104,70 @@ function BossCard({
     return { progressPercentage: percentage, timeRemaining: remaining };
   }, [boss.nextSpawnTime, currentTime]);
 
-  // Determine pulsing glow intensity based on time remaining
-  const pulseClass = useMemo(() => {
-    if (!timeRemaining) return "";
+  // Calculate progressive border and glow colors based on time remaining
+  const { borderColor, glowColor, glowStyle } = useMemo(() => {
+    if (!timeRemaining || timeRemaining <= 0) {
+      // Spawned - bright red
+      return {
+        borderColor: "border-red-500",
+        glowColor: "shadow-red-500/50",
+        glowStyle: "0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3)",
+      };
+    }
 
     const minutesRemaining = timeRemaining / (1000 * 60);
 
-    if (boss.status === "spawned") {
-      return "pulse-glow-fast";
+    if (minutesRemaining < 10) {
+      // Very close (<10 min) - red
+      return {
+        borderColor: "border-red-500",
+        glowColor: "shadow-red-500/40",
+        glowStyle: "0 0 16px rgba(239, 68, 68, 0.4), 0 0 32px rgba(239, 68, 68, 0.2)",
+      };
     } else if (minutesRemaining < 30) {
-      return "pulse-glow-fast";
+      // Close (<30 min) - orange-red
+      return {
+        borderColor: "border-orange-500",
+        glowColor: "shadow-orange-500/40",
+        glowStyle: "0 0 14px rgba(249, 115, 22, 0.4), 0 0 28px rgba(249, 115, 22, 0.2)",
+      };
     } else if (minutesRemaining < 60) {
-      return "pulse-glow-slow";
+      // Approaching (<1 hour) - orange
+      return {
+        borderColor: "border-orange-400",
+        glowColor: "shadow-orange-400/30",
+        glowStyle: "0 0 12px rgba(251, 146, 60, 0.3), 0 0 24px rgba(251, 146, 60, 0.15)",
+      };
+    } else if (minutesRemaining < 180) {
+      // Soon (<3 hours) - yellow
+      return {
+        borderColor: "border-yellow-400",
+        glowColor: "shadow-yellow-400/30",
+        glowStyle: "0 0 10px rgba(251, 191, 36, 0.3), 0 0 20px rgba(251, 191, 36, 0.15)",
+      };
+    } else if (minutesRemaining < 360) {
+      // Approaching (<6 hours) - light yellow/white
+      return {
+        borderColor: "border-yellow-300",
+        glowColor: "shadow-yellow-300/20",
+        glowStyle: "0 0 8px rgba(253, 224, 71, 0.2), 0 0 16px rgba(253, 224, 71, 0.1)",
+      };
+    } else {
+      // Far away - subtle green
+      return {
+        borderColor: "border-success",
+        glowColor: "shadow-success/20",
+        glowStyle: "0 0 6px rgba(16, 185, 129, 0.2), 0 0 12px rgba(16, 185, 129, 0.1)",
+      };
     }
-    return "";
-  }, [timeRemaining, boss.status]);
+  }, [timeRemaining]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} boss-card-pulse shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      style={{
+        boxShadow: glowStyle,
+      }}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -209,6 +238,7 @@ function BossCard({
                   size={160}
                   strokeWidth={10}
                   status={boss.status}
+                  timeRemaining={timeRemaining}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
