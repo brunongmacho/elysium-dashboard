@@ -14,7 +14,7 @@ export const TIME = {
 // Timezone constants
 export const TIMEZONE = {
   GMT_PLUS_8_OFFSET: 8 * TIME.HOUR,
-  GMT_PLUS_8_NAME: 'Asia/Singapore',
+  GMT_PLUS_8_NAME: 'Asia/Manila',
 } as const;
 
 // Boss timer constants

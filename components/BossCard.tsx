@@ -33,6 +33,15 @@ function BossCard({
   const [currentTime, setCurrentTime] = useState(Date.now());
   const createRipple = useRipple();
 
+  // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
+  const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
+  const [imgSrc, setImgSrc] = useState(imagePath);
+
+  // Reset image src when boss changes
+  useEffect(() => {
+    setImgSrc(imagePath);
+  }, [imagePath]);
+
   // Update current time every second for live countdown
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,9 +49,6 @@ function BossCard({
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
-  const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
 
   const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
@@ -156,13 +162,13 @@ function BossCard({
         {/* Boss Image */}
         <div className="relative w-20 h-20">
           <Image
-            src={imagePath}
+            src={imgSrc}
             alt={boss.bossName}
             fill
             className="object-contain"
-            onError={(e) => {
+            onError={() => {
               // Fallback to placeholder if image doesn't exist
-              (e.target as HTMLImageElement).src = "/bosses/placeholder.svg";
+              setImgSrc("/bosses/placeholder.svg");
             }}
           />
         </div>
