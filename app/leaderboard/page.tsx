@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useSWR from "swr";
 import type {
   AttendanceLeaderboardEntry,
@@ -10,6 +10,10 @@ import type { LeaderboardResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useDebounce } from "@/hooks/useDebounce";
+import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
+import LeaderboardPodium from "@/components/LeaderboardPodium";
+import ProgressBar from "@/components/ProgressBar";
+import SegmentedControl from "@/components/SegmentedControl";
 import { LEADERBOARD } from "@/lib/constants";
 
 export default function LeaderboardPage() {
@@ -87,6 +91,25 @@ export default function LeaderboardPage() {
   const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     data?.data || [];
 
+  // Prepare podium data for top 3
+  const podiumData = useMemo(() => {
+    if (leaderboardData.length === 0) return [];
+
+    return leaderboardData.slice(0, 3).map((entry) => ({
+      rank: entry.rank,
+      memberId: entry.memberId,
+      username: entry.username,
+      value:
+        leaderboardType === "attendance"
+          ? (entry as AttendanceLeaderboardEntry).totalKills
+          : (entry as PointsLeaderboardEntry).pointsAvailable,
+      label:
+        leaderboardType === "attendance"
+          ? "Total Kills"
+          : "Points Available",
+    }));
+  }, [leaderboardData, leaderboardType]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -98,28 +121,21 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Leaderboard Type Tabs */}
-      <div className="flex gap-2 border-b border-primary/20">
-        <button
-          onClick={() => setLeaderboardType("attendance")}
-          className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
-            leaderboardType === "attendance"
-              ? "text-white border-primary"
-              : "text-gray-400 border-transparent hover:text-primary-light"
-          }`}
-        >
-          📊 Attendance
-        </button>
-        <button
-          onClick={() => setLeaderboardType("points")}
-          className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
-            leaderboardType === "points"
-              ? "text-white border-primary"
-              : "text-gray-400 border-transparent hover:text-primary-light"
-          }`}
-        >
-          💰 Points
-        </button>
+      <div className="flex justify-center">
+        <SegmentedControl
+          options={[
+            { value: "attendance", label: "Attendance", icon: "📊" },
+            { value: "points", label: "Points", icon: "💰" },
+          ]}
+          value={leaderboardType}
+          onChange={(value) => setLeaderboardType(value as "attendance" | "points")}
+        />
       </div>
+
+      {/* Podium for Top 3 */}
+      {!isLoading && !error && podiumData.length > 0 && (
+        <LeaderboardPodium entries={podiumData} type={leaderboardType} />
+      )}
 
       {/* Filters */}
       <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4">
@@ -240,33 +256,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Loading State */}
-      {isLoading && (
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-8 text-center">
-          <div className="flex items-center justify-center space-x-2 text-gray-400">
-            <svg
-              className="animate-spin h-8 w-8"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <p className="text-lg">Loading leaderboard...</p>
-          </div>
-        </div>
-      )}
+      {isLoading && <LeaderboardSkeleton />}
 
       {/* Error State */}
       {error && (
@@ -358,8 +348,20 @@ export default function LeaderboardPage() {
                         <td className="px-4 py-3 text-right text-success">
                           {(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3 text-right text-info">
-                          {(entry as AttendanceLeaderboardEntry).attendanceRate}%
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1">
+                              <ProgressBar
+                                value={(entry as AttendanceLeaderboardEntry).attendanceRate}
+                                color="info"
+                                showPercentage={false}
+                                className="min-w-[100px]"
+                              />
+                            </div>
+                            <span className="text-info font-semibold text-sm min-w-[45px] text-right">
+                              {(entry as AttendanceLeaderboardEntry).attendanceRate}%
+                            </span>
+                          </div>
                         </td>
                       </>
                     ) : (
@@ -373,8 +375,20 @@ export default function LeaderboardPage() {
                         <td className="px-4 py-3 text-right text-danger">
                           {(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
-                        <td className="px-4 py-3 text-right text-warning">
-                          {(entry as PointsLeaderboardEntry).consumptionRate}%
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1">
+                              <ProgressBar
+                                value={(entry as PointsLeaderboardEntry).consumptionRate}
+                                color="warning"
+                                showPercentage={false}
+                                className="min-w-[100px]"
+                              />
+                            </div>
+                            <span className="text-warning font-semibold text-sm min-w-[45px] text-right">
+                              {(entry as PointsLeaderboardEntry).consumptionRate}%
+                            </span>
+                          </div>
                         </td>
                       </>
                     )}

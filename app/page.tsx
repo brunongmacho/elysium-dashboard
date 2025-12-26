@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import toast from "react-hot-toast";
 import BossTimerGrid from "@/components/BossTimerGrid";
+import { BossGridSkeleton } from "@/components/SkeletonLoader";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher, fetchJson } from "@/lib/fetch-utils";
@@ -109,59 +111,35 @@ export default function Home() {
       {/* Stats Bar */}
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
-            <div className="text-2xl font-bold text-white">{data.count}</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center hover:scale-105 transition-transform duration-200">
+            <div className="text-2xl font-bold text-white">
+              <AnimatedCounter value={data.count} />
+            </div>
             <div className="text-sm text-gray-400">Total Bosses</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 text-center glow-danger">
+          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 text-center glow-danger hover:scale-105 transition-transform duration-200">
             <div className="text-2xl font-bold text-danger">
-              {data.bosses.filter((b) => b.status === "spawned").length}
+              <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
             </div>
             <div className="text-sm text-gray-400">Spawned</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-warning p-4 text-center glow-warning">
+          <div className="glass backdrop-blur-sm rounded-lg border border-warning p-4 text-center glow-warning hover:scale-105 transition-transform duration-200">
             <div className="text-2xl font-bold text-warning">
-              {data.bosses.filter((b) => b.status === "soon").length}
+              <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
             </div>
             <div className="text-sm text-gray-400">Soon (&lt;30min)</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-success p-4 text-center glow-success">
+          <div className="glass backdrop-blur-sm rounded-lg border border-success p-4 text-center glow-success hover:scale-105 transition-transform duration-200">
             <div className="text-2xl font-bold text-success">
-              {data.bosses.filter((b) => b.status === "ready").length}
+              <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
             </div>
-            <div className="text-sm text-gray-400">Ready</div>
+            <div className="text-sm text-gray-400">Tracking</div>
           </div>
         </div>
       )}
 
       {/* Loading State */}
-      {isLoading && (
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-8 text-center">
-          <div className="flex items-center justify-center space-x-2 text-gray-400">
-            <svg
-              className="animate-spin h-8 w-8"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <p className="text-lg">Loading boss timers...</p>
-          </div>
-        </div>
-      )}
+      {isLoading && <BossGridSkeleton count={8} />}
 
       {/* Error State */}
       {error && (

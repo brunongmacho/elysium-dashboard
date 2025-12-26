@@ -114,7 +114,7 @@ export default function BossTimerGrid({
                 🔴 Spawned ({statusCounts.spawned})
               </option>
               <option value="soon">🟡 Soon ({statusCounts.soon})</option>
-              <option value="ready">🟢 Ready ({statusCounts.ready})</option>
+              <option value="ready">🟢 Tracking ({statusCounts.ready})</option>
             </select>
           </div>
         </div>
@@ -128,14 +128,19 @@ export default function BossTimerGrid({
       {/* Boss Grid */}
       {filteredBosses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredBosses.map((boss) => (
-            <BossCard
+          {filteredBosses.map((boss, index) => (
+            <div
               key={boss.bossName}
-              boss={boss}
-              onMarkAsKilled={onMarkAsKilled}
-              canMarkAsKilled={canMarkAsKilled}
-              userName={userName}
-            />
+              className="fade-in-up"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <BossCard
+                boss={boss}
+                onMarkAsKilled={onMarkAsKilled}
+                canMarkAsKilled={canMarkAsKilled}
+                userName={userName}
+              />
+            </div>
           ))}
         </div>
       ) : (
