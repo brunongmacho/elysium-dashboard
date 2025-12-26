@@ -397,7 +397,7 @@ export default function LeaderboardPage() {
       )}
 
       {/* Last Update Time */}
-      {data && (
+      {data && data.timestamp && (
         <div className="text-center text-xs text-gray-500">
           Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>
