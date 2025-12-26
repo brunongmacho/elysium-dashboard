@@ -54,7 +54,15 @@ export interface MemberProfileResponse extends ApiResponse {
 
 // Boss kill update response
 export interface BossKillResponse extends ApiResponse {
-  boss: BossTimerDisplay;
+  data: {
+    bossName: string;
+    lastKillTime: string;
+    nextSpawnTime: string;
+    killedBy: string;
+  };
+  message?: string;
+  modified?: boolean;
+  upserted?: boolean;
 }
 
 // Discord types (to replace 'as any' casts)

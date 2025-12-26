@@ -44,9 +44,9 @@ export default function Home() {
         }
       );
 
-      if (result.success && result.boss) {
-        const nextSpawnMsg = result.boss.nextSpawnTime
-          ? `\nNext spawn: ${toLocaleStringGMT8(result.boss.nextSpawnTime)}`
+      if (result.success && result.data) {
+        const nextSpawnMsg = result.data.nextSpawnTime
+          ? `\nNext spawn: ${toLocaleStringGMT8(result.data.nextSpawnTime)}`
           : '';
         toast.success(
           `${bossName} marked as killed!${nextSpawnMsg}`,
