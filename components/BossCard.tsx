@@ -62,20 +62,40 @@ function BossCard({
 
   // Calculate progress percentage and time remaining
   const { progressPercentage, timeRemaining } = useMemo(() => {
-    if (!boss.nextSpawnTime || !boss.interval) {
+    if (!boss.nextSpawnTime) {
       return { progressPercentage: 0, timeRemaining: null };
     }
 
     const now = new Date().getTime();
     const spawnTime = new Date(boss.nextSpawnTime).getTime();
-    const intervalMs = boss.interval * 60 * 60 * 1000; // Convert hours to ms
-
-    const elapsed = intervalMs - (spawnTime - now);
-    const percentage = Math.min(Math.max((elapsed / intervalMs) * 100, 0), 100);
     const remaining = spawnTime - now;
 
+    let percentage = 0;
+
+    if (boss.type === "timer" && boss.interval) {
+      // Timer-based: Calculate based on respawn interval
+      const intervalMs = boss.interval * 60 * 60 * 1000;
+      const elapsed = intervalMs - remaining;
+      percentage = Math.min(Math.max((elapsed / intervalMs) * 100, 0), 100);
+    } else {
+      // Scheduled: Calculate progress based on 24-hour countdown window
+      const twentyFourHours = 24 * 60 * 60 * 1000;
+      const timeUntilSpawn = remaining;
+
+      if (timeUntilSpawn <= 0) {
+        // Already spawned
+        percentage = 100;
+      } else if (timeUntilSpawn >= twentyFourHours) {
+        // More than 24 hours away, show as 0%
+        percentage = 0;
+      } else {
+        // Within 24 hours, show countdown progress
+        percentage = ((twentyFourHours - timeUntilSpawn) / twentyFourHours) * 100;
+      }
+    }
+
     return { progressPercentage: percentage, timeRemaining: remaining };
-  }, [boss.nextSpawnTime, boss.interval]);
+  }, [boss.nextSpawnTime, boss.interval, boss.type]);
 
   // Determine pulsing glow intensity based on time remaining
   const pulseClass = useMemo(() => {
@@ -158,24 +178,24 @@ function BossCard({
 
           {/* Countdown Timer with Circular Progress */}
           <div className="flex flex-col items-center gap-3">
-            {boss.type === "timer" && boss.interval && (
-              <div className="relative">
-                <CircularProgress
-                  percentage={progressPercentage}
-                  size={100}
-                  strokeWidth={6}
-                  status={boss.status}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-xs text-gray-400">Progress</div>
-                    <div className="text-sm font-bold text-white">
-                      {Math.round(progressPercentage)}%
-                    </div>
+            <div className="relative">
+              <CircularProgress
+                percentage={progressPercentage}
+                size={100}
+                strokeWidth={6}
+                status={boss.status}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-xs text-gray-400">
+                    {boss.type === "timer" ? "Progress" : "Countdown"}
+                  </div>
+                  <div className="text-sm font-bold text-white">
+                    {Math.round(progressPercentage)}%
                   </div>
                 </div>
               </div>
-            )}
+            </div>
             <Countdown targetDate={new Date(boss.nextSpawnTime)} />
           </div>
         </div>
