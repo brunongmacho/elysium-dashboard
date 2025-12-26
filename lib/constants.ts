@@ -45,3 +45,9 @@ export const VALIDATION = {
   SEARCH_MIN_LENGTH: 1,
   SEARCH_MAX_LENGTH: 50,
 } as const;
+
+// Auth/Session constants
+export const AUTH = {
+  CACHE_AGE: 5 * TIME.MINUTE, // Refresh Discord data every 5 minutes
+  SESSION_MAX_AGE: 30 * TIME.MINUTE, // Session expires after 30 minutes
+} as const;

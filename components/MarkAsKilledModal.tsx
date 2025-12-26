@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { format } from "date-fns";
 
@@ -24,11 +24,34 @@ export default function MarkAsKilledModal({
   const [spawnTime, setSpawnTime] = useState("");
   const [setMode, setSetMode] = useState<"kill" | "spawn">("kill");
   const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const firstInputRef = useRef<HTMLButtonElement>(null);
 
   // Handle mounting for SSR compatibility
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      // Focus first interactive element when modal opens
+      setTimeout(() => {
+        firstInputRef.current?.focus();
+      }, 0);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   // Initialize with current time when modal opens
   useEffect(() => {
@@ -60,9 +83,19 @@ export default function MarkAsKilledModal({
   if (!isOpen || !mounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 relative z-[10000]">
-        <h2 className="text-2xl font-bold text-white mb-4">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div
+        ref={modalRef}
+        className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 relative z-[10000]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="modal-title" className="text-2xl font-bold text-white mb-4">
           Mark {bossName} as Killed
         </h2>
 
@@ -80,6 +113,7 @@ export default function MarkAsKilledModal({
             </label>
             <div className="flex gap-2">
               <button
+                ref={firstInputRef}
                 type="button"
                 onClick={() => setSetMode("kill")}
                 className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
@@ -87,6 +121,7 @@ export default function MarkAsKilledModal({
                     ? "bg-blue-600 text-white"
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                 }`}
+                aria-label="Set kill time mode"
               >
                 Kill Time
               </button>
@@ -98,6 +133,7 @@ export default function MarkAsKilledModal({
                     ? "bg-blue-600 text-white"
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                 }`}
+                aria-label="Set spawn time mode"
               >
                 Spawn Time
               </button>
@@ -132,6 +168,7 @@ export default function MarkAsKilledModal({
                     onChange={(e) => setKillTime(e.target.value)}
                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required={!useCurrentTime}
+                    aria-label="Select kill time"
                   />
                   <p className="text-xs text-gray-400 mt-1">
                     Spawn time will be calculated automatically
@@ -153,6 +190,7 @@ export default function MarkAsKilledModal({
                 onChange={(e) => setSpawnTime(e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
+                aria-label="Select spawn time"
               />
               <p className="text-xs text-gray-400 mt-1">
                 Set exact spawn time directly
@@ -166,12 +204,14 @@ export default function MarkAsKilledModal({
               type="button"
               onClick={onClose}
               className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition-colors duration-200"
+              aria-label="Cancel and close modal"
             >
               Cancel
             </button>
             <button
               type="submit"
               className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors duration-200"
+              aria-label={`Confirm marking ${bossName} as killed`}
             >
               Confirm
             </button>

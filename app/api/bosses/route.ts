@@ -5,6 +5,8 @@
 
 import { NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
+import { getBossNameCleaningStages } from "@/lib/mongodb-utils";
+import { BOSS_TIMER } from "@/lib/constants";
 import {
   getAllBossNames,
   getBossPoints,
@@ -41,26 +43,7 @@ export async function GET() {
 
     // Calculate kill counts for all bosses (case-insensitive, remove #1 suffix)
     const killCountPipeline = [
-      {
-        $addFields: {
-          regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
-        }
-      },
-      {
-        $addFields: {
-          cleanBossName: {
-            $cond: {
-              if: "$regexMatch",
-              then: {
-                $trim: {
-                  input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
-                }
-              },
-              else: "$bossName"
-            }
-          }
-        }
-      },
+      ...getBossNameCleaningStages(),
       {
         $group: {
           _id: {
@@ -108,11 +91,10 @@ export async function GET() {
         let useTimer = false;
 
         if (timer && timer.nextSpawnTime) {
-          // Check if we're still within the grace period (35 minutes after expected spawn)
+          // Check if we're still within the grace period
           const now = new Date();
           const spawnTime = new Date(timer.nextSpawnTime);
-          const gracePeriodMs = 35 * 60 * 1000; // 35 minutes in milliseconds
-          const gracePeriodEnd = new Date(spawnTime.getTime() + gracePeriodMs);
+          const gracePeriodEnd = new Date(spawnTime.getTime() + BOSS_TIMER.GRACE_PERIOD);
 
           // Use timer data if we're still within grace period
           if (now <= gracePeriodEnd) {
