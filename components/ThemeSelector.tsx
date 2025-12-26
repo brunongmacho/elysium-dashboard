@@ -1,13 +1,20 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Track component mount for SSR compatibility
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Calculate dropdown position when opened
   useEffect(() => {
@@ -41,21 +48,23 @@ export default function ThemeSelector() {
         </svg>
       </button>
 
-      {/* Theme Dropdown */}
-      {isOpen && (
+      {/* Theme Dropdown Portal - Renders outside React hierarchy */}
+      {mounted && isOpen && createPortal(
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-[9998]"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+            style={{ zIndex: 999999 }}
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Dropdown Menu - Fixed positioning */}
+          {/* Dropdown Menu */}
           <div
-            className="fixed w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 z-[9999] overflow-hidden"
+            className="fixed w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
             style={{
               top: `${position.top}px`,
-              right: `${position.right}px`
+              right: `${position.right}px`,
+              zIndex: 1000000
             }}
           >
             <div className="p-3 border-b border-gray-700">
@@ -123,7 +132,8 @@ export default function ThemeSelector() {
               </p>
             </div>
           </div>
-        </>
+        </>,
+        document.body
       )}
     </div>
   );
