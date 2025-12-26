@@ -144,7 +144,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeName>('default');
+  const [currentTheme, setCurrentTheme] = useState<ThemeName>('crimson');
   const [mounted, setMounted] = useState(false);
 
   // Load theme from localStorage on mount (only on client)
@@ -153,6 +153,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const savedTheme = localStorage.getItem('guild-theme') as ThemeName;
     if (savedTheme && themes[savedTheme]) {
       setCurrentTheme(savedTheme);
+    } else {
+      // Set default theme if no saved theme
+      setCurrentTheme('crimson');
     }
   }, []);
 

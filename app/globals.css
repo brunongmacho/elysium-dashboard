@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Guild Theme Colors - Customize in lib/theme.ts */
-  --color-primary: #3b82f6;
-  --color-primary-dark: #1d4ed8;
-  --color-primary-light: #93c5fd;
+  /* Guild Theme Colors - Default: Crimson War */
+  --color-primary: #dc2626;
+  --color-primary-dark: #991b1b;
+  --color-primary-light: #fca5a5;
 
-  --color-accent: #d946ef;
-  --color-accent-dark: #a21caf;
-  --color-accent-light: #f0abfc;
+  --color-accent: #f97316;
+  --color-accent-dark: #c2410c;
+  --color-accent-light: #fdba74;
 
   --color-success: #10b981;
   --color-warning: #f59e0b;
-  --color-danger: #ef4444;
+  --color-danger: #dc2626;
   --color-info: #3b82f6;
 
   --color-bg-primary: #111827;
