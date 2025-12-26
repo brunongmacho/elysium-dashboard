@@ -14,7 +14,7 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
-import { LEADERBOARD } from "@/lib/constants";
+import { LEADERBOARD, UI } from "@/lib/constants";
 
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
@@ -96,8 +96,8 @@ export default function LeaderboardPage() {
   // Fetch podium data (top 3, no search)
   const { data: podiumResponse } = useSWR<LeaderboardResponse>(podiumApiUrl, swrFetcher, {
     refreshInterval: 30000,
-    errorRetryCount: 3,
-    errorRetryInterval: 5000,
+    errorRetryCount: UI.ERROR_RETRY_COUNT,
+    errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
     shouldRetryOnError: (err) => {
       // Only retry on network errors, not on 4xx client errors
       if (err?.status && err.status >= 400 && err.status < 500) {
@@ -110,8 +110,8 @@ export default function LeaderboardPage() {
   // Fetch table data (with search filter)
   const { data, error, isLoading } = useSWR<LeaderboardResponse>(tableApiUrl, swrFetcher, {
     refreshInterval: 30000,
-    errorRetryCount: 3,
-    errorRetryInterval: 5000,
+    errorRetryCount: UI.ERROR_RETRY_COUNT,
+    errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
     shouldRetryOnError: (err) => {
       // Only retry on network errors, not on 4xx client errors
       if (err?.status && err.status >= 400 && err.status < 500) {

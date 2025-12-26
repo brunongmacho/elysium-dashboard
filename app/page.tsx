@@ -11,7 +11,7 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher, fetchJson } from "@/lib/fetch-utils";
-import { BOSS_TIMER } from "@/lib/constants";
+import { BOSS_TIMER, UI } from "@/lib/constants";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -25,8 +25,8 @@ export default function Home() {
     {
       refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
       revalidateOnFocus: true,
-      errorRetryCount: 3,
-      errorRetryInterval: 5000,
+      errorRetryCount: UI.ERROR_RETRY_COUNT,
+      errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
       shouldRetryOnError: (err) => {
         // Only retry on network errors, not on 4xx client errors
         if (err?.status && err.status >= 400 && err.status < 500) {
@@ -132,7 +132,7 @@ export default function Home() {
             setIsRefreshing(true);
             forceRefresh();
             // Small delay to show loading state
-            setTimeout(() => setIsRefreshing(false), 500);
+            setTimeout(() => setIsRefreshing(false), UI.REFRESH_BUTTON_DELAY);
           }}
           disabled={isRefreshing}
           className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"

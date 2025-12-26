@@ -51,3 +51,13 @@ export const AUTH = {
   CACHE_AGE: 5 * TIME.MINUTE, // Refresh Discord data every 5 minutes
   SESSION_MAX_AGE: 30 * TIME.MINUTE, // Session expires after 30 minutes
 } as const;
+
+// UI/UX constants
+export const UI = {
+  BACK_TO_TOP_THRESHOLD: 300, // pixels scrolled before showing back-to-top button
+  ANIMATION_DURATION_MS: 300, // default animation duration
+  TRANSITION_DURATION_SLOW: 1000, // slow transitions
+  ERROR_RETRY_INTERVAL: 5000, // SWR error retry interval
+  ERROR_RETRY_COUNT: 3, // maximum retry attempts
+  REFRESH_BUTTON_DELAY: 500, // delay to show loading state on manual refresh
+} as const;
