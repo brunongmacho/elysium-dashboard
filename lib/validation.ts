@@ -16,24 +16,23 @@ export const memberIdSchema = z.string()
 
 // Search query validation
 export const searchSchema = z.string()
-  .min(VALIDATION.SEARCH_MIN_LENGTH)
   .max(VALIDATION.SEARCH_MAX_LENGTH)
   .optional()
   .default('');
 
 // Leaderboard query params validation
 export const leaderboardQuerySchema = z.object({
-  type: z.enum(['attendance', 'points']).optional().default('attendance'),
-  period: z.enum(['all', 'monthly', 'weekly']).optional().default('all'),
+  type: z.enum(['attendance', 'points']).nullable().optional().default('attendance'),
+  period: z.enum(['all', 'monthly', 'weekly']).nullable().optional().default('all'),
   limit: z.coerce.number()
     .int()
     .min(1)
     .max(LEADERBOARD.MAX_LIMIT)
     .optional()
     .default(LEADERBOARD.DEFAULT_LIMIT),
-  search: searchSchema,
-  month: z.string().regex(/^\d{4}-\d{2}$/).optional(), // YYYY-MM format
-  week: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), // YYYY-MM-DD format
+  search: z.string().nullable().optional().default(''),
+  month: z.string().regex(/^\d{4}-\d{2}$/).nullable().optional(), // YYYY-MM format
+  week: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(), // YYYY-MM-DD format
 });
 
 // Boss kill update validation
