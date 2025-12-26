@@ -27,6 +27,11 @@ export default function Home() {
     }
   );
 
+  // Helper to force refresh after user actions by changing the cache key
+  const forceRefresh = useCallback(() => {
+    setRefreshKey((k) => k + 1);
+  }, []);
+
   const handleMarkAsKilled = useCallback(async (
     bossName: string,
     killedBy: string,
@@ -54,7 +59,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await mutate();
+        forceRefresh();
       } else {
         toast.error(result.error || "Failed to mark boss as killed", { id: loadingToast });
       }
@@ -65,7 +70,7 @@ export default function Home() {
         { id: loadingToast }
       );
     }
-  }, [mutate]);
+  }, [forceRefresh]);
 
   const handleCancelSpawn = useCallback(async (bossName: string) => {
     const loadingToast = toast.loading(`Cancelling spawn for ${bossName}...`);
@@ -84,7 +89,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await mutate();
+        forceRefresh();
       } else {
         toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
       }
@@ -95,7 +100,7 @@ export default function Home() {
         { id: loadingToast }
       );
     }
-  }, [mutate]);
+  }, [forceRefresh]);
 
   return (
     <div className="space-y-6">
@@ -112,11 +117,11 @@ export default function Home() {
 
         {/* Refresh Button */}
         <button
-          onClick={async () => {
+          onClick={() => {
             setIsRefreshing(true);
-            await mutate();
-            setRefreshKey((k) => k + 1);
-            setIsRefreshing(false);
+            forceRefresh();
+            // Small delay to show loading state
+            setTimeout(() => setIsRefreshing(false), 500);
           }}
           disabled={isRefreshing}
           className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
