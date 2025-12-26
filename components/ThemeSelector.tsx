@@ -7,7 +7,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [position, setPosition] = useState({ top: 0, right: 0, isMobile: false });
   const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -20,10 +20,23 @@ export default function ThemeSelector() {
   useEffect(() => {
     if (isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      setPosition({
-        top: rect.bottom + 8, // 8px below button
-        right: window.innerWidth - rect.right, // Align to right edge
-      });
+      const isMobile = window.innerWidth < 640; // sm breakpoint
+
+      if (isMobile) {
+        // On mobile, center the dropdown horizontally
+        setPosition({
+          top: rect.bottom + 8,
+          right: 0,
+          isMobile: true,
+        });
+      } else {
+        // On desktop, align to button's right edge
+        setPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+          isMobile: false,
+        });
+      }
     }
   }, [isOpen]);
 
@@ -79,12 +92,14 @@ export default function ThemeSelector() {
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Dropdown Menu - Responsive width */}
+          {/* Dropdown Menu - Responsive positioning */}
           <div
             className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
             style={{
               top: `${position.top}px`,
-              right: `${position.right}px`,
+              left: position.isMobile ? '50%' : 'auto',
+              right: position.isMobile ? 'auto' : `${position.right}px`,
+              transform: position.isMobile ? 'translateX(-50%)' : 'none',
               zIndex: 1000000
             }}
             role="menu"
