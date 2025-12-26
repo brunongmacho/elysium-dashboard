@@ -22,8 +22,9 @@ export default function CircularProgress({
   showPercentage = false,
   className = "",
 }: CircularProgressProps) {
-  // Add padding to accommodate glow effect
-  const glowPadding = 20;
+  // Add generous padding to accommodate maximum glow effect (up to 30px)
+  // Using 40px padding to ensure glow never clips
+  const glowPadding = 40;
   const svgSize = size + glowPadding * 2;
   const centerOffset = size / 2 + glowPadding;
 
@@ -42,11 +43,12 @@ export default function CircularProgress({
   }, [timeRemaining]);
 
   return (
-    <div className={`relative inline-flex items-center justify-center ${className}`}>
+    <div className={`relative inline-flex items-center justify-center overflow-visible ${className}`}>
       <svg
         width={svgSize}
         height={svgSize}
-        className="transform -rotate-90"
+        className="transform -rotate-90 overflow-visible"
+        style={{ overflow: 'visible' }}
       >
         {/* Background circle */}
         <circle
