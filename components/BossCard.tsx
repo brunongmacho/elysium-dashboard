@@ -186,17 +186,17 @@ function BossCard({
 
           {/* Countdown Timer with Circular Progress */}
           <div className="flex justify-center py-6">
-            <div className="relative p-6">
+            <div className="relative p-8">
               <CircularProgress
                 percentage={progressPercentage}
-                size={140}
-                strokeWidth={8}
+                size={160}
+                strokeWidth={10}
                 status={boss.status}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center px-2">
                   <div className="text-xs text-gray-400 mb-1">Countdown</div>
-                  <div className="font-mono text-lg font-bold text-white leading-tight">
+                  <div className="font-mono text-xl font-bold text-white leading-tight">
                     {timeRemaining !== null
                       ? formatTimeRemaining(timeRemaining)
                       : "--:--:--"}
