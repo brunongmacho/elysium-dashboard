@@ -290,7 +290,7 @@ export default function LeaderboardPage() {
 
       {/* Leaderboard Table */}
       {!isLoading && !error && leaderboardData.length > 0 && (
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden card-3d">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-primary/20 border-b border-primary/30">
@@ -339,7 +339,7 @@ export default function LeaderboardPage() {
                 {leaderboardData.map((entry, index) => (
                   <tr
                     key={entry.memberId}
-                    className="hover:bg-primary/10 transition-all duration-200 group hover:scale-[1.01] hover:shadow-lg"
+                    className="hover:bg-primary/10 transition-all duration-200 group"
                   >
                     <td className="px-4 py-3 text-white font-semibold">
                       {entry.rank <= 3 ? (
