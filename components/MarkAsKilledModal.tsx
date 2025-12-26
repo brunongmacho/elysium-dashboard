@@ -71,11 +71,12 @@ export default function MarkAsKilledModal({
 
     if (setMode === "kill") {
       // Set kill time mode - spawn time will be calculated
-      const timeToSend = useCurrentTime ? undefined : killTime;
+      const timeToSend = useCurrentTime ? undefined : new Date(killTime).toISOString();
       onConfirm(defaultKilledBy, timeToSend, undefined);
     } else {
       // Set spawn time mode - directly set when boss will spawn
-      onConfirm(defaultKilledBy, undefined, spawnTime);
+      const spawnTimeISO = new Date(spawnTime).toISOString();
+      onConfirm(defaultKilledBy, undefined, spawnTimeISO);
     }
     onClose();
   };
