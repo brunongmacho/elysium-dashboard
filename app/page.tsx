@@ -24,15 +24,13 @@ export default function Home() {
     {
       refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
       revalidateOnFocus: true,
-      dedupingInterval: 0, // Disable deduping to allow immediate refreshes
     }
   );
 
-  // Helper to force refresh by incrementing key
-  const forceRefresh = useCallback(async () => {
+  // Helper to force refresh after user actions by changing the cache key
+  const forceRefresh = useCallback(() => {
     setRefreshKey((k) => k + 1);
-    await mutate();
-  }, [mutate]);
+  }, []);
 
   const handleMarkAsKilled = useCallback(async (
     bossName: string,
@@ -61,7 +59,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await forceRefresh();
+        forceRefresh();
       } else {
         toast.error(result.error || "Failed to mark boss as killed", { id: loadingToast });
       }
@@ -91,7 +89,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await forceRefresh();
+        forceRefresh();
       } else {
         toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
       }
@@ -119,10 +117,11 @@ export default function Home() {
 
         {/* Refresh Button */}
         <button
-          onClick={async () => {
+          onClick={() => {
             setIsRefreshing(true);
-            await forceRefresh();
-            setIsRefreshing(false);
+            forceRefresh();
+            // Small delay to show loading state
+            setTimeout(() => setIsRefreshing(false), 500);
           }}
           disabled={isRefreshing}
           className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
