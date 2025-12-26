@@ -131,7 +131,7 @@ body {
     0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Dramatic RPG Title - Embossed with strong shadow */
+/* Dramatic RPG Title - Embossed with strong shadow (Theme-aware) */
 .text-rpg-title {
   font-family: var(--font-cinzel-decorative), serif;
   font-weight: 900;
@@ -144,7 +144,7 @@ body {
     0 4px 0 rgba(0, 0, 0, 0.7),
     0 5px 0 rgba(0, 0, 0, 0.6),
     0 6px 1px rgba(0, 0, 0, 0.5),
-    0 0 10px rgba(59, 130, 246, 0.4),
+    0 0 10px color-mix(in srgb, var(--color-primary) 40%, transparent),
     0 1px 3px rgba(0, 0, 0, 0.9),
     0 3px 5px rgba(0, 0, 0, 0.5),
     0 5px 10px rgba(0, 0, 0, 0.4),
@@ -152,44 +152,44 @@ body {
     0 20px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Golden/Metallic Text - For important headers */
+/* Metallic Primary Text - For important headers (Theme-aware) */
 .text-gold {
   background: linear-gradient(
     180deg,
-    #ffd700 0%,
-    #ffed4e 20%,
-    #f4a460 40%,
-    #daa520 60%,
-    #b8860b 80%,
-    #8b6914 100%
+    color-mix(in srgb, var(--color-primary) 100%, white 40%) 0%,
+    color-mix(in srgb, var(--color-primary) 100%, white 20%) 20%,
+    var(--color-primary) 40%,
+    color-mix(in srgb, var(--color-primary) 100%, black 20%) 60%,
+    color-mix(in srgb, var(--color-primary) 100%, black 40%) 80%,
+    color-mix(in srgb, var(--color-primary) 100%, black 60%) 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.9),
-    0 0 10px rgba(255, 215, 0, 0.5);
-  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+    0 0 10px color-mix(in srgb, var(--color-primary) 50%, transparent);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 40%, transparent));
 }
 
-/* Silver/Platinum Text - For secondary headers */
+/* Metallic Accent Text - For secondary headers (Theme-aware) */
 .text-silver {
   background: linear-gradient(
     180deg,
-    #e8e8e8 0%,
-    #ffffff 20%,
-    #c0c0c0 40%,
-    #a8a8a8 60%,
-    #909090 80%,
-    #787878 100%
+    color-mix(in srgb, var(--color-accent) 100%, white 60%) 0%,
+    color-mix(in srgb, var(--color-accent) 100%, white 40%) 20%,
+    color-mix(in srgb, var(--color-accent) 100%, white 10%) 40%,
+    var(--color-accent) 60%,
+    color-mix(in srgb, var(--color-accent) 100%, black 20%) 80%,
+    color-mix(in srgb, var(--color-accent) 100%, black 40%) 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(192, 192, 192, 0.5);
-  filter: drop-shadow(0 0 6px rgba(192, 192, 192, 0.3));
+    0 0 10px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 30%, transparent));
 }
 
 /* Glowing Energy Text - For active/spawned bosses */
