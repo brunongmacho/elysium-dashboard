@@ -371,7 +371,7 @@ export default function LeaderboardPage() {
                     <td className="px-2 sm:px-4 py-2 sm:py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-primary hover:text-accent font-medium hover:underline transition-all duration-200 group-hover:text-accent text-xs sm:text-sm font-game"
+                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
                       >
                         {entry.username}
                       </a>
@@ -381,7 +381,7 @@ export default function LeaderboardPage() {
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
                           {(entry as AttendanceLeaderboardEntry).totalKills}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
                           +{(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3">
@@ -394,7 +394,7 @@ export default function LeaderboardPage() {
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-primary font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
+                            <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
                               {(entry as AttendanceLeaderboardEntry).attendanceRate}%
                             </span>
                           </div>
@@ -402,13 +402,13 @@ export default function LeaderboardPage() {
                       </>
                     ) : (
                       <>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent font-semibold text-sm sm:text-base font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base font-game-decorative">
                           {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary-bright text-sm sm:text-base hidden sm:table-cell font-game-decorative">
                           +{(entry as PointsLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger text-sm sm:text-base hidden md:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger-bright text-sm sm:text-base hidden md:table-cell font-game-decorative">
                           -{(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 hidden md:table-cell">
@@ -421,7 +421,7 @@ export default function LeaderboardPage() {
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-accent font-semibold text-sm min-w-[45px] text-right font-game-decorative">
+                            <span className="text-accent-bright font-semibold text-sm min-w-[45px] text-right font-game-decorative">
                               {(entry as PointsLeaderboardEntry).consumptionRate}%
                             </span>
                           </div>

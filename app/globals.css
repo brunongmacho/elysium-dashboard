@@ -159,20 +159,21 @@ body {
 .text-gold {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--color-primary) 100%, white 40%) 0%,
-    color-mix(in srgb, var(--color-primary) 100%, white 20%) 20%,
-    var(--color-primary) 40%,
-    color-mix(in srgb, var(--color-primary) 100%, black 20%) 60%,
-    color-mix(in srgb, var(--color-primary) 100%, black 40%) 80%,
-    color-mix(in srgb, var(--color-primary) 100%, black 60%) 100%
+    color-mix(in srgb, var(--color-primary) 100%, white 60%) 0%,
+    color-mix(in srgb, var(--color-primary) 100%, white 40%) 15%,
+    color-mix(in srgb, var(--color-primary) 100%, white 20%) 30%,
+    var(--color-primary) 50%,
+    color-mix(in srgb, var(--color-primary) 100%, black 15%) 70%,
+    color-mix(in srgb, var(--color-primary) 100%, black 35%) 85%,
+    color-mix(in srgb, var(--color-primary) 100%, black 50%) 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter:
-    drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 80%, transparent))
-    drop-shadow(0 0 16px color-mix(in srgb, var(--color-primary) 60%, transparent))
-    drop-shadow(0 0 24px color-mix(in srgb, var(--color-primary) 40%, transparent))
+    drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 50%, transparent))
+    drop-shadow(0 0 12px color-mix(in srgb, var(--color-primary) 35%, transparent))
+    drop-shadow(0 0 20px color-mix(in srgb, var(--color-primary) 25%, transparent))
     drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
 }
 
@@ -180,20 +181,22 @@ body {
 .text-silver {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--color-accent) 100%, white 60%) 0%,
-    color-mix(in srgb, var(--color-accent) 100%, white 40%) 20%,
-    color-mix(in srgb, var(--color-accent) 100%, white 10%) 40%,
+    color-mix(in srgb, var(--color-accent) 100%, white 75%) 0%,
+    color-mix(in srgb, var(--color-accent) 100%, white 55%) 15%,
+    color-mix(in srgb, var(--color-accent) 100%, white 30%) 30%,
+    color-mix(in srgb, var(--color-accent) 100%, white 10%) 45%,
     var(--color-accent) 60%,
-    color-mix(in srgb, var(--color-accent) 100%, black 20%) 80%,
-    color-mix(in srgb, var(--color-accent) 100%, black 40%) 100%
+    color-mix(in srgb, var(--color-accent) 100%, black 15%) 75%,
+    color-mix(in srgb, var(--color-accent) 100%, black 35%) 90%,
+    color-mix(in srgb, var(--color-accent) 100%, black 45%) 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter:
-    drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 80%, transparent))
-    drop-shadow(0 0 16px color-mix(in srgb, var(--color-accent) 60%, transparent))
-    drop-shadow(0 0 24px color-mix(in srgb, var(--color-accent) 40%, transparent))
+    drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 50%, transparent))
+    drop-shadow(0 0 12px color-mix(in srgb, var(--color-accent) 35%, transparent))
+    drop-shadow(0 0 20px color-mix(in srgb, var(--color-accent) 25%, transparent))
     drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
@@ -472,5 +475,22 @@ body {
 
   .border-accent {
     border-color: var(--color-accent);
+  }
+
+  /* Lighter text variants for better visibility */
+  .text-primary-bright {
+    color: color-mix(in srgb, var(--color-primary) 100%, white 30%);
+  }
+
+  .text-accent-bright {
+    color: color-mix(in srgb, var(--color-accent) 100%, white 30%);
+  }
+
+  .text-danger-bright {
+    color: color-mix(in srgb, var(--color-danger) 100%, white 20%);
+  }
+
+  .text-success-bright {
+    color: color-mix(in srgb, var(--color-success) 100%, white 20%);
   }
 }
