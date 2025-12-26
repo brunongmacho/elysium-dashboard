@@ -96,21 +96,21 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Glow effects */
+/* Glow effects - Use CSS variables for dynamic theming */
 .glow-primary {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
 .glow-accent {
-  box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 30%, transparent);
 }
 
 .glow-success {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-success) 30%, transparent);
 }
 
 .glow-danger {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-danger) 30%, transparent);
 }
 
 /* Text glow */
