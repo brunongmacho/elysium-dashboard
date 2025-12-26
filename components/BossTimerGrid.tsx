@@ -127,11 +127,11 @@ export default function BossTimerGrid({
 
       {/* Boss Grid */}
       {filteredBosses.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-visible">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2">
           {filteredBosses.map((boss, index) => (
             <div
               key={boss.bossName}
-              className="fade-in-up overflow-visible"
+              className="fade-in-up"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               <BossCard
