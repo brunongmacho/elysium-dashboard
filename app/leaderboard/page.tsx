@@ -75,27 +75,45 @@ export default function LeaderboardPage() {
     };
   });
 
-  // Build API URL
-  let apiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=${limit}&search=${debouncedSearch}`;
+  // Build API URL for podium (top 3, no search filter)
+  let podiumApiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=3`;
 
   if (period === "monthly" && selectedMonth) {
-    apiUrl += `&month=${selectedMonth}`;
+    podiumApiUrl += `&month=${selectedMonth}`;
   } else if (period === "weekly" && selectedWeek) {
-    apiUrl += `&week=${selectedWeek}`;
+    podiumApiUrl += `&week=${selectedWeek}`;
   }
 
-  const { data, error, isLoading } = useSWR<LeaderboardResponse>(apiUrl, swrFetcher, {
-    refreshInterval: 30000, // Refresh every 30 seconds
+  // Build API URL for table (with search filter)
+  let tableApiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=${limit}&search=${debouncedSearch}`;
+
+  if (period === "monthly" && selectedMonth) {
+    tableApiUrl += `&month=${selectedMonth}`;
+  } else if (period === "weekly" && selectedWeek) {
+    tableApiUrl += `&week=${selectedWeek}`;
+  }
+
+  // Fetch podium data (top 3, no search)
+  const { data: podiumResponse } = useSWR<LeaderboardResponse>(podiumApiUrl, swrFetcher, {
+    refreshInterval: 30000,
+  });
+
+  // Fetch table data (with search filter)
+  const { data, error, isLoading } = useSWR<LeaderboardResponse>(tableApiUrl, swrFetcher, {
+    refreshInterval: 30000,
   });
 
   const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     data?.data || [];
 
-  // Prepare podium data for top 3
-  const podiumData = useMemo(() => {
-    if (leaderboardData.length === 0) return [];
+  const podiumLeaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
+    podiumResponse?.data || [];
 
-    return leaderboardData.slice(0, 3).map((entry) => ({
+  // Prepare podium data for top 3 (uses separate API call without search filter)
+  const podiumData = useMemo(() => {
+    if (podiumLeaderboardData.length === 0) return [];
+
+    return podiumLeaderboardData.slice(0, 3).map((entry) => ({
       rank: entry.rank,
       memberId: entry.memberId,
       username: entry.username,
@@ -108,7 +126,7 @@ export default function LeaderboardPage() {
           ? "Total Kills"
           : "Points Available",
     }));
-  }, [leaderboardData, leaderboardType]);
+  }, [podiumLeaderboardData, leaderboardType]);
 
   return (
     <div className="space-y-6">
