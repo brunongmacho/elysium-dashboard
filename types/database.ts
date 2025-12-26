@@ -324,3 +324,23 @@ export interface MemberProfile extends Member {
   rank: number;
   totalMembers: number;
 }
+
+// ============================================================================
+// MONGODB AGGREGATION RESULT TYPES
+// ============================================================================
+
+export interface KillCountResult {
+  _id: string; // lowercase boss name
+  count: number;
+}
+
+export interface BossRotationDocument {
+  _id: string;
+  bossName: string;
+  currentIndex: number;
+  currentGuild: string;
+  isOurTurn: boolean;
+  guilds: string[];
+  nextGuild: string;
+  lastUpdated?: Date;
+}

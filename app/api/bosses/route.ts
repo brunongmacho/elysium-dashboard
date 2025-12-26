@@ -17,7 +17,7 @@ import {
   getTimeRemaining,
   getBossStatus,
 } from "@/lib/boss-config";
-import type { BossTimer, BossTimerDisplay } from "@/types/database";
+import type { BossTimer, BossTimerDisplay, KillCountResult, BossRotationDocument } from "@/types/database";
 
 // Force dynamic rendering - ensures route is not statically generated
 export const dynamic = 'force-dynamic';
@@ -44,19 +44,19 @@ export async function GET() {
     // Calculate kill counts for all bosses (case-insensitive, remove #1 suffix)
     const killCountResults = await db
       .collection("attendance")
-      .aggregate(buildKillCountPerBossPipeline())
+      .aggregate<KillCountResult>(buildKillCountPerBossPipeline())
       .toArray();
 
     const killCountMap = new Map<string, number>();
-    killCountResults.forEach((result: any) => {
+    killCountResults.forEach((result) => {
       killCountMap.set(result._id, result.count);
     });
 
     // Fetch rotation data for all bosses
-    const rotationCollection = db.collection('bossRotation');
+    const rotationCollection = db.collection<BossRotationDocument>('bossRotation');
     const allRotations = await rotationCollection.find({}).toArray();
-    const rotationMap = new Map<string, any>();
-    allRotations.forEach((rotation: any) => {
+    const rotationMap = new Map<string, BossTimerDisplay['rotation']>();
+    allRotations.forEach((rotation) => {
       rotationMap.set(rotation.bossName, {
         isRotating: true,
         currentIndex: rotation.currentIndex,

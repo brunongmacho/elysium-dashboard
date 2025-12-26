@@ -96,11 +96,29 @@ export default function LeaderboardPage() {
   // Fetch podium data (top 3, no search)
   const { data: podiumResponse } = useSWR<LeaderboardResponse>(podiumApiUrl, swrFetcher, {
     refreshInterval: 30000,
+    errorRetryCount: 3,
+    errorRetryInterval: 5000,
+    shouldRetryOnError: (err) => {
+      // Only retry on network errors, not on 4xx client errors
+      if (err?.status && err.status >= 400 && err.status < 500) {
+        return false;
+      }
+      return true;
+    },
   });
 
   // Fetch table data (with search filter)
   const { data, error, isLoading } = useSWR<LeaderboardResponse>(tableApiUrl, swrFetcher, {
     refreshInterval: 30000,
+    errorRetryCount: 3,
+    errorRetryInterval: 5000,
+    shouldRetryOnError: (err) => {
+      // Only retry on network errors, not on 4xx client errors
+      if (err?.status && err.status >= 400 && err.status < 500) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =

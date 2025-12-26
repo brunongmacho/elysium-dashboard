@@ -25,6 +25,15 @@ export default function Home() {
     {
       refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
       revalidateOnFocus: true,
+      errorRetryCount: 3,
+      errorRetryInterval: 5000,
+      shouldRetryOnError: (err) => {
+        // Only retry on network errors, not on 4xx client errors
+        if (err?.status && err.status >= 400 && err.status < 500) {
+          return false;
+        }
+        return true;
+      },
     }
   );
 
