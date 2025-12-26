@@ -29,20 +29,18 @@ export const leaderboardQuerySchema = z.object({
     .optional()
     .transform(val => {
       if (!val || val === '' || val === 'null' || val === 'undefined') {
-        return LEADERBOARD.MAX_LIMIT; // Default to max when not specified
+        return LEADERBOARD.DEFAULT_LIMIT; // Default when not specified
       }
       const parsed = parseInt(val, 10);
-      // If 0 or NaN, return max limit to show all
-      if (isNaN(parsed) || parsed === 0) {
-        return LEADERBOARD.MAX_LIMIT;
-      }
-      return parsed;
+      // Return 0 for unlimited, or the parsed value
+      return isNaN(parsed) ? LEADERBOARD.DEFAULT_LIMIT : parsed;
     })
     .pipe(
       z.number()
         .int()
-        .min(1, 'Too small: expected number to be >=1')
-        .max(LEADERBOARD.MAX_LIMIT)
+        .refine(val => val === 0 || (val >= 1 && val <= LEADERBOARD.MAX_LIMIT), {
+          message: `Limit must be 0 (unlimited) or between 1 and ${LEADERBOARD.MAX_LIMIT}`
+        })
     ),
   search: z.string().nullable().transform(val => val ?? ''),
   month: z.string().regex(/^\d{4}-\d{2}$/).nullable().optional(), // YYYY-MM format
