@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useCallback, memo, useMemo } from "react";
+import { useState, useCallback, memo, useMemo, useEffect } from "react";
 import Image from "next/image";
-import Countdown from "./Countdown";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
+import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
 
 interface BossCardProps {
@@ -24,7 +24,16 @@ function BossCard({
 }: BossCardProps) {
   const [isMarking, setIsMarking] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [currentTime, setCurrentTime] = useState(Date.now());
   const createRipple = useRipple();
+
+  // Update current time every second for live countdown
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
@@ -66,9 +75,8 @@ function BossCard({
       return { progressPercentage: 0, timeRemaining: null };
     }
 
-    const now = new Date().getTime();
     const spawnTime = new Date(boss.nextSpawnTime).getTime();
-    const remaining = spawnTime - now;
+    const remaining = spawnTime - currentTime;
 
     let percentage = 0;
 
@@ -95,7 +103,7 @@ function BossCard({
     }
 
     return { progressPercentage: percentage, timeRemaining: remaining };
-  }, [boss.nextSpawnTime, boss.interval, boss.type]);
+  }, [boss.nextSpawnTime, boss.interval, boss.type, currentTime]);
 
   // Determine pulsing glow intensity based on time remaining
   const pulseClass = useMemo(() => {
@@ -177,26 +185,25 @@ function BossCard({
           </div>
 
           {/* Countdown Timer with Circular Progress */}
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex justify-center">
             <div className="relative">
               <CircularProgress
                 percentage={progressPercentage}
-                size={100}
+                size={120}
                 strokeWidth={6}
                 status={boss.status}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-xs text-gray-400">
-                    {boss.type === "timer" ? "Progress" : "Countdown"}
-                  </div>
-                  <div className="text-sm font-bold text-white">
-                    {Math.round(progressPercentage)}%
+                <div className="text-center px-2">
+                  <div className="text-xs text-gray-400 mb-1">Countdown</div>
+                  <div className="font-mono text-base font-bold text-white leading-tight">
+                    {timeRemaining !== null
+                      ? formatTimeRemaining(timeRemaining)
+                      : "--:--:--"}
                   </div>
                 </div>
               </div>
             </div>
-            <Countdown targetDate={new Date(boss.nextSpawnTime)} />
           </div>
         </div>
       ) : (
