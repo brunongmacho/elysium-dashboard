@@ -29,10 +29,14 @@ export const leaderboardQuerySchema = z.object({
     .optional()
     .transform(val => {
       if (!val || val === '' || val === 'null' || val === 'undefined') {
-        return LEADERBOARD.DEFAULT_LIMIT;
+        return LEADERBOARD.MAX_LIMIT; // Default to max when not specified
       }
       const parsed = parseInt(val, 10);
-      return isNaN(parsed) ? LEADERBOARD.DEFAULT_LIMIT : parsed;
+      // If 0 or NaN, return max limit to show all
+      if (isNaN(parsed) || parsed === 0) {
+        return LEADERBOARD.MAX_LIMIT;
+      }
+      return parsed;
     })
     .pipe(
       z.number()
