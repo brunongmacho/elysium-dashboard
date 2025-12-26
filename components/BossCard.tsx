@@ -162,11 +162,33 @@ function BossCard({
     }
   }, [timeRemaining]);
 
+  // Calculate pulse speed based on time remaining
+  const pulseSpeed = useMemo(() => {
+    if (!timeRemaining || timeRemaining <= 0) {
+      return "0.8s"; // Very fast when spawned
+    }
+
+    const minutesRemaining = timeRemaining / (1000 * 60);
+
+    if (minutesRemaining < 10) {
+      return "1s"; // Very fast when <10 min
+    } else if (minutesRemaining < 30) {
+      return "1.5s"; // Fast when <30 min
+    } else if (minutesRemaining < 60) {
+      return "2s"; // Normal when <1 hour
+    } else if (minutesRemaining < 180) {
+      return "2.5s"; // Slower when <3 hours
+    } else {
+      return "3s"; // Slowest when far away
+    }
+  }, [timeRemaining]);
+
   return (
     <div
       className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} boss-card-pulse shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
       style={{
         boxShadow: glowStyle,
+        animationDuration: pulseSpeed,
       }}
     >
       {/* Header */}
