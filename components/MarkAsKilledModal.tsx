@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { format } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
+import { DEFAULT_TIMEZONE } from "@/lib/timezone";
 
 interface MarkAsKilledModalProps {
   bossName: string;
@@ -71,11 +73,15 @@ export default function MarkAsKilledModal({
 
     if (setMode === "kill") {
       // Set kill time mode - spawn time will be calculated
-      const timeToSend = useCurrentTime ? undefined : new Date(killTime).toISOString();
+      // Convert from GMT+8 to UTC since input is in GMT+8
+      const timeToSend = useCurrentTime
+        ? undefined
+        : fromZonedTime(killTime, DEFAULT_TIMEZONE).toISOString();
       onConfirm(defaultKilledBy, timeToSend, undefined);
     } else {
       // Set spawn time mode - directly set when boss will spawn
-      const spawnTimeISO = new Date(spawnTime).toISOString();
+      // Convert from GMT+8 to UTC since input is in GMT+8
+      const spawnTimeISO = fromZonedTime(spawnTime, DEFAULT_TIMEZONE).toISOString();
       onConfirm(defaultKilledBy, undefined, spawnTimeISO);
     }
     onClose();
