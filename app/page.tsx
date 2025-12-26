@@ -43,8 +43,11 @@ export default function Home() {
       );
 
       if (result.success && result.boss) {
+        const nextSpawnMsg = result.boss.nextSpawnTime
+          ? `\nNext spawn: ${toLocaleStringGMT8(result.boss.nextSpawnTime)}`
+          : '';
         toast.success(
-          `${bossName} marked as killed!\nNext spawn: ${toLocaleStringGMT8(result.boss.nextSpawnTime)}`,
+          `${bossName} marked as killed!${nextSpawnMsg}`,
           { id: loadingToast }
         );
         // Refresh the data (use mutate only, not both)
