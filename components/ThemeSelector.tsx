@@ -79,9 +79,9 @@ export default function ThemeSelector() {
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Dropdown Menu */}
+          {/* Dropdown Menu - Responsive width */}
           <div
-            className="fixed w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
+            className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
             style={{
               top: `${position.top}px`,
               right: `${position.right}px`,
@@ -95,7 +95,7 @@ export default function ThemeSelector() {
               <p className="text-xs text-gray-400 mt-1">Select your guild's color scheme</p>
             </div>
 
-            <div className="p-2 max-h-96 overflow-y-auto">
+            <div className="p-2 max-h-[60vh] sm:max-h-96 overflow-y-auto">
               {Object.values(themes).map((theme) => (
                 <button
                   key={theme.name}

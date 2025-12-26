@@ -148,10 +148,10 @@ export default function LeaderboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header - Responsive sizing */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Leaderboards</h1>
-        <p className="text-gray-400">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Leaderboards</h1>
+        <p className="text-sm sm:text-base text-gray-400">
           Top performers in attendance and bidding points
         </p>
       </div>
@@ -306,7 +306,7 @@ export default function LeaderboardPage() {
         </div>
       )}
 
-      {/* Leaderboard Table */}
+      {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
@@ -314,41 +314,41 @@ export default function LeaderboardPage() {
               <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Total Kills
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light">
+                      Kills
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Earned
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell">
+                      Points
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Attendance Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light">
+                      <span className="hidden sm:inline">Attendance </span>Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Available
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light">
+                      Available
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Earned
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell">
+                      Earned
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Spent
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell">
+                      Spent
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Consumption Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell">
+                      Rate
                     </th>
                   </tr>
                 )}
@@ -359,34 +359,34 @@ export default function LeaderboardPage() {
                     key={entry.memberId}
                     className="hover:bg-primary/10 transition-all duration-200 group"
                   >
-                    <td className="px-4 py-3 text-white font-semibold">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                       {entry.rank <= 3 ? (
-                        <span className="text-xl inline-block group-hover:scale-110 transition-transform duration-200">
+                        <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
                           {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
                         </span>
                       ) : (
-                        <span className="text-primary-light">{entry.rank}</span>
+                        <span className="text-primary-light text-sm sm:text-base">{entry.rank}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-primary hover:text-accent font-medium hover:underline transition-all duration-200 group-hover:text-accent"
+                        className="text-primary hover:text-accent font-medium hover:underline transition-all duration-200 group-hover:text-accent text-xs sm:text-sm"
                       >
                         {entry.username}
                       </a>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
-                        <td className="px-4 py-3 text-right text-white font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base">
                           {(entry as AttendanceLeaderboardEntry).totalKills}
                         </td>
-                        <td className="px-4 py-3 text-right text-accent font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent font-semibold text-sm sm:text-base hidden sm:table-cell">
                           +{(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex-1 hidden sm:block">
                               <ProgressBar
                                 value={(entry as AttendanceLeaderboardEntry).attendanceRate}
                                 color="primary"
@@ -394,7 +394,7 @@ export default function LeaderboardPage() {
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-primary font-semibold text-sm min-w-[45px] text-right">
+                            <span className="text-primary font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right">
                               {(entry as AttendanceLeaderboardEntry).attendanceRate}%
                             </span>
                           </div>
@@ -402,16 +402,16 @@ export default function LeaderboardPage() {
                       </>
                     ) : (
                       <>
-                        <td className="px-4 py-3 text-right text-accent font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent font-semibold text-sm sm:text-base">
                           {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
-                        <td className="px-4 py-3 text-right text-primary">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary text-sm sm:text-base hidden sm:table-cell">
                           +{(entry as PointsLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3 text-right text-danger">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger text-sm sm:text-base hidden md:table-cell">
                           -{(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 hidden md:table-cell">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <ProgressBar

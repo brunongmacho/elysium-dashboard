@@ -125,7 +125,7 @@ function BossCard({
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-white truncate">{boss.bossName}</h3>
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
             <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
@@ -154,8 +154,8 @@ function BossCard({
           )}
         </div>
 
-        {/* Boss Image */}
-        <div className="relative w-20 h-20">
+        {/* Boss Image - Smaller on mobile */}
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20">
           <Image
             src={imgSrc}
             alt={boss.bossName}
@@ -194,27 +194,27 @@ function BossCard({
         {/* Next Spawn Info */}
         {boss.nextSpawnTime ? (
           <div className="mb-2">
-            <div className="text-sm font-semibold text-gray-300 mb-1">
+            <div className="text-xs sm:text-sm font-semibold text-gray-300 mb-1">
               {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
             </div>
-            <div className="text-white text-base font-bold mb-2">
+            <div className="text-white text-sm sm:text-base font-bold mb-2">
               {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
             </div>
 
-            {/* Countdown Timer with Circular Progress */}
+            {/* Countdown Timer with Circular Progress - Smaller on mobile */}
             <div className="flex justify-center py-2">
               <div className="relative">
                 <CircularProgress
                   percentage={progressPercentage}
-                  size={160}
-                  strokeWidth={10}
+                  size={140}
+                  strokeWidth={8}
                   status={boss.status}
                   timeRemaining={timeRemaining}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-xs text-gray-400 mb-1">Countdown</div>
-                    <div className="font-mono text-xl font-bold text-white leading-tight">
+                    <div className="font-mono text-lg sm:text-xl font-bold text-white leading-tight">
                       {timeRemaining !== null
                         ? formatTimeRemaining(timeRemaining)
                         : "--:--:--"}
@@ -226,7 +226,7 @@ function BossCard({
           </div>
         ) : (
           <div className="mb-3 text-center">
-            <div className="text-gray-400 text-sm">No timer data available</div>
+            <div className="text-gray-400 text-xs sm:text-sm">No timer data available</div>
           </div>
         )}
 
@@ -238,9 +238,9 @@ function BossCard({
         )}
       </div>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Better touch targets on mobile */}
       {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {/* Mark as Killed Button */}
           {canMarkAsKilled && (
             <button
@@ -249,7 +249,7 @@ function BossCard({
                 handleMarkAsKilled();
               }}
               disabled={isMarking}
-              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 sm:py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
             >
               {isMarking ? "Marking..." : "Mark as Killed"}
             </button>
@@ -263,7 +263,7 @@ function BossCard({
                 handleCancelSpawn();
               }}
               disabled={isCancelling}
-              className={`ripple-container ${canMarkAsKilled ? 'flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+              className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-semibold py-3 sm:py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
               title="Delete this boss timer (Admin only)"
             >
               {isCancelling ? "Cancelling..." : "Cancel Spawn"}
