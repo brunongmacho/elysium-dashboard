@@ -136,7 +136,7 @@ export async function GET(request: Request) {
               pointsSpent: { $ifNull: ["$pointsSpent", 0] }
             }
           },
-          { $sort: { pointsAvailable: -1 } }
+          { $sort: { pointsEarned: -1 } }
         ])
         .toArray();
 

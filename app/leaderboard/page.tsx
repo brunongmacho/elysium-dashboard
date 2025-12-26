@@ -138,11 +138,11 @@ export default function LeaderboardPage() {
       value:
         leaderboardType === "attendance"
           ? (entry as AttendanceLeaderboardEntry).totalKills
-          : (entry as PointsLeaderboardEntry).pointsAvailable,
+          : (entry as PointsLeaderboardEntry).pointsEarned,
       label:
         leaderboardType === "attendance"
           ? "Total Kills"
-          : "Points Available",
+          : "Points Earned",
     }));
   }, [podiumLeaderboardData, leaderboardType]);
 
@@ -339,10 +339,10 @@ export default function LeaderboardPage() {
                       Member
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
-                      Available
+                      Earned
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
-                      Earned
+                      Available
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
                       Spent
@@ -402,11 +402,11 @@ export default function LeaderboardPage() {
                       </>
                     ) : (
                       <>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base font-game-decorative">
-                          {(entry as PointsLeaderboardEntry).pointsAvailable}
-                        </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary-bright text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary-bright font-semibold text-sm sm:text-base font-game-decorative">
                           +{(entry as PointsLeaderboardEntry).pointsEarned}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                          {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger-bright text-sm sm:text-base hidden md:table-cell font-game-decorative">
                           -{(entry as PointsLeaderboardEntry).pointsSpent}
