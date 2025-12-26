@@ -6,8 +6,8 @@
 import { NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
 import { leaderboardQuerySchema, validateInput } from "@/lib/validation";
-import { getBossNameCleaningStages } from "@/lib/mongodb-utils";
-import { LEADERBOARD, TIMEZONE } from "@/lib/constants";
+import { buildAttendancePipeline, buildTotalBossKillsPipeline, buildDateFilter } from "@/lib/mongodb-utils";
+import { LEADERBOARD } from "@/lib/constants";
 import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry
@@ -48,152 +48,25 @@ export async function GET(request: Request) {
     const db = await getDatabase();
 
     if (type === "attendance") {
-      // Calculate date ranges for period filters
-      const now = new Date();
-      let dateFilter = {};
+      // Build date filter using reusable utility
+      const dateFilter = buildDateFilter({
+        period,
+        month: monthParam,
+        week: weekParam,
+      });
 
-      if (period === "monthly") {
-        if (monthParam) {
-          // Parse specific month (YYYY-MM) in GMT+8 timezone
-          const [year, month] = monthParam.split('-').map(Number);
-
-          // Month start: 1st day 00:00:00 GMT+8 -> convert to UTC
-          const monthStartGMT8 = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
-          const monthStart = new Date(monthStartGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
-
-          // Month end: last day 23:59:59 GMT+8 -> convert to UTC
-          const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate(); // Get last day of month
-          const monthEndGMT8 = new Date(Date.UTC(year, month - 1, lastDay, 23, 59, 59, 999));
-          const monthEnd = new Date(monthEndGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
-
-          dateFilter = {
-            timestamp: {
-              $gte: monthStart,
-              $lte: monthEnd
-            }
-          };
-        } else {
-          // Current month in GMT+8 - only use lower bound
-          const gmtPlusEightNow = new Date(now.getTime() + TIMEZONE.GMT_PLUS_8_OFFSET);
-          const monthStartGMT8 = new Date(Date.UTC(gmtPlusEightNow.getUTCFullYear(), gmtPlusEightNow.getUTCMonth(), 1, 0, 0, 0, 0));
-          const monthStart = new Date(monthStartGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
-          dateFilter = { timestamp: { $gte: monthStart } };
-        }
-      } else if (period === "weekly") {
-        const gmt8Offset = TIMEZONE.GMT_PLUS_8_OFFSET;
-
-        if (weekParam) {
-          // Parse specific week and calculate range in GMT+8 (matches bot logic)
-          const [year, month, day] = weekParam.split('-').map(Number);
-
-          // Create week start date in GMT+8
-          const weekStartGMT8 = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
-          const weekStart = new Date(weekStartGMT8.getTime() - gmt8Offset);
-
-          // Create week end date (start + 6 days, 23:59:59) in GMT+8
-          const weekEndGMT8 = new Date(weekStartGMT8);
-          weekEndGMT8.setUTCDate(weekEndGMT8.getUTCDate() + 6);
-          weekEndGMT8.setUTCHours(23, 59, 59, 999);
-          const weekEnd = new Date(weekEndGMT8.getTime() - gmt8Offset);
-
-          dateFilter = {
-            timestamp: {
-              $gte: weekStart,
-              $lte: weekEnd
-            }
-          };
-        } else {
-          // Current week - calculate from current time in GMT+8
-          const gmt8Time = new Date(now.getTime() + gmt8Offset);
-          const day = gmt8Time.getUTCDay();
-
-          // Calculate Sunday of this week in GMT+8
-          const sunday = new Date(gmt8Time);
-          sunday.setUTCDate(gmt8Time.getUTCDate() - day);
-          sunday.setUTCHours(0, 0, 0, 0);
-          const weekStart = new Date(sunday.getTime() - gmt8Offset);
-
-          dateFilter = { timestamp: { $gte: weekStart } };
-        }
-      }
-
-      // Build aggregation pipeline to count attendance from attendance collection
-      // Count unique boss kill events (bossName + timestamp) per member
-      const pipeline: any[] = [
-        ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
-        ...getBossNameCleaningStages(),
-        {
-          $group: {
-            _id: {
-              memberId: "$memberId",
-              bossName: "$cleanBossName",
-              timestamp: "$timestamp"
-            },
-            memberName: { $first: "$memberName" }
-          }
-        },
-        {
-          $group: {
-            _id: "$_id.memberId",
-            memberName: { $first: "$memberName" },
-            totalKills: { $sum: 1 }
-          }
-        },
-        {
-          $lookup: {
-            from: "members",
-            localField: "_id",
-            foreignField: "_id",
-            as: "memberData"
-          }
-        },
-        {
-          $unwind: {
-            path: "$memberData",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            _id: 1,
-            username: { $ifNull: ["$memberData.username", "$memberName"] },
-            totalKills: 1,
-            pointsEarned: { $ifNull: ["$memberData.pointsEarned", 0] },
-            // Streak is maintained by the bot in members collection
-            currentStreak: { $ifNull: ["$memberData.attendance.streak.current", 0] }
-          }
-        }
-      ];
-
-      // Sort by total kills (don't apply search filter yet to get correct ranks)
-      pipeline.push({ $sort: { totalKills: -1 } });
+      // Build aggregation pipeline using reusable utility
+      const pipeline = buildAttendancePipeline(dateFilter);
 
       const attendanceData = await db
         .collection("attendance")
         .aggregate(pipeline)
         .toArray();
 
-      // Count total unique boss kill events in the period
-      // Group by bossName + timestamp since each boss kill is unique by these two fields
-      const totalBossKillsPipeline = [
-        ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
-        ...getBossNameCleaningStages(),
-        {
-          $group: {
-            _id: {
-              bossName: "$cleanBossName",
-              timestamp: "$timestamp"
-            }
-          }
-        },
-        {
-          $count: "totalBossKills"
-        }
-      ];
-
+      // Count total unique boss kill events using reusable utility
       const totalBossKillsResult = await db
         .collection("attendance")
-        .aggregate(totalBossKillsPipeline)
+        .aggregate(buildTotalBossKillsPipeline(dateFilter))
         .toArray();
 
       const totalBossKills = totalBossKillsResult.length > 0 ? totalBossKillsResult[0].totalBossKills : 1;
@@ -251,22 +124,20 @@ export async function GET(request: Request) {
     } else {
       // Fetch points leaderboard from members collection (authoritative source for points)
       // First, get ALL members to calculate true ranks
-      const allMembersPipeline: any[] = [
-        {
-          $project: {
-            _id: 1,
-            username: 1,
-            pointsAvailable: { $ifNull: ["$pointsAvailable", 0] },
-            pointsEarned: { $ifNull: ["$pointsEarned", 0] },
-            pointsSpent: { $ifNull: ["$pointsSpent", 0] }
-          }
-        },
-        { $sort: { pointsAvailable: -1 } }
-      ];
-
       const allMembersData = await db
         .collection("members")
-        .aggregate(allMembersPipeline)
+        .aggregate([
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              pointsAvailable: { $ifNull: ["$pointsAvailable", 0] },
+              pointsEarned: { $ifNull: ["$pointsEarned", 0] },
+              pointsSpent: { $ifNull: ["$pointsSpent", 0] }
+            }
+          },
+          { $sort: { pointsAvailable: -1 } }
+        ])
         .toArray();
 
       // Calculate ranks for all members

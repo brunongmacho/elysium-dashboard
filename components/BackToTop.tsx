@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { UI } from "@/lib/constants";
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -8,7 +9,7 @@ export default function BackToTop() {
   // Show button when page is scrolled down
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
+      if (window.pageYOffset > UI.BACK_TO_TOP_THRESHOLD) {
         setIsVisible(true);
       } else {
         setIsVisible(false);

@@ -7,7 +7,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [position, setPosition] = useState({ top: 0, right: 0, isMobile: false });
   const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -20,10 +20,23 @@ export default function ThemeSelector() {
   useEffect(() => {
     if (isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      setPosition({
-        top: rect.bottom + 8, // 8px below button
-        right: window.innerWidth - rect.right, // Align to right edge
-      });
+      const isMobile = window.innerWidth < 640; // sm breakpoint
+
+      if (isMobile) {
+        // On mobile, center the dropdown horizontally
+        setPosition({
+          top: rect.bottom + 8,
+          right: 0,
+          isMobile: true,
+        });
+      } else {
+        // On desktop, align to button's right edge
+        setPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+          isMobile: false,
+        });
+      }
     }
   }, [isOpen]);
 
@@ -58,7 +71,7 @@ export default function ThemeSelector() {
         aria-haspopup="menu"
       >
         <span className="text-xl">{themes[currentTheme].icon}</span>
-        <span className="hidden sm:inline text-sm text-gray-300">Theme</span>
+        <span className="hidden sm:inline text-sm text-gray-300 font-game">Theme</span>
         <svg
           className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -79,23 +92,25 @@ export default function ThemeSelector() {
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Dropdown Menu */}
+          {/* Dropdown Menu - Responsive positioning */}
           <div
-            className="fixed w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
+            className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
             style={{
               top: `${position.top}px`,
-              right: `${position.right}px`,
+              left: position.isMobile ? '50%' : 'auto',
+              right: position.isMobile ? 'auto' : `${position.right}px`,
+              transform: position.isMobile ? 'translateX(-50%)' : 'none',
               zIndex: 1000000
             }}
             role="menu"
             aria-label="Theme selection menu"
           >
             <div className="p-3 border-b border-gray-700">
-              <h3 className="text-sm font-semibold text-white">Choose Theme</h3>
-              <p className="text-xs text-gray-400 mt-1">Select your guild's color scheme</p>
+              <h3 className="text-sm font-semibold text-white font-game-decorative">Choose Theme</h3>
+              <p className="text-xs text-gray-400 mt-1 font-game">Select your guild's color scheme</p>
             </div>
 
-            <div className="p-2 max-h-96 overflow-y-auto">
+            <div className="p-2 max-h-[60vh] sm:max-h-96 overflow-y-auto">
               {Object.values(themes).map((theme) => (
                 <button
                   key={theme.name}
@@ -119,16 +134,16 @@ export default function ThemeSelector() {
                     {/* Theme Info */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-white">
+                        <span className="text-sm font-semibold text-white font-game">
                           {theme.label}
                         </span>
                         {currentTheme === theme.name && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white">
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-game">
                             Active
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-gray-400 mt-0.5 font-game">
                         {theme.description}
                       </p>
                     </div>
@@ -153,7 +168,7 @@ export default function ThemeSelector() {
 
             {/* Footer */}
             <div className="p-3 border-t border-gray-700 bg-gray-900/50">
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-gray-500 text-center font-game">
                 Theme saved to your browser
               </p>
             </div>

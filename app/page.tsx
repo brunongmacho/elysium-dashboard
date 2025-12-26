@@ -7,10 +7,12 @@ import toast from "react-hot-toast";
 import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
+import Tooltip from "@/components/Tooltip";
+import { TimerProvider } from "@/contexts/TimerContext";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher, fetchJson } from "@/lib/fetch-utils";
-import { BOSS_TIMER } from "@/lib/constants";
+import { BOSS_TIMER, UI } from "@/lib/constants";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -24,6 +26,15 @@ export default function Home() {
     {
       refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
       revalidateOnFocus: true,
+      errorRetryCount: UI.ERROR_RETRY_COUNT,
+      errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
+      shouldRetryOnError: (err) => {
+        // Only retry on network errors, not on 4xx client errors
+        if (err?.status && err.status >= 400 && err.status < 500) {
+          return false;
+        }
+        return true;
+      },
     }
   );
 
@@ -103,14 +114,15 @@ export default function Home() {
   }, [forceRefresh]);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <TimerProvider>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl text-gold text-rpg-title mb-2">
             Boss Spawn Timers
           </h1>
-          <p className="text-gray-400">
+          <p className="text-sm sm:text-base text-gray-300 font-game">
             Real-time tracking of all boss spawns
           </p>
         </div>
@@ -121,7 +133,7 @@ export default function Home() {
             setIsRefreshing(true);
             forceRefresh();
             // Small delay to show loading state
-            setTimeout(() => setIsRefreshing(false), 500);
+            setTimeout(() => setIsRefreshing(false), UI.REFRESH_BUTTON_DELAY);
           }}
           disabled={isRefreshing}
           className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -149,31 +161,39 @@ export default function Home() {
 
       {/* Stats Bar */}
       {data && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-primary">
-              <AnimatedCounter value={data.count} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <Tooltip content="All bosses being tracked in the system" fullWidth>
+            <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
+                <AnimatedCounter value={data.count} />
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game">Total Bosses</div>
             </div>
-            <div className="text-sm text-gray-400">Total Bosses</div>
-          </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 text-center glow-danger hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-danger">
-              <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
+          </Tooltip>
+          <Tooltip content="Bosses currently alive and ready to fight" fullWidth>
+            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center glow-danger hover:scale-105 transition-transform duration-200 cursor-help">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative">
+                <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game">Spawned</div>
             </div>
-            <div className="text-sm text-gray-400">Spawned</div>
-          </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent p-4 text-center glow-accent hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-accent">
-              <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
+          </Tooltip>
+          <Tooltip content="Bosses spawning within 30 minutes - prepare your party!" fullWidth>
+            <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200 cursor-help">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">
+                <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game">Soon (&lt;30min)</div>
             </div>
-            <div className="text-sm text-gray-400">Soon (&lt;30min)</div>
-          </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary p-4 text-center glow-primary hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-primary">
-              <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
+          </Tooltip>
+          <Tooltip content="Bosses with active countdown timers" fullWidth>
+            <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200 cursor-help">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
+                <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
             </div>
-            <div className="text-sm text-gray-400">Tracking</div>
-          </div>
+          </Tooltip>
         </div>
       )}
 
@@ -215,6 +235,7 @@ export default function Home() {
           Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>
       )}
-    </div>
+      </div>
+    </TimerProvider>
   );
 }

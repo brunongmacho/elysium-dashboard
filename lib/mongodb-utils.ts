@@ -31,8 +31,8 @@ export const getBossNameCleaningStages = () => [
 // Date filter builder for GMT+8 timezone
 export interface DateFilterOptions {
   period: 'all' | 'monthly' | 'weekly';
-  month?: string; // YYYY-MM format
-  week?: string;  // YYYY-MM-DD format
+  month?: string | null; // YYYY-MM format
+  week?: string | null;  // YYYY-MM-DD format
 }
 
 export const buildDateFilter = (options: DateFilterOptions): Record<string, any> => {
@@ -173,6 +173,31 @@ export const buildTotalBossKillsPipeline = (dateFilter: Record<string, any>) => 
     },
     {
       $count: "totalBossKills"
+    }
+  ];
+};
+
+// Kill count per boss pipeline
+// Returns the number of unique kills for each boss (case-insensitive)
+export const buildKillCountPerBossPipeline = (dateFilter?: Record<string, any>) => {
+  const matchStage = dateFilter && Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : [];
+
+  return [
+    ...matchStage,
+    ...getBossNameCleaningStages(),
+    {
+      $group: {
+        _id: {
+          bossName: "$cleanBossName",
+          timestamp: "$timestamp"
+        }
+      }
+    },
+    {
+      $group: {
+        _id: { $toLower: "$_id.bossName" },
+        count: { $sum: 1 }
+      }
     }
   ];
 };

@@ -99,10 +99,10 @@ export default function MarkAsKilledModal({
     >
       <div
         ref={modalRef}
-        className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 relative z-[10000]"
+        className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 relative z-[10000] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="modal-title" className="text-2xl font-bold text-white mb-4">
+        <h2 id="modal-title" className="text-xl sm:text-2xl font-bold text-white mb-4">
           Mark {bossName} as Killed
         </h2>
 
@@ -205,19 +205,19 @@ export default function MarkAsKilledModal({
             </div>
           )}
 
-          {/* Buttons */}
-          <div className="flex gap-3 mt-6">
+          {/* Buttons - Consistent touch targets */}
+          <div className="flex gap-2 sm:gap-3 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition-colors duration-200"
+              className="flex-1 px-4 py-2 sm:py-3 bg-gray-600 hover:bg-gray-700 active:scale-95 text-white rounded-md transition-all duration-200 text-sm sm:text-base"
               aria-label="Cancel and close modal"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors duration-200"
+              className="flex-1 px-4 py-2 sm:py-3 bg-red-600 hover:bg-red-700 active:scale-95 disabled:opacity-50 text-white font-semibold rounded-md transition-all duration-200 text-sm sm:text-base"
               aria-label={`Confirm marking ${bossName} as killed`}
             >
               Confirm

@@ -22,15 +22,27 @@ export const searchSchema = z.string()
 
 // Leaderboard query params validation
 export const leaderboardQuerySchema = z.object({
-  type: z.enum(['attendance', 'points']).nullable().optional().default('attendance'),
-  period: z.enum(['all', 'monthly', 'weekly']).nullable().optional().default('all'),
-  limit: z.coerce.number()
-    .int()
-    .min(1)
-    .max(LEADERBOARD.MAX_LIMIT)
+  type: z.enum(['attendance', 'points']).nullable().transform(val => val ?? 'attendance'),
+  period: z.enum(['all', 'monthly', 'weekly']).nullable().transform(val => val ?? 'all'),
+  limit: z.string()
+    .nullable()
     .optional()
-    .default(LEADERBOARD.DEFAULT_LIMIT),
-  search: z.string().nullable().optional().default(''),
+    .transform(val => {
+      if (!val || val === '' || val === 'null' || val === 'undefined') {
+        return LEADERBOARD.DEFAULT_LIMIT; // Default when not specified
+      }
+      const parsed = parseInt(val, 10);
+      // Return 0 for unlimited, or the parsed value
+      return isNaN(parsed) ? LEADERBOARD.DEFAULT_LIMIT : parsed;
+    })
+    .pipe(
+      z.number()
+        .int()
+        .refine(val => val === 0 || (val >= 1 && val <= LEADERBOARD.MAX_LIMIT), {
+          message: `Limit must be 0 (unlimited) or between 1 and ${LEADERBOARD.MAX_LIMIT}`
+        })
+    ),
+  search: z.string().nullable().transform(val => val ?? ''),
   month: z.string().regex(/^\d{4}-\d{2}$/).nullable().optional(), // YYYY-MM format
   week: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(), // YYYY-MM-DD format
 });

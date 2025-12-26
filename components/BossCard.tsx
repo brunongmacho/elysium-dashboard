@@ -4,11 +4,13 @@ import { useState, useCallback, memo, useMemo, useEffect } from "react";
 import Image from "next/image";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
+import Tooltip from "./Tooltip";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
 import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
+import { useTimer } from "@/contexts/TimerContext";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -30,19 +32,19 @@ function BossCard({
   const [isMarking, setIsMarking] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [currentTime, setCurrentTime] = useState(Date.now());
   const createRipple = useRipple();
 
-  // Update current time every second for live countdown
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // Use shared timer from context (performance optimization)
+  const { currentTime } = useTimer();
 
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
+  const [imgSrc, setImgSrc] = useState(imagePath);
+
+  // Reset image src when boss changes
+  useEffect(() => {
+    setImgSrc(imagePath);
+  }, [imagePath]);
 
   const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
@@ -124,45 +126,50 @@ function BossCard({
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
+          <h3 className={`text-lg sm:text-xl font-bold line-clamp-2 font-game-decorative ${boss.status === 'spawned' ? 'text-energy text-danger' : 'text-white'}`}>{boss.bossName}</h3>
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
-            <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
-              {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
-            </span>
-            <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
-              {boss.type === "timer" ? "Timed" : "Scheduled"}
-            </span>
+            <Tooltip content="Points awarded for attendance" position="bottom">
+              <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
+              </span>
+            </Tooltip>
+            <Tooltip content={boss.type === "timer" ? "Boss spawns on a fixed interval after being killed" : "Boss spawns at specific scheduled times"} position="bottom">
+              <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                {boss.type === "timer" ? "Timed" : "Scheduled"}
+              </span>
+            </Tooltip>
           </div>
           {/* Second row: Rotation badge */}
           {boss.rotation?.isRotating && (
             <div className="flex items-center gap-1.5 mt-1">
               {boss.rotation.isOurTurn ? (
-                <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse">
-                  ⭐ OUR TURN
-                </span>
+                <Tooltip content="It's your guild's turn to fight this boss!" position="bottom">
+                  <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse cursor-help">
+                    ⭐ OUR TURN
+                  </span>
+                </Tooltip>
               ) : (
-                <span
-                  className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap"
-                  title={`${boss.rotation.currentGuild}'s Turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`}
-                >
-                  🔄 {boss.rotation.currentGuild}
-                </span>
+                <Tooltip content={`${boss.rotation.currentGuild}'s turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`} position="bottom">
+                  <span className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                    🔄 {boss.rotation.currentGuild}
+                  </span>
+                </Tooltip>
               )}
             </div>
           )}
         </div>
 
-        {/* Boss Image */}
-        <div className="relative w-20 h-20">
+        {/* Boss Image - Smaller on mobile */}
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20">
           <Image
-            src={imagePath}
+            src={imgSrc}
             alt={boss.bossName}
             fill
             className="object-contain"
-            onError={(e) => {
+            onError={() => {
               // Fallback to placeholder if image doesn't exist
-              (e.target as HTMLImageElement).src = "/bosses/placeholder.svg";
+              setImgSrc("/bosses/placeholder.svg");
             }}
           />
         </div>
@@ -193,27 +200,27 @@ function BossCard({
         {/* Next Spawn Info */}
         {boss.nextSpawnTime ? (
           <div className="mb-2">
-            <div className="text-sm font-semibold text-gray-300 mb-1">
+            <div className="text-xs sm:text-sm font-semibold text-gray-300 mb-1">
               {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
             </div>
-            <div className="text-white text-base font-bold mb-2">
+            <div className="text-white text-sm sm:text-base font-bold mb-2">
               {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
             </div>
 
-            {/* Countdown Timer with Circular Progress */}
+            {/* Countdown Timer with Circular Progress - Smaller on mobile */}
             <div className="flex justify-center py-2">
               <div className="relative">
                 <CircularProgress
                   percentage={progressPercentage}
-                  size={160}
-                  strokeWidth={10}
+                  size={140}
+                  strokeWidth={8}
                   status={boss.status}
                   timeRemaining={timeRemaining}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs text-gray-400 mb-1">Countdown</div>
-                    <div className="font-mono text-xl font-bold text-white leading-tight">
+                    <div className="text-xs text-gray-400 mb-1 font-game">Countdown</div>
+                    <div className="font-mono text-lg sm:text-xl font-bold text-white leading-tight font-game-decorative">
                       {timeRemaining !== null
                         ? formatTimeRemaining(timeRemaining)
                         : "--:--:--"}
@@ -225,7 +232,7 @@ function BossCard({
           </div>
         ) : (
           <div className="mb-3 text-center">
-            <div className="text-gray-400 text-sm">No timer data available</div>
+            <div className="text-gray-400 text-xs sm:text-sm">No timer data available</div>
           </div>
         )}
 
@@ -237,36 +244,47 @@ function BossCard({
         )}
       </div>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Consistent touch targets */}
       {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {/* Mark as Killed Button */}
           {canMarkAsKilled && (
-            <button
-              onClick={(e) => {
-                createRipple(e);
-                handleMarkAsKilled();
-              }}
-              disabled={isMarking}
-              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+            <Tooltip
+              content="Update the next spawn time after killing this boss"
+              position="top"
+              fullWidth={!(isAdmin && boss.nextSpawnTime && !boss.isPredicted)}
             >
-              {isMarking ? "Marking..." : "Mark as Killed"}
-            </button>
+              <button
+                onClick={(e) => {
+                  createRipple(e);
+                  handleMarkAsKilled();
+                }}
+                disabled={isMarking}
+                className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              >
+                {isMarking ? "Marking..." : "Mark as Killed"}
+              </button>
+            </Tooltip>
           )}
 
           {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
           {isAdmin && boss.nextSpawnTime && !boss.isPredicted && (
-            <button
-              onClick={(e) => {
-                createRipple(e);
-                handleCancelSpawn();
-              }}
-              disabled={isCancelling}
-              className={`ripple-container ${canMarkAsKilled ? 'flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
-              title="Delete this boss timer (Admin only)"
+            <Tooltip
+              content="Delete this boss timer from the database (Admin only)"
+              position="top"
+              fullWidth={!canMarkAsKilled}
             >
-              {isCancelling ? "Cancelling..." : "Cancel Spawn"}
-            </button>
+              <button
+                onClick={(e) => {
+                  createRipple(e);
+                  handleCancelSpawn();
+                }}
+                disabled={isCancelling}
+                className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              >
+                {isCancelling ? "Cancelling..." : "Cancel Spawn"}
+              </button>
+            </Tooltip>
           )}
         </div>
       )}
@@ -286,11 +304,20 @@ function BossCard({
 // Memoize component to prevent unnecessary re-renders
 // Custom comparison function to check if boss data changed
 export default memo(BossCard, (prevProps, nextProps) => {
+  const prevBoss = prevProps.boss;
+  const nextBoss = nextProps.boss;
+
   return (
-    prevProps.boss.bossName === nextProps.boss.bossName &&
-    prevProps.boss.status === nextProps.boss.status &&
-    prevProps.boss.nextSpawnTime === nextProps.boss.nextSpawnTime &&
+    prevBoss.bossName === nextBoss.bossName &&
+    prevBoss.status === nextBoss.status &&
+    prevBoss.nextSpawnTime === nextBoss.nextSpawnTime &&
+    prevBoss.lastKillTime === nextBoss.lastKillTime &&
+    prevBoss.killedBy === nextBoss.killedBy &&
+    prevBoss.isPredicted === nextBoss.isPredicted &&
+    prevBoss.rotation?.isOurTurn === nextBoss.rotation?.isOurTurn &&
+    prevBoss.rotation?.currentGuild === nextBoss.rotation?.currentGuild &&
     prevProps.canMarkAsKilled === nextProps.canMarkAsKilled &&
+    prevProps.isAdmin === nextProps.isAdmin &&
     prevProps.userName === nextProps.userName
   );
 });

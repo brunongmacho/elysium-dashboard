@@ -14,7 +14,7 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
-import { LEADERBOARD } from "@/lib/constants";
+import { LEADERBOARD, UI } from "@/lib/constants";
 
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
@@ -96,11 +96,29 @@ export default function LeaderboardPage() {
   // Fetch podium data (top 3, no search)
   const { data: podiumResponse } = useSWR<LeaderboardResponse>(podiumApiUrl, swrFetcher, {
     refreshInterval: 30000,
+    errorRetryCount: UI.ERROR_RETRY_COUNT,
+    errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
+    shouldRetryOnError: (err) => {
+      // Only retry on network errors, not on 4xx client errors
+      if (err?.status && err.status >= 400 && err.status < 500) {
+        return false;
+      }
+      return true;
+    },
   });
 
   // Fetch table data (with search filter)
   const { data, error, isLoading } = useSWR<LeaderboardResponse>(tableApiUrl, swrFetcher, {
     refreshInterval: 30000,
+    errorRetryCount: UI.ERROR_RETRY_COUNT,
+    errorRetryInterval: UI.ERROR_RETRY_INTERVAL,
+    shouldRetryOnError: (err) => {
+      // Only retry on network errors, not on 4xx client errors
+      if (err?.status && err.status >= 400 && err.status < 500) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
@@ -130,10 +148,10 @@ export default function LeaderboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header - Responsive sizing */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Leaderboards</h1>
-        <p className="text-gray-400">
+        <h1 className="text-3xl sm:text-4xl text-gold text-rpg-title mb-2">Leaderboards</h1>
+        <p className="text-sm sm:text-base text-gray-300 font-game">
           Top performers in attendance and bidding points
         </p>
       </div>
@@ -162,7 +180,7 @@ export default function LeaderboardPage() {
           {leaderboardType === "attendance" && (
             <>
               <div>
-                <label className="block text-sm font-medium text-primary-light mb-2">
+                <label className="block text-sm font-medium text-primary-light mb-2 font-game">
                   Time Period
                 </label>
                 <select
@@ -188,7 +206,7 @@ export default function LeaderboardPage() {
               {/* Month Selector */}
               {period === "monthly" && (
                 <div>
-                  <label className="block text-sm font-medium text-primary-light mb-2">
+                  <label className="block text-sm font-medium text-primary-light mb-2 font-game">
                     Select Month
                   </label>
                   <select
@@ -208,7 +226,7 @@ export default function LeaderboardPage() {
               {/* Week Selector */}
               {period === "weekly" && (
                 <div>
-                  <label className="block text-sm font-medium text-primary-light mb-2">
+                  <label className="block text-sm font-medium text-primary-light mb-2 font-game">
                     Select Week
                   </label>
                   <select
@@ -229,7 +247,7 @@ export default function LeaderboardPage() {
 
           {/* Top N Filter */}
           <div>
-            <label className="block text-sm font-medium text-primary-light mb-2">
+            <label className="block text-sm font-medium text-primary-light mb-2 font-game">
               Show Top
             </label>
             <select
@@ -251,7 +269,7 @@ export default function LeaderboardPage() {
             period === "all" ? "md:col-span-2" :
             "md:col-span-1"
           }>
-            <label className="block text-sm font-medium text-primary-light mb-2">
+            <label className="block text-sm font-medium text-primary-light mb-2 font-game">
               Search Member
             </label>
             <input
@@ -288,7 +306,7 @@ export default function LeaderboardPage() {
         </div>
       )}
 
-      {/* Leaderboard Table */}
+      {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
@@ -296,41 +314,41 @@ export default function LeaderboardPage() {
               <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Total Kills
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                      Kills
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Earned
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
+                      Points
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Attendance Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                      <span className="hidden sm:inline">Attendance </span>Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Available
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                      Available
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Earned
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
+                      Earned
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Points Spent
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
+                      Spent
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
-                      Consumption Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
+                      Rate
                     </th>
                   </tr>
                 )}
@@ -341,34 +359,34 @@ export default function LeaderboardPage() {
                     key={entry.memberId}
                     className="hover:bg-primary/10 transition-all duration-200 group"
                   >
-                    <td className="px-4 py-3 text-white font-semibold">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                       {entry.rank <= 3 ? (
-                        <span className="text-xl inline-block group-hover:scale-110 transition-transform duration-200">
+                        <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
                           {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
                         </span>
                       ) : (
-                        <span className="text-primary-light">{entry.rank}</span>
+                        <span className="text-primary-light text-sm sm:text-base font-game-decorative">{entry.rank}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-primary hover:text-accent font-medium hover:underline transition-all duration-200 group-hover:text-accent"
+                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
                       >
                         {entry.username}
                       </a>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
-                        <td className="px-4 py-3 text-right text-white font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
                           {(entry as AttendanceLeaderboardEntry).totalKills}
                         </td>
-                        <td className="px-4 py-3 text-right text-accent font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
                           +{(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex-1 hidden sm:block">
                               <ProgressBar
                                 value={(entry as AttendanceLeaderboardEntry).attendanceRate}
                                 color="primary"
@@ -376,7 +394,7 @@ export default function LeaderboardPage() {
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-primary font-semibold text-sm min-w-[45px] text-right">
+                            <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
                               {(entry as AttendanceLeaderboardEntry).attendanceRate}%
                             </span>
                           </div>
@@ -384,16 +402,16 @@ export default function LeaderboardPage() {
                       </>
                     ) : (
                       <>
-                        <td className="px-4 py-3 text-right text-accent font-semibold">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base font-game-decorative">
                           {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
-                        <td className="px-4 py-3 text-right text-primary">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary-bright text-sm sm:text-base hidden sm:table-cell font-game-decorative">
                           +{(entry as PointsLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3 text-right text-danger">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger-bright text-sm sm:text-base hidden md:table-cell font-game-decorative">
                           -{(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 hidden md:table-cell">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <ProgressBar
@@ -403,7 +421,7 @@ export default function LeaderboardPage() {
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-accent font-semibold text-sm min-w-[45px] text-right">
+                            <span className="text-accent-bright font-semibold text-sm min-w-[45px] text-right font-game-decorative">
                               {(entry as PointsLeaderboardEntry).consumptionRate}%
                             </span>
                           </div>
