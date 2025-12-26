@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 interface ProgressBarProps {
   value: number; // 0-100
   maxValue?: number;
-  color?: "success" | "warning" | "danger" | "primary" | "info";
+  color?: "success" | "warning" | "danger" | "primary" | "accent" | "info";
   showPercentage?: boolean;
   label?: string;
   className?: string;
@@ -40,15 +40,17 @@ export default function ProgressBar({
     warning: "bg-warning",
     danger: "bg-danger",
     primary: "bg-primary",
+    accent: "bg-accent",
     info: "bg-info",
   };
 
   const glowClasses = {
-    success: "shadow-[0_0_10px_rgba(16,185,129,0.5)]",
-    warning: "shadow-[0_0_10px_rgba(245,158,11,0.5)]",
-    danger: "shadow-[0_0_10px_rgba(239,68,68,0.5)]",
-    primary: "shadow-[0_0_10px_rgba(59,130,246,0.5)]",
-    info: "shadow-[0_0_10px_rgba(59,130,246,0.5)]",
+    success: "glow-success",
+    warning: "glow-warning",
+    danger: "glow-danger",
+    primary: "glow-primary",
+    accent: "glow-accent",
+    info: "glow-primary",
   };
 
   return (
