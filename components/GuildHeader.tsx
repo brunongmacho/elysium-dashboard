@@ -13,14 +13,14 @@ export default function GuildHeader() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
           {/* Guild branding */}
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6 w-full md:w-auto">
             {/* Guild icon with glow */}
-            <div className="relative">
+            <div className="relative flex-shrink-0">
               <div className="absolute inset-0 bg-primary rounded-full blur-xl opacity-50 glow-primary" />
-              <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl">
                 <Image
                   src={guildTheme.branding.logo}
                   alt={guildTheme.branding.name}
@@ -32,11 +32,11 @@ export default function GuildHeader() {
             </div>
 
             {/* Guild name and tagline */}
-            <div className="text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-glow mb-2">
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-glow mb-1 md:mb-2 leading-tight">
                 {guildTheme.branding.name}
               </h1>
-              <p className="text-lg md:text-xl text-gray-300 font-medium">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 font-medium">
                 {guildTheme.branding.tagline}
               </p>
             </div>
