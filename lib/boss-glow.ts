@@ -4,8 +4,6 @@
  * Uses theme colors for consistent styling
  */
 
-import { guildTheme } from './theme';
-
 interface GlowResult {
   color: string;
   intensity: number;
@@ -14,12 +12,30 @@ interface GlowResult {
 }
 
 /**
+ * Gets CSS variable value from document root
+ */
+function getCSSVariable(variableName: string): string {
+  if (typeof window === 'undefined') {
+    // Server-side fallback values
+    const fallbacks: Record<string, string> = {
+      '--color-success': '#10b981',
+      '--color-warning': '#f59e0b',
+      '--color-danger': '#ef4444',
+      '--color-text-primary': '#f9fafb',
+    };
+    return fallbacks[variableName] || '#ffffff';
+  }
+  return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+}
+
+/**
  * Converts hex color to rgba with custom opacity
  */
 function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
+  const cleanHex = hex.startsWith('#') ? hex : `#${hex}`;
+  const r = parseInt(cleanHex.slice(1, 3), 16);
+  const g = parseInt(cleanHex.slice(3, 5), 16);
+  const b = parseInt(cleanHex.slice(5, 7), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
@@ -30,13 +46,16 @@ function hexToRgba(hex: string, alpha: number): string {
  * @param factor Interpolation factor (0-1)
  */
 function interpolateColor(color1: string, color2: string, factor: number): string {
-  const r1 = parseInt(color1.slice(1, 3), 16);
-  const g1 = parseInt(color1.slice(3, 5), 16);
-  const b1 = parseInt(color1.slice(5, 7), 16);
+  const cleanColor1 = color1.startsWith('#') ? color1 : `#${color1}`;
+  const cleanColor2 = color2.startsWith('#') ? color2 : `#${color2}`;
 
-  const r2 = parseInt(color2.slice(1, 3), 16);
-  const g2 = parseInt(color2.slice(3, 5), 16);
-  const b2 = parseInt(color2.slice(5, 7), 16);
+  const r1 = parseInt(cleanColor1.slice(1, 3), 16);
+  const g1 = parseInt(cleanColor1.slice(3, 5), 16);
+  const b1 = parseInt(cleanColor1.slice(5, 7), 16);
+
+  const r2 = parseInt(cleanColor2.slice(1, 3), 16);
+  const g2 = parseInt(cleanColor2.slice(3, 5), 16);
+  const b2 = parseInt(cleanColor2.slice(5, 7), 16);
 
   const r = Math.round(r1 + (r2 - r1) * factor);
   const g = Math.round(g1 + (g2 - g1) * factor);
@@ -48,13 +67,14 @@ function interpolateColor(color1: string, color2: string, factor: number): strin
 /**
  * Calculates dynamic glow properties based on time remaining
  * Time brackets become progressively shorter as spawn approaches
+ * Reads colors from CSS variables to support dynamic theme changes
  */
 export function calculateBossGlow(timeRemaining: number | null): GlowResult {
-  // Theme colors
-  const whiteColor = guildTheme.colors.text.primary; // #f9fafb
-  const successColor = guildTheme.colors.success;     // #10b981 (green)
-  const warningColor = guildTheme.colors.warning;     // #f59e0b (yellow/orange)
-  const dangerColor = guildTheme.colors.danger;       // #ef4444 (red)
+  // Read theme colors from CSS variables (updates when theme changes)
+  const whiteColor = getCSSVariable('--color-text-primary');
+  const successColor = getCSSVariable('--color-success');
+  const warningColor = getCSSVariable('--color-warning');
+  const dangerColor = getCSSVariable('--color-danger');
 
   // Already spawned - maximum intensity red
   if (!timeRemaining || timeRemaining <= 0) {
