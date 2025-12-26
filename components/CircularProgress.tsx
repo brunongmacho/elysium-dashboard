@@ -7,6 +7,7 @@ interface CircularProgressProps {
   size?: number; // diameter in pixels
   strokeWidth?: number;
   status?: "spawned" | "soon" | "ready" | "unknown";
+  timeRemaining?: number | null; // milliseconds until spawn
   showPercentage?: boolean;
   className?: string;
 }
