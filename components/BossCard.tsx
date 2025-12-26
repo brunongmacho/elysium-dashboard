@@ -132,6 +132,22 @@ function BossCard({
             <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.type === "timer" ? "Timed" : "Scheduled"}
             </span>
+            {boss.rotation?.isRotating && boss.rotation?.isOurTurn && (
+              <span
+                className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse"
+                title={`ELYSIUM's Turn! (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5})`}
+              >
+                ⭐ OUR TURN
+              </span>
+            )}
+            {boss.rotation?.isRotating && !boss.rotation?.isOurTurn && (
+              <span
+                className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap"
+                title={`${boss.rotation.currentGuild}'s Turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`}
+              >
+                🔄 {boss.rotation.currentGuild}
+              </span>
+            )}
           </div>
         </div>
 

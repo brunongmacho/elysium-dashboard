@@ -308,6 +308,14 @@ export interface BossTimerDisplay {
   status: "ready" | "soon" | "spawned" | "unknown";
   killCount?: number; // Total number of kills from attendance records
   isPredicted?: boolean; // True if spawn time is predicted from attendance, false if from timer
+  rotation?: {
+    isRotating: boolean;
+    currentIndex?: number;
+    currentGuild?: string;
+    isOurTurn?: boolean;
+    guilds?: string[];
+    nextGuild?: string;
+  };
 }
 
 export interface MemberProfile extends Member {
