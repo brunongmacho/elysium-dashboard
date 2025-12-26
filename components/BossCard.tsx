@@ -123,7 +123,7 @@ function BossCard({
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300 overflow-visible`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300 overflow-visible h-full flex flex-col`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -154,70 +154,73 @@ function BossCard({
         </div>
       </div>
 
-      {/* Last Kill Info (Timer-based bosses only) */}
-      {boss.type === "timer" && (boss.killedBy || boss.lastKillTime) && (
-        <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
-          {boss.killedBy && (
-            <div className="text-gray-300">
-              <span className="text-gray-400">👤 Set by:</span>{" "}
-              <span className="font-semibold">
-                {boss.isPredicted ? "Attendance" : boss.killedBy}
-              </span>
-            </div>
-          )}
-          {boss.lastKillTime && (
-            <div className="text-gray-300">
-              <span className="text-gray-400">🕐 Last Kill:</span>{" "}
-              <span>{formatInGMT8(boss.lastKillTime, "MMM dd, hh:mm a")}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Next Spawn Info */}
-      {boss.nextSpawnTime ? (
-        <div className="mb-2">
-          <div className="text-sm font-semibold text-gray-300 mb-1">
-            {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
+      {/* Content Section - grows to fill space */}
+      <div className="flex-1 flex flex-col">
+        {/* Last Kill Info (Timer-based bosses only) */}
+        {boss.type === "timer" && (boss.killedBy || boss.lastKillTime) && (
+          <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
+            {boss.killedBy && (
+              <div className="text-gray-300">
+                <span className="text-gray-400">👤 Set by:</span>{" "}
+                <span className="font-semibold">
+                  {boss.isPredicted ? "Attendance" : boss.killedBy}
+                </span>
+              </div>
+            )}
+            {boss.lastKillTime && (
+              <div className="text-gray-300">
+                <span className="text-gray-400">🕐 Last Kill:</span>{" "}
+                <span>{formatInGMT8(boss.lastKillTime, "MMM dd, hh:mm a")}</span>
+              </div>
+            )}
           </div>
-          <div className="text-white text-base font-bold mb-2">
-            {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
-          </div>
+        )}
 
-          {/* Countdown Timer with Circular Progress */}
-          <div className="flex justify-center py-2">
-            <div className="relative">
-              <CircularProgress
-                percentage={progressPercentage}
-                size={160}
-                strokeWidth={10}
-                status={boss.status}
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-xs text-gray-400 mb-1">Countdown</div>
-                  <div className="font-mono text-xl font-bold text-white leading-tight">
-                    {timeRemaining !== null
-                      ? formatTimeRemaining(timeRemaining)
-                      : "--:--:--"}
+        {/* Next Spawn Info */}
+        {boss.nextSpawnTime ? (
+          <div className="mb-2">
+            <div className="text-sm font-semibold text-gray-300 mb-1">
+              {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
+            </div>
+            <div className="text-white text-base font-bold mb-2">
+              {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
+            </div>
+
+            {/* Countdown Timer with Circular Progress */}
+            <div className="flex justify-center py-2">
+              <div className="relative">
+                <CircularProgress
+                  percentage={progressPercentage}
+                  size={160}
+                  strokeWidth={10}
+                  status={boss.status}
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-xs text-gray-400 mb-1">Countdown</div>
+                    <div className="font-mono text-xl font-bold text-white leading-tight">
+                      {timeRemaining !== null
+                        ? formatTimeRemaining(timeRemaining)
+                        : "--:--:--"}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="mb-3 text-center">
-          <div className="text-gray-400 text-sm">No timer data available</div>
-        </div>
-      )}
+        ) : (
+          <div className="mb-3 text-center">
+            <div className="text-gray-400 text-sm">No timer data available</div>
+          </div>
+        )}
 
-      {/* Interval Info (Timer-based bosses) */}
-      {boss.type === "timer" && boss.interval && (
-        <div className="text-center text-xs text-gray-400 mb-3">
-          Interval: {boss.interval}h
-        </div>
-      )}
+        {/* Interval Info (Timer-based bosses) */}
+        {boss.type === "timer" && boss.interval && (
+          <div className="text-center text-xs text-gray-400 mb-3">
+            Interval: {boss.interval}h
+          </div>
+        )}
+      </div>
 
       {/* Mark as Killed Button */}
       {canMarkAsKilled && boss.type === "timer" && (
