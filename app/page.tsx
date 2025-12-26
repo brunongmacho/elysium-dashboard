@@ -162,7 +162,7 @@ export default function Home() {
       {/* Stats Bar */}
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-          <Tooltip content="All bosses being tracked in the system">
+          <Tooltip content="All bosses being tracked in the system" fullWidth>
             <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help">
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
                 <AnimatedCounter value={data.count} />
@@ -170,7 +170,7 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game">Total Bosses</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses currently alive and ready to fight">
+          <Tooltip content="Bosses currently alive and ready to fight" fullWidth>
             <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center glow-danger hover:scale-105 transition-transform duration-200 cursor-help">
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
@@ -178,7 +178,7 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game">Spawned</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses spawning within 30 minutes - prepare your party!">
+          <Tooltip content="Bosses spawning within 30 minutes - prepare your party!" fullWidth>
             <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200 cursor-help">
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
@@ -186,7 +186,7 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game">Soon (&lt;30min)</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses with active countdown timers">
+          <Tooltip content="Bosses with active countdown timers" fullWidth>
             <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200 cursor-help">
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />

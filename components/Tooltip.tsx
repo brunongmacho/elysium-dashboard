@@ -7,6 +7,7 @@ interface TooltipProps {
   children: ReactNode;
   position?: "top" | "bottom" | "left" | "right";
   delay?: number;
+  fullWidth?: boolean; // Allow tooltip wrapper to be full width for buttons
 }
 
 export default function Tooltip({
@@ -14,6 +15,7 @@ export default function Tooltip({
   children,
   position = "top",
   delay = 200,
+  fullWidth = false,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
@@ -49,16 +51,16 @@ export default function Tooltip({
 
   return (
     <div
-      className="relative inline-block"
+      className={`relative ${fullWidth ? 'block w-full' : 'inline-block'}`}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
     >
       {children}
       {isVisible && (
         <div
-          className={`absolute z-50 ${positionClasses[position]} pointer-events-none`}
+          className={`absolute z-[9999] ${positionClasses[position]} pointer-events-none`}
         >
-          <div className="bg-gray-900 text-white text-xs sm:text-sm rounded-lg py-2 px-3 shadow-xl border border-gray-700 whitespace-nowrap font-game max-w-xs sm:max-w-sm">
+          <div className="bg-gray-900 text-white text-xs sm:text-sm rounded-lg py-2 px-3 shadow-xl border border-gray-700 font-game max-w-[200px] sm:max-w-xs break-words">
             {content}
           </div>
           <div

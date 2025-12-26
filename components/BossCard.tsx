@@ -249,7 +249,11 @@ function BossCard({
         <div className="flex flex-col sm:flex-row gap-2">
           {/* Mark as Killed Button */}
           {canMarkAsKilled && (
-            <Tooltip content="Update the next spawn time after killing this boss" position="top">
+            <Tooltip
+              content="Update the next spawn time after killing this boss"
+              position="top"
+              fullWidth={!(isAdmin && boss.nextSpawnTime && !boss.isPredicted)}
+            >
               <button
                 onClick={(e) => {
                   createRipple(e);
@@ -265,7 +269,11 @@ function BossCard({
 
           {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
           {isAdmin && boss.nextSpawnTime && !boss.isPredicted && (
-            <Tooltip content="Delete this boss timer from the database (Admin only)" position="top">
+            <Tooltip
+              content="Delete this boss timer from the database (Admin only)"
+              position="top"
+              fullWidth={!canMarkAsKilled}
+            >
               <button
                 onClick={(e) => {
                   createRipple(e);
