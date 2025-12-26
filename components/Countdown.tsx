@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatTimeRemaining } from "@/lib/boss-config";
+import { BOSS_TIMER } from "@/lib/constants";
 
 interface CountdownProps {
   targetDate: Date;
@@ -29,8 +30,8 @@ export default function Countdown({ targetDate, className = "" }: CountdownProps
   let colorClass = "text-success";
   if (timeRemaining <= 0) {
     colorClass = "text-danger animate-pulse";
-  } else if (timeRemaining <= 30 * 60 * 1000) {
-    // Less than 30 minutes
+  } else if (timeRemaining <= BOSS_TIMER.SOON_THRESHOLD) {
+    // Less than 30 minutes = "soon"
     colorClass = "text-warning";
   }
 

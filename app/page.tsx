@@ -1,52 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import toast from "react-hot-toast";
 import BossTimerGrid from "@/components/BossTimerGrid";
-import type { BossTimerDisplay } from "@/types/database";
+import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { swrFetcher, fetchJson } from "@/lib/fetch-utils";
+import { BOSS_TIMER } from "@/lib/constants";
 
 export default function Home() {
   const { data: session } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
-  const { data, error, isLoading, mutate } = useSWR<{
-    success: boolean;
-    bosses: BossTimerDisplay[];
-    count: number;
-    timestamp: string;
-  }>(`/api/bosses?t=${refreshKey}`, fetcher, {
-    refreshInterval: 30000, // Refresh every 30 seconds
-    revalidateOnFocus: true,
-  });
+  const { data, error, isLoading, mutate } = useSWR<BossTimersResponse>(
+    `/api/bosses?t=${refreshKey}`,
+    swrFetcher,
+    {
+      refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
+      revalidateOnFocus: true,
+    }
+  );
 
-  const handleMarkAsKilled = async (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => {
+  const handleMarkAsKilled = useCallback(async (
+    bossName: string,
+    killedBy: string,
+    killTime?: string,
+    spawnTime?: string
+  ) => {
+    const loadingToast = toast.loading(`Marking ${bossName} as killed...`);
+
     try {
-      const response = await fetch(`/api/bosses/${encodeURIComponent(bossName)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ killedBy, killTime, spawnTime }),
-      });
+      const result = await fetchJson<BossKillResponse>(
+        `/api/bosses/${encodeURIComponent(bossName)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ killedBy, killTime, spawnTime }),
+        }
+      );
 
-      const result = await response.json();
-
-      if (result.success) {
-        alert(`${bossName} marked as killed! Next spawn: ${toLocaleStringGMT8(result.data.nextSpawnTime)}`);
-        // Refresh the data
+      if (result.success && result.boss) {
+        toast.success(
+          `${bossName} marked as killed!\nNext spawn: ${toLocaleStringGMT8(result.boss.nextSpawnTime)}`,
+          { id: loadingToast }
+        );
+        // Refresh the data (use mutate only, not both)
         mutate();
-        setRefreshKey((k) => k + 1);
       } else {
-        alert(`Error: ${result.error}`);
+        toast.error(result.error || "Failed to mark boss as killed", { id: loadingToast });
       }
     } catch (err) {
       console.error("Error marking boss as killed:", err);
-      alert("Failed to mark boss as killed. Check console for details.");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to mark boss as killed",
+        { id: loadingToast }
+      );
     }
-  };
+  }, [mutate]);
 
   return (
     <div className="space-y-6">
