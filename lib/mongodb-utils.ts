@@ -31,8 +31,8 @@ export const getBossNameCleaningStages = () => [
 // Date filter builder for GMT+8 timezone
 export interface DateFilterOptions {
   period: 'all' | 'monthly' | 'weekly';
-  month?: string; // YYYY-MM format
-  week?: string;  // YYYY-MM-DD format
+  month?: string | null; // YYYY-MM format
+  week?: string | null;  // YYYY-MM-DD format
 }
 
 export const buildDateFilter = (options: DateFilterOptions): Record<string, any> => {

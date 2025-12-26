@@ -22,15 +22,15 @@ export const searchSchema = z.string()
 
 // Leaderboard query params validation
 export const leaderboardQuerySchema = z.object({
-  type: z.enum(['attendance', 'points']).nullable().optional().default('attendance'),
-  period: z.enum(['all', 'monthly', 'weekly']).nullable().optional().default('all'),
+  type: z.enum(['attendance', 'points']).nullable().transform(val => val ?? 'attendance'),
+  period: z.enum(['all', 'monthly', 'weekly']).nullable().transform(val => val ?? 'all'),
   limit: z.coerce.number()
     .int()
     .min(1)
     .max(LEADERBOARD.MAX_LIMIT)
     .optional()
     .default(LEADERBOARD.DEFAULT_LIMIT),
-  search: z.string().nullable().optional().default(''),
+  search: z.string().nullable().transform(val => val ?? ''),
   month: z.string().regex(/^\d{4}-\d{2}$/).nullable().optional(), // YYYY-MM format
   week: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(), // YYYY-MM-DD format
 });
