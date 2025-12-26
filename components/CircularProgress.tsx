@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
+import { calculateBossGlow, generateDropShadow } from "@/lib/boss-glow";
 
 interface CircularProgressProps {
   percentage: number; // 0-100
   size?: number; // diameter in pixels
   strokeWidth?: number;
   status?: "spawned" | "soon" | "ready" | "unknown";
+  timeRemaining?: number | null; // milliseconds until spawn
   showPercentage?: boolean;
   className?: string;
 }
@@ -16,11 +18,13 @@ export default function CircularProgress({
   size = 120,
   strokeWidth = 8,
   status = "ready",
+  timeRemaining = null,
   showPercentage = false,
   className = "",
 }: CircularProgressProps) {
-  // Add padding to accommodate glow effect
-  const glowPadding = 20;
+  // Add generous padding to accommodate maximum glow effect (up to 30px)
+  // Using 40px padding to ensure glow never clips
+  const glowPadding = 40;
   const svgSize = size + glowPadding * 2;
   const centerOffset = size / 2 + glowPadding;
 
@@ -28,39 +32,23 @@ export default function CircularProgress({
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (percentage / 100) * circumference;
 
-  // Color based on status
-  const strokeColor = useMemo(() => {
-    switch (status) {
-      case "spawned":
-        return "stroke-danger";
-      case "soon":
-        return "stroke-warning";
-      case "ready":
-        return "stroke-success";
-      default:
-        return "stroke-gray-500";
-    }
-  }, [status]);
-
-  const glowColor = useMemo(() => {
-    switch (status) {
-      case "spawned":
-        return "#ef4444";
-      case "soon":
-        return "#f59e0b";
-      case "ready":
-        return "#10b981";
-      default:
-        return "#6b7280";
-    }
-  }, [status]);
+  // Calculate dynamic, theme-aware glow based on time remaining
+  const { glowColor, glowIntensity, strokeColor } = useMemo(() => {
+    const glowData = calculateBossGlow(timeRemaining);
+    return {
+      glowColor: glowData.color,
+      glowIntensity: glowData.intensity,
+      strokeColor: glowData.tailwindStroke,
+    };
+  }, [timeRemaining]);
 
   return (
-    <div className={`relative inline-flex items-center justify-center ${className}`}>
+    <div className={`relative inline-flex items-center justify-center overflow-visible ${className}`}>
       <svg
         width={svgSize}
         height={svgSize}
-        className="transform -rotate-90"
+        className="transform -rotate-90 overflow-visible"
+        style={{ overflow: 'visible' }}
       >
         {/* Background circle */}
         <circle
@@ -84,9 +72,9 @@ export default function CircularProgress({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className={`${strokeColor} transition-all duration-500 ease-out`}
+          className={`${strokeColor} transition-all duration-1000 ease-out`}
           style={{
-            filter: `drop-shadow(0 0 6px ${glowColor})`,
+            filter: `drop-shadow(0 0 ${glowIntensity}px ${glowColor}) drop-shadow(0 0 ${glowIntensity * 0.5}px ${glowColor})`,
           }}
         />
       </svg>

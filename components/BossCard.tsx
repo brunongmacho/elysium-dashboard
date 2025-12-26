@@ -8,6 +8,7 @@ import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
+import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -42,22 +43,6 @@ function BossCard({
 
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
-
-  // Determine card border color based on status (uses theme colors)
-  const borderColor = {
-    spawned: "border-danger",
-    soon: "border-warning",
-    ready: "border-success",
-    unknown: "border-gray-500",
-  }[boss.status];
-
-  // Determine background glow effect (uses theme colors)
-  const glowColor = {
-    spawned: "glow-danger",
-    soon: "glow-warning",
-    ready: "glow-success",
-    unknown: "shadow-gray-500/20",
-  }[boss.status];
 
   const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
@@ -120,25 +105,21 @@ function BossCard({
     return { progressPercentage: percentage, timeRemaining: remaining };
   }, [boss.nextSpawnTime, currentTime]);
 
-  // Determine pulsing glow intensity based on time remaining
-  const pulseClass = useMemo(() => {
-    if (!timeRemaining) return "";
-
-    const minutesRemaining = timeRemaining / (1000 * 60);
-
-    if (boss.status === "spawned") {
-      return "pulse-glow-fast";
-    } else if (minutesRemaining < 30) {
-      return "pulse-glow-fast";
-    } else if (minutesRemaining < 60) {
-      return "pulse-glow-slow";
-    }
-    return "";
-  }, [timeRemaining, boss.status]);
+  // Calculate dynamic, theme-aware glow based on time remaining
+  const { borderColor, glowStyle } = useMemo(() => {
+    const glowData = calculateBossGlow(timeRemaining);
+    return {
+      borderColor: glowData.borderColor,
+      glowStyle: generateGlowStyle(glowData.color, glowData.intensity),
+    };
+  }, [timeRemaining]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      style={{
+        boxShadow: glowStyle,
+      }}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -209,6 +190,7 @@ function BossCard({
                   size={160}
                   strokeWidth={10}
                   status={boss.status}
+                  timeRemaining={timeRemaining}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">

@@ -141,8 +141,8 @@ export default function Home() {
       {/* Stats Bar */}
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-white">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center hover:scale-105 transition-transform duration-200">
+            <div className="text-2xl font-bold text-primary">
               <AnimatedCounter value={data.count} />
             </div>
             <div className="text-sm text-gray-400">Total Bosses</div>
@@ -153,14 +153,14 @@ export default function Home() {
             </div>
             <div className="text-sm text-gray-400">Spawned</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-warning p-4 text-center glow-warning hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-warning">
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent p-4 text-center glow-accent hover:scale-105 transition-transform duration-200">
+            <div className="text-2xl font-bold text-accent">
               <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
             </div>
             <div className="text-sm text-gray-400">Soon (&lt;30min)</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-success p-4 text-center glow-success hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-success">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary p-4 text-center glow-primary hover:scale-105 transition-transform duration-200">
+            <div className="text-2xl font-bold text-primary">
               <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
             </div>
             <div className="text-sm text-gray-400">Tracking</div>

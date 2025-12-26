@@ -143,7 +143,21 @@ body {
   background-size: 1000px 100%;
 }
 
-/* Pulsing glow animation for boss cards */
+/* Pulsing glow animation for boss cards - synchronized across all cards */
+@keyframes boss-card-pulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.15);
+  }
+}
+
+.boss-card-pulse {
+  animation: boss-card-pulse 2s ease-in-out infinite;
+}
+
+/* Legacy pulse animations (kept for compatibility) */
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 20px currentColor;
