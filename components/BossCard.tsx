@@ -230,14 +230,14 @@ function BossCard({
                 handleMarkAsKilled();
               }}
               disabled={isMarking}
-              className={`ripple-container ${isAdmin && boss.nextSpawnTime ? 'flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
             >
               {isMarking ? "Marking..." : "Mark as Killed"}
             </button>
           )}
 
-          {/* Cancel Spawn Button (Admin Only, only if timer exists) */}
-          {isAdmin && boss.nextSpawnTime && (
+          {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
+          {isAdmin && boss.nextSpawnTime && !boss.isPredicted && (
             <button
               onClick={(e) => {
                 createRipple(e);
