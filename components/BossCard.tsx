@@ -125,30 +125,32 @@ function BossCard({
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
-          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+          {/* First row: Points and Type */}
+          <div className="flex items-center gap-1.5 mt-1">
             <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
             </span>
             <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.type === "timer" ? "Timed" : "Scheduled"}
             </span>
-            {boss.rotation?.isRotating && boss.rotation?.isOurTurn && (
-              <span
-                className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse"
-                title={`ELYSIUM's Turn! (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5})`}
-              >
-                ⭐ OUR TURN
-              </span>
-            )}
-            {boss.rotation?.isRotating && !boss.rotation?.isOurTurn && (
-              <span
-                className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap"
-                title={`${boss.rotation.currentGuild}'s Turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`}
-              >
-                🔄 {boss.rotation.currentGuild}
-              </span>
-            )}
           </div>
+          {/* Second row: Rotation badge */}
+          {boss.rotation?.isRotating && (
+            <div className="flex items-center gap-1.5 mt-1">
+              {boss.rotation.isOurTurn ? (
+                <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse">
+                  ⭐ OUR TURN
+                </span>
+              ) : (
+                <span
+                  className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap"
+                  title={`${boss.rotation.currentGuild}'s Turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`}
+                >
+                  🔄 {boss.rotation.currentGuild}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Boss Image */}
