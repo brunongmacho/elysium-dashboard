@@ -123,7 +123,7 @@ function BossCard({
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} ${pulseClass} shadow-lg p-4 card-3d transition-all duration-300 overflow-visible`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -185,8 +185,8 @@ function BossCard({
           </div>
 
           {/* Countdown Timer with Circular Progress */}
-          <div className="flex justify-center py-4">
-            <div className="relative p-4">
+          <div className="flex justify-center py-6">
+            <div className="relative p-6">
               <CircularProgress
                 percentage={progressPercentage}
                 size={140}
