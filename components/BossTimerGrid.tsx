@@ -7,14 +7,18 @@ import type { BossTimerDisplay } from "@/types/database";
 interface BossTimerGridProps {
   bosses: BossTimerDisplay[];
   onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => Promise<void>;
+  onCancelSpawn?: (bossName: string) => Promise<void>;
   canMarkAsKilled?: boolean;
+  isAdmin?: boolean;
   userName?: string;
 }
 
 export default function BossTimerGrid({
   bosses,
   onMarkAsKilled,
+  onCancelSpawn,
   canMarkAsKilled = false,
+  isAdmin = false,
   userName = "",
 }: BossTimerGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -137,7 +141,9 @@ export default function BossTimerGrid({
               <BossCard
                 boss={boss}
                 onMarkAsKilled={onMarkAsKilled}
+                onCancelSpawn={onCancelSpawn}
                 canMarkAsKilled={canMarkAsKilled}
+                isAdmin={isAdmin}
                 userName={userName}
               />
             </div>

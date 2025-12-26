@@ -44,9 +44,9 @@ export default function Home() {
         }
       );
 
-      if (result.success && result.boss) {
-        const nextSpawnMsg = result.boss.nextSpawnTime
-          ? `\nNext spawn: ${toLocaleStringGMT8(result.boss.nextSpawnTime)}`
+      if (result.success && result.data) {
+        const nextSpawnMsg = result.data.nextSpawnTime
+          ? `\nNext spawn: ${toLocaleStringGMT8(result.data.nextSpawnTime)}`
           : '';
         toast.success(
           `${bossName} marked as killed!${nextSpawnMsg}`,
@@ -61,6 +61,36 @@ export default function Home() {
       console.error("Error marking boss as killed:", err);
       toast.error(
         err instanceof Error ? err.message : "Failed to mark boss as killed",
+        { id: loadingToast }
+      );
+    }
+  }, [mutate]);
+
+  const handleCancelSpawn = useCallback(async (bossName: string) => {
+    const loadingToast = toast.loading(`Cancelling spawn for ${bossName}...`);
+
+    try {
+      const result = await fetchJson<BossKillResponse>(
+        `/api/bosses/${encodeURIComponent(bossName)}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (result.success) {
+        toast.success(
+          `${bossName} spawn cancelled and timer deleted!`,
+          { id: loadingToast }
+        );
+        // Refresh the data
+        mutate();
+      } else {
+        toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
+      }
+    } catch (err) {
+      console.error("Error cancelling boss spawn:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to cancel boss spawn",
         { id: loadingToast }
       );
     }
@@ -163,7 +193,9 @@ export default function Home() {
         <BossTimerGrid
           bosses={data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
+          onCancelSpawn={handleCancelSpawn}
           canMarkAsKilled={session?.canMarkAsKilled || false}
+          isAdmin={session?.isAdmin || false}
           userName={session?.user?.name || ""}
         />
       )}

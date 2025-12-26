@@ -1,6 +1,7 @@
 /**
  * Boss Mark as Killed API Route
  * POST /api/bosses/[name] - Mark a boss as killed and update timer
+ * DELETE /api/bosses/[name] - Cancel/delete a boss timer (admin only)
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -148,6 +149,110 @@ export async function POST(
     });
   } catch (error) {
     console.error("Error marking boss as killed:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { name: string } }
+) {
+  try {
+    // Check authentication and permissions
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required. Please sign in with Discord.",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (!session.isInGuild) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You must be a member of the ELYSIUM guild to perform this action.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // Only admins can delete boss timers
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You don't have permission to cancel boss spawns. Admin role required.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // Validate boss name parameter
+    const bossName = decodeURIComponent(params.name);
+    const bossNameValidation = validateInput(bossNameSchema, bossName);
+    if (!bossNameValidation.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: bossNameValidation.error,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate boss type (only timer-based bosses can be deleted)
+    const bossType = getBossType(bossName);
+    if (bossType !== "timer") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Only timer-based bosses can be cancelled",
+        },
+        { status: 400 }
+      );
+    }
+
+    const db = await getDatabase();
+
+    // Delete the boss timer
+    const result = await db.collection("bossTimers").deleteOne({ bossName });
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Boss timer not found or already deleted",
+        },
+        { status: 404 }
+      );
+    }
+
+    console.log(
+      `✅ Boss timer cancelled: ${bossName} by ${session.user?.name || "Admin"}`
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: `${bossName} spawn cancelled and timer deleted`,
+      data: {
+        bossName,
+        deletedCount: result.deletedCount,
+      },
+    });
+  } catch (error) {
+    console.error("Error cancelling boss spawn:", error);
 
     return NextResponse.json(
       {
