@@ -78,32 +78,25 @@ function BossCard({
     const spawnTime = new Date(boss.nextSpawnTime).getTime();
     const remaining = spawnTime - currentTime;
 
+    // All bosses: Calculate progress based on 24-hour countdown window for consistency
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+    const timeUntilSpawn = remaining;
+
     let percentage = 0;
 
-    if (boss.type === "timer" && boss.interval) {
-      // Timer-based: Calculate based on respawn interval
-      const intervalMs = boss.interval * 60 * 60 * 1000;
-      const elapsed = intervalMs - remaining;
-      percentage = Math.min(Math.max((elapsed / intervalMs) * 100, 0), 100);
+    if (timeUntilSpawn <= 0) {
+      // Already spawned
+      percentage = 100;
+    } else if (timeUntilSpawn >= twentyFourHours) {
+      // More than 24 hours away, show as 0%
+      percentage = 0;
     } else {
-      // Scheduled: Calculate progress based on 24-hour countdown window
-      const twentyFourHours = 24 * 60 * 60 * 1000;
-      const timeUntilSpawn = remaining;
-
-      if (timeUntilSpawn <= 0) {
-        // Already spawned
-        percentage = 100;
-      } else if (timeUntilSpawn >= twentyFourHours) {
-        // More than 24 hours away, show as 0%
-        percentage = 0;
-      } else {
-        // Within 24 hours, show countdown progress
-        percentage = ((twentyFourHours - timeUntilSpawn) / twentyFourHours) * 100;
-      }
+      // Within 24 hours, show countdown progress
+      percentage = ((twentyFourHours - timeUntilSpawn) / twentyFourHours) * 100;
     }
 
     return { progressPercentage: percentage, timeRemaining: remaining };
-  }, [boss.nextSpawnTime, boss.interval, boss.type, currentTime]);
+  }, [boss.nextSpawnTime, currentTime]);
 
   // Determine pulsing glow intensity based on time remaining
   const pulseClass = useMemo(() => {
