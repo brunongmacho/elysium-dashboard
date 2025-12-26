@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import ThemeSelector from "./ThemeSelector";
+import Tooltip from "./Tooltip";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -22,20 +23,24 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            <a
-              href="/"
-              className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              aria-label="Navigate to Boss Timers page"
-            >
-              Boss Timers
-            </a>
-            <a
-              href="/leaderboard"
-              className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              aria-label="Navigate to Leaderboards page"
-            >
-              Leaderboards
-            </a>
+            <Tooltip content="View all boss spawn timers and countdowns" position="bottom">
+              <a
+                href="/"
+                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                aria-label="Navigate to Boss Timers page"
+              >
+                Boss Timers
+              </a>
+            </Tooltip>
+            <Tooltip content="Check guild member rankings and points" position="bottom">
+              <a
+                href="/leaderboard"
+                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                aria-label="Navigate to Leaderboards page"
+              >
+                Leaderboards
+              </a>
+            </Tooltip>
 
             {/* Theme Selector */}
             <ThemeSelector />

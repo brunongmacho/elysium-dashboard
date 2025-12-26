@@ -4,6 +4,7 @@ import { useState, useCallback, memo, useMemo, useEffect } from "react";
 import Image from "next/image";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
+import Tooltip from "./Tooltip";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
@@ -128,27 +129,32 @@ function BossCard({
           <h3 className={`text-lg sm:text-xl font-bold line-clamp-2 font-game-decorative ${boss.status === 'spawned' ? 'text-energy text-danger' : 'text-white'}`}>{boss.bossName}</h3>
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
-            <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
-              {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
-            </span>
-            <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
-              {boss.type === "timer" ? "Timed" : "Scheduled"}
-            </span>
+            <Tooltip content="Points awarded for attendance" position="bottom">
+              <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
+              </span>
+            </Tooltip>
+            <Tooltip content={boss.type === "timer" ? "Boss spawns on a fixed interval after being killed" : "Boss spawns at specific scheduled times"} position="bottom">
+              <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                {boss.type === "timer" ? "Timed" : "Scheduled"}
+              </span>
+            </Tooltip>
           </div>
           {/* Second row: Rotation badge */}
           {boss.rotation?.isRotating && (
             <div className="flex items-center gap-1.5 mt-1">
               {boss.rotation.isOurTurn ? (
-                <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse">
-                  ⭐ OUR TURN
-                </span>
+                <Tooltip content="It's your guild's turn to fight this boss!" position="bottom">
+                  <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse cursor-help">
+                    ⭐ OUR TURN
+                  </span>
+                </Tooltip>
               ) : (
-                <span
-                  className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap"
-                  title={`${boss.rotation.currentGuild}'s Turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`}
-                >
-                  🔄 {boss.rotation.currentGuild}
-                </span>
+                <Tooltip content={`${boss.rotation.currentGuild}'s turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`} position="bottom">
+                  <span className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                    🔄 {boss.rotation.currentGuild}
+                  </span>
+                </Tooltip>
               )}
             </div>
           )}
@@ -243,31 +249,34 @@ function BossCard({
         <div className="flex flex-col sm:flex-row gap-2">
           {/* Mark as Killed Button */}
           {canMarkAsKilled && (
-            <button
-              onClick={(e) => {
-                createRipple(e);
-                handleMarkAsKilled();
-              }}
-              disabled={isMarking}
-              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
-            >
-              {isMarking ? "Marking..." : "Mark as Killed"}
-            </button>
+            <Tooltip content="Update the next spawn time after killing this boss" position="top">
+              <button
+                onClick={(e) => {
+                  createRipple(e);
+                  handleMarkAsKilled();
+                }}
+                disabled={isMarking}
+                className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              >
+                {isMarking ? "Marking..." : "Mark as Killed"}
+              </button>
+            </Tooltip>
           )}
 
           {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
           {isAdmin && boss.nextSpawnTime && !boss.isPredicted && (
-            <button
-              onClick={(e) => {
-                createRipple(e);
-                handleCancelSpawn();
-              }}
-              disabled={isCancelling}
-              className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
-              title="Delete this boss timer (Admin only)"
-            >
-              {isCancelling ? "Cancelling..." : "Cancel Spawn"}
-            </button>
+            <Tooltip content="Delete this boss timer from the database (Admin only)" position="top">
+              <button
+                onClick={(e) => {
+                  createRipple(e);
+                  handleCancelSpawn();
+                }}
+                disabled={isCancelling}
+                className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              >
+                {isCancelling ? "Cancelling..." : "Cancel Spawn"}
+              </button>
+            </Tooltip>
           )}
         </div>
       )}
