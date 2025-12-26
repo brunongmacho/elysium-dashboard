@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import Image from "next/image";
 import Countdown from "./Countdown";
 import MarkAsKilledModal from "./MarkAsKilledModal";
@@ -14,7 +14,7 @@ interface BossCardProps {
   userName?: string;
 }
 
-export default function BossCard({
+function BossCard({
   boss,
   onMarkAsKilled,
   canMarkAsKilled = false,
@@ -42,11 +42,11 @@ export default function BossCard({
     unknown: "shadow-gray-500/20",
   }[boss.status];
 
-  const handleMarkAsKilled = () => {
+  const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
-  };
+  }, []);
 
-  const handleConfirmKill = async (killedBy: string, killTime?: string, spawnTime?: string) => {
+  const handleConfirmKill = useCallback(async (killedBy: string, killTime?: string, spawnTime?: string) => {
     if (!onMarkAsKilled) return;
 
     setIsMarking(true);
@@ -55,7 +55,7 @@ export default function BossCard({
     } finally {
       setIsMarking(false);
     }
-  };
+  }, [onMarkAsKilled, boss.bossName]);
 
   return (
     <div
@@ -160,3 +160,15 @@ export default function BossCard({
     </div>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders
+// Custom comparison function to check if boss data changed
+export default memo(BossCard, (prevProps, nextProps) => {
+  return (
+    prevProps.boss.bossName === nextProps.boss.bossName &&
+    prevProps.boss.status === nextProps.boss.status &&
+    prevProps.boss.nextSpawnTime === nextProps.boss.nextSpawnTime &&
+    prevProps.canMarkAsKilled === nextProps.canMarkAsKilled &&
+    prevProps.userName === nextProps.userName
+  );
+});

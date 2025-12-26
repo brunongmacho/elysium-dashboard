@@ -71,6 +71,7 @@ export default function BossTimerGrid({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Type boss name..."
               className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Search for bosses by name"
             />
           </div>
 
@@ -85,6 +86,7 @@ export default function BossTimerGrid({
                 setFilterType(e.target.value as "all" | "timer" | "schedule")
               }
               className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Filter bosses by type"
             >
               <option value="all">All Types</option>
               <option value="timer">Timer-Based</option>
@@ -105,6 +107,7 @@ export default function BossTimerGrid({
                 )
               }
               className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Filter bosses by status"
             >
               <option value="all">All Status</option>
               <option value="spawned">

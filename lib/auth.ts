@@ -5,6 +5,8 @@
 
 import { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import type { DiscordProfile, DiscordGuild, DiscordMember } from "@/types/api";
+import { AUTH } from "@/lib/constants";
 
 // Discord OAuth scopes needed for guild membership and roles
 const DISCORD_SCOPES = ["identify", "guilds", "guilds.members.read"].join(" ");
@@ -26,19 +28,19 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account, profile, trigger }) {
       // Store Discord access token and user data for API calls
       if (account && profile) {
+        const discordProfile = profile as DiscordProfile;
         token.accessToken = account.access_token;
-        token.discordId = (profile as any).id;
+        token.discordId = discordProfile.id;
         // Store display name (global_name) or fallback to username
-        token.displayName = (profile as any).global_name || (profile as any).username || profile.name;
+        token.displayName = discordProfile.global_name || discordProfile.username || profile.name;
         // Reset cache on new login
         token.lastFetched = 0;
       }
 
-      // Check if we need to refresh Discord data (every 5 minutes)
+      // Check if we need to refresh Discord data
       const now = Date.now();
-      const cacheAge = 5 * 60 * 1000; // 5 minutes
       const lastFetched = token.lastFetched || 0;
-      const shouldRefresh = (now - lastFetched) > cacheAge;
+      const shouldRefresh = (now - lastFetched) > AUTH.CACHE_AGE;
 
       if (shouldRefresh && token.accessToken) {
         try {
@@ -50,8 +52,8 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (guildsResponse.ok) {
-            const guilds = await guildsResponse.json();
-            const isInGuild = guilds.some((g: any) => g.id === guildId);
+            const guilds = await guildsResponse.json() as DiscordGuild[];
+            const isInGuild = guilds.some((g: DiscordGuild) => g.id === guildId);
             token.cachedIsInGuild = isInGuild;
 
             if (isInGuild) {
@@ -61,7 +63,7 @@ export const authOptions: NextAuthOptions = {
               );
 
               if (memberResponse.ok) {
-                const member = await memberResponse.json();
+                const member = await memberResponse.json() as DiscordMember;
                 token.cachedRoles = member.roles || [];
                 token.cachedNickname = member.nick || token.displayName;
 
@@ -125,6 +127,6 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60, // 30 minutes - cache session to reduce Discord API calls and avoid rate limiting
+    maxAge: AUTH.SESSION_MAX_AGE / 1000, // Convert to seconds - cache session to reduce Discord API calls and avoid rate limiting
   },
 };

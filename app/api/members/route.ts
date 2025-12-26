@@ -5,6 +5,9 @@
 
 import { NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
+import { leaderboardQuerySchema, validateInput } from "@/lib/validation";
+import { getBossNameCleaningStages } from "@/lib/mongodb-utils";
+import { LEADERBOARD, TIMEZONE } from "@/lib/constants";
 import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry
@@ -16,12 +19,31 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type") || "attendance"; // attendance | points
-    const period = searchParams.get("period") || "all"; // all | monthly | weekly
-    const limit = parseInt(searchParams.get("limit") || "50");
-    const search = searchParams.get("search") || "";
-    const monthParam = searchParams.get("month"); // Format: YYYY-MM
-    const weekParam = searchParams.get("week"); // Format: YYYY-MM-DD (week start)
+
+    // Extract and validate query parameters
+    const queryParams = {
+      type: searchParams.get("type"),
+      period: searchParams.get("period"),
+      limit: searchParams.get("limit"),
+      search: searchParams.get("search"),
+      month: searchParams.get("month"),
+      week: searchParams.get("week"),
+    };
+
+    // Validate input using Zod schema
+    const validation = validateInput(leaderboardQuerySchema, queryParams);
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: validation.error,
+          data: [],
+        },
+        { status: 400 }
+      );
+    }
+
+    const { type, period, limit, search, month: monthParam, week: weekParam } = validation.data;
 
     const db = await getDatabase();
 
@@ -37,12 +59,12 @@ export async function GET(request: Request) {
 
           // Month start: 1st day 00:00:00 GMT+8 -> convert to UTC
           const monthStartGMT8 = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
-          const monthStart = new Date(monthStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+          const monthStart = new Date(monthStartGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
 
           // Month end: last day 23:59:59 GMT+8 -> convert to UTC
           const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate(); // Get last day of month
           const monthEndGMT8 = new Date(Date.UTC(year, month - 1, lastDay, 23, 59, 59, 999));
-          const monthEnd = new Date(monthEndGMT8.getTime() - (8 * 60 * 60 * 1000));
+          const monthEnd = new Date(monthEndGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
 
           dateFilter = {
             timestamp: {
@@ -52,13 +74,13 @@ export async function GET(request: Request) {
           };
         } else {
           // Current month in GMT+8 - only use lower bound
-          const gmtPlusEightNow = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+          const gmtPlusEightNow = new Date(now.getTime() + TIMEZONE.GMT_PLUS_8_OFFSET);
           const monthStartGMT8 = new Date(Date.UTC(gmtPlusEightNow.getUTCFullYear(), gmtPlusEightNow.getUTCMonth(), 1, 0, 0, 0, 0));
-          const monthStart = new Date(monthStartGMT8.getTime() - (8 * 60 * 60 * 1000));
+          const monthStart = new Date(monthStartGMT8.getTime() - TIMEZONE.GMT_PLUS_8_OFFSET);
           dateFilter = { timestamp: { $gte: monthStart } };
         }
       } else if (period === "weekly") {
-        const gmt8Offset = 8 * 60 * 60 * 1000;
+        const gmt8Offset = TIMEZONE.GMT_PLUS_8_OFFSET;
 
         if (weekParam) {
           // Parse specific week and calculate range in GMT+8 (matches bot logic)
@@ -99,26 +121,7 @@ export async function GET(request: Request) {
       // Count unique boss kill events (bossName + timestamp) per member
       const pipeline: any[] = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
-        {
-          $addFields: {
-            regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
-          }
-        },
-        {
-          $addFields: {
-            cleanBossName: {
-              $cond: {
-                if: "$regexMatch",
-                then: {
-                  $trim: {
-                    input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
-                  }
-                },
-                else: "$bossName"
-              }
-            }
-          }
-        },
+        ...getBossNameCleaningStages(),
         {
           $group: {
             _id: {
@@ -174,26 +177,7 @@ export async function GET(request: Request) {
       // Group by bossName + timestamp since each boss kill is unique by these two fields
       const totalBossKillsPipeline = [
         ...(Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : []),
-        {
-          $addFields: {
-            regexMatch: { $regexFind: { input: "$bossName", regex: "\\s*#\\d+\\s*$" } },
-          }
-        },
-        {
-          $addFields: {
-            cleanBossName: {
-              $cond: {
-                if: "$regexMatch",
-                then: {
-                  $trim: {
-                    input: { $substr: ["$bossName", 0, "$regexMatch.idx"] }
-                  }
-                },
-                else: "$bossName"
-              }
-            }
-          }
-        },
+        ...getBossNameCleaningStages(),
         {
           $group: {
             _id: {

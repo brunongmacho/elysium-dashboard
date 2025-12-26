@@ -6,18 +6,22 @@ import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry,
 } from "@/types/database";
+import type { LeaderboardResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { swrFetcher } from "@/lib/fetch-utils";
+import { useDebounce } from "@/hooks/useDebounce";
+import { LEADERBOARD } from "@/lib/constants";
 
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
   const [selectedMonth, setSelectedMonth] = useState<string>(""); // Format: YYYY-MM
   const [selectedWeek, setSelectedWeek] = useState<string>(""); // Format: YYYY-MM-DD (week start date)
-  const [limit, setLimit] = useState<number>(50);
+  const [limit, setLimit] = useState<number>(LEADERBOARD.DEFAULT_LIMIT);
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search query to reduce API calls
+  const debouncedSearch = useDebounce(searchQuery, LEADERBOARD.DEBOUNCE_DELAY);
 
   // Generate last 12 months for dropdown
   const monthOptions = Array.from({ length: 12 }, (_, i) => {
@@ -67,12 +71,6 @@ export default function LeaderboardPage() {
     };
   });
 
-  // Debounce search
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
-    setTimeout(() => setDebouncedSearch(value), 300);
-  };
-
   // Build API URL
   let apiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=${limit}&search=${debouncedSearch}`;
 
@@ -82,7 +80,7 @@ export default function LeaderboardPage() {
     apiUrl += `&week=${selectedWeek}`;
   }
 
-  const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
+  const { data, error, isLoading } = useSWR<LeaderboardResponse>(apiUrl, swrFetcher, {
     refreshInterval: 30000, // Refresh every 30 seconds
   });
 
@@ -225,9 +223,10 @@ export default function LeaderboardPage() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Type member name..."
               className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              aria-label="Search for members by name"
             />
           </div>
         </div>
@@ -398,7 +397,7 @@ export default function LeaderboardPage() {
       )}
 
       {/* Last Update Time */}
-      {data && (
+      {data && data.timestamp && (
         <div className="text-center text-xs text-gray-500">
           Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>

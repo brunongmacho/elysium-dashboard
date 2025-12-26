@@ -23,12 +23,14 @@ export default function Navbar() {
             <a
               href="/"
               className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              aria-label="Navigate to Boss Timers page"
             >
               Boss Timers
             </a>
             <a
               href="/leaderboard"
               className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              aria-label="Navigate to Leaderboards page"
             >
               Leaderboards
             </a>

@@ -27,6 +27,24 @@ export default function ThemeSelector() {
     }
   }, [isOpen]);
 
+  // Handle Escape key to close dropdown
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen]);
+
   return (
     <div className="relative">
       {/* Theme Button */}
@@ -35,6 +53,9 @@ export default function ThemeSelector() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200"
         title="Change theme"
+        aria-label="Select theme"
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
       >
         <span className="text-xl">{themes[currentTheme].icon}</span>
         <span className="hidden sm:inline text-sm text-gray-300">Theme</span>
@@ -66,6 +87,8 @@ export default function ThemeSelector() {
               right: `${position.right}px`,
               zIndex: 1000000
             }}
+            role="menu"
+            aria-label="Theme selection menu"
           >
             <div className="p-3 border-b border-gray-700">
               <h3 className="text-sm font-semibold text-white">Choose Theme</h3>
@@ -85,6 +108,9 @@ export default function ThemeSelector() {
                       ? 'bg-primary/20 border-2 border-primary'
                       : 'bg-gray-800/50 border-2 border-transparent hover:bg-gray-700/50 hover:border-gray-600'
                   }`}
+                  role="menuitem"
+                  aria-label={`Select ${theme.label} theme`}
+                  aria-current={currentTheme === theme.name ? "true" : undefined}
                 >
                   <div className="flex items-center gap-3">
                     {/* Theme Icon */}

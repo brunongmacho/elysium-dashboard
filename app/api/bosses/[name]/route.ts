@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getDatabase } from "@/lib/mongodb";
 import { calculateNextSpawn, getBossType } from "@/lib/boss-config";
+import { bossNameSchema, bossKillSchema, validateInput } from "@/lib/validation";
 
 export async function POST(
   request: NextRequest,
@@ -47,9 +48,33 @@ export async function POST(
       );
     }
 
+    // Validate boss name parameter
     const bossName = decodeURIComponent(params.name);
+    const bossNameValidation = validateInput(bossNameSchema, bossName);
+    if (!bossNameValidation.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: bossNameValidation.error,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Parse and validate request body
     const body = await request.json();
-    const { killedBy, killTime, spawnTime } = body;
+    const bodyValidation = validateInput(bossKillSchema, body);
+    if (!bodyValidation.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: bodyValidation.error,
+        },
+        { status: 400 }
+      );
+    }
+
+    const { killedBy, killTime, spawnTime } = bodyValidation.data;
 
     // Validate boss type (only timer-based bosses can be marked as killed)
     const bossType = getBossType(bossName);
