@@ -19,6 +19,11 @@ export default function CircularProgress({
   showPercentage = false,
   className = "",
 }: CircularProgressProps) {
+  // Add padding to accommodate glow effect
+  const glowPadding = 20;
+  const svgSize = size + glowPadding * 2;
+  const centerOffset = size / 2 + glowPadding;
+
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (percentage / 100) * circumference;
@@ -53,14 +58,14 @@ export default function CircularProgress({
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
       <svg
-        width={size}
-        height={size}
+        width={svgSize}
+        height={svgSize}
         className="transform -rotate-90"
       >
         {/* Background circle */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={centerOffset}
+          cy={centerOffset}
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}
@@ -70,8 +75,8 @@ export default function CircularProgress({
 
         {/* Progress circle */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={centerOffset}
+          cy={centerOffset}
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}

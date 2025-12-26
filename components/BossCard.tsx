@@ -185,8 +185,8 @@ function BossCard({
           </div>
 
           {/* Countdown Timer with Circular Progress */}
-          <div className="flex justify-center py-4">
-            <div className="relative p-4">
+          <div className="flex justify-center py-2">
+            <div className="relative">
               <CircularProgress
                 percentage={progressPercentage}
                 size={160}
