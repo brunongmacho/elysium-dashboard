@@ -131,7 +131,7 @@ body {
     0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Dramatic RPG Title - Embossed with strong shadow (Theme-aware) */
+/* Dramatic RPG Title - Embossed with intense glow (Theme-aware) */
 .text-rpg-title {
   font-family: var(--font-cinzel-decorative), serif;
   font-weight: 900;
@@ -144,7 +144,10 @@ body {
     0 4px 0 rgba(0, 0, 0, 0.7),
     0 5px 0 rgba(0, 0, 0, 0.6),
     0 6px 1px rgba(0, 0, 0, 0.5),
-    0 0 10px color-mix(in srgb, var(--color-primary) 40%, transparent),
+    0 0 10px color-mix(in srgb, var(--color-primary) 80%, transparent),
+    0 0 20px color-mix(in srgb, var(--color-primary) 60%, transparent),
+    0 0 30px color-mix(in srgb, var(--color-primary) 40%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-primary) 20%, transparent),
     0 1px 3px rgba(0, 0, 0, 0.9),
     0 3px 5px rgba(0, 0, 0, 0.5),
     0 5px 10px rgba(0, 0, 0, 0.4),
@@ -152,7 +155,7 @@ body {
     0 20px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Metallic Primary Text - For important headers (Theme-aware) */
+/* Metallic Primary Text - For important headers (Theme-aware with bright glow) */
 .text-gold {
   background: linear-gradient(
     180deg,
@@ -166,13 +169,14 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.9),
-    0 0 10px color-mix(in srgb, var(--color-primary) 50%, transparent);
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 40%, transparent));
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--color-primary) 80%, transparent))
+    drop-shadow(0 0 16px color-mix(in srgb, var(--color-primary) 60%, transparent))
+    drop-shadow(0 0 24px color-mix(in srgb, var(--color-primary) 40%, transparent))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
 }
 
-/* Metallic Accent Text - For secondary headers (Theme-aware) */
+/* Metallic Accent Text - For secondary headers (Theme-aware with bright glow) */
 .text-silver {
   background: linear-gradient(
     180deg,
@@ -186,10 +190,11 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.8),
-    0 0 10px color-mix(in srgb, var(--color-accent) 50%, transparent);
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 30%, transparent));
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 80%, transparent))
+    drop-shadow(0 0 16px color-mix(in srgb, var(--color-accent) 60%, transparent))
+    drop-shadow(0 0 24px color-mix(in srgb, var(--color-accent) 40%, transparent))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 /* Glowing Energy Text - For active/spawned bosses */
