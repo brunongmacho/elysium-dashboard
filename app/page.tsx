@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
+import { TimerProvider } from "@/contexts/TimerContext";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher, fetchJson } from "@/lib/fetch-utils";
@@ -103,9 +104,10 @@ export default function Home() {
   }, [forceRefresh]);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <TimerProvider>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold text-white mb-2">
             Boss Spawn Timers
@@ -215,6 +217,7 @@ export default function Home() {
           Last updated: {toLocaleStringGMT8(data.timestamp)}
         </div>
       )}
-    </div>
+      </div>
+    </TimerProvider>
   );
 }

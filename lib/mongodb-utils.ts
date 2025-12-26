@@ -176,3 +176,28 @@ export const buildTotalBossKillsPipeline = (dateFilter: Record<string, any>) => 
     }
   ];
 };
+
+// Kill count per boss pipeline
+// Returns the number of unique kills for each boss (case-insensitive)
+export const buildKillCountPerBossPipeline = (dateFilter?: Record<string, any>) => {
+  const matchStage = dateFilter && Object.keys(dateFilter).length > 0 ? [{ $match: dateFilter }] : [];
+
+  return [
+    ...matchStage,
+    ...getBossNameCleaningStages(),
+    {
+      $group: {
+        _id: {
+          bossName: "$cleanBossName",
+          timestamp: "$timestamp"
+        }
+      }
+    },
+    {
+      $group: {
+        _id: { $toLower: "$_id.bossName" },
+        count: { $sum: 1 }
+      }
+    }
+  ];
+};

@@ -145,17 +145,21 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeName>('default');
+  const [mounted, setMounted] = useState(false);
 
-  // Load theme from localStorage on mount
+  // Load theme from localStorage on mount (only on client)
   useEffect(() => {
+    setMounted(true);
     const savedTheme = localStorage.getItem('guild-theme') as ThemeName;
     if (savedTheme && themes[savedTheme]) {
       setCurrentTheme(savedTheme);
     }
   }, []);
 
-  // Update CSS variables when theme changes
+  // Update CSS variables when theme changes (only on client)
   useEffect(() => {
+    if (!mounted) return;
+
     const theme = themes[currentTheme];
     const root = document.documentElement;
 
@@ -172,11 +176,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.style.setProperty('--color-warning', theme.colors.warning);
     root.style.setProperty('--color-danger', theme.colors.danger);
     root.style.setProperty('--color-info', theme.colors.info);
-  }, [currentTheme]);
+  }, [currentTheme, mounted]);
 
   const setTheme = (theme: ThemeName) => {
     setCurrentTheme(theme);
-    localStorage.setItem('guild-theme', theme);
+    if (mounted) {
+      localStorage.setItem('guild-theme', theme);
+    }
   };
 
   return (

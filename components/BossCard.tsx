@@ -9,6 +9,7 @@ import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
 import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
+import { useTimer } from "@/contexts/TimerContext";
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -30,8 +31,10 @@ function BossCard({
   const [isMarking, setIsMarking] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [currentTime, setCurrentTime] = useState(Date.now());
   const createRipple = useRipple();
+
+  // Use shared timer from context (performance optimization)
+  const { currentTime } = useTimer();
 
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
@@ -41,14 +44,6 @@ function BossCard({
   useEffect(() => {
     setImgSrc(imagePath);
   }, [imagePath]);
-
-  // Update current time every second for live countdown
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleMarkAsKilled = useCallback(() => {
     setShowModal(true);
@@ -292,11 +287,20 @@ function BossCard({
 // Memoize component to prevent unnecessary re-renders
 // Custom comparison function to check if boss data changed
 export default memo(BossCard, (prevProps, nextProps) => {
+  const prevBoss = prevProps.boss;
+  const nextBoss = nextProps.boss;
+
   return (
-    prevProps.boss.bossName === nextProps.boss.bossName &&
-    prevProps.boss.status === nextProps.boss.status &&
-    prevProps.boss.nextSpawnTime === nextProps.boss.nextSpawnTime &&
+    prevBoss.bossName === nextBoss.bossName &&
+    prevBoss.status === nextBoss.status &&
+    prevBoss.nextSpawnTime === nextBoss.nextSpawnTime &&
+    prevBoss.lastKillTime === nextBoss.lastKillTime &&
+    prevBoss.killedBy === nextBoss.killedBy &&
+    prevBoss.isPredicted === nextBoss.isPredicted &&
+    prevBoss.rotation?.isOurTurn === nextBoss.rotation?.isOurTurn &&
+    prevBoss.rotation?.currentGuild === nextBoss.rotation?.currentGuild &&
     prevProps.canMarkAsKilled === nextProps.canMarkAsKilled &&
+    prevProps.isAdmin === nextProps.isAdmin &&
     prevProps.userName === nextProps.userName
   );
 });

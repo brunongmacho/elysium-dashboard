@@ -5,7 +5,7 @@
 
 import { NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
-import { getBossNameCleaningStages } from "@/lib/mongodb-utils";
+import { buildKillCountPerBossPipeline } from "@/lib/mongodb-utils";
 import { BOSS_TIMER } from "@/lib/constants";
 import {
   getAllBossNames,
@@ -42,27 +42,9 @@ export async function GET() {
     });
 
     // Calculate kill counts for all bosses (case-insensitive, remove #1 suffix)
-    const killCountPipeline = [
-      ...getBossNameCleaningStages(),
-      {
-        $group: {
-          _id: {
-            bossName: "$cleanBossName",
-            timestamp: "$timestamp"
-          }
-        }
-      },
-      {
-        $group: {
-          _id: { $toLower: "$_id.bossName" },
-          count: { $sum: 1 }
-        }
-      }
-    ];
-
     const killCountResults = await db
       .collection("attendance")
-      .aggregate(killCountPipeline)
+      .aggregate(buildKillCountPerBossPipeline())
       .toArray();
 
     const killCountMap = new Map<string, number>();
