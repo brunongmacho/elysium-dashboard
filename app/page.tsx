@@ -24,8 +24,15 @@ export default function Home() {
     {
       refreshInterval: BOSS_TIMER.REFRESH_INTERVAL,
       revalidateOnFocus: true,
+      dedupingInterval: 0, // Disable deduping to allow immediate refreshes
     }
   );
+
+  // Helper to force refresh by incrementing key
+  const forceRefresh = useCallback(async () => {
+    setRefreshKey((k) => k + 1);
+    await mutate();
+  }, [mutate]);
 
   const handleMarkAsKilled = useCallback(async (
     bossName: string,
@@ -54,7 +61,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await mutate();
+        await forceRefresh();
       } else {
         toast.error(result.error || "Failed to mark boss as killed", { id: loadingToast });
       }
@@ -65,7 +72,7 @@ export default function Home() {
         { id: loadingToast }
       );
     }
-  }, [mutate]);
+  }, [forceRefresh]);
 
   const handleCancelSpawn = useCallback(async (bossName: string) => {
     const loadingToast = toast.loading(`Cancelling spawn for ${bossName}...`);
@@ -84,7 +91,7 @@ export default function Home() {
           { id: loadingToast }
         );
         // Immediately refresh the boss list to show changes
-        await mutate();
+        await forceRefresh();
       } else {
         toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
       }
@@ -95,7 +102,7 @@ export default function Home() {
         { id: loadingToast }
       );
     }
-  }, [mutate]);
+  }, [forceRefresh]);
 
   return (
     <div className="space-y-6">
@@ -114,8 +121,7 @@ export default function Home() {
         <button
           onClick={async () => {
             setIsRefreshing(true);
-            await mutate();
-            setRefreshKey((k) => k + 1);
+            await forceRefresh();
             setIsRefreshing(false);
           }}
           disabled={isRefreshing}
