@@ -96,52 +96,52 @@ export default function MemberProfilePage() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">{profile.username}</h1>
           {lore && (
-            <p className="text-xl text-yellow-400 font-semibold italic mb-2">{lore.title}</p>
+            <p className="text-xl text-accent font-semibold italic mb-2">{lore.title}</p>
           )}
-          <p className="text-gray-400">
-            Rank #{profile.rank} of {profile.totalMembers} members
+          <p className="text-primary-light">
+            Rank <span className="text-accent font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
           </p>
         </div>
 
         {/* Member Lore Section */}
         {lore && (
-          <div className="bg-gradient-to-br from-yellow-900/20 to-orange-900/20 backdrop-blur-sm rounded-lg border-2 border-yellow-600/50 p-6 mb-8">
-            <h2 className="text-2xl font-bold text-yellow-400 mb-4">📜 Legend & Lore</h2>
+          <div className="glass backdrop-blur-sm rounded-lg border-2 border-accent/50 p-6 mb-8 glow-accent">
+            <h2 className="text-2xl font-bold text-accent mb-4">📜 Legend & Lore</h2>
 
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2">Origin Story</h3>
+                <h3 className="text-lg font-semibold text-accent-light mb-2">Origin Story</h3>
                 <p className="text-gray-300 leading-relaxed">{lore.lore}</p>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2">Recent Developments</h3>
+                <h3 className="text-lg font-semibold text-accent-light mb-2">Recent Developments</h3>
                 <p className="text-gray-300 leading-relaxed">{lore.recent_developments}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                  <h4 className="text-sm font-semibold text-yellow-400 mb-1">Specialty</h4>
+                  <h4 className="text-sm font-semibold text-accent mb-1">Specialty</h4>
                   <p className="text-gray-300 text-sm">{lore.specialty}</p>
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-yellow-400 mb-1">Reputation</h4>
+                  <h4 className="text-sm font-semibold text-accent mb-1">Reputation</h4>
                   <p className="text-gray-300 text-sm">{lore.reputation}</p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-yellow-400 mb-2">Stats</h4>
+                <h4 className="text-sm font-semibold text-accent mb-2">Stats</h4>
                 <p className="text-gray-300 text-sm font-mono">{lore.stats}</p>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-yellow-400 mb-2">Signature Skills</h4>
+                <h4 className="text-sm font-semibold text-accent mb-2">Signature Skills</h4>
                 <div className="flex flex-wrap gap-2">
                   {lore.skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="bg-yellow-600/30 border border-yellow-500/50 text-yellow-200 px-3 py-1 rounded-full text-sm"
+                      className="bg-accent/20 border border-accent/50 text-accent-light px-3 py-1 rounded-full text-sm transition-all duration-200 hover:bg-accent/30 hover:scale-105"
                     >
                       {skill}
                     </span>
@@ -155,58 +155,58 @@ export default function MemberProfilePage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {/* Points Available */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
-            <div className="text-sm text-gray-400 mb-2">💰 Points Available</div>
-            <div className="text-3xl font-bold text-green-400">{profile.pointsAvailable}</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 hover:border-accent/50 transition-all duration-200">
+            <div className="text-sm text-primary-light mb-2">💰 Points Available</div>
+            <div className="text-3xl font-bold text-accent">{profile.pointsAvailable}</div>
           </div>
 
           {/* Total Attendance */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
-            <div className="text-sm text-gray-400 mb-2">📊 Total Attendance</div>
-            <div className="text-3xl font-bold text-blue-400">{profile.attendance.total}</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 hover:border-primary/50 transition-all duration-200">
+            <div className="text-sm text-primary-light mb-2">📊 Total Attendance</div>
+            <div className="text-3xl font-bold text-primary">{profile.attendance.total}</div>
           </div>
 
           {/* Consumption Rate */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
-            <div className="text-sm text-gray-400 mb-2">📈 Consumption Rate</div>
-            <div className="text-3xl font-bold text-purple-400">{consumptionRate}%</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 hover:border-accent/50 transition-all duration-200">
+            <div className="text-sm text-primary-light mb-2">📈 Consumption Rate</div>
+            <div className="text-3xl font-bold text-accent">{consumptionRate}%</div>
           </div>
         </div>
 
         {/* Points Breakdown */}
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4">💎 Points Summary</h2>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 mb-8">
+          <h2 className="text-2xl font-bold text-primary-light mb-4">💎 Points Summary</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <div className="text-sm text-gray-400">Points Earned</div>
-              <div className="text-2xl font-bold text-green-400">{profile.pointsEarned}</div>
+              <div className="text-sm text-primary-light">Points Earned</div>
+              <div className="text-2xl font-bold text-accent">+{profile.pointsEarned}</div>
             </div>
             <div>
-              <div className="text-sm text-gray-400">Points Spent</div>
-              <div className="text-2xl font-bold text-red-400">{profile.pointsSpent}</div>
+              <div className="text-sm text-primary-light">Points Spent</div>
+              <div className="text-2xl font-bold text-danger">-{profile.pointsSpent}</div>
             </div>
             <div>
-              <div className="text-sm text-gray-400">Points Available</div>
-              <div className="text-2xl font-bold text-blue-400">{profile.pointsAvailable}</div>
+              <div className="text-sm text-primary-light">Points Available</div>
+              <div className="text-2xl font-bold text-primary">{profile.pointsAvailable}</div>
             </div>
           </div>
         </div>
 
         {/* Member Info */}
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6 mt-8">
-          <h2 className="text-2xl font-bold text-white mb-4">ℹ️ Member Information</h2>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 mt-8">
+          <h2 className="text-2xl font-bold text-primary-light mb-4">ℹ️ Member Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-gray-400">Last Active:</span>{" "}
+              <span className="text-primary-light">Last Active:</span>{" "}
               <span className="text-white">{formatInGMT8(profile.lastActive, "MMM dd, yyyy hh:mm a")}</span>
             </div>
             <div>
-              <span className="text-gray-400">This Week:</span>{" "}
-              <span className="text-white">{profile.attendance.thisWeek} bosses</span>
+              <span className="text-primary-light">This Week:</span>{" "}
+              <span className="text-accent font-semibold">{profile.attendance.thisWeek} bosses</span>
             </div>
             <div>
-              <span className="text-gray-400">This Month:</span>{" "}
-              <span className="text-white">{profile.attendance.thisMonth} bosses</span>
+              <span className="text-primary-light">This Month:</span>{" "}
+              <span className="text-accent font-semibold">{profile.attendance.thisMonth} bosses</span>
             </div>
           </div>
         </div>

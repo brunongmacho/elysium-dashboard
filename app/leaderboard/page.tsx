@@ -156,13 +156,13 @@ export default function LeaderboardPage() {
       )}
 
       {/* Filters */}
-      <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4">
+      <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 card-3d hover:scale-[1.01] transition-transform duration-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-primary-light mb-2">
                   Time Period
                 </label>
                 <select
@@ -177,7 +177,7 @@ export default function LeaderboardPage() {
                       setSelectedWeek(weekOptions[0].value);
                     }
                   }}
-                  className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full bg-gray-700/50 text-white border border-primary/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:bg-gray-700"
                 >
                   <option value="all">All Time</option>
                   <option value="monthly">Monthly</option>
@@ -188,13 +188,13 @@ export default function LeaderboardPage() {
               {/* Month Selector */}
               {period === "monthly" && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-primary-light mb-2">
                     Select Month
                   </label>
                   <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full bg-gray-700/50 text-white border border-primary/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:bg-gray-700"
                   >
                     {monthOptions.map(option => (
                       <option key={option.value} value={option.value}>
@@ -208,13 +208,13 @@ export default function LeaderboardPage() {
               {/* Week Selector */}
               {period === "weekly" && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-primary-light mb-2">
                     Select Week
                   </label>
                   <select
                     value={selectedWeek}
                     onChange={(e) => setSelectedWeek(e.target.value)}
-                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full bg-gray-700/50 text-white border border-primary/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:bg-gray-700"
                   >
                     {weekOptions.map(option => (
                       <option key={option.value} value={option.value}>
@@ -229,13 +229,13 @@ export default function LeaderboardPage() {
 
           {/* Top N Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-primary-light mb-2">
               Show Top
             </label>
             <select
               value={limit}
               onChange={(e) => setLimit(parseInt(e.target.value))}
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-700/50 text-white border border-primary/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:bg-gray-700"
             >
               <option value={10}>Top 10</option>
               <option value={25}>Top 25</option>
@@ -251,7 +251,7 @@ export default function LeaderboardPage() {
             period === "all" ? "md:col-span-2" :
             "md:col-span-1"
           }>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-primary-light mb-2">
               Search Member
             </label>
             <input
@@ -259,7 +259,7 @@ export default function LeaderboardPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Type member name..."
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full bg-gray-700/50 text-white border border-primary/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:bg-gray-700 placeholder:text-gray-500"
               aria-label="Search for members by name"
             />
           </div>
@@ -290,46 +290,46 @@ export default function LeaderboardPage() {
 
       {/* Leaderboard Table */}
       {!isLoading && !error && leaderboardData.length > 0 && (
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 overflow-hidden">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-primary/10 border-b border-primary/20">
+              <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Total Kills
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Points Earned
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Attendance Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
                       Rank
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-primary-light">
                       Member
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Points Available
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Points Earned
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Points Spent
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-300">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-primary-light">
                       Consumption Rate
                     </th>
                   </tr>
@@ -339,44 +339,44 @@ export default function LeaderboardPage() {
                 {leaderboardData.map((entry, index) => (
                   <tr
                     key={entry.memberId}
-                    className="hover:bg-primary/5 transition-colors"
+                    className="hover:bg-primary/10 transition-all duration-200 group"
                   >
                     <td className="px-4 py-3 text-white font-semibold">
                       {entry.rank <= 3 ? (
-                        <span className="text-xl">
+                        <span className="text-xl inline-block group-hover:scale-110 transition-transform duration-200">
                           {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
                         </span>
                       ) : (
-                        entry.rank
+                        <span className="text-primary-light">{entry.rank}</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-primary hover:text-primary-light font-medium hover:underline transition-colors"
+                        className="text-primary hover:text-accent font-medium hover:underline transition-all duration-200 group-hover:text-accent"
                       >
                         {entry.username}
                       </a>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
-                        <td className="px-4 py-3 text-right text-white">
+                        <td className="px-4 py-3 text-right text-white font-semibold">
                           {(entry as AttendanceLeaderboardEntry).totalKills}
                         </td>
-                        <td className="px-4 py-3 text-right text-success">
-                          {(entry as AttendanceLeaderboardEntry).pointsEarned}
+                        <td className="px-4 py-3 text-right text-accent font-semibold">
+                          +{(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <ProgressBar
                                 value={(entry as AttendanceLeaderboardEntry).attendanceRate}
-                                color="info"
+                                color="primary"
                                 showPercentage={false}
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-info font-semibold text-sm min-w-[45px] text-right">
+                            <span className="text-primary font-semibold text-sm min-w-[45px] text-right">
                               {(entry as AttendanceLeaderboardEntry).attendanceRate}%
                             </span>
                           </div>
@@ -384,26 +384,26 @@ export default function LeaderboardPage() {
                       </>
                     ) : (
                       <>
-                        <td className="px-4 py-3 text-right text-success font-semibold">
+                        <td className="px-4 py-3 text-right text-accent font-semibold">
                           {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
-                        <td className="px-4 py-3 text-right text-info">
-                          {(entry as PointsLeaderboardEntry).pointsEarned}
+                        <td className="px-4 py-3 text-right text-primary">
+                          +{(entry as PointsLeaderboardEntry).pointsEarned}
                         </td>
                         <td className="px-4 py-3 text-right text-danger">
-                          {(entry as PointsLeaderboardEntry).pointsSpent}
+                          -{(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
                               <ProgressBar
                                 value={(entry as PointsLeaderboardEntry).consumptionRate}
-                                color="warning"
+                                color="accent"
                                 showPercentage={false}
                                 className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-warning font-semibold text-sm min-w-[45px] text-right">
+                            <span className="text-accent font-semibold text-sm min-w-[45px] text-right">
                               {(entry as PointsLeaderboardEntry).consumptionRate}%
                             </span>
                           </div>
