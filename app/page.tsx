@@ -118,10 +118,10 @@ export default function Home() {
         {/* Header */}
         <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
             Boss Spawn Timers
           </h1>
-          <p className="text-gray-400">
+          <p className="text-sm sm:text-base text-gray-400">
             Real-time tracking of all boss spawns
           </p>
         </div>
@@ -160,30 +160,30 @@ export default function Home() {
 
       {/* Stats Bar */}
       {data && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-primary">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
               <AnimatedCounter value={data.count} />
             </div>
-            <div className="text-sm text-gray-400">Total Bosses</div>
+            <div className="text-xs sm:text-sm text-gray-400">Total Bosses</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 text-center glow-danger hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-danger">
+          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center glow-danger hover:scale-105 transition-transform duration-200">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger">
               <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
             </div>
-            <div className="text-sm text-gray-400">Spawned</div>
+            <div className="text-xs sm:text-sm text-gray-400">Spawned</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent p-4 text-center glow-accent hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-accent">
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent">
               <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
             </div>
-            <div className="text-sm text-gray-400">Soon (&lt;30min)</div>
+            <div className="text-xs sm:text-sm text-gray-400">Soon (&lt;30min)</div>
           </div>
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary p-4 text-center glow-primary hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-bold text-primary">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
               <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
             </div>
-            <div className="text-sm text-gray-400">Tracking</div>
+            <div className="text-xs sm:text-sm text-gray-400">Tracking</div>
           </div>
         </div>
       )}

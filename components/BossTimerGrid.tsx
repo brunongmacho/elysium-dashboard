@@ -60,13 +60,13 @@ export default function BossTimerGrid({
   }, [bosses]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Filters and Search */}
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-3 sm:p-4 md:p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Search */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
               Search Boss
             </label>
             <input
@@ -74,14 +74,14 @@ export default function BossTimerGrid({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Type boss name..."
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               aria-label="Search for bosses by name"
             />
           </div>
 
           {/* Type Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
               Boss Type
             </label>
             <select
@@ -89,7 +89,7 @@ export default function BossTimerGrid({
               onChange={(e) =>
                 setFilterType(e.target.value as "all" | "timer" | "schedule")
               }
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               aria-label="Filter bosses by type"
             >
               <option value="all">All Types</option>
@@ -100,7 +100,7 @@ export default function BossTimerGrid({
 
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
               Status
             </label>
             <select
@@ -110,7 +110,7 @@ export default function BossTimerGrid({
                   e.target.value as "all" | "spawned" | "soon" | "ready"
                 )
               }
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               aria-label="Filter bosses by status"
             >
               <option value="all">All Status</option>
@@ -131,7 +131,7 @@ export default function BossTimerGrid({
 
       {/* Boss Grid */}
       {filteredBosses.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {filteredBosses.map((boss, index) => (
             <div
               key={boss.bossName}

@@ -205,19 +205,19 @@ export default function MarkAsKilledModal({
             </div>
           )}
 
-          {/* Buttons - Better touch targets on mobile */}
-          <div className="flex gap-3 mt-6">
+          {/* Buttons - Consistent touch targets */}
+          <div className="flex gap-2 sm:gap-3 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 sm:py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition-colors duration-200 text-sm sm:text-base"
+              className="flex-1 px-4 py-2 sm:py-3 bg-gray-600 hover:bg-gray-700 active:scale-95 text-white rounded-md transition-all duration-200 text-sm sm:text-base"
               aria-label="Cancel and close modal"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-3 sm:py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md transition-colors duration-200 text-sm sm:text-base"
+              className="flex-1 px-4 py-2 sm:py-3 bg-red-600 hover:bg-red-700 active:scale-95 disabled:opacity-50 text-white font-semibold rounded-md transition-all duration-200 text-sm sm:text-base"
               aria-label={`Confirm marking ${bossName} as killed`}
             >
               Confirm

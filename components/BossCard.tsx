@@ -238,7 +238,7 @@ function BossCard({
         )}
       </div>
 
-      {/* Action Buttons - Better touch targets on mobile */}
+      {/* Action Buttons - Consistent touch targets */}
       {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (
         <div className="flex flex-col sm:flex-row gap-2">
           {/* Mark as Killed Button */}
@@ -249,7 +249,7 @@ function BossCard({
                 handleMarkAsKilled();
               }}
               disabled={isMarking}
-              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 sm:py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
             >
               {isMarking ? "Marking..." : "Mark as Killed"}
             </button>
@@ -263,7 +263,7 @@ function BossCard({
                 handleCancelSpawn();
               }}
               disabled={isCancelling}
-              className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-semibold py-3 sm:py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+              className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
               title="Delete this boss timer (Admin only)"
             >
               {isCancelling ? "Cancelling..." : "Cancel Spawn"}
