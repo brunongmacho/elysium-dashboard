@@ -26,19 +26,19 @@ export default function BossCard({
   // Get boss image path (convert boss name to lowercase and replace spaces with hyphens)
   const imagePath = `/bosses/${boss.bossName.toLowerCase().replace(/\s+/g, "-")}.png`;
 
-  // Determine card border color based on status
+  // Determine card border color based on status (uses theme colors)
   const borderColor = {
-    spawned: "border-red-500",
-    soon: "border-yellow-500",
-    ready: "border-green-500",
+    spawned: "border-danger",
+    soon: "border-warning",
+    ready: "border-success",
     unknown: "border-gray-500",
   }[boss.status];
 
-  // Determine background glow effect
+  // Determine background glow effect (uses theme colors)
   const glowColor = {
-    spawned: "shadow-red-500/20",
-    soon: "shadow-yellow-500/20",
-    ready: "shadow-green-500/20",
+    spawned: "glow-danger",
+    soon: "glow-warning",
+    ready: "glow-success",
     unknown: "shadow-gray-500/20",
   }[boss.status];
 
@@ -59,17 +59,17 @@ export default function BossCard({
 
   return (
     <div
-      className={`bg-gray-800/50 backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} shadow-lg p-4 hover:scale-105 transition-transform duration-200`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${glowColor} shadow-lg p-4 hover:scale-105 transition-transform duration-200`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
           <div className="flex items-center gap-1.5 mt-1 flex-nowrap">
-            <span className="text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
+            <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
             </span>
-            <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
+            <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.type === "timer" ? "Timed" : "Scheduled"}
             </span>
           </div>
@@ -143,7 +143,7 @@ export default function BossCard({
         <button
           onClick={handleMarkAsKilled}
           disabled={isMarking}
-          className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-colors duration-200"
+          className="w-full bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-colors duration-200"
         >
           {isMarking ? "Marking..." : "Mark as Killed"}
         </button>

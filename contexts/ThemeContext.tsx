@@ -14,6 +14,11 @@ interface Theme {
     accent: string;
     accentDark: string;
     accentLight: string;
+    // Status colors
+    success: string;
+    warning: string;
+    danger: string;
+    info: string;
   };
   description: string;
   icon: string;
@@ -30,6 +35,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#d946ef',
       accentDark: '#a21caf',
       accentLight: '#f0abfc',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#ef4444',
+      info: '#3b82f6',
     },
     description: 'Classic blue and purple theme',
     icon: '💙',
@@ -44,6 +53,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#ec4899',
       accentDark: '#be185d',
       accentLight: '#f9a8d4',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#dc2626',
+      info: '#8b5cf6',
     },
     description: 'Mythic and epic vibe',
     icon: '💜',
@@ -58,6 +71,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#fbbf24',
       accentDark: '#d97706',
       accentLight: '#fde68a',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#dc2626',
+      info: '#06b6d4',
     },
     description: 'Prestige and luxury',
     icon: '👑',
@@ -72,6 +89,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#f97316',
       accentDark: '#c2410c',
       accentLight: '#fdba74',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#dc2626',
+      info: '#3b82f6',
     },
     description: 'War and PvP themed',
     icon: '⚔️',
@@ -86,6 +107,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#14b8a6',
       accentDark: '#0f766e',
       accentLight: '#5eead4',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#dc2626',
+      info: '#06b6d4',
     },
     description: 'Growth and community',
     icon: '🌿',
@@ -100,6 +125,10 @@ const themes: Record<ThemeName, Theme> = {
       accent: '#a855f7',
       accentDark: '#7e22ce',
       accentLight: '#d8b4fe',
+      success: '#10b981',
+      warning: '#f59e0b',
+      danger: '#dc2626',
+      info: '#06b6d4',
     },
     description: 'Tech and futuristic',
     icon: '🤖',
@@ -130,12 +159,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const theme = themes[currentTheme];
     const root = document.documentElement;
 
+    // Primary and accent colors
     root.style.setProperty('--color-primary', theme.colors.primary);
     root.style.setProperty('--color-primary-dark', theme.colors.primaryDark);
     root.style.setProperty('--color-primary-light', theme.colors.primaryLight);
     root.style.setProperty('--color-accent', theme.colors.accent);
     root.style.setProperty('--color-accent-dark', theme.colors.accentDark);
     root.style.setProperty('--color-accent-light', theme.colors.accentLight);
+
+    // Status colors
+    root.style.setProperty('--color-success', theme.colors.success);
+    root.style.setProperty('--color-warning', theme.colors.warning);
+    root.style.setProperty('--color-danger', theme.colors.danger);
+    root.style.setProperty('--color-info', theme.colors.info);
   }, [currentTheme]);
 
   const setTheme = (theme: ThemeName) => {
