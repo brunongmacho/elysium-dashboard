@@ -155,7 +155,7 @@ function BossCard({
       </div>
 
       {/* Content Section - grows to fill space */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col justify-center">
         {/* Last Kill Info (Timer-based bosses only) */}
         {boss.type === "timer" && (boss.killedBy || boss.lastKillTime) && (
           <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
