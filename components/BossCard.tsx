@@ -12,17 +12,22 @@ import { useRipple } from "@/hooks/useRipple";
 interface BossCardProps {
   boss: BossTimerDisplay;
   onMarkAsKilled?: (bossName: string, killedBy: string, killTime?: string, spawnTime?: string) => void;
+  onCancelSpawn?: (bossName: string) => void;
   canMarkAsKilled?: boolean;
+  isAdmin?: boolean;
   userName?: string;
 }
 
 function BossCard({
   boss,
   onMarkAsKilled,
+  onCancelSpawn,
   canMarkAsKilled = false,
+  isAdmin = false,
   userName = "",
 }: BossCardProps) {
   const [isMarking, setIsMarking] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentTime, setCurrentTime] = useState(Date.now());
   const createRipple = useRipple();
@@ -68,6 +73,23 @@ function BossCard({
       setIsMarking(false);
     }
   }, [onMarkAsKilled, boss.bossName]);
+
+  const handleCancelSpawn = useCallback(async () => {
+    if (!onCancelSpawn) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to cancel the spawn timer for ${boss.bossName}? This will delete the timer entry.`
+    );
+
+    if (!confirmed) return;
+
+    setIsCancelling(true);
+    try {
+      await onCancelSpawn(boss.bossName);
+    } finally {
+      setIsCancelling(false);
+    }
+  }, [onCancelSpawn, boss.bossName]);
 
   // Calculate progress percentage and time remaining
   const { progressPercentage, timeRemaining } = useMemo(() => {
@@ -215,18 +237,38 @@ function BossCard({
         )}
       </div>
 
-      {/* Mark as Killed Button */}
-      {canMarkAsKilled && boss.type === "timer" && (
-        <button
-          onClick={(e) => {
-            createRipple(e);
-            handleMarkAsKilled();
-          }}
-          disabled={isMarking}
-          className="ripple-container w-full bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95"
-        >
-          {isMarking ? "Marking..." : "Mark as Killed"}
-        </button>
+      {/* Action Buttons */}
+      {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (
+        <div className="flex gap-2">
+          {/* Mark as Killed Button */}
+          {canMarkAsKilled && (
+            <button
+              onClick={(e) => {
+                createRipple(e);
+                handleMarkAsKilled();
+              }}
+              disabled={isMarking}
+              className={`ripple-container ${isAdmin ? 'flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+            >
+              {isMarking ? "Marking..." : "Mark as Killed"}
+            </button>
+          )}
+
+          {/* Cancel Spawn Button (Admin Only) */}
+          {isAdmin && (
+            <button
+              onClick={(e) => {
+                createRipple(e);
+                handleCancelSpawn();
+              }}
+              disabled={isCancelling}
+              className={`ripple-container ${canMarkAsKilled ? 'flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95`}
+              title="Delete this boss timer (Admin only)"
+            >
+              {isCancelling ? "Cancelling..." : "Cancel Spawn"}
+            </button>
+          )}
+        </div>
       )}
 
       {/* Mark as Killed Modal */}

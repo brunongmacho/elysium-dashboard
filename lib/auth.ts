@@ -80,6 +80,7 @@ export const authOptions: NextAuthOptions = {
                   : false;
 
                 token.cachedCanMarkAsKilled = hasElysiumRole || hasAdminRole;
+                token.cachedIsAdmin = hasAdminRole;
 
                 if (leaderRoleId && member.roles.includes(leaderRoleId)) {
                   token.cachedRoleBadge = "Elysium Leader";
@@ -95,6 +96,7 @@ export const authOptions: NextAuthOptions = {
               }
             } else {
               token.cachedCanMarkAsKilled = false;
+              token.cachedIsAdmin = false;
               token.lastFetched = now;
             }
           }
@@ -119,6 +121,7 @@ export const authOptions: NextAuthOptions = {
       // Use cached data from JWT token (refreshed every 5 minutes in JWT callback)
       session.isInGuild = token.cachedIsInGuild || false;
       session.canMarkAsKilled = token.cachedCanMarkAsKilled || false;
+      session.isAdmin = token.cachedIsAdmin || false;
       session.roleBadge = token.cachedRoleBadge;
 
       return session;

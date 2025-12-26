@@ -66,6 +66,36 @@ export default function Home() {
     }
   }, [mutate]);
 
+  const handleCancelSpawn = useCallback(async (bossName: string) => {
+    const loadingToast = toast.loading(`Cancelling spawn for ${bossName}...`);
+
+    try {
+      const result = await fetchJson<BossKillResponse>(
+        `/api/bosses/${encodeURIComponent(bossName)}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (result.success) {
+        toast.success(
+          `${bossName} spawn cancelled and timer deleted!`,
+          { id: loadingToast }
+        );
+        // Refresh the data
+        mutate();
+      } else {
+        toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
+      }
+    } catch (err) {
+      console.error("Error cancelling boss spawn:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to cancel boss spawn",
+        { id: loadingToast }
+      );
+    }
+  }, [mutate]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -163,7 +193,9 @@ export default function Home() {
         <BossTimerGrid
           bosses={data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
+          onCancelSpawn={handleCancelSpawn}
           canMarkAsKilled={session?.canMarkAsKilled || false}
+          isAdmin={session?.isAdmin || false}
           userName={session?.user?.name || ""}
         />
       )}

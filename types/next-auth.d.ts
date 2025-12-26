@@ -18,6 +18,7 @@ declare module "next-auth" {
     accessToken?: string;
     isInGuild: boolean;
     canMarkAsKilled: boolean;
+    isAdmin: boolean;
     roleBadge?: string;
   }
 
@@ -38,6 +39,7 @@ declare module "next-auth/jwt" {
     cachedNickname?: string;
     cachedRoleBadge?: string;
     cachedCanMarkAsKilled?: boolean;
+    cachedIsAdmin?: boolean;
     lastFetched?: number; // Timestamp of last Discord API fetch
   }
 }
