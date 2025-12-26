@@ -122,10 +122,10 @@ function BossCard({
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-bold text-white truncate">{boss.bossName}</h3>
-          <div className="flex items-center gap-1.5 mt-1 flex-nowrap">
+          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
             <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
               {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
             </span>
