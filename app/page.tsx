@@ -15,6 +15,7 @@ import { BOSS_TIMER } from "@/lib/constants";
 export default function Home() {
   const { data: session } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
   const { data, error, isLoading, mutate } = useSWR<BossTimersResponse>(
@@ -52,8 +53,8 @@ export default function Home() {
           `${bossName} marked as killed!${nextSpawnMsg}`,
           { id: loadingToast }
         );
-        // Refresh the data (use mutate only, not both)
-        mutate();
+        // Immediately refresh the boss list to show changes
+        await mutate();
       } else {
         toast.error(result.error || "Failed to mark boss as killed", { id: loadingToast });
       }
@@ -82,8 +83,8 @@ export default function Home() {
           `${bossName} spawn cancelled and timer deleted!`,
           { id: loadingToast }
         );
-        // Refresh the data
-        mutate();
+        // Immediately refresh the boss list to show changes
+        await mutate();
       } else {
         toast.error(result.error || "Failed to cancel boss spawn", { id: loadingToast });
       }
@@ -111,16 +112,19 @@ export default function Home() {
 
         {/* Refresh Button */}
         <button
-          onClick={() => {
-            mutate();
+          onClick={async () => {
+            setIsRefreshing(true);
+            await mutate();
             setRefreshKey((k) => k + 1);
+            setIsRefreshing(false);
           }}
-          className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200"
+          disabled={isRefreshing}
+          className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           title="Refresh boss timers"
           aria-label="Refresh boss timers"
         >
           <svg
-            className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors group-hover:rotate-180 duration-500"
+            className={`w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-500 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -133,7 +137,7 @@ export default function Home() {
             />
           </svg>
           <span className="hidden sm:inline text-sm text-gray-300 group-hover:text-white transition-colors">
-            Refresh
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </span>
         </button>
       </div>
