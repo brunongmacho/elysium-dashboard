@@ -76,41 +76,45 @@ body {
     -45deg,
     var(--color-bg-primary),
     var(--color-bg-secondary),
-    #1e1b4b,
+    color-mix(in srgb, var(--color-primary) 20%, var(--color-bg-primary)),
     var(--color-bg-primary)
   );
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
 
-/* Glass morphism effect */
+/* Glass morphism effect - Uses theme-aware colors */
 .glass {
-  background: rgba(31, 41, 55, 0.7);
+  background: color-mix(in srgb, var(--color-bg-secondary) 70%, transparent);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .glass-strong {
-  background: rgba(31, 41, 55, 0.9);
+  background: color-mix(in srgb, var(--color-bg-secondary) 90%, transparent);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
-/* Glow effects */
+/* Glow effects - Use CSS variables for dynamic theming */
 .glow-primary {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
 .glow-accent {
-  box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 30%, transparent);
 }
 
 .glow-success {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-success) 30%, transparent);
+}
+
+.glow-warning {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-warning) 30%, transparent);
 }
 
 .glow-danger {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-danger) 30%, transparent);
 }
 
 /* Text glow */

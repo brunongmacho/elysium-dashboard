@@ -25,13 +25,13 @@ export default function Countdown({ targetDate, className = "" }: CountdownProps
 
   const formatted = formatTimeRemaining(timeRemaining);
 
-  // Color based on time remaining
-  let colorClass = "text-green-400";
+  // Color based on time remaining (uses theme colors)
+  let colorClass = "text-success";
   if (timeRemaining <= 0) {
-    colorClass = "text-red-400 animate-pulse";
+    colorClass = "text-danger animate-pulse";
   } else if (timeRemaining <= 30 * 60 * 1000) {
     // Less than 30 minutes
-    colorClass = "text-yellow-400";
+    colorClass = "text-warning";
   }
 
   return (

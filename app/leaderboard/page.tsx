@@ -100,13 +100,13 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Leaderboard Type Tabs */}
-      <div className="flex gap-2 border-b border-gray-700">
+      <div className="flex gap-2 border-b border-primary/20">
         <button
           onClick={() => setLeaderboardType("attendance")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
             leaderboardType === "attendance"
-              ? "text-white border-blue-500"
-              : "text-gray-400 border-transparent hover:text-white"
+              ? "text-white border-primary"
+              : "text-gray-400 border-transparent hover:text-primary-light"
           }`}
         >
           📊 Attendance
@@ -115,8 +115,8 @@ export default function LeaderboardPage() {
           onClick={() => setLeaderboardType("points")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
             leaderboardType === "points"
-              ? "text-white border-blue-500"
-              : "text-gray-400 border-transparent hover:text-white"
+              ? "text-white border-primary"
+              : "text-gray-400 border-transparent hover:text-primary-light"
           }`}
         >
           💰 Points
@@ -124,7 +124,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-4">
+      <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
                       setSelectedWeek(weekOptions[0].value);
                     }
                   }}
-                  className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="all">All Time</option>
                   <option value="monthly">Monthly</option>
@@ -162,7 +162,7 @@ export default function LeaderboardPage() {
                   <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     {monthOptions.map(option => (
                       <option key={option.value} value={option.value}>
@@ -182,7 +182,7 @@ export default function LeaderboardPage() {
                   <select
                     value={selectedWeek}
                     onChange={(e) => setSelectedWeek(e.target.value)}
-                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     {weekOptions.map(option => (
                       <option key={option.value} value={option.value}>
@@ -203,7 +203,7 @@ export default function LeaderboardPage() {
             <select
               value={limit}
               onChange={(e) => setLimit(parseInt(e.target.value))}
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value={10}>Top 10</option>
               <option value={25}>Top 25</option>
@@ -227,7 +227,7 @@ export default function LeaderboardPage() {
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="Type member name..."
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         </div>
@@ -242,7 +242,7 @@ export default function LeaderboardPage() {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8 text-center">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-8 text-center">
           <div className="flex items-center justify-center space-x-2 text-gray-400">
             <svg
               className="animate-spin h-8 w-8"
@@ -271,8 +271,8 @@ export default function LeaderboardPage() {
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-900/20 backdrop-blur-sm rounded-lg border border-red-700 p-6 text-center">
-          <div className="text-red-400 text-lg font-semibold mb-2">
+        <div className="glass backdrop-blur-sm rounded-lg border border-danger p-6 text-center glow-danger">
+          <div className="text-danger text-lg font-semibold mb-2">
             ⚠️ Failed to load leaderboard
           </div>
           <div className="text-gray-400 text-sm">
@@ -283,10 +283,10 @@ export default function LeaderboardPage() {
 
       {/* Leaderboard Table */}
       {!isLoading && !error && leaderboardData.length > 0 && (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-700/50">
+              <thead className="bg-primary/10 border-b border-primary/20">
                 {leaderboardType === "attendance" ? (
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-300">
@@ -328,11 +328,11 @@ export default function LeaderboardPage() {
                   </tr>
                 )}
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-primary/10">
                 {leaderboardData.map((entry, index) => (
                   <tr
                     key={entry.memberId}
-                    className="hover:bg-gray-700/30 transition-colors"
+                    className="hover:bg-primary/5 transition-colors"
                   >
                     <td className="px-4 py-3 text-white font-semibold">
                       {entry.rank <= 3 ? (
@@ -346,7 +346,7 @@ export default function LeaderboardPage() {
                     <td className="px-4 py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-blue-400 hover:text-blue-300 font-medium hover:underline transition-colors"
+                        className="text-primary hover:text-primary-light font-medium hover:underline transition-colors"
                       >
                         {entry.username}
                       </a>
@@ -356,25 +356,25 @@ export default function LeaderboardPage() {
                         <td className="px-4 py-3 text-right text-white">
                           {(entry as AttendanceLeaderboardEntry).totalKills}
                         </td>
-                        <td className="px-4 py-3 text-right text-green-400">
+                        <td className="px-4 py-3 text-right text-success">
                           {(entry as AttendanceLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3 text-right text-blue-400">
+                        <td className="px-4 py-3 text-right text-info">
                           {(entry as AttendanceLeaderboardEntry).attendanceRate}%
                         </td>
                       </>
                     ) : (
                       <>
-                        <td className="px-4 py-3 text-right text-green-400 font-semibold">
+                        <td className="px-4 py-3 text-right text-success font-semibold">
                           {(entry as PointsLeaderboardEntry).pointsAvailable}
                         </td>
-                        <td className="px-4 py-3 text-right text-blue-400">
+                        <td className="px-4 py-3 text-right text-info">
                           {(entry as PointsLeaderboardEntry).pointsEarned}
                         </td>
-                        <td className="px-4 py-3 text-right text-red-400">
+                        <td className="px-4 py-3 text-right text-danger">
                           {(entry as PointsLeaderboardEntry).pointsSpent}
                         </td>
-                        <td className="px-4 py-3 text-right text-yellow-400">
+                        <td className="px-4 py-3 text-right text-warning">
                           {(entry as PointsLeaderboardEntry).consumptionRate}%
                         </td>
                       </>
@@ -389,7 +389,7 @@ export default function LeaderboardPage() {
 
       {/* Empty State */}
       {!isLoading && !error && leaderboardData.length === 0 && (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-12 text-center">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-12 text-center">
           <div className="text-gray-400 text-lg">No members found</div>
           <div className="text-gray-500 text-sm mt-2">
             Try adjusting your filters or search query

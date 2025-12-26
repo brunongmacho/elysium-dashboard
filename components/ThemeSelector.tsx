@@ -1,16 +1,37 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [mounted, setMounted] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Track component mount for SSR compatibility
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Calculate dropdown position when opened
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setPosition({
+        top: rect.bottom + 8, // 8px below button
+        right: window.innerWidth - rect.right, // Align to right edge
+      });
+    }
+  }, [isOpen]);
 
   return (
     <div className="relative">
       {/* Theme Button */}
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200"
         title="Change theme"
@@ -27,17 +48,25 @@ export default function ThemeSelector() {
         </svg>
       </button>
 
-      {/* Theme Dropdown */}
-      {isOpen && (
+      {/* Theme Dropdown Portal - Renders outside React hierarchy */}
+      {mounted && isOpen && createPortal(
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-[9998]"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+            style={{ zIndex: 999999 }}
             onClick={() => setIsOpen(false)}
           />
 
           {/* Dropdown Menu */}
-          <div className="absolute right-0 mt-2 w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 z-[9999] overflow-hidden">
+          <div
+            className="fixed w-72 rounded-lg glass-strong shadow-2xl border border-gray-700 overflow-hidden"
+            style={{
+              top: `${position.top}px`,
+              right: `${position.right}px`,
+              zIndex: 1000000
+            }}
+          >
             <div className="p-3 border-b border-gray-700">
               <h3 className="text-sm font-semibold text-white">Choose Theme</h3>
               <p className="text-xs text-gray-400 mt-1">Select your guild's color scheme</p>
@@ -103,7 +132,8 @@ export default function ThemeSelector() {
               </p>
             </div>
           </div>
-        </>
+        </>,
+        document.body
       )}
     </div>
   );

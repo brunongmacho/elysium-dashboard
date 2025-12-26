@@ -67,7 +67,7 @@ export default function Home() {
             mutate();
             setRefreshKey((k) => k + 1);
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-200"
+          className="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded transition-colors duration-200"
         >
           🔄 Refresh
         </button>
@@ -76,24 +76,24 @@ export default function Home() {
       {/* Stats Bar */}
       {data && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-4 text-center">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
             <div className="text-2xl font-bold text-white">{data.count}</div>
             <div className="text-sm text-gray-400">Total Bosses</div>
           </div>
-          <div className="bg-red-900/20 backdrop-blur-sm rounded-lg border border-red-700 p-4 text-center">
-            <div className="text-2xl font-bold text-red-400">
+          <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 text-center glow-danger">
+            <div className="text-2xl font-bold text-danger">
               {data.bosses.filter((b) => b.status === "spawned").length}
             </div>
             <div className="text-sm text-gray-400">Spawned</div>
           </div>
-          <div className="bg-yellow-900/20 backdrop-blur-sm rounded-lg border border-yellow-700 p-4 text-center">
-            <div className="text-2xl font-bold text-yellow-400">
+          <div className="glass backdrop-blur-sm rounded-lg border border-warning p-4 text-center glow-warning">
+            <div className="text-2xl font-bold text-warning">
               {data.bosses.filter((b) => b.status === "soon").length}
             </div>
             <div className="text-sm text-gray-400">Soon (&lt;30min)</div>
           </div>
-          <div className="bg-green-900/20 backdrop-blur-sm rounded-lg border border-green-700 p-4 text-center">
-            <div className="text-2xl font-bold text-green-400">
+          <div className="glass backdrop-blur-sm rounded-lg border border-success p-4 text-center glow-success">
+            <div className="text-2xl font-bold text-success">
               {data.bosses.filter((b) => b.status === "ready").length}
             </div>
             <div className="text-sm text-gray-400">Ready</div>
@@ -103,7 +103,7 @@ export default function Home() {
 
       {/* Loading State */}
       {isLoading && (
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8 text-center">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-8 text-center">
           <div className="flex items-center justify-center space-x-2 text-gray-400">
             <svg
               className="animate-spin h-8 w-8"
@@ -132,8 +132,8 @@ export default function Home() {
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-900/20 backdrop-blur-sm rounded-lg border border-red-700 p-6 text-center">
-          <div className="text-red-400 text-lg font-semibold mb-2">
+        <div className="glass backdrop-blur-sm rounded-lg border border-danger p-6 text-center glow-danger">
+          <div className="text-danger text-lg font-semibold mb-2">
             ⚠️ Failed to load boss timers
           </div>
           <div className="text-gray-400 text-sm">

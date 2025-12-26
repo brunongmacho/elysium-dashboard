@@ -8,7 +8,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
 
   return (
-    <nav className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700">
+    <nav className="glass backdrop-blur-sm border-b border-primary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Title */}
@@ -22,13 +22,13 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <a
               href="/"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Boss Timers
             </a>
             <a
               href="/leaderboard"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Leaderboards
             </a>
@@ -37,7 +37,7 @@ export default function Navbar() {
             <ThemeSelector />
 
             {/* Auth Section */}
-            <div className="pl-4 border-l border-gray-700">
+            <div className="pl-4 border-l border-primary/20">
               {status === "loading" ? (
                 <div className="text-gray-400 text-sm">Loading...</div>
               ) : session ? (
@@ -57,16 +57,16 @@ export default function Navbar() {
                       />
                     )}
                     <div className="flex flex-col">
-                      <span className="text-white text-sm font-medium hover:text-blue-400 transition-colors">
+                      <span className="text-white text-sm font-medium hover:text-primary transition-colors">
                         {session.user?.name}
                       </span>
                       {!session.isInGuild && (
-                        <span className="text-red-400 text-xs">
+                        <span className="text-danger text-xs">
                           Not in guild
                         </span>
                       )}
                       {session.roleBadge && (
-                        <span className="text-green-400 text-xs">
+                        <span className="text-success text-xs">
                           {session.roleBadge}
                         </span>
                       )}
@@ -84,7 +84,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => signIn("discord")}
-                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
