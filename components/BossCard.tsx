@@ -176,17 +176,17 @@ function BossCard({
 
       {/* Next Spawn Info */}
       {boss.nextSpawnTime ? (
-        <div className="mb-3">
-          <div className="text-base font-semibold text-gray-300 mb-2">
+        <div className="mb-2">
+          <div className="text-sm font-semibold text-gray-300 mb-1">
             {boss.isPredicted ? "🔮 Predicted Spawn:" : "⏰ Next Spawn:"}
           </div>
-          <div className="text-white text-lg font-bold mb-3">
+          <div className="text-white text-base font-bold mb-2">
             {formatInGMT8(boss.nextSpawnTime, "MMM dd, yyyy hh:mm a")}
           </div>
 
           {/* Countdown Timer with Circular Progress */}
-          <div className="flex justify-center py-6">
-            <div className="relative p-8">
+          <div className="flex justify-center py-2">
+            <div className="relative">
               <CircularProgress
                 percentage={progressPercentage}
                 size={160}
@@ -194,7 +194,7 @@ function BossCard({
                 status={boss.status}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center px-2">
+                <div className="text-center">
                   <div className="text-xs text-gray-400 mb-1">Countdown</div>
                   <div className="font-mono text-xl font-bold text-white leading-tight">
                     {timeRemaining !== null
