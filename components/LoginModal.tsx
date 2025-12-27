@@ -94,16 +94,16 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           />
 
           {/* Modal Container - Centered on entire screen */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
             <motion.div
               ref={modalRef}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={{ opacity: 0, scale: 0.9, y: 0 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              exit={{ opacity: 0, scale: 0.9, y: 0 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               className="
                 glass-strong backdrop-blur-md rounded-xl border-2 border-primary/30
-                shadow-elevated-3 w-full
+                shadow-elevated-3 w-full my-auto
                 max-w-md sm:max-w-lg md:max-w-xl
                 p-6 sm:p-8 md:p-10
               "
@@ -203,8 +203,8 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
               </div>
 
               {/* Privacy Note */}
-              <p className="text-xs sm:text-sm text-gray-500 mt-6 sm:mt-8 text-center font-game leading-relaxed">
-                We only access your Discord profile, guild membership, and roles
+              <p className="text-xs sm:text-sm text-gray-500 mt-6 sm:mt-8 text-center font-game leading-relaxed max-w-prose mx-auto">
+                We only access your Discord profile, guild&nbsp;membership, and&nbsp;roles
               </p>
             </motion.div>
           </div>
