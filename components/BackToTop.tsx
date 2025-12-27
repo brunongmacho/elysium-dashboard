@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Icon } from "@/components/icons";
 import { UI } from "@/lib/constants";
 
 export default function BackToTop() {
@@ -39,15 +38,13 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 p-3 sm:p-4 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 text-primary hover:bg-primary/30 hover:border-primary hover:scale-110 transition-all duration-300 shadow-lg glow-primary group tap-target"
+      className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 text-primary hover:bg-primary/30 hover:border-primary hover:scale-110 transition-all duration-300 shadow-lg glow-primary group tap-target"
       aria-label="Back to top"
       title="Back to top"
     >
-      <Icon
-        name="chevron-up"
-        size="lg"
-        className="group-hover:-translate-y-1 transition-transform duration-300"
-      />
+      <span className="text-2xl font-bold group-hover:-translate-y-1 transition-transform duration-300 inline-block">
+        ↑
+      </span>
     </button>
   );
 }

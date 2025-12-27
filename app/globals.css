@@ -693,8 +693,13 @@ textarea:focus-visible {
 /* Custom utilities */
 /* Content must be above background pseudo-elements */
 .animated-gradient > * {
-  position: relative;
   z-index: 1;
+}
+
+/* Apply relative positioning only to content areas, not nav or fixed elements */
+.animated-gradient > main,
+.animated-gradient > footer {
+  position: relative;
 }
 
 @layer utilities {
