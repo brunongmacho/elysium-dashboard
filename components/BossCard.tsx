@@ -281,53 +281,58 @@ function BossCard({
       </div>
 
       {/* Action Buttons - Consistent touch targets */}
-      {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (
-        <div className="flex flex-col sm:flex-row gap-2">
-          {/* Mark as Killed Button */}
-          {canMarkAsKilled && (
-            <Tooltip
-              content="Update the next spawn time after killing this boss"
-              position="top"
-              fullWidth={!(isAdmin && boss.nextSpawnTime && !boss.isPredicted)}
-            >
-              <button
-                onClick={(e) => {
-                  createRipple(e);
-                  handleMarkAsKilled();
-                }}
-                disabled={isMarking}
-                aria-label={`Mark ${boss.bossName} as killed`}
-                aria-busy={isMarking}
-                className={`ripple-container tap-target ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
-              >
-                {isMarking ? "Marking..." : "Mark as Killed"}
-              </button>
-            </Tooltip>
-          )}
+      {boss.type === "timer" && (canMarkAsKilled || isAdmin) && (() => {
+        // Determine which buttons to show
+        const showMarkAsKilled = canMarkAsKilled;
+        const showCancelSpawn = isAdmin && boss.nextSpawnTime && !boss.isPredicted;
+        const hasBothButtons = showMarkAsKilled && showCancelSpawn;
 
-          {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
-          {isAdmin && boss.nextSpawnTime && !boss.isPredicted && (
-            <Tooltip
-              content="Delete this boss timer from the database (Admin only)"
-              position="top"
-              fullWidth={!canMarkAsKilled}
-            >
-              <button
-                onClick={(e) => {
-                  createRipple(e);
-                  handleCancelSpawn();
-                }}
-                disabled={isCancelling}
-                aria-label={`Cancel spawn timer for ${boss.bossName}`}
-                aria-busy={isCancelling}
-                className={`ripple-container tap-target ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
+        return (
+          <div className="flex flex-col sm:flex-row gap-2">
+            {/* Mark as Killed Button */}
+            {showMarkAsKilled && (
+              <Tooltip
+                content="Update the next spawn time after killing this boss"
+                position="top"
               >
-                {isCancelling ? "Cancelling..." : "Cancel Spawn"}
-              </button>
-            </Tooltip>
-          )}
-        </div>
-      )}
+                <button
+                  onClick={(e) => {
+                    createRipple(e);
+                    handleMarkAsKilled();
+                  }}
+                  disabled={isMarking}
+                  aria-label={`Mark ${boss.bossName} as killed`}
+                  aria-busy={isMarking}
+                  className={`ripple-container tap-target w-full ${hasBothButtons ? 'sm:flex-1' : ''} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
+                >
+                  {isMarking ? "Marking..." : "Mark as Killed"}
+                </button>
+              </Tooltip>
+            )}
+
+            {/* Cancel Spawn Button (Admin Only, only if actual timer exists in database) */}
+            {showCancelSpawn && (
+              <Tooltip
+                content="Delete this boss timer from the database (Admin only)"
+                position="top"
+              >
+                <button
+                  onClick={(e) => {
+                    createRipple(e);
+                    handleCancelSpawn();
+                  }}
+                  disabled={isCancelling}
+                  aria-label={`Cancel spawn timer for ${boss.bossName}`}
+                  aria-busy={isCancelling}
+                  className={`ripple-container tap-target w-full ${hasBothButtons ? 'sm:flex-1' : ''} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
+                >
+                  {isCancelling ? "Cancelling..." : "Cancel Spawn"}
+                </button>
+              </Tooltip>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Mark as Killed Modal */}
       <MarkAsKilledModal
