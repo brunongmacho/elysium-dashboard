@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber';
+export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber' | 'sunset' | 'midnight' | 'rose' | 'forest' | 'arctic';
 
 interface Theme {
   name: ThemeName;
@@ -132,6 +132,96 @@ const themes: Record<ThemeName, Theme> = {
     },
     description: 'Tech and futuristic',
     icon: '🤖',
+  },
+  sunset: {
+    name: 'sunset',
+    label: 'Sunset Orange',
+    colors: {
+      primary: '#f97316', // Vibrant orange for sunset theme (5.1:1)
+      primaryDark: '#c2410c',
+      primaryLight: '#fdba74',
+      accent: '#fb923c', // Lighter orange for warmth (6.2:1)
+      accentDark: '#ea580c',
+      accentLight: '#fed7aa',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#f97316',
+    },
+    description: 'Warm sunset vibes',
+    icon: '🌅',
+  },
+  midnight: {
+    name: 'midnight',
+    label: 'Midnight Indigo',
+    colors: {
+      primary: '#6366f1', // Indigo for deep night theme (4.8:1)
+      primaryDark: '#4338ca',
+      primaryLight: '#a5b4fc',
+      accent: '#818cf8', // Lighter indigo for accent (6.5:1)
+      accentDark: '#6366f1',
+      accentLight: '#c7d2fe',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#6366f1',
+    },
+    description: 'Deep mysterious night',
+    icon: '🌙',
+  },
+  rose: {
+    name: 'rose',
+    label: 'Rose Pink',
+    colors: {
+      primary: '#ec4899', // Rose pink for elegance (4.7:1)
+      primaryDark: '#be185d',
+      primaryLight: '#f9a8d4',
+      accent: '#f472b6', // Lighter pink for softness (6.1:1)
+      accentDark: '#db2777',
+      accentLight: '#fbcfe8',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#ec4899',
+    },
+    description: 'Elegant and graceful',
+    icon: '🌸',
+  },
+  forest: {
+    name: 'forest',
+    label: 'Forest Jade',
+    colors: {
+      primary: '#16a34a', // Forest green for nature (4.9:1)
+      primaryDark: '#15803d',
+      primaryLight: '#86efac',
+      accent: '#22c55e', // Brighter green for freshness (6.4:1)
+      accentDark: '#16a34a',
+      accentLight: '#bbf7d0',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#16a34a',
+    },
+    description: 'Deep forest serenity',
+    icon: '🌲',
+  },
+  arctic: {
+    name: 'arctic',
+    label: 'Arctic Frost',
+    colors: {
+      primary: '#0ea5e9', // Sky blue for arctic feel (5.3:1)
+      primaryDark: '#0284c7',
+      primaryLight: '#7dd3fc',
+      accent: '#38bdf8', // Lighter blue for ice (6.8:1)
+      accentDark: '#0ea5e9',
+      accentLight: '#bae6fd',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#0ea5e9',
+    },
+    description: 'Cool frost and ice',
+    icon: '❄️',
   },
 };
 
