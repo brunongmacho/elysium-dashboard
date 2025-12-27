@@ -89,23 +89,25 @@ export default function GuildHomePage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2 font-game-decorative">127</div>
-              <div className="text-sm text-gray-400 font-game">LXRDGRIM's Therapy Clients</div>
+              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2 font-game-decorative">100%</div>
+              <div className="text-sm text-gray-400 font-game">Jalo Bot Financial Accuracy</div>
+              <div className="text-xs text-gray-500 font-game mt-1">(HesuCrypto: 0%)</div>
             </div>
 
             <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-accent mb-2 font-game-decorative">100%</div>
-              <div className="text-sm text-gray-400 font-game">Jalo Bot Financial Accuracy</div>
+              <div className="text-3xl sm:text-4xl font-bold text-accent mb-2 font-game-decorative">∞/0</div>
+              <div className="text-sm text-gray-400 font-game">HesuCrypto's Net Worth</div>
+              <div className="text-xs text-success font-game mt-1">(Quantum State)</div>
             </div>
 
             <div className="glass backdrop-blur-sm rounded-lg border border-success/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-success mb-2 font-game-decorative">9999</div>
-              <div className="text-sm text-gray-400 font-game">Ztig's Ally Precision Score</div>
+              <div className="text-3xl sm:text-4xl font-bold text-success mb-2 font-game-decorative">127</div>
+              <div className="text-sm text-gray-400 font-game">LXRDGRIM's Therapy Clients</div>
             </div>
 
             <div className="glass backdrop-blur-sm rounded-lg border border-danger/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-danger mb-2 font-game-decorative">47</div>
-              <div className="text-sm text-gray-400 font-game">Accidental Recruits (Iguro)</div>
+              <div className="text-3xl sm:text-4xl font-bold text-danger mb-2 font-game-decorative">9999</div>
+              <div className="text-sm text-gray-400 font-game">Ztig's Ally Precision Score</div>
             </div>
           </div>
         </div>
@@ -130,8 +132,8 @@ export default function GuildHomePage() {
                 <span className="text-gray-300">Carrera: Currently in <span className="text-primary">next week</span></span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-danger">💬</span>
-                <span className="text-gray-300">DadaXxD: <span className="text-accent">5 years</span> without verbal communication</span>
+                <span className="text-danger">💎</span>
+                <span className="text-gray-300">HesuCrypto: <span className="text-accent">Broke AND Rich</span> (simultaneously)</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-success">📊</span>
@@ -181,12 +183,12 @@ export default function GuildHomePage() {
                   <span>Carrera's Time Crimes: 892 (700 tactical) - Strategic lateness is now a legitimate tactic</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-success font-bold">📊</span>
-                  <span>Fever's Apocalypse Filing System - The void is organized, color-coded, and optimized</span>
+                  <span className="text-danger font-bold">💎</span>
+                  <span>HesuCrypto's Jalo Bot - Achieved financial sentience, manages guild treasury with 100% accuracy (HesuCrypto: banned from 12 exchanges)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-danger font-bold">💬</span>
-                  <span>Chunchunmaru (the sword) has 3.2M social media followers - Better engagement than most kingdoms</span>
+                  <span className="text-success font-bold">📊</span>
+                  <span>Fever's Apocalypse Filing System - The void is organized, color-coded, and optimized</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary font-bold">🍪</span>
