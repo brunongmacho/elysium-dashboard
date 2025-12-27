@@ -61,7 +61,7 @@ export default function GuildHomePage() {
 
             {/* Discord Link */}
             <a
-              href="https://discord.gg/your-server"
+              href="https://discord.gg/EUWXd5tPa7"
               target="_blank"
               rel="noopener noreferrer"
               className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 hover:border-primary transition-all duration-200 hover:scale-105"
@@ -161,7 +161,7 @@ export default function GuildHomePage() {
             <span className="text-gray-600">•</span>
             <a href="/leaderboard" className="text-accent hover:text-accent-light font-game">Leaderboards</a>
             <span className="text-gray-600">•</span>
-            <a href="https://discord.gg/your-server" className="text-primary hover:text-primary-light font-game">Discord</a>
+            <a href="https://discord.gg/EUWXd5tPa7" className="text-primary hover:text-primary-light font-game">Discord</a>
           </div>
         </div>
       </section>
