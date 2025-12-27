@@ -53,20 +53,26 @@ export default function GuildHomePage() {
   const { currentActivities, legendaryAchievements } = useMemo(() => {
     const members = Object.entries(memberLore as Record<string, MemberLoreData>);
 
-    // Simple seeded shuffle
-    const shuffled = [...members].sort(() => {
-      const random = Math.sin(seed) * 10000;
-      return random - Math.floor(random);
-    });
+    // Truly random shuffle using current seed
+    const shuffled = [...members].sort(() => Math.random() - 0.5);
 
     // Extract current activities (6 items)
     const activities = shuffled.slice(0, 6).map(([name, data]) => {
       // Create a concise summary from recent_developments
-      const sentences = data.recent_developments.split('. ').filter(s => s.trim().length > 0);
-      const randomSentence = sentences[Math.floor(Math.sin(seed + name.length) * 1000) % sentences.length];
+      const sentences = data.recent_developments?.split('. ').filter(s => s && s.trim().length > 0) || [];
+
+      if (sentences.length === 0) {
+        return {
+          name,
+          text: 'Currently causing legendary chaos',
+          icon: getIconForMember(name, data)
+        };
+      }
+
+      const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
 
       // Create a short summary (max 80 characters)
-      let summary = randomSentence.trim();
+      let summary = randomSentence?.trim() || 'Doing legendary things';
       if (summary.length > 80) {
         summary = summary.substring(0, 77) + '...';
       }
@@ -81,14 +87,14 @@ export default function GuildHomePage() {
     // Extract legendary achievements (5 items)
     const achievements = shuffled.slice(6, 11).map(([name, data]) => {
       // Create concise specialty (max 60 characters)
-      let specialty = data.specialty.trim();
+      let specialty = data.specialty?.trim() || 'Master of legendary feats';
       if (specialty.length > 60) {
         specialty = specialty.substring(0, 57) + '...';
       }
 
       return {
         name,
-        title: data.title,
+        title: data.title || 'The Legendary One',
         specialty: specialty,
         icon: getIconForMember(name, data)
       };
