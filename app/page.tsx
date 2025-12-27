@@ -18,10 +18,14 @@ export default function GuildHomePage() {
               ⚔️ ELYSIUM
             </h1>
             <p className="text-xl sm:text-2xl text-silver font-game-decorative">
-              Lordnine Infinite Class
+              Where Chaos Becomes Strategy
             </p>
-            <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto font-game">
-              Welcome to our guild's command center. Stay updated on boss spawns, track your attendance, and manage your bidding points.
+            <p className="text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-game italic">
+              "A guild where stupidity becomes genius, friendly fire is tactical, and therapy sessions are mandatory.
+              Led by crayon drawings and powered by organized apocalypse."
+            </p>
+            <p className="text-sm text-gray-400 font-game">
+              — Managed by Goblok's Transcendent Foolishness™ | Therapy by LXRDGRIM
             </p>
           </div>
         </div>
@@ -81,27 +85,62 @@ export default function GuildHomePage() {
       {/* Guild Stats Overview */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-6">Guild Stats</h2>
+          <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-6">Guild Stats (Mostly Accurate)</h2>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2 font-game-decorative">Active</div>
-              <div className="text-sm text-gray-400 font-game">Boss Tracking</div>
+              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2 font-game-decorative">127</div>
+              <div className="text-sm text-gray-400 font-game">LXRDGRIM's Therapy Clients</div>
             </div>
 
             <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-accent mb-2 font-game-decorative">Live</div>
-              <div className="text-sm text-gray-400 font-game">Leaderboards</div>
+              <div className="text-3xl sm:text-4xl font-bold text-accent mb-2 font-game-decorative">100%</div>
+              <div className="text-sm text-gray-400 font-game">Jalo Bot Financial Accuracy</div>
             </div>
 
             <div className="glass backdrop-blur-sm rounded-lg border border-success/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-success mb-2 font-game-decorative">35min</div>
-              <div className="text-sm text-gray-400 font-game">Grace Period</div>
+              <div className="text-3xl sm:text-4xl font-bold text-success mb-2 font-game-decorative">9999</div>
+              <div className="text-sm text-gray-400 font-game">Ztig's Ally Precision Score</div>
             </div>
 
-            <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2 font-game-decorative">24/7</div>
-              <div className="text-sm text-gray-400 font-game">Monitoring</div>
+            <div className="glass backdrop-blur-sm rounded-lg border border-danger/30 p-6 text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-danger mb-2 font-game-decorative">47</div>
+              <div className="text-sm text-gray-400 font-game">Accidental Recruits (Iguro)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Current Guild Status */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-6">
+            <h3 className="text-xl font-bold text-gold text-rpg-title mb-4">📜 Current Guild Activities</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm font-game">
+              <div className="flex items-start gap-2">
+                <span className="text-success">✓</span>
+                <span className="text-gray-300">Cold Snack War: <span className="text-success">Peaceful</span> (Treaty active)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-primary">⚡</span>
+                <span className="text-gray-300">Evand3r's Spoon Quest: <span className="text-accent">Day 1,706</span> (still missing)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-accent">🔮</span>
+                <span className="text-gray-300">Carrera: Currently in <span className="text-primary">next week</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-danger">💬</span>
+                <span className="text-gray-300">DadaXxD: <span className="text-accent">5 years</span> without verbal communication</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-success">📊</span>
+                <span className="text-gray-300">Fever's Filing: Void status <span className="text-success">OPTIMIZED</span></span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-primary">🍪</span>
+                <span className="text-gray-300">JeffEpstein's Cookies: <span className="text-accent">Still really good</span></span>
+              </div>
             </div>
           </div>
         </div>
@@ -116,33 +155,42 @@ export default function GuildHomePage() {
               <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-4">About Elysium</h2>
               <div className="space-y-3 text-gray-300 font-game">
                 <p>
-                  We are a competitive guild in Lordnine Infinite Class, focused on efficient boss hunting and fair loot distribution.
+                  We are a guild where impossibilities become strategies. Where a deaf oracle sees everything,
+                  a vegan grillmaster defends fortresses, and our Chrono-Tactician wins battles by showing up late to yesterday.
                 </p>
                 <p>
-                  Our dashboard helps members stay coordinated with real-time boss timers, attendance tracking, and a transparent bidding points system.
+                  Led by Goblok's crayon-drawn battle plans (somehow they work), managed by LXRDGRIM's therapy empire
+                  (Death & Cookies sessions available), and powered by members who turn their failures into legendary victories.
+                </p>
+                <p className="text-sm italic text-primary">
+                  "The guild where being wrong becomes being right, allergies become weapons, and friendly fire is just tactical positioning."
                 </p>
               </div>
             </div>
 
-            {/* Guild Tools */}
+            {/* Guild Legends */}
             <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 sm:p-8">
-              <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-4">Tools & Features</h2>
-              <ul className="space-y-3 text-gray-300 font-game">
+              <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-4">Legendary Achievements</h2>
+              <ul className="space-y-3 text-gray-300 font-game text-sm">
                 <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">▸</span>
-                  <span>Real-time boss spawn countdowns with predictions</span>
+                  <span className="text-primary font-bold">⚡</span>
+                  <span>The Cold Snack War (AmielJohn vs M1ssy) - Now peaceful via Jerky Non-Proliferation Treaty</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold">▸</span>
-                  <span>Attendance & points leaderboards</span>
+                  <span className="text-accent font-bold">🔮</span>
+                  <span>Carrera's Time Crimes: 892 (700 tactical) - Strategic lateness is now a legitimate tactic</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-success font-bold">▸</span>
-                  <span>Boss rotation tracking for shared spawns</span>
+                  <span className="text-success font-bold">📊</span>
+                  <span>Fever's Apocalypse Filing System - The void is organized, color-coded, and optimized</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-primary font-bold">▸</span>
-                  <span>Discord integration for notifications</span>
+                  <span className="text-danger font-bold">💬</span>
+                  <span>Chunchunmaru (the sword) has 3.2M social media followers - Better engagement than most kingdoms</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary font-bold">🍪</span>
+                  <span>惡1ce's Evil Sweets - 12 charity franchises funded by weaponized wholesomeness</span>
                 </li>
               </ul>
             </div>
@@ -153,15 +201,22 @@ export default function GuildHomePage() {
       {/* Quick Links Footer */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400 font-game mb-4">
-            Need help? Check our Discord or contact guild officers.
+          <p className="text-gray-400 font-game mb-2">
+            Need therapy? LXRDGRIM has Death & Cookies sessions available.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm">
+          <p className="text-gray-500 font-game text-sm mb-4 italic">
+            "We turn disasters into strategies. Join us in the beautiful chaos."
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm mb-6">
             <a href="/timers" className="text-primary hover:text-primary-light font-game">Boss Timers</a>
             <span className="text-gray-600">•</span>
             <a href="/leaderboard" className="text-accent hover:text-accent-light font-game">Leaderboards</a>
             <span className="text-gray-600">•</span>
             <a href="https://discord.gg/EUWXd5tPa7" className="text-primary hover:text-primary-light font-game">Discord</a>
+          </div>
+          <div className="text-xs text-gray-600 font-game">
+            <p>Managed by Goblok's Crayon Intelligence | Powered by the Jalo Bot | Therapy Services by LXRDGRIM</p>
+            <p className="mt-1">Friendly fire incidents may occur (thanks Ztig)</p>
           </div>
         </div>
       </section>
