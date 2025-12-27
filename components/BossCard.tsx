@@ -5,7 +5,7 @@ import Image from "next/image";
 import confetti from "canvas-confetti";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
-import { ConfirmationModal } from "./ui/ConfirmationModal";
+import { ConfirmationModal, Badge } from "./ui";
 import Tooltip from "./Tooltip";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
@@ -166,14 +166,14 @@ function BossCard({
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
             <Tooltip content="Points awarded for attendance" position="bottom">
-              <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+              <Badge variant="primary" size="sm" className="cursor-help">
                 {boss.bossPoints}{boss.bossPoints === 1 ? "pt" : "pts"}
-              </span>
+              </Badge>
             </Tooltip>
             <Tooltip content={boss.type === "timer" ? "Boss spawns on a fixed interval after being killed" : "Boss spawns at specific scheduled times"} position="bottom">
-              <span className="text-xs bg-accent text-white px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+              <Badge variant="warning" size="sm" className="cursor-help">
                 {boss.type === "timer" ? "Timed" : "Scheduled"}
-              </span>
+              </Badge>
             </Tooltip>
           </div>
           {/* Second row: Rotation badge */}
@@ -181,15 +181,15 @@ function BossCard({
             <div className="flex items-center gap-1.5 mt-1">
               {boss.rotation.isOurTurn ? (
                 <Tooltip content="It's your guild's turn to fight this boss!" position="bottom">
-                  <span className="text-xs bg-success text-white px-1.5 py-0.5 rounded-full whitespace-nowrap glow-success font-semibold animate-pulse cursor-help">
+                  <Badge variant="success" size="sm" pulse className="cursor-help font-semibold glow-success">
                     ⭐ OUR TURN
-                  </span>
+                  </Badge>
                 </Tooltip>
               ) : (
                 <Tooltip content={`${boss.rotation.currentGuild}'s turn (${boss.rotation.currentIndex}/${boss.rotation.guilds?.length || 5}) - Next: ${boss.rotation.nextGuild}`} position="bottom">
-                  <span className="text-xs bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded-full whitespace-nowrap cursor-help">
+                  <Badge variant="secondary" size="sm" className="cursor-help">
                     🔄 {boss.rotation.currentGuild}
-                  </span>
+                  </Badge>
                 </Tooltip>
               )}
             </div>
