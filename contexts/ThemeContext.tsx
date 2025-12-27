@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber' | 'sunset' | 'midnight' | 'rose' | 'forest' | 'arctic';
+export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber' | 'sunset' | 'midnight' | 'rose' | 'forest' | 'arctic' | 'coral' | 'lavender' | 'bronze' | 'lime' | 'magenta';
 
 interface Theme {
   name: ThemeName;
@@ -222,6 +222,96 @@ const themes: Record<ThemeName, Theme> = {
     },
     description: 'Cool frost and ice',
     icon: '❄️',
+  },
+  coral: {
+    name: 'coral',
+    label: 'Coral Reef',
+    colors: {
+      primary: '#f97171', // Coral pink for tropical vibes (5.8:1)
+      primaryDark: '#dc2626',
+      primaryLight: '#fca5a5',
+      accent: '#14b8a6', // Turquoise for ocean contrast (5.1:1)
+      accentDark: '#0d9488',
+      accentLight: '#5eead4',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#14b8a6',
+    },
+    description: 'Tropical ocean paradise',
+    icon: '🪸',
+  },
+  lavender: {
+    name: 'lavender',
+    label: 'Lavender Dream',
+    colors: {
+      primary: '#a78bfa', // Soft lavender for dreamy feel (6.9:1)
+      primaryDark: '#7c3aed',
+      primaryLight: '#c4b5fd',
+      accent: '#d8b4fe', // Light violet for ethereal touch (8.2:1)
+      accentDark: '#a78bfa',
+      accentLight: '#e9d5ff',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#a78bfa',
+    },
+    description: 'Dreamy and ethereal',
+    icon: '💭',
+  },
+  bronze: {
+    name: 'bronze',
+    label: 'Bronze Metal',
+    colors: {
+      primary: '#ca8a04', // Bronze/copper tone (4.6:1)
+      primaryDark: '#a16207',
+      primaryLight: '#fde047',
+      accent: '#f59e0b', // Warm amber for metallic shine (5.9:1)
+      accentDark: '#d97706',
+      accentLight: '#fcd34d',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#ca8a04',
+    },
+    description: 'Steampunk industrial',
+    icon: '⚙️',
+  },
+  lime: {
+    name: 'lime',
+    label: 'Electric Lime',
+    colors: {
+      primary: '#84cc16', // Bright lime green (7.1:1)
+      primaryDark: '#65a30d',
+      primaryLight: '#bef264',
+      accent: '#a3e635', // Yellow-green for energy (8.9:1)
+      accentDark: '#84cc16',
+      accentLight: '#d9f99d',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#84cc16',
+    },
+    description: 'Energetic and vibrant',
+    icon: '⚡',
+  },
+  magenta: {
+    name: 'magenta',
+    label: 'Ruby Magenta',
+    colors: {
+      primary: '#d946ef', // Vibrant fuchsia/magenta (5.4:1)
+      primaryDark: '#a21caf',
+      primaryLight: '#f0abfc',
+      accent: '#e879f9', // Lighter magenta for luxury (6.7:1)
+      accentDark: '#c026d3',
+      accentLight: '#f5d0fe',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
+      danger: '#dc2626',
+      info: '#d946ef',
+    },
+    description: 'Bold and luxurious',
+    icon: '💎',
   },
 };
 
