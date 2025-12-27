@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Footer from "@/components/Footer";
 import memberLore from "@/member-lore.json";
 import guildStats from "@/guild-stats.json";
 
@@ -562,9 +561,6 @@ export default function GuildHomePage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }
