@@ -61,23 +61,35 @@ export default function GuildHomePage() {
 
     // Extract current activities (6 items)
     const activities = shuffled.slice(0, 6).map(([name, data]) => {
-      // Extract a snippet from recent_developments
-      const sentences = data.recent_developments.split('. ');
-      const highlight = sentences[Math.floor(Math.sin(seed + name.length) * 1000) % sentences.length];
+      // Create a concise summary from recent_developments
+      const sentences = data.recent_developments.split('. ').filter(s => s.trim().length > 0);
+      const randomSentence = sentences[Math.floor(Math.sin(seed + name.length) * 1000) % sentences.length];
+
+      // Create a short summary (max 80 characters)
+      let summary = randomSentence.trim();
+      if (summary.length > 80) {
+        summary = summary.substring(0, 77) + '...';
+      }
+
       return {
         name,
-        text: highlight,
+        text: summary,
         icon: getIconForMember(name, data)
       };
     });
 
     // Extract legendary achievements (5 items)
     const achievements = shuffled.slice(6, 11).map(([name, data]) => {
+      // Create concise specialty (max 60 characters)
+      let specialty = data.specialty.trim();
+      if (specialty.length > 60) {
+        specialty = specialty.substring(0, 57) + '...';
+      }
+
       return {
         name,
         title: data.title,
-        specialty: data.specialty,
-        reputation: data.reputation,
+        specialty: specialty,
         icon: getIconForMember(name, data)
       };
     });
@@ -268,9 +280,8 @@ export default function GuildHomePage() {
                   <span className={`text-${['primary', 'accent', 'danger', 'success', 'primary'][index % 5]}-bright font-bold text-base sm:text-lg flex-shrink-0`}>
                     {achievement.icon}
                   </span>
-                  <span>
-                    <span className="text-accent-bright font-semibold">{achievement.name}</span>
-                    <span className="text-gray-400 italic"> ({achievement.title})</span> - {achievement.specialty}
+                  <span className="text-gray-300">
+                    <span className="text-accent-bright font-semibold">{achievement.name}</span> - {achievement.specialty}
                   </span>
                 </li>
               ))}
