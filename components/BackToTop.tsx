@@ -9,14 +9,17 @@ export default function BackToTop() {
   // Show button when page is scrolled down
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > UI.BACK_TO_TOP_THRESHOLD) {
+      if (window.scrollY > UI.BACK_TO_TOP_THRESHOLD) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    // Initial check
+    toggleVisibility();
+
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
@@ -30,30 +33,18 @@ export default function BackToTop() {
     });
   };
 
+  if (!isVisible) return null;
+
   return (
-    <>
-      {isVisible && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 text-primary hover:bg-primary/30 hover:border-primary hover:scale-110 transition-all duration-300 shadow-lg glow-primary group"
-          aria-label="Back to top"
-          title="Back to top"
-        >
-          <svg
-            className="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
-          </svg>
-        </button>
-      )}
-    </>
+    <button
+      onClick={scrollToTop}
+      className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 text-primary hover:bg-primary/30 hover:border-primary hover:scale-110 transition-all duration-300 shadow-lg glow-primary group tap-target"
+      aria-label="Back to top"
+      title="Back to top"
+    >
+      <span className="text-2xl font-bold group-hover:-translate-y-1 transition-transform duration-300 inline-block">
+        ↑
+      </span>
+    </button>
   );
 }

@@ -2,7 +2,7 @@
 
 import { forwardRef, SVGProps } from 'react';
 
-export type IconName = 
+export type IconName =
   | 'clock'
   | 'trophy'
   | 'discord'
@@ -11,6 +11,7 @@ export type IconName =
   | 'filter'
   | 'user'
   | 'close'
+  | 'menu'
   | 'check'
   | 'alert'
   | 'spinner'
@@ -69,6 +70,9 @@ const iconPaths: Record<IconName, JSX.Element> = {
   ),
   close: (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  ),
+  menu: (
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
   ),
   check: (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

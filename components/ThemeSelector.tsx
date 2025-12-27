@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Icon } from '@/components/icons';
 
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
@@ -72,14 +73,11 @@ export default function ThemeSelector() {
       >
         <span className="text-xl">{themes[currentTheme].icon}</span>
         <span className="hidden sm:inline text-sm text-gray-300 font-game">Theme</span>
-        <svg
-          className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <Icon
+          name="chevron-down"
+          size="sm"
+          className={`text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {/* Theme Dropdown Portal - Renders outside React hierarchy */}
