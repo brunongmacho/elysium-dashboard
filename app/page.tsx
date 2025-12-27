@@ -438,7 +438,7 @@ export default function GuildHomePage() {
               key={`${stat.label}-${seed}-${index}`}
               className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
               style={{
-                animation: `fadeInOutScale 0.8s ease-in-out ${index * 0.1}s both`,
+                animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
               }}
             >
               <div className={`text-2xl sm:text-3xl md:text-4xl font-bold text-${stat.color}-bright mb-2 font-game-decorative transition-all duration-500`}>
@@ -466,11 +466,11 @@ export default function GuildHomePage() {
               opacity: 0;
               transform: scale(0.85) translateY(20px);
             }
-            15% {
+            3% {
               opacity: 1;
               transform: scale(1) translateY(0);
             }
-            85% {
+            93% {
               opacity: 1;
               transform: scale(1) translateY(0);
             }
@@ -485,10 +485,10 @@ export default function GuildHomePage() {
               0% {
                 opacity: 0;
               }
-              15% {
+              3% {
                 opacity: 1;
               }
-              85% {
+              93% {
                 opacity: 1;
               }
               100% {
