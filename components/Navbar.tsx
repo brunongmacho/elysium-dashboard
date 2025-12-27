@@ -24,7 +24,7 @@ export default function Navbar() {
   );
 
   // Count spawned bosses
-  const spawnedBossCount = bossData?.data?.filter(boss => boss.status === 'spawned').length || 0;
+  const spawnedBossCount = bossData?.bosses?.filter(boss => boss.status === 'spawned').length || 0;
 
   // Close mobile menu on Escape key
   useEffect(() => {
