@@ -15,6 +15,15 @@ interface MemberLoreData {
   skills: string[];
 }
 
+interface GuildStat {
+  value: string;
+  label: string;
+  sublabel: string;
+  color: string;
+}
+
+type GuildStatsData = GuildStat[][];
+
 // Helper to get an icon/emoji based on member specialty
 function getIconForMember(name: string, data: MemberLoreData): string {
   // Member-specific icon mapping (prevents duplicates)
@@ -245,11 +254,31 @@ export default function GuildHomePage() {
   }, []);
 
   // Guild stats rotation data
-  const guildStatsRotation = useMemo(() => {
+  const guildStatsRotation = useMemo((): GuildStat[] => {
+    // Fallback stat set in case of import issues
+    const fallbackStats: GuildStat[] = [
+      { value: "100%", label: "Jalo Bot Financial Accuracy", sublabel: "(HesuCrypto: 0%)", color: "primary" },
+      { value: "∞/0", label: "HesuCrypto's Net Worth", sublabel: "(Quantum State)", color: "accent" },
+      { value: "127", label: "LXRDGRIM's Therapy Clients", sublabel: "", color: "success" },
+      { value: "9999", label: "Ztig's Ally Precision Score", sublabel: "", color: "danger" }
+    ];
+
+    // Cast imported data with type safety
+    const statsData = guildStats as GuildStatsData;
+
+    // Safety check for guildStats
+    if (!statsData || !Array.isArray(statsData) || statsData.length === 0) {
+      console.warn('Guild stats data not loaded, using fallback');
+      return fallbackStats;
+    }
+
     // Use shuffled index to select stat set (shuffle with repeat all)
-    if (shuffledIndices.length === 0) return guildStats[0]; // Default while initializing
+    if (shuffledIndices.length === 0) {
+      return statsData[0] || fallbackStats;
+    }
+
     const currentIndex = shuffledIndices[currentShuffleIndex];
-    return guildStats[currentIndex];
+    return statsData[currentIndex] || fallbackStats;
   }, [shuffledIndices, currentShuffleIndex]);
 
   // Get random members for activities and achievements
