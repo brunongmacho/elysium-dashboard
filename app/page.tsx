@@ -21,7 +21,7 @@ export default function GuildHomePage() {
               Where Chaos Becomes Strategy
             </p>
             <p className="text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-game italic">
-              "Where stupidity becomes genius, friendly fire is tactical, and therapy is mandatory."
+              "Where stupidity becomes genius and friendly fire is tactical."
             </p>
             <p className="text-sm text-gray-400 font-game">
               Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
