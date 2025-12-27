@@ -101,9 +101,9 @@ export default function MemberProfilePage() {
               {isSignedIn && isOwnProfile ? (
                 // Signed in user viewing their own non-existent profile
                 <>
-                  <h2 className="text-xl sm:text-2xl text-gold text-rpg-title mb-4">
+                  <Typography variant="h2" className="text-xl sm:text-2xl text-gold mb-4">
                     Welcome, {session.user?.name}!
-                  </h2>
+                  </Typography>
                   <div className="text-danger text-lg sm:text-xl font-game-decorative mb-6">
                     You're not in the guild database yet
                   </div>
@@ -189,9 +189,9 @@ export default function MemberProfilePage() {
             {/* Info Card - Only show for signed-in users viewing their own profile */}
             {isSignedIn && isOwnProfile && (
               <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 card-3d">
-                <h3 className="text-lg sm:text-xl text-primary-bright font-game-decorative mb-4">
+                <Typography variant="h3" className="text-lg sm:text-xl text-primary-bright mb-4">
                   💡 What happens once you're added?
-                </h3>
+                </Typography>
                 <div className="text-gray-300 font-game text-sm space-y-2">
                   <p className="flex items-start gap-2">
                     <span className="text-success-bright">✓</span>
