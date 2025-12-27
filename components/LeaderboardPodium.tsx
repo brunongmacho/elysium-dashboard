@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import AnimatedCounter from "./AnimatedCounter";
 
@@ -16,7 +17,7 @@ interface LeaderboardPodiumProps {
   type: "attendance" | "points";
 }
 
-export default function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
+function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
   if (entries.length === 0) return null;
 
   // Ensure we have exactly 3 entries (or less)
@@ -146,3 +147,6 @@ export default function LeaderboardPodium({ entries, type }: LeaderboardPodiumPr
     </div>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders
+export default memo(LeaderboardPodium);
