@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { formatInGMT8 } from "@/lib/timezone";
-import Footer from "@/components/Footer";
 import Image from "next/image";
+import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal } from "@/components/ui";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -72,8 +72,14 @@ export default function MemberProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-white text-xl font-game">Loading profile...</div>
+      <div className="space-y-6">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Profile', current: true },
+          ]}
+        />
+        <ProfileSkeleton />
       </div>
     );
   }
@@ -207,7 +213,6 @@ export default function MemberProfilePage() {
             )}
           </div>
         </div>
-        <Footer />
       </>
     );
   }
@@ -220,17 +225,28 @@ export default function MemberProfilePage() {
   const lore = (memberLore as Record<string, MemberLoreData>)[profile.username];
 
   return (
-    <div className="space-y-8 pb-32">
+    <div className="space-y-8">
+        {/* Breadcrumb */}
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Leaderboard', href: '/leaderboard' },
+            { label: profile.username, current: true },
+          ]}
+        />
+
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl text-gold text-rpg-title mb-4">{profile.username}</h1>
+        <ScrollReveal>
+          <div className="mb-8">
+            <h1 className="text-4xl sm:text-5xl text-gold text-rpg-title mb-4">{profile.username}</h1>
           {lore && (
             <p className="text-xl sm:text-2xl text-silver font-game-decorative italic mb-2">{lore.title}</p>
           )}
-          <p className="text-primary-light font-game">
-            Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
-          </p>
-        </div>
+            <p className="text-primary-light font-game">
+              Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Member Lore Section */}
         {lore && (
@@ -282,25 +298,35 @@ export default function MemberProfilePage() {
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
-          {/* Points Available */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent">
-            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">💰 Points Available</div>
-            <div className="text-2xl sm:text-3xl font-bold text-accent-bright font-game-decorative">{profile.pointsAvailable}</div>
+        <ScrollReveal delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+            <StatCard
+              label="💰 Points Available"
+              value={profile.pointsAvailable}
+              icon={
+                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            />
+            <StatCard
+              label="📊 Total Attendance"
+              value={profile.attendance.total}
+              icon={
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              }
+            />
+            <StatCard
+              label="📈 Consumption Rate"
+              value={`${consumptionRate}%`}
+              trend={consumptionRate > 75 ? 'up' : consumptionRate > 50 ? 'neutral' : 'down'}
+              change={consumptionRate > 75 ? 'High spender' : consumptionRate > 50 ? 'Moderate' : 'Conservative'}
+              className="sm:col-span-2 lg:col-span-1"
+            />
           </div>
-
-          {/* Total Attendance */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary">
-            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">📊 Total Attendance</div>
-            <div className="text-2xl sm:text-3xl font-bold text-primary-bright font-game-decorative">{profile.attendance.total}</div>
-          </div>
-
-          {/* Consumption Rate */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent sm:col-span-2 lg:col-span-1">
-            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">📈 Consumption Rate</div>
-            <div className="text-2xl sm:text-3xl font-bold text-accent-bright font-game-decorative">{consumptionRate}%</div>
-          </div>
-        </div>
+        </ScrollReveal>
 
         {/* Points Breakdown */}
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 mb-8 card-3d hover:scale-[1.01] transition-transform duration-200">
@@ -339,7 +365,6 @@ export default function MemberProfilePage() {
             </div>
           </div>
         </div>
-      <Footer />
     </div>
   );
 }

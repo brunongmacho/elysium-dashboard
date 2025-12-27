@@ -1,14 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import useSWR from "swr";
 import ThemeSelector from "./ThemeSelector";
 import Tooltip from "./Tooltip";
+import type { BossTimersResponse } from "@/types/api";
+import { swrFetcher } from "@/lib/fetch-utils";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Fetch boss timers to show notification badge
+  const { data: bossData } = useSWR<BossTimersResponse>(
+    '/api/bosses',
+    swrFetcher,
+    { refreshInterval: 30000 }
+  );
+
+  // Count spawned bosses
+  const spawnedBossCount = bossData?.bosses?.filter(boss => boss.status === 'spawned').length || 0;
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
     <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
@@ -22,34 +55,21 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Tooltip content="Return to home page" position="bottom">
-              <a
-                href="/"
-                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                aria-label="Navigate to Home page"
-              >
-                Home
-              </a>
-            </Tooltip>
-            <Tooltip content="View all boss spawn timers and countdowns" position="bottom">
-              <a
-                href="/timers"
-                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                aria-label="Navigate to Boss Timers page"
-              >
-                Boss Timers
-              </a>
-            </Tooltip>
-            <Tooltip content="Check guild member rankings and points" position="bottom">
-              <a
-                href="/leaderboard"
-                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                aria-label="Navigate to Leaderboards page"
-              >
-                Leaderboards
-              </a>
-            </Tooltip>
+          <div className="hidden md:flex items-center space-x-2">
+            <NavLink href="/" active={pathname === '/'} icon={<HomeIcon />}>
+              Home
+            </NavLink>
+            <NavLink
+              href="/timers"
+              active={pathname === '/timers'}
+              icon={<TimerIcon />}
+              badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
+            >
+              Boss Timers
+            </NavLink>
+            <NavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<LeaderboardIcon />}>
+              Leaderboards
+            </NavLink>
 
             {/* Theme Selector */}
             <ThemeSelector />
@@ -149,31 +169,52 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile menu backdrop */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Mobile menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-primary/20">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <a
-              href="/"
-              className="block text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="md:hidden border-t border-primary/20 overflow-hidden relative z-50"
+          >
+            <motion.div
+              initial={{ y: -20 }}
+              animate={{ y: 0 }}
+              exit={{ y: -20 }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              className="px-2 pt-2 pb-3 space-y-1"
             >
-              Home
-            </a>
-            <a
-              href="/timers"
-              className="block text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Boss Timers
-            </a>
-            <a
-              href="/leaderboard"
-              className="block text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Leaderboards
-            </a>
+              <MobileNavLink href="/" active={pathname === '/'} icon={<HomeIcon />}>
+                Home
+              </MobileNavLink>
+              <MobileNavLink
+                href="/timers"
+                active={pathname === '/timers'}
+                icon={<TimerIcon />}
+                badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
+              >
+                Boss Timers
+              </MobileNavLink>
+              <MobileNavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<LeaderboardIcon />}>
+                Leaderboards
+              </MobileNavLink>
 
             {/* Theme Selector */}
             <div className="px-3 py-2">
@@ -248,9 +289,113 @@ export default function Navbar() {
                 </button>
               )}
             </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
+  );
+}
+
+// Desktop NavLink Component with subtle animations
+interface NavLinkProps {
+  href: string;
+  active: boolean;
+  icon: React.ReactNode;
+  badge?: number;
+  children: React.ReactNode;
+}
+
+function NavLink({ href, active, icon, badge, children }: NavLinkProps) {
+  return (
+    <a
+      href={href}
+      className={`
+        relative group flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium font-game
+        transition-all duration-200
+        ${active
+          ? 'text-primary-bright bg-primary/10'
+          : 'text-gray-300 hover:text-primary-light hover:bg-gray-800/50'
+        }
+      `}
+      aria-current={active ? 'page' : undefined}
+    >
+      <span className={`transition-transform duration-200 ${active ? 'scale-110' : 'group-hover:scale-110'}`}>
+        {icon}
+      </span>
+      <span className="relative">
+        {children}
+        {/* Subtle underline animation */}
+        <span
+          className={`
+            absolute -bottom-1 left-0 h-0.5 bg-primary
+            transition-all duration-300 ease-out
+            ${active ? 'w-full' : 'w-0 group-hover:w-full'}
+          `}
+        />
+      </span>
+      {badge !== undefined && badge > 0 && (
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg shadow-danger/50"
+        >
+          {badge > 9 ? '9+' : badge}
+        </motion.span>
+      )}
+    </a>
+  );
+}
+
+// Mobile NavLink Component
+function MobileNavLink({ href, active, icon, badge, children }: NavLinkProps) {
+  return (
+    <a
+      href={href}
+      className={`
+        relative flex items-center gap-3 px-3 py-2.5 rounded-md text-base font-medium font-game
+        transition-all duration-200
+        ${active
+          ? 'text-primary-bright bg-primary/10 border-l-4 border-primary'
+          : 'text-gray-300 hover:text-white hover:bg-gray-700/50 border-l-4 border-transparent'
+        }
+      `}
+      aria-current={active ? 'page' : undefined}
+    >
+      <span className={`transition-transform duration-200 ${active ? 'scale-110' : ''}`}>
+        {icon}
+      </span>
+      <span className="flex-1">{children}</span>
+      {badge !== undefined && badge > 0 && (
+        <span className="bg-danger text-white text-xs rounded-full px-2 py-0.5 font-bold shadow-lg shadow-danger/50">
+          {badge > 9 ? '9+' : badge}
+        </span>
+      )}
+    </a>
+  );
+}
+
+// Icon Components
+function HomeIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+  );
+}
+
+function TimerIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function LeaderboardIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
   );
 }

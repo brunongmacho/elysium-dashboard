@@ -67,6 +67,36 @@ export async function GET() {
       });
     });
 
+    // OPTIMIZATION: Fetch all last attendance records at once to avoid N+1 queries
+    // Build regex patterns for case-insensitive matching of all boss names
+    const lastAttendanceResults = await db
+      .collection("attendance")
+      .aggregate([
+        {
+          $match: {
+            bossName: {
+              $in: allBossNames.map(name => new RegExp(`^${name}$`, "i"))
+            }
+          }
+        },
+        {
+          $sort: { timestamp: -1 }
+        },
+        {
+          $group: {
+            _id: { $toLower: "$bossName" },
+            lastAttendance: { $first: "$$ROOT" }
+          }
+        }
+      ])
+      .toArray();
+
+    // Create a map for quick lookup of last attendance by boss name
+    const lastAttendanceMap = new Map<string, typeof lastAttendanceResults[0]['lastAttendance']>();
+    lastAttendanceResults.forEach((result) => {
+      lastAttendanceMap.set(result._id, result.lastAttendance);
+    });
+
     // Build display data for each boss
     const bossDisplayData: BossTimerDisplay[] = [];
 
@@ -105,17 +135,13 @@ export async function GET() {
 
         // If no timer or past grace period, fallback to attendance collection
         if (!useTimer) {
-          const lastAttendance = await db
-            .collection("attendance")
-            .find({ bossName: { $regex: new RegExp(`^${bossName}$`, "i") } })
-            .sort({ timestamp: -1 })
-            .limit(1)
-            .toArray();
+          // OPTIMIZATION: Use pre-fetched map instead of individual query
+          const lastAttendance = lastAttendanceMap.get(bossName.toLowerCase());
 
-          if (lastAttendance.length > 0) {
+          if (lastAttendance) {
             isPredicted = true;
-            lastKillTime = new Date(lastAttendance[0].timestamp);
-            killedBy = lastAttendance[0].memberName;
+            lastKillTime = new Date(lastAttendance.timestamp);
+            killedBy = lastAttendance.memberName;
             nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
 
             // Auto-advance predicted spawn if it has already passed AND grace period expired

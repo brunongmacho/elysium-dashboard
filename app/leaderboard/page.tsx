@@ -14,7 +14,7 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
-import Footer from "@/components/Footer";
+import { Breadcrumb } from "@/components/ui";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
 export default function LeaderboardPage() {
@@ -28,18 +28,18 @@ export default function LeaderboardPage() {
   // Debounce search query to reduce API calls
   const debouncedSearch = useDebounce(searchQuery, LEADERBOARD.DEBOUNCE_DELAY);
 
-  // Generate last 12 months for dropdown
-  const monthOptions = Array.from({ length: 12 }, (_, i) => {
+  // OPTIMIZATION: Memoize month options to avoid recalculating on every render
+  const monthOptions = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const date = new Date();
     date.setMonth(date.getMonth() - i);
     return {
       value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
       label: date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     };
-  });
+  }), []);
 
-  // Generate last 8 weeks for dropdown (using GMT+8 timezone like the bot)
-  const weekOptions = Array.from({ length: 8 }, (_, i) => {
+  // OPTIMIZATION: Memoize week options to avoid recalculating on every render
+  const weekOptions = useMemo(() => Array.from({ length: 8 }, (_, i) => {
     const gmt8Offset = 8 * 60 * 60 * 1000;
     const now = new Date();
 
@@ -74,7 +74,7 @@ export default function LeaderboardPage() {
         ? 'This Week'
         : `${displayStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} - ${displayEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`
     };
-  });
+  }), []);
 
   // Build API URL for podium (top 3, no search filter)
   let podiumApiUrl = `/api/members?type=${leaderboardType}&period=${period}&limit=3`;
@@ -149,7 +149,15 @@ export default function LeaderboardPage() {
 
   return (
     <>
-    <div className="space-y-6 pb-32">
+    <div className="space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Leaderboards', current: true },
+        ]}
+      />
+
       {/* Header - Responsive sizing */}
       <div>
         <h1 className="text-3xl sm:text-4xl text-gold text-rpg-title mb-2">Leaderboards</h1>
@@ -455,7 +463,6 @@ export default function LeaderboardPage() {
         </div>
       )}
     </div>
-    <Footer />
     </>
   );
 }
