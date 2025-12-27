@@ -38,3 +38,6 @@ export type { SkipLinkProps } from './SkipLink';
 
 export { ConfirmationModal } from './ConfirmationModal';
 export type { ConfirmationModalProps } from './ConfirmationModal';
+
+export { Typography } from './Typography';
+export type { TypographyProps, TypographyVariant } from './Typography';
