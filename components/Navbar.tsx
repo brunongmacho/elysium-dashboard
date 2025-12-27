@@ -68,6 +68,9 @@ export default function Navbar() {
             >
               Boss Timers
             </NavLink>
+            <NavLink href="/events" active={pathname === '/events'} icon={<Icon name="calendar" size="sm" />}>
+              Events
+            </NavLink>
             <NavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
               Leaderboards
             </NavLink>
@@ -189,6 +192,9 @@ export default function Navbar() {
                 badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
               >
                 Boss Timers
+              </MobileNavLink>
+              <MobileNavLink href="/events" active={pathname === '/events'} icon={<Icon name="calendar" size="sm" />}>
+                Events
               </MobileNavLink>
               <MobileNavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
                 Leaderboards

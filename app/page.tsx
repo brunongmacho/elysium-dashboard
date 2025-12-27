@@ -348,7 +348,7 @@ export default function GuildHomePage() {
 
       {/* Quick Access Navigation */}
       <Section>
-        <Grid columns={{ xs: 1, sm: 2, lg: 3 }} gap="md">
+        <Grid columns={{ xs: 1, sm: 2, lg: 4 }} gap="md">
           {/* Boss Timers */}
           <a
             href="/timers"
@@ -366,6 +366,28 @@ export default function GuildHomePage() {
                 </Typography>
                 <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
                   Track spawn times
+                </Typography>
+              </div>
+            </div>
+          </a>
+
+          {/* Event Schedule */}
+          <a
+            href="/events"
+            className="group glass backdrop-blur-sm rounded-lg border border-success/30 p-4 sm:p-6 hover:border-success transition-all duration-200 card-3d hover:scale-105 glow-success"
+          >
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Icon
+                name="calendar"
+                size="2xl"
+                className="text-success group-hover:text-success-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+              />
+              <div>
+                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-success-bright">
+                  Events
+                </Typography>
+                <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
+                  Daily & weekly events
                 </Typography>
               </div>
             </div>
@@ -398,7 +420,7 @@ export default function GuildHomePage() {
             href="https://discord.gg/EUWXd5tPa7"
             target="_blank"
             rel="noopener noreferrer"
-            className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary sm:col-span-2 lg:col-span-1"
+            className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
           >
             <div className="flex items-center gap-3 sm:gap-4">
               <Icon

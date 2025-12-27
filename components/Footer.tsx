@@ -25,6 +25,15 @@ export default function Footer() {
             Boss Timers
           </a>
           <span className="text-gray-600">•</span>
+          <a href="/events" className="inline-flex items-center gap-1.5 text-success hover:text-success-light font-game transition-colors group">
+            <Icon
+              name="calendar"
+              size="sm"
+              className="text-success group-hover:text-success-light transition-colors"
+            />
+            Events
+          </a>
+          <span className="text-gray-600">•</span>
           <a href="/leaderboard" className="inline-flex items-center gap-1.5 text-accent hover:text-accent-light font-game transition-colors group">
             <Icon
               name="trophy"
