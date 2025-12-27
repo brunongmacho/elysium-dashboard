@@ -125,43 +125,43 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
               {/* Remember Me Checkbox */}
               <div className="mb-6">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      className="sr-only peer"
-                      disabled={isLoading}
-                    />
-                    <div className="
-                      w-5 h-5 border-2 border-gray-600 rounded
-                      peer-checked:bg-primary peer-checked:border-primary
+                <button
+                  type="button"
+                  onClick={() => !isLoading && setRememberMe(!rememberMe)}
+                  disabled={isLoading}
+                  className="flex items-center gap-3 cursor-pointer group w-full text-left"
+                >
+                  <div
+                    className={`
+                      w-5 h-5 border-2 rounded
                       transition-all duration-200
-                      group-hover:border-primary/50
                       flex items-center justify-center
-                    ">
-                      {rememberMe && (
-                        <svg
-                          className="w-3 h-3 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      )}
-                    </div>
+                      ${rememberMe
+                        ? 'bg-primary border-primary'
+                        : 'border-gray-600 group-hover:border-primary/50'
+                      }
+                    `}
+                  >
+                    {rememberMe && (
+                      <svg
+                        className="w-3 h-3 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    )}
                   </div>
                   <span className="text-gray-300 text-sm font-game group-hover:text-white transition-colors">
                     Remember me (stay signed in for 7 days)
                   </span>
-                </label>
+                </button>
               </div>
 
               {/* Actions */}
