@@ -287,7 +287,9 @@ export default function GuildHomePage() {
       ]
     ];
 
-    return statSets[seed % statSets.length];
+    // Truly random selection instead of sequential
+    const randomIndex = Math.floor(Math.random() * statSets.length);
+    return statSets[randomIndex];
   }, [seed]);
 
   // Get random members for activities and achievements
