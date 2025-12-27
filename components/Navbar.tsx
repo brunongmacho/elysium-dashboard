@@ -1,21 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 import ThemeSelector from "./ThemeSelector";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 
+// Dynamically import LoginModal to prevent SSR hydration issues
+const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
+  ssr: false,
+});
+
 export default function Navbar() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -125,11 +132,13 @@ export default function Navbar() {
                 </div>
               ) : (
                 <button
-                  onClick={() => signIn("discord")}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  <Icon name="discord" size="md" />
-                  Sign in with Discord
+                  <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                  Sign in
                 </button>
               )}
             </div>
@@ -138,14 +147,16 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors will-change-transform"
             aria-label="Toggle mobile menu"
           >
-            {isMobileMenuOpen ? (
-              <Icon name="close" size="lg" />
-            ) : (
-              <Icon name="menu" size="lg" />
-            )}
+            <div className="transform-gpu">
+              {isMobileMenuOpen ? (
+                <Icon name="close" size="lg" />
+              ) : (
+                <Icon name="menu" size="lg" />
+              )}
+            </div>
           </button>
         </div>
       </div>
@@ -257,13 +268,15 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => {
-                    signIn("discord");
+                    setIsLoginModalOpen(true);
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-md text-base font-medium transition-colors"
+                  className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-md text-base font-medium transition-colors"
                 >
-                  <Icon name="discord" size="md" />
-                  Sign in with Discord
+                  <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                  Sign in
                 </button>
               )}
             </div>
@@ -271,6 +284,12 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </nav>
   );
 }

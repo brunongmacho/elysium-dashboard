@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Toaster } from "react-hot-toast";
+import { SessionTimeoutManager } from "./SessionTimeoutManager";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ export default function Providers({ children }: ProvidersProps) {
   return (
     <SessionProvider>
       <ThemeProvider>
+        <SessionTimeoutManager />
         {children}
         <Toaster
           position="top-right"

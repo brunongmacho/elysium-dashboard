@@ -50,6 +50,7 @@ export const VALIDATION = {
 export const AUTH = {
   CACHE_AGE: 5 * TIME.MINUTE, // Refresh Discord data every 5 minutes
   SESSION_MAX_AGE: 30 * TIME.MINUTE, // Session expires after 30 minutes
+  REMEMBER_ME_MAX_AGE: 7 * TIME.DAY, // Remember me: session expires after 7 days
 } as const;
 
 // UI/UX constants
