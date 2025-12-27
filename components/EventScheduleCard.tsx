@@ -19,7 +19,7 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
   const { currentTime } = useTimer();
 
   // Calculate next occurrence and time remaining
-  const { nextOccurrence, timeRemaining, isActive, progressPercentage } = useMemo(() => {
+  const { nextOccurrence, timeRemaining, isActive, progressPercentage, status } = useMemo(() => {
     const nextOcc = calculateNextOccurrence(event, currentTime);
     const remaining = nextOcc.getTime() - currentTime;
 
@@ -47,11 +47,21 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
       percentage = ((twentyFourHours - remaining) / twentyFourHours) * 100;
     }
 
+    // Determine status for CircularProgress (matches boss timer logic)
+    let eventStatus: 'spawned' | 'soon' | 'ready' = 'ready';
+    if (active) {
+      eventStatus = 'spawned';
+    } else if (remaining <= 30 * 60 * 1000) {
+      // Within 30 minutes
+      eventStatus = 'soon';
+    }
+
     return {
       nextOccurrence: nextOcc,
       timeRemaining: active ? eventEndTime - currentTime : remaining,
       isActive: active,
       progressPercentage: percentage,
+      status: eventStatus,
     };
   }, [event, currentTime]);
 
@@ -150,7 +160,7 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
                 percentage={progressPercentage}
                 size={140}
                 strokeWidth={8}
-                status={isActive ? 'spawned' : 'not-spawned'}
+                status={status}
                 timeRemaining={timeRemaining}
               />
               <div className="absolute inset-0 flex items-center justify-center">
