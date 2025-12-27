@@ -69,16 +69,21 @@ export default function MemberProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading profile...</div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-white text-xl font-game">Loading profile...</div>
       </div>
     );
   }
 
   if (error || !profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
-        <div className="text-red-400 text-xl">{error || "Profile not found"}</div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="glass backdrop-blur-sm rounded-lg border border-danger p-8 text-center glow-danger">
+          <div className="text-danger text-xl font-game-decorative mb-2">⚠️ {error || "Profile not found"}</div>
+          <a href="/leaderboard" className="text-primary hover:text-primary-light text-sm font-game transition-colors mt-4 inline-block">
+            ← Back to Leaderboard
+          </a>
+        </div>
       </div>
     );
   }
@@ -91,58 +96,57 @@ export default function MemberProfilePage() {
   const lore = (memberLore as Record<string, MemberLoreData>)[profile.username];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
+    <div className="space-y-8 pb-32">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">{profile.username}</h1>
+          <h1 className="text-4xl sm:text-5xl text-gold text-rpg-title mb-4">{profile.username}</h1>
           {lore && (
-            <p className="text-xl text-accent font-semibold italic mb-2">{lore.title}</p>
+            <p className="text-xl sm:text-2xl text-silver font-game-decorative italic mb-2">{lore.title}</p>
           )}
-          <p className="text-primary-light">
-            Rank <span className="text-accent font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
+          <p className="text-primary-light font-game">
+            Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
           </p>
         </div>
 
         {/* Member Lore Section */}
         {lore && (
-          <div className="glass backdrop-blur-sm rounded-lg border-2 border-accent/50 p-6 mb-8 glow-accent">
-            <h2 className="text-2xl font-bold text-accent mb-4">📜 Legend & Lore</h2>
+          <div className="glass backdrop-blur-sm rounded-lg border-2 border-accent/50 p-4 sm:p-6 mb-8 glow-accent card-3d hover:scale-[1.01] transition-transform duration-200">
+            <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-6">📜 Legend & Lore</h2>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-accent-light mb-2">Origin Story</h3>
-                <p className="text-gray-300 leading-relaxed">{lore.lore}</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-accent-bright mb-3 font-game-decorative">Origin Story</h3>
+                <p className="text-gray-300 leading-relaxed font-game text-sm sm:text-base">{lore.lore}</p>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-accent-light mb-2">Recent Developments</h3>
-                <p className="text-gray-300 leading-relaxed">{lore.recent_developments}</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-accent-bright mb-3 font-game-decorative">Recent Developments</h3>
+                <p className="text-gray-300 leading-relaxed font-game text-sm sm:text-base">{lore.recent_developments}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <div>
-                  <h4 className="text-sm font-semibold text-accent mb-1">Specialty</h4>
-                  <p className="text-gray-300 text-sm">{lore.specialty}</p>
+                <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
+                  <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Specialty</h4>
+                  <p className="text-gray-300 text-sm font-game">{lore.specialty}</p>
                 </div>
-                <div>
-                  <h4 className="text-sm font-semibold text-accent mb-1">Reputation</h4>
-                  <p className="text-gray-300 text-sm">{lore.reputation}</p>
+                <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
+                  <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Reputation</h4>
+                  <p className="text-gray-300 text-sm font-game">{lore.reputation}</p>
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-sm font-semibold text-accent mb-2">Stats</h4>
-                <p className="text-gray-300 text-sm font-mono">{lore.stats}</p>
+              <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
+                <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Stats</h4>
+                <p className="text-gray-300 text-xs sm:text-sm font-mono">{lore.stats}</p>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-accent mb-2">Signature Skills</h4>
+                <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-3 font-game">Signature Skills</h4>
                 <div className="flex flex-wrap gap-2">
                   {lore.skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="bg-accent/20 border border-accent/50 text-accent-light px-3 py-1 rounded-full text-sm transition-all duration-200 hover:bg-accent/30 hover:scale-105"
+                      className="bg-accent/20 border border-accent/50 text-accent-bright px-3 py-1.5 rounded-full text-xs sm:text-sm font-game transition-all duration-200 hover:bg-accent/30 hover:scale-105 cursor-default"
                     >
                       {skill}
                     </span>
@@ -154,64 +158,63 @@ export default function MemberProfilePage() {
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
           {/* Points Available */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 hover:border-accent/50 transition-all duration-200">
-            <div className="text-sm text-primary-light mb-2">💰 Points Available</div>
-            <div className="text-3xl font-bold text-accent">{profile.pointsAvailable}</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent">
+            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">💰 Points Available</div>
+            <div className="text-2xl sm:text-3xl font-bold text-accent-bright font-game-decorative">{profile.pointsAvailable}</div>
           </div>
 
           {/* Total Attendance */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 hover:border-primary/50 transition-all duration-200">
-            <div className="text-sm text-primary-light mb-2">📊 Total Attendance</div>
-            <div className="text-3xl font-bold text-primary">{profile.attendance.total}</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary">
+            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">📊 Total Attendance</div>
+            <div className="text-2xl sm:text-3xl font-bold text-primary-bright font-game-decorative">{profile.attendance.total}</div>
           </div>
 
           {/* Consumption Rate */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-6 hover:border-accent/50 transition-all duration-200">
-            <div className="text-sm text-primary-light mb-2">📈 Consumption Rate</div>
-            <div className="text-3xl font-bold text-accent">{consumptionRate}%</div>
+          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent sm:col-span-2 lg:col-span-1">
+            <div className="text-xs sm:text-sm text-primary-light mb-2 font-game">📈 Consumption Rate</div>
+            <div className="text-2xl sm:text-3xl font-bold text-accent-bright font-game-decorative">{consumptionRate}%</div>
           </div>
         </div>
 
         {/* Points Breakdown */}
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 mb-8">
-          <h2 className="text-2xl font-bold text-primary-light mb-4">💎 Points Summary</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <div className="text-sm text-primary-light">Points Earned</div>
-              <div className="text-2xl font-bold text-accent">+{profile.pointsEarned}</div>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 mb-8 card-3d hover:scale-[1.01] transition-transform duration-200">
+          <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">💎 Points Summary</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
+              <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Earned</div>
+              <div className="text-xl sm:text-2xl font-bold text-accent-bright font-game-decorative">+{profile.pointsEarned}</div>
             </div>
-            <div>
-              <div className="text-sm text-primary-light">Points Spent</div>
-              <div className="text-2xl font-bold text-danger">-{profile.pointsSpent}</div>
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
+              <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Spent</div>
+              <div className="text-xl sm:text-2xl font-bold text-danger-bright font-game-decorative">-{profile.pointsSpent}</div>
             </div>
-            <div>
-              <div className="text-sm text-primary-light">Points Available</div>
-              <div className="text-2xl font-bold text-primary">{profile.pointsAvailable}</div>
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
+              <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Available</div>
+              <div className="text-xl sm:text-2xl font-bold text-primary-bright font-game-decorative">{profile.pointsAvailable}</div>
             </div>
           </div>
         </div>
 
         {/* Member Info */}
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 mt-8">
-          <h2 className="text-2xl font-bold text-primary-light mb-4">ℹ️ Member Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="text-primary-light">Last Active:</span>{" "}
-              <span className="text-white">{formatInGMT8(profile.lastActive, "MMM dd, yyyy hh:mm a")}</span>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 mt-8 card-3d hover:scale-[1.01] transition-transform duration-200">
+          <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">ℹ️ Member Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4">
+              <span className="text-primary-light font-game block mb-1">Last Active:</span>
+              <span className="text-white font-game-decorative">{formatInGMT8(profile.lastActive, "MMM dd, yyyy hh:mm a")}</span>
             </div>
-            <div>
-              <span className="text-primary-light">This Week:</span>{" "}
-              <span className="text-accent font-semibold">{profile.attendance.thisWeek} bosses</span>
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4">
+              <span className="text-primary-light font-game block mb-1">This Week:</span>
+              <span className="text-accent-bright font-semibold font-game-decorative">{profile.attendance.thisWeek} bosses</span>
             </div>
-            <div>
-              <span className="text-primary-light">This Month:</span>{" "}
-              <span className="text-accent font-semibold">{profile.attendance.thisMonth} bosses</span>
+            <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4">
+              <span className="text-primary-light font-game block mb-1">This Month:</span>
+              <span className="text-accent-bright font-semibold font-game-decorative">{profile.attendance.thisMonth} bosses</span>
             </div>
           </div>
         </div>
-      </div>
       <Footer />
     </div>
   );
