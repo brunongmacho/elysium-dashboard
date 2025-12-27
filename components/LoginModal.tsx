@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { Button } from './ui/Button';
@@ -78,7 +79,10 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     setIsLoading(false);
   };
 
-  return (
+  // Don't render portal until mounted (client-side only)
+  if (!isMounted) return null;
+
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -212,4 +216,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
       )}
     </AnimatePresence>
   );
+
+  // Render modal in a portal at document.body level
+  return createPortal(modalContent, document.body);
 }
