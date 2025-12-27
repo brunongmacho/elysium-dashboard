@@ -8,6 +8,7 @@ import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
+import Footer from "@/components/Footer";
 import { TimerProvider } from "@/contexts/TimerContext";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
@@ -115,7 +116,8 @@ export default function Home() {
 
   return (
     <TimerProvider>
-      <div className="space-y-6">
+      <>
+      <div className="space-y-6 pb-32">
         {/* Header */}
         <div className="flex items-center justify-between">
         <div>
@@ -236,6 +238,8 @@ export default function Home() {
         </div>
       )}
       </div>
+      <Footer />
+      </>
     </TimerProvider>
   );
 }

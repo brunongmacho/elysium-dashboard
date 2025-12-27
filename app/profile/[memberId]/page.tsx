@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { formatInGMT8 } from "@/lib/timezone";
+import Footer from "@/components/Footer";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -91,7 +92,7 @@ export default function MemberProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-32">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">{profile.username}</h1>
@@ -211,6 +212,7 @@ export default function MemberProfilePage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
