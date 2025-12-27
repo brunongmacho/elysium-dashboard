@@ -58,7 +58,7 @@ export default function Navbar() {
           {/* Logo and Title */}
           <div className="flex items-center flex-shrink-0">
             <h1 className="text-xl md:text-2xl font-bold text-white">
-              ⚔️ <span className="hidden sm:inline">ELYSIUM</span> Dashboard
+              ⚔️ <span className="md:hidden">Dashboard</span>
             </h1>
           </div>
 
