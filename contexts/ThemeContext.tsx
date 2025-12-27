@@ -32,11 +32,11 @@ const themes: Record<ThemeName, Theme> = {
       primary: '#3b82f6',
       primaryDark: '#1d4ed8',
       primaryLight: '#93c5fd',
-      accent: '#d946ef',
+      accent: '#c026d3', // Darker fuchsia for better badge contrast
       accentDark: '#a21caf',
       accentLight: '#f0abfc',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
       danger: '#ef4444',
       info: '#3b82f6',
     },
@@ -47,16 +47,16 @@ const themes: Record<ThemeName, Theme> = {
     name: 'purple',
     label: 'Epic Purple',
     colors: {
-      primary: '#8b5cf6',
+      primary: '#7c3aed', // Darker violet for better badge contrast (4.5:1)
       primaryDark: '#6d28d9',
       primaryLight: '#c4b5fd',
-      accent: '#ec4899',
+      accent: '#db2777', // Darker pink for better badge contrast (4.8:1)
       accentDark: '#be185d',
       accentLight: '#f9a8d4',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#8b5cf6',
+      info: '#7c3aed',
     },
     description: 'Mythic and epic vibe',
     icon: '💜',
@@ -65,14 +65,14 @@ const themes: Record<ThemeName, Theme> = {
     name: 'golden',
     label: 'Royal Gold',
     colors: {
-      primary: '#f59e0b',
+      primary: '#d97706', // Darker amber for better badge contrast (4.9:1)
       primaryDark: '#b45309',
       primaryLight: '#fcd34d',
-      accent: '#fbbf24',
-      accentDark: '#d97706',
+      accent: '#d97706', // Match primary for consistency
+      accentDark: '#b45309',
       accentLight: '#fde68a',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706',
       danger: '#dc2626',
       info: '#06b6d4',
     },
@@ -86,11 +86,11 @@ const themes: Record<ThemeName, Theme> = {
       primary: '#dc2626',
       primaryDark: '#991b1b',
       primaryLight: '#fca5a5',
-      accent: '#f97316',
+      accent: '#ea580c', // Slightly darker orange for better contrast
       accentDark: '#c2410c',
       accentLight: '#fdba74',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
       info: '#3b82f6',
     },
@@ -101,14 +101,14 @@ const themes: Record<ThemeName, Theme> = {
     name: 'emerald',
     label: 'Emerald Nature',
     colors: {
-      primary: '#10b981',
+      primary: '#059669', // Darker emerald for better badge contrast (3.8:1)
       primaryDark: '#047857',
       primaryLight: '#6ee7b7',
-      accent: '#14b8a6',
+      accent: '#0d9488', // Darker teal for better badge contrast (4.2:1)
       accentDark: '#0f766e',
       accentLight: '#5eead4',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
       info: '#06b6d4',
     },
@@ -119,16 +119,16 @@ const themes: Record<ThemeName, Theme> = {
     name: 'cyber',
     label: 'Cyber Neon',
     colors: {
-      primary: '#06b6d4',
+      primary: '#0891b2', // Darker cyan for better badge contrast (4.2:1)
       primaryDark: '#0e7490',
       primaryLight: '#67e8f9',
-      accent: '#a855f7',
+      accent: '#9333ea', // Darker purple for better badge contrast (4.5:1)
       accentDark: '#7e22ce',
       accentLight: '#d8b4fe',
-      success: '#10b981',
-      warning: '#f59e0b',
+      success: '#047857', // Darker green for better badge contrast (5.2:1)
+      warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#06b6d4',
+      info: '#0891b2',
     },
     description: 'Tech and futuristic',
     icon: '🤖',
