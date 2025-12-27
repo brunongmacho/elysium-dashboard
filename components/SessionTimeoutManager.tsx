@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { AUTH } from '@/lib/constants';
 
@@ -15,8 +15,27 @@ export function SessionTimeoutManager() {
   const { data: session, status } = useSession();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const loginTimeRef = useRef<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
+  // Ensure component is mounted before accessing localStorage
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Load login time from localStorage on mount
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const savedLoginTime = localStorage.getItem('session_login_time');
+    if (savedLoginTime) {
+      loginTimeRef.current = parseInt(savedLoginTime, 10);
+    }
+  }, [isMounted]);
+
+  // Main session timeout logic
+  useEffect(() => {
+    if (!isMounted) return;
+
     // Only manage timeout for authenticated users
     if (status !== 'authenticated' || !session) {
       return;
@@ -69,23 +88,17 @@ export function SessionTimeoutManager() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [session, status]);
-
-  // Load login time from localStorage on mount
-  useEffect(() => {
-    const savedLoginTime = localStorage.getItem('session_login_time');
-    if (savedLoginTime) {
-      loginTimeRef.current = parseInt(savedLoginTime, 10);
-    }
-  }, []);
+  }, [session, status, isMounted]);
 
   // Clear login time when user signs out
   useEffect(() => {
+    if (!isMounted) return;
+
     if (status === 'unauthenticated') {
       loginTimeRef.current = null;
       localStorage.removeItem('session_login_time');
     }
-  }, [status]);
+  }, [status, isMounted]);
 
   return null; // This component doesn't render anything
 }
