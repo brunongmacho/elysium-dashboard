@@ -21,11 +21,10 @@ export default function GuildHomePage() {
               Where Chaos Becomes Strategy
             </p>
             <p className="text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-game italic">
-              "A guild where stupidity becomes genius, friendly fire is tactical, and therapy sessions are mandatory.
-              Led by crayon drawings and powered by organized apocalypse."
+              "Where stupidity becomes genius, friendly fire is tactical, and therapy is mandatory."
             </p>
             <p className="text-sm text-gray-400 font-game">
-              — Managed by Goblok's Transcendent Foolishness™ | Therapy by LXRDGRIM
+              Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
             </p>
           </div>
         </div>
