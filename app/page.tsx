@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Footer from "@/components/Footer";
 import memberLore from "@/member-lore.json";
+import guildStats from "@/guild-stats.json";
 
 interface MemberLoreData {
   title: string;
@@ -195,7 +196,7 @@ export default function GuildHomePage() {
 
   // Initialize shuffled indices on mount
   useEffect(() => {
-    const indices = Array.from({ length: 20 }, (_, i) => i);
+    const indices = Array.from({ length: 50 }, (_, i) => i);
     const shuffled = indices.sort(() => Math.random() - 0.5);
     setShuffledIndices(shuffled);
   }, []);
@@ -229,8 +230,8 @@ export default function GuildHomePage() {
       setCurrentShuffleIndex(prev => {
         const next = prev + 1;
         // If we've shown all items, reshuffle and start over
-        if (next >= 20) {
-          const indices = Array.from({ length: 20 }, (_, i) => i);
+        if (next >= 50) {
+          const indices = Array.from({ length: 50 }, (_, i) => i);
           const shuffled = indices.sort(() => Math.random() - 0.5);
           setShuffledIndices(shuffled);
           setSeed(s => s + 1);
@@ -245,133 +246,10 @@ export default function GuildHomePage() {
 
   // Guild stats rotation data
   const guildStatsRotation = useMemo(() => {
-    const statSets = [
-      [
-        { value: "100%", label: "Jalo Bot Financial Accuracy", sublabel: "(HesuCrypto: 0%)", color: "primary" },
-        { value: "∞/0", label: "HesuCrypto's Net Worth", sublabel: "(Quantum State)", color: "accent" },
-        { value: "127", label: "LXRDGRIM's Therapy Clients", sublabel: "", color: "success" },
-        { value: "9999", label: "Ztig's Ally Precision Score", sublabel: "", color: "danger" }
-      ],
-      [
-        { value: "12,000", label: "AmielJohn's Hunger Level", sublabel: "(Tactical Snacking)", color: "primary" },
-        { value: "47", label: "Goblok's Crayon Strategy Plans", sublabel: "(All Genius)", color: "accent" },
-        { value: "89", label: "Azryth's Nightlight Collection", sublabel: "(Hello Kitty)", color: "success" },
-        { value: "347", label: "AE28's Stone Tablets", sublabel: "(Analog NFTs)", color: "danger" }
-      ],
-      [
-        { value: "892", label: "Carrera's Time Crimes", sublabel: "(700 Tactical)", color: "primary" },
-        { value: "50,000", label: "Coconuts Thrown by PanCoco", sublabel: "(Zero Eaten)", color: "accent" },
-        { value: "3.2M", label: "Chunchunmaru Sword Followers", sublabel: "(Influencer)", color: "success" },
-        { value: "0%", label: "Daleee's Spell Accuracy", sublabel: "(Perfectly Wrong)", color: "danger" }
-      ],
-      [
-        { value: "189db", label: "Maria's Volume Level", sublabel: "(Jet Engine: 140)", color: "primary" },
-        { value: "47", label: "Marsha11's Filing Cabinets", sublabel: "(Still Loses)", color: "accent" },
-        { value: "1.2M", label: "Miang's Words Spoken", sublabel: "(Never Silent)", color: "success" },
-        { value: "0", label: "erwarrr's Verbal Communication", sublabel: "(Aggressive Silence)", color: "danger" }
-      ],
-      [
-        { value: "5000g", label: "Munchyy's Apology Note Value", sublabel: "(Illegible)", color: "primary" },
-        { value: "17", label: "JeffEpstein's Orphanages", sublabel: "(Cookies: ∞)", color: "accent" },
-        { value: "12", label: "惡1ce's Evil Charity Franchises", sublabel: "(Guilt Empire)", color: "success" },
-        { value: "50m", label: "Enaira's Economic Chaos Radius", sublabel: "(Paradox Zone)", color: "danger" }
-      ],
-      [
-        { value: "9999", label: "Evand3r's Non-Spoon Weapons Used", sublabel: "(Still No Spoon)", color: "primary" },
-        { value: "6'10\"", label: "Shawty's Actual Height", sublabel: "(Claims 5'0\")", color: "accent" },
-        { value: "347", label: "Riku's Key Collection", sublabel: "(None Correct)", color: "success" },
-        { value: "∞", label: "Jayzzzzzzz's Sleep Debt", sublabel: "(Caffeinated Death)", color: "danger" }
-      ],
-      [
-        { value: "47", label: "Iguro's Wrong Portal Recruits", sublabel: "(1200% Success)", color: "primary" },
-        { value: "47", label: "erwarrr's Silent Choir Members", sublabel: "(Judging You)", color: "accent" },
-        { value: "14", label: "CheeseCakee's Geneva Clauses", sublabel: "(Dairy WMDs)", color: "success" },
-        { value: "12", label: "Fever's Filed Apocalypses", sublabel: "(1 Pending)", color: "danger" }
-      ],
-      [
-        { value: "60%", label: "Varys' Rumor Accuracy", sublabel: "(40% Fabricated)", color: "primary" },
-        { value: "9999x", label: "ladyhoho's Tragic Giggle Combo", sublabel: "(Send Therapist)", color: "accent" },
-        { value: "7", label: "LXRDGRIM's Self-Help Books", sublabel: "(Bestsellers)", color: "success" },
-        { value: "+400%", label: "Guild Treasury Growth", sublabel: "(Enaira's Fault)", color: "danger" }
-      ],
-      [
-        { value: "100%", label: "Byakko's Squeak Monetization", sublabel: "(47 Kingdoms)", color: "primary" },
-        { value: "3 Years", label: "Inihaw's Restaurant Waitlist", sublabel: "(Vegan BBQ)", color: "accent" },
-        { value: "89", label: "Cogwind's Safety Violations", sublabel: "(All Profitable)", color: "success" },
-        { value: "5000", label: "DadaXxD's Morale Buff", sublabel: "(XD Energy)", color: "danger" }
-      ],
-      [
-        { value: "0-9999", label: "Ace's Gambling Record", sublabel: "(Battle: 9999-0)", color: "primary" },
-        { value: "47", label: "Hayacinth's Barriers Destroyed", sublabel: "(Via Sneeze)", color: "accent" },
-        { value: "∞", label: "Ayane69's Trip-Based Wins", sublabel: "(Grace: 0)", color: "success" },
-        { value: "100m", label: "Cutie's Moral Paralysis Radius", sublabel: "(Must Protecc)", color: "danger" }
-      ],
-      [
-        { value: "4y 7m", label: "Evand3r's Spoon Quest Duration", sublabel: "(Still Missing)", color: "primary" },
-        { value: "100%", label: "Hercules' God-Tier Laziness", sublabel: "(Zeus Blocked)", color: "accent" },
-        { value: "50000+", label: "LXRDGRIM's Scythe Hugs", sublabel: "(Emotional Support)", color: "success" },
-        { value: "9999", label: "M1ssy's Epipen Killstreak", sublabel: "(Medical Legend)", color: "danger" }
-      ],
-      [
-        { value: "200", label: "erwarrr's Eyebrow Dictionary Pages", sublabel: "(Mute Translation)", color: "primary" },
-        { value: "3.2M", label: "DadaXxD's XD Energy Output", sublabel: "(Pure Memes)", color: "accent" },
-        { value: "147", label: "Hesucrypto's Spiritual NFTs Sold", sublabel: "(Analog Blockchain)", color: "success" },
-        { value: "∞", label: "PotatoCheese's Tears Bottled", sublabel: "(Keto Suffering)", color: "danger" }
-      ],
-      [
-        { value: "12", label: "惡1ce's Guilt Empire Branches", sublabel: "(Wholesome Evil)", color: "primary" },
-        { value: "5", label: "LXRDGRIM's Therapy Clinic Locations", sublabel: "(Death & Cookies)", color: "accent" },
-        { value: "89", label: "Helvenica's Kerning Kills", sublabel: "(Comic Sans)", color: "success" },
-        { value: "47", label: "Onirgerep's Backwards Victories", sublabel: "(Time Crimes)", color: "danger" }
-      ],
-      [
-        { value: "12000", label: "Varys' Subscribers to Whisper Web", sublabel: "(60% Wrong)", color: "primary" },
-        { value: "9999", label: "Shawty's Doorframe Casualties", sublabel: "(6'10\" Denial)", color: "accent" },
-        { value: "23", label: "Chunchunmaru's Academic Papers", sublabel: "(Sword PhD)", color: "success" },
-        { value: "500", label: "Marsha11's Course Students", sublabel: "(Being Right)", color: "danger" }
-      ],
-      [
-        { value: "5", label: "LaxusLawliet's L-Position Effectiveness", sublabel: "(Still No Brain Power)", color: "primary" },
-        { value: "3", label: "JeffEpstein's Cookie Awards", sublabel: "(Awkward Ceremony)", color: "accent" },
-        { value: "47", label: "Caera's Diplomatic Insult Treaties", sublabel: "(Accidentally Effective)", color: "success" },
-        { value: "12", label: "Cogwind's Sentient Machine Army", sublabel: "(Chose Violence)", color: "danger" }
-      ],
-      [
-        { value: "7", label: "Universities Teaching Daleee Method", sublabel: "(Backwards Magic)", color: "primary" },
-        { value: "5000", label: "lanZ6's Butterfly Council", sublabel: "(Vibes Only)", color: "accent" },
-        { value: "∞", label: "Skadushy's Physics Laws Broken", sublabel: "(Impossibility Constant)", color: "success" },
-        { value: "47", label: "Tinitira's Staring Contest Wins", sublabel: "(Blind Supremacy)", color: "danger" }
-      ],
-      [
-        { value: "47", label: "Fever's Pending Apocalypses", sublabel: "(Incomplete Paperwork)", color: "primary" },
-        { value: "∞", label: "Miang's Monologue Word Count", sublabel: "(Never Silent)", color: "accent" },
-        { value: "5000g", label: "Munchyy's Gallery Note Value", sublabel: "(Art Crime)", color: "success" },
-        { value: "12", label: "Iguro's Cookie Diplomacy Alliances", sublabel: "(Wrong Portal)", color: "danger" }
-      ],
-      [
-        { value: "3 Yrs", label: "Inihaw's Grilled Irony Waitlist", sublabel: "(Vegan Paradox)", color: "primary" },
-        { value: "89", label: "PanCoco's Geneva Convention Clauses", sublabel: "(Coconut Warfare)", color: "accent" },
-        { value: "47", label: "Byakko's Licensed Kingdoms", sublabel: "(Sacred Squeak)", color: "success" },
-        { value: "9999", label: "Ztig's Helmet Fund Balance", sublabel: "(Friendly Fire)", color: "danger" }
-      ],
-      [
-        { value: "500", label: "PotatoCheese's Church Followers", sublabel: "(Saint Status)", color: "primary" },
-        { value: "1200", label: "DadaXxD's Church of Pepe Members", sublabel: "(Meme Religion)", color: "accent" },
-        { value: "100%", label: "Jalo Bot's Treasury Management", sublabel: "(Sentient AI)", color: "success" },
-        { value: "47", label: "Carrera's Successful Paradoxes", sublabel: "(Einstein's Ghost Joined)", color: "danger" }
-      ],
-      [
-        { value: "8", label: "Jayzzzzzzz's Z Count in Name", sublabel: "(Medical Intervention Failed)", color: "primary" },
-        { value: "3", label: "xSelah's Retired Villains", sublabel: "(Ruined Monologues)", color: "accent" },
-        { value: "7", label: "AE28's Mainframe Brick Throws", sublabel: "(Analog Hacking)", color: "success" },
-        { value: "4", label: "ladyhoho's Weekly Therapy Sessions", sublabel: "(Emergency Tuesdays)", color: "danger" }
-      ]
-    ];
-
     // Use shuffled index to select stat set (shuffle with repeat all)
-    if (shuffledIndices.length === 0) return statSets[0]; // Default while initializing
+    if (shuffledIndices.length === 0) return guildStats[0]; // Default while initializing
     const currentIndex = shuffledIndices[currentShuffleIndex];
-    return statSets[currentIndex];
+    return guildStats[currentIndex];
   }, [shuffledIndices, currentShuffleIndex]);
 
   // Get random members for activities and achievements
