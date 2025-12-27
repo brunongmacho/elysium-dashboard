@@ -131,6 +131,30 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 
 export default function GuildHomePage() {
   const [seed, setSeed] = useState(0);
+  const [memberIdMap, setMemberIdMap] = useState<Record<string, string>>({});
+
+  // Fetch member data to map usernames to Discord IDs
+  useEffect(() => {
+    async function fetchMemberIds() {
+      try {
+        const response = await fetch('/api/members?type=attendance&limit=0');
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          // Create username -> memberId mapping
+          const mapping: Record<string, string> = {};
+          data.data.forEach((member: any) => {
+            mapping[member.username] = member.memberId;
+          });
+          setMemberIdMap(mapping);
+        }
+      } catch (error) {
+        console.error('Failed to fetch member IDs:', error);
+      }
+    }
+
+    fetchMemberIds();
+  }, []);
 
   // Rotate content every 30 seconds
   useEffect(() => {
@@ -317,7 +341,7 @@ export default function GuildHomePage() {
                 </span>
                 <span className="text-gray-300">
                   <a
-                    href={`/profile/${activity.name}`}
+                    href={`/profile/${memberIdMap[activity.name] || activity.name}`}
                     className="text-accent-bright font-medium hover:text-accent hover:underline transition-all duration-200"
                   >
                     {activity.name}
@@ -364,7 +388,7 @@ export default function GuildHomePage() {
                   </span>
                   <span className="text-gray-300">
                     <a
-                      href={`/profile/${achievement.name}`}
+                      href={`/profile/${memberIdMap[achievement.name] || achievement.name}`}
                       className="text-accent-bright font-medium hover:text-accent hover:underline transition-all duration-200"
                     >
                       {achievement.name}
