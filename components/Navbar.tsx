@@ -54,15 +54,15 @@ export default function Navbar() {
   return (
     <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-center h-16 relative">
           {/* Mobile Logo - Only on mobile */}
-          <div className="flex items-center flex-shrink-0 md:hidden">
+          <div className="flex items-center flex-shrink-0 md:hidden absolute left-0">
             <h1 className="text-xl font-bold text-white">
               Dashboard
             </h1>
           </div>
 
-          {/* Desktop Navigation - Left aligned */}
+          {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center space-x-1">
             <NavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
               Home
@@ -84,7 +84,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Side - Theme & Auth */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 absolute right-0">
             {/* Theme Selector */}
             <ThemeSelector />
 
