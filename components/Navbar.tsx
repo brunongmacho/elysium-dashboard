@@ -130,8 +130,10 @@ export default function Navbar() {
                   onClick={() => setIsLoginModalOpen(true)}
                   className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  <Icon name="discord" size="md" />
-                  Sign in with Discord
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                  Sign in
                 </button>
               )}
             </div>
@@ -140,14 +142,16 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors will-change-transform"
             aria-label="Toggle mobile menu"
           >
-            {isMobileMenuOpen ? (
-              <Icon name="close" size="lg" />
-            ) : (
-              <Icon name="menu" size="lg" />
-            )}
+            <div className="transform-gpu">
+              {isMobileMenuOpen ? (
+                <Icon name="close" size="lg" />
+              ) : (
+                <Icon name="menu" size="lg" />
+              )}
+            </div>
           </button>
         </div>
       </div>
@@ -264,8 +268,10 @@ export default function Navbar() {
                   }}
                   className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-md text-base font-medium transition-colors"
                 >
-                  <Icon name="discord" size="md" />
-                  Sign in with Discord
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                  Sign in
                 </button>
               )}
             </div>

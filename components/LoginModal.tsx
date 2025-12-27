@@ -92,19 +92,23 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]"
             onClick={!isLoading ? onClose : undefined}
             aria-hidden="true"
           />
 
           {/* Modal Container - Centered on entire screen */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto">
+          <div
+            className="fixed inset-0 z-[101] flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto"
+            onClick={!isLoading ? onClose : undefined}
+          >
             <motion.div
               ref={modalRef}
               initial={{ opacity: 0, scale: 0.9, y: 0 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 0 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              onClick={(e) => e.stopPropagation()}
               className="
                 glass-strong backdrop-blur-md rounded-xl border-2 border-primary/30
                 shadow-elevated-3 w-full my-auto
