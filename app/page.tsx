@@ -18,23 +18,114 @@ interface MemberLoreData {
 function getIconForMember(name: string, data: MemberLoreData): string {
   const specialty = data.specialty.toLowerCase();
   const title = data.title.toLowerCase();
+  const reputation = data.reputation.toLowerCase();
 
-  if (specialty.includes('time') || title.includes('temporal')) return '🔮';
+  // Time & Prophecy
+  if (specialty.includes('time') || title.includes('temporal') || specialty.includes('chrono')) return '🔮';
+
+  // Food & Culinary
   if (specialty.includes('food') || specialty.includes('snack') || title.includes('caloric')) return '🍪';
-  if (specialty.includes('finance') || specialty.includes('economic')) return '💎';
+  if (specialty.includes('consumption') || specialty.includes('eating') || specialty.includes('culinary')) return '🍖';
+  if (specialty.includes('cookie') || specialty.includes('sweet')) return '🍰';
+  if (specialty.includes('chef') || specialty.includes('cooking')) return '👨‍🍳';
+
+  // Finance & Economics
+  if (specialty.includes('finance') || specialty.includes('economic') || specialty.includes('wealth')) return '💎';
+  if (specialty.includes('crypto') || specialty.includes('currency')) return '💰';
+  if (specialty.includes('bidding') || specialty.includes('auction')) return '💸';
+
+  // Death, Therapy & Darkness
   if (specialty.includes('therapy') || specialty.includes('death')) return '☠️';
-  if (specialty.includes('silence') || specialty.includes('quiet')) return '🔇';
+  if (specialty.includes('assassination') || specialty.includes('assassin')) return '🗡️';
+  if (specialty.includes('shadow') || specialty.includes('darkness')) return '🌑';
+  if (specialty.includes('reaper') || specialty.includes('grim')) return '💀';
+
+  // Communication & Sound
+  if (specialty.includes('silence') || specialty.includes('quiet') || title.includes('deaf')) return '🔇';
+  if (specialty.includes('music') || specialty.includes('sound')) return '🎵';
+  if (specialty.includes('voice') || specialty.includes('speech')) return '🎙️';
+
+  // Art & Design
   if (specialty.includes('font') || specialty.includes('design')) return '🎨';
-  if (specialty.includes('combat') || specialty.includes('warrior')) return '⚔️';
+  if (specialty.includes('aesthetic') || specialty.includes('visual')) return '🖼️';
+
+  // Combat & Warfare
+  if (specialty.includes('combat') || specialty.includes('warrior') || specialty.includes('battle')) return '⚔️';
+  if (specialty.includes('tactics') || specialty.includes('tactical')) return '🎖️';
+  if (specialty.includes('sniper') || specialty.includes('precision')) return '🎯';
+  if (specialty.includes('hunter') || specialty.includes('hunting')) return '🏹';
+  if (specialty.includes('defense') || specialty.includes('fortress')) return '🛡️';
+
+  // Knowledge & Academia
   if (specialty.includes('academic') || specialty.includes('scholar')) return '📚';
-  if (specialty.includes('divine') || specialty.includes('tiger')) return '🐯';
+  if (specialty.includes('philosophy') || specialty.includes('philosophical')) return '🤔';
+  if (specialty.includes('research') || specialty.includes('study')) return '🔬';
+  if (specialty.includes('enlighten') || specialty.includes('wisdom')) return '💡';
+  if (specialty.includes('teaching') || specialty.includes('professor')) return '🎓';
+
+  // Divine & Mythical
+  if (specialty.includes('divine') || title.includes('tiger') || title.includes('byakko')) return '🐯';
+  if (specialty.includes('angel') || specialty.includes('celestial')) return '👼';
+  if (specialty.includes('dragon') || specialty.includes('serpent')) return '🐉';
+
+  // Magic & Mystical
   if (specialty.includes('portal') || specialty.includes('magic')) return '🌀';
+  if (specialty.includes('spell') || specialty.includes('enchant')) return '✨';
+  if (specialty.includes('crystal') || specialty.includes('gem')) return '💠';
+  if (specialty.includes('arcane') || specialty.includes('mystical')) return '🔯';
+
+  // Chaos & Disorder
+  if (specialty.includes('chaos') || specialty.includes('random')) return '💥';
   if (specialty.includes('apocalypse') || specialty.includes('filing')) return '📊';
-  if (specialty.includes('sweet') || specialty.includes('cookie')) return '🍰';
+  if (specialty.includes('disaster') || specialty.includes('catastrophe')) return '🌪️';
+
+  // Leadership & Strategy
+  if (specialty.includes('leader') || specialty.includes('command')) return '👑';
+  if (specialty.includes('strategy') || specialty.includes('strategic')) return '🧠';
+  if (specialty.includes('planning') || specialty.includes('coordination')) return '📋';
+
+  // Technology & Engineering
+  if (specialty.includes('engineer') || specialty.includes('tech')) return '⚙️';
+  if (specialty.includes('bot') || specialty.includes('automation')) return '🤖';
+  if (specialty.includes('mechanical') || specialty.includes('machine')) return '🔧';
+
+  // Stealth & Intelligence
+  if (specialty.includes('spy') || specialty.includes('espionage')) return '🕵️';
+  if (specialty.includes('stealth') || specialty.includes('infiltration')) return '👁️';
+  if (specialty.includes('intelligence') || specialty.includes('reconnaissance')) return '🔍';
+
+  // Nature & Elements
+  if (specialty.includes('fire') || specialty.includes('flame') || specialty.includes('burn')) return '🔥';
+  if (specialty.includes('ice') || specialty.includes('frost') || specialty.includes('cold')) return '❄️';
+  if (specialty.includes('lightning') || specialty.includes('thunder') || specialty.includes('electric')) return '⚡';
+  if (specialty.includes('nature') || specialty.includes('forest') || specialty.includes('plant')) return '🌿';
+  if (specialty.includes('water') || specialty.includes('ocean')) return '🌊';
+  if (specialty.includes('earth') || specialty.includes('stone')) return '🪨';
+  if (specialty.includes('wind') || specialty.includes('air')) return '💨';
+
+  // Healing & Support
+  if (specialty.includes('heal') || specialty.includes('medic')) return '💚';
+  if (specialty.includes('support') || specialty.includes('buff')) return '✨';
+  if (specialty.includes('resurrect') || specialty.includes('revival')) return '🌟';
+
+  // Luck & Fortune
+  if (specialty.includes('luck') || specialty.includes('fortune')) return '🍀';
+  if (specialty.includes('gambling') || specialty.includes('chance')) return '🎲';
+
+  // Social & Communication
+  if (specialty.includes('diplomacy') || specialty.includes('negotiation')) return '🤝';
+  if (specialty.includes('charisma') || specialty.includes('charm')) return '💫';
+
+  // Miscellaneous
+  if (specialty.includes('nightlight') || specialty.includes('light')) return '💡';
+  if (specialty.includes('vegan') || specialty.includes('vegetarian')) return '🥗';
+  if (specialty.includes('alcohol') || specialty.includes('drink')) return '🍺';
+  if (specialty.includes('speed') || specialty.includes('fast')) return '💨';
+  if (specialty.includes('strength') || specialty.includes('power')) return '💪';
 
   // Default icons based on position in alphabet
   const firstChar = name.charAt(0).toUpperCase();
-  const icons = ['⚡', '🔥', '✨', '💫', '🌟', '⭐'];
+  const icons = ['⚡', '🔥', '✨', '💫', '🌟', '⭐', '🎯', '⚔️', '🛡️', '🎨', '🔮', '💎'];
   return icons[firstChar.charCodeAt(0) % icons.length];
 }
 
@@ -227,7 +318,7 @@ export default function GuildHomePage() {
                 <span className="text-gray-300">
                   <a
                     href={`/profile/${activity.name}`}
-                    className="text-accent-bright font-semibold hover:text-accent transition-colors"
+                    className="text-accent-bright font-medium hover:text-accent hover:underline transition-all duration-200"
                   >
                     {activity.name}
                   </a>: {activity.text}
@@ -274,7 +365,7 @@ export default function GuildHomePage() {
                   <span className="text-gray-300">
                     <a
                       href={`/profile/${achievement.name}`}
-                      className="text-accent-bright font-semibold hover:text-accent transition-colors"
+                      className="text-accent-bright font-medium hover:text-accent hover:underline transition-all duration-200"
                     >
                       {achievement.name}
                     </a> - {achievement.specialty}
