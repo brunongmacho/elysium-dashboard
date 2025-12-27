@@ -435,10 +435,10 @@ export default function GuildHomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {guildStatsRotation.map((stat, index) => (
             <div
-              key={`${stat.label}-${index}`}
+              key={`${stat.label}-${seed}-${index}`}
               className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
               style={{
-                animation: `fadeInScale 0.6s ease-out ${index * 0.15}s both`,
+                animation: `fadeInOutScale 0.8s ease-in-out ${index * 0.1}s both`,
               }}
             >
               <div className={`text-2xl sm:text-3xl md:text-4xl font-bold text-${stat.color}-bright mb-2 font-game-decorative transition-all duration-500`}>
@@ -461,14 +461,39 @@ export default function GuildHomePage() {
         </div>
 
         <style jsx>{`
-          @keyframes fadeInScale {
-            from {
+          @keyframes fadeInOutScale {
+            0% {
               opacity: 0;
-              transform: scale(0.9) translateY(10px);
+              transform: scale(0.85) translateY(20px);
             }
-            to {
+            15% {
               opacity: 1;
               transform: scale(1) translateY(0);
+            }
+            85% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: scale(0.85) translateY(-20px);
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            @keyframes fadeInOutScale {
+              0% {
+                opacity: 0;
+              }
+              15% {
+                opacity: 1;
+              }
+              85% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+              }
             }
           }
         `}</style>
