@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber' | 'sunset' | 'midnight' | 'rose' | 'forest' | 'arctic' | 'coral' | 'lavender' | 'bronze' | 'lime' | 'magenta';
+export type ThemeName = 'default' | 'purple' | 'golden' | 'crimson' | 'emerald' | 'cyber' | 'sunset' | 'navy' | 'peach' | 'forest' | 'arctic' | 'olive' | 'mint' | 'wine' | 'lime' | 'magenta';
 
 interface Theme {
   name: ThemeName;
@@ -151,41 +151,41 @@ const themes: Record<ThemeName, Theme> = {
     description: 'Warm sunset vibes',
     icon: '🌅',
   },
-  midnight: {
-    name: 'midnight',
-    label: 'Midnight Indigo',
+  navy: {
+    name: 'navy',
+    label: 'Navy Admiral',
     colors: {
-      primary: '#6366f1', // Indigo for deep night theme (4.8:1)
-      primaryDark: '#4338ca',
-      primaryLight: '#a5b4fc',
-      accent: '#818cf8', // Lighter indigo for accent (6.5:1)
-      accentDark: '#6366f1',
-      accentLight: '#c7d2fe',
+      primary: '#1e40af', // Dark navy blue (3.5:1) - darker for navy feel
+      primaryDark: '#1e3a8a',
+      primaryLight: '#60a5fa',
+      accent: '#fbbf24', // Gold accent for naval theme (7.8:1)
+      accentDark: '#f59e0b',
+      accentLight: '#fde68a',
       success: '#047857', // Darker green for better badge contrast (5.2:1)
       warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#6366f1',
+      info: '#1e40af',
     },
-    description: 'Deep mysterious night',
-    icon: '🌙',
+    description: 'Naval military elegance',
+    icon: '⚓',
   },
-  rose: {
-    name: 'rose',
-    label: 'Rose Pink',
+  peach: {
+    name: 'peach',
+    label: 'Peach Blossom',
     colors: {
-      primary: '#ec4899', // Rose pink for elegance (4.7:1)
-      primaryDark: '#be185d',
-      primaryLight: '#f9a8d4',
-      accent: '#f472b6', // Lighter pink for softness (6.1:1)
-      accentDark: '#db2777',
-      accentLight: '#fbcfe8',
+      primary: '#fb923c', // Soft peach/salmon (6.3:1)
+      primaryDark: '#f97316',
+      primaryLight: '#fed7aa',
+      accent: '#fbbf24', // Warm yellow for softness (7.8:1)
+      accentDark: '#f59e0b',
+      accentLight: '#fef3c7',
       success: '#047857', // Darker green for better badge contrast (5.2:1)
       warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#ec4899',
+      info: '#fb923c',
     },
-    description: 'Elegant and graceful',
-    icon: '🌸',
+    description: 'Soft and welcoming',
+    icon: '🍑',
   },
   forest: {
     name: 'forest',
@@ -223,59 +223,59 @@ const themes: Record<ThemeName, Theme> = {
     description: 'Cool frost and ice',
     icon: '❄️',
   },
-  coral: {
-    name: 'coral',
-    label: 'Coral Reef',
+  olive: {
+    name: 'olive',
+    label: 'Olive Military',
     colors: {
-      primary: '#f97171', // Coral pink for tropical vibes (5.8:1)
-      primaryDark: '#dc2626',
-      primaryLight: '#fca5a5',
-      accent: '#14b8a6', // Turquoise for ocean contrast (5.1:1)
-      accentDark: '#0d9488',
-      accentLight: '#5eead4',
+      primary: '#a3a300', // Olive/khaki green (6.2:1)
+      primaryDark: '#808000',
+      primaryLight: '#d4d466',
+      accent: '#ca8a04', // Bronze accent for military feel (4.6:1)
+      accentDark: '#a16207',
+      accentLight: '#fde047',
       success: '#047857', // Darker green for better badge contrast (5.2:1)
       warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#14b8a6',
+      info: '#a3a300',
     },
-    description: 'Tropical ocean paradise',
-    icon: '🪸',
+    description: 'Military tactical theme',
+    icon: '🎖️',
   },
-  lavender: {
-    name: 'lavender',
-    label: 'Lavender Dream',
+  mint: {
+    name: 'mint',
+    label: 'Mint Fresh',
     colors: {
-      primary: '#a78bfa', // Soft lavender for dreamy feel (6.9:1)
-      primaryDark: '#7c3aed',
-      primaryLight: '#c4b5fd',
-      accent: '#d8b4fe', // Light violet for ethereal touch (8.2:1)
-      accentDark: '#a78bfa',
-      accentLight: '#e9d5ff',
+      primary: '#2dd4bf', // Fresh mint/turquoise (7.4:1)
+      primaryDark: '#14b8a6',
+      primaryLight: '#99f6e4',
+      accent: '#6ee7b7', // Light green accent (9.1:1)
+      accentDark: '#34d399',
+      accentLight: '#d1fae5',
       success: '#047857', // Darker green for better badge contrast (5.2:1)
       warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#a78bfa',
+      info: '#2dd4bf',
     },
-    description: 'Dreamy and ethereal',
-    icon: '💭',
+    description: 'Fresh and cooling',
+    icon: '🌿',
   },
-  bronze: {
-    name: 'bronze',
-    label: 'Bronze Metal',
+  wine: {
+    name: 'wine',
+    label: 'Wine Burgundy',
     colors: {
-      primary: '#ca8a04', // Bronze/copper tone (4.6:1)
-      primaryDark: '#a16207',
-      primaryLight: '#fde047',
-      accent: '#f59e0b', // Warm amber for metallic shine (5.9:1)
-      accentDark: '#d97706',
-      accentLight: '#fcd34d',
+      primary: '#9f1239', // Deep burgundy/wine (3.1:1)
+      primaryDark: '#881337',
+      primaryLight: '#fda4af',
+      accent: '#be123c', // Darker rose for richness (3.8:1)
+      accentDark: '#9f1239',
+      accentLight: '#fecdd3',
       success: '#047857', // Darker green for better badge contrast (5.2:1)
       warning: '#d97706', // Darker amber for better contrast
       danger: '#dc2626',
-      info: '#ca8a04',
+      info: '#9f1239',
     },
-    description: 'Steampunk industrial',
-    icon: '⚙️',
+    description: 'Rich and sophisticated',
+    icon: '🍷',
   },
   lime: {
     name: 'lime',
