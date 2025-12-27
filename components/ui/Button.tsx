@@ -1,9 +1,9 @@
 "use client";
 
 import { forwardRef, ButtonHTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+// Omit conflicting props to avoid type issues
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
@@ -43,11 +43,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = disabled || loading;
 
     return (
-      <motion.button
+      <button
         ref={ref}
         type={type}
-        whileHover={{ scale: isDisabled ? 1 : 1.02 }}
-        whileTap={{ scale: isDisabled ? 1 : 0.98 }}
         disabled={isDisabled}
         className={`
           ${variantStyles[variant]}
@@ -56,7 +54,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           inline-flex items-center justify-center gap-2
           rounded-lg font-semibold font-game
           transition-all duration-200
-          disabled:opacity-50 disabled:cursor-not-allowed
+          hover:scale-[1.02] active:scale-[0.98]
+          disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
           relative overflow-hidden
           ${className}
         `}
@@ -91,7 +90,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && icon && iconPosition === 'right' && (
           <span className="flex-shrink-0">{icon}</span>
         )}
-      </motion.button>
+      </button>
     );
   }
 );
