@@ -93,34 +93,37 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className={`text-base sm:text-lg font-bold font-game-decorative ${isActive ? 'text-energy text-green-400' : 'text-white'}`}>
-            {event.icon} {event.name}
+          <h3 className={`text-base sm:text-lg font-bold font-game-decorative ${isActive ? 'text-energy text-success' : 'text-text-primary'}`}>
+            {event.name}
             <span className="sr-only">
               {isActive ? ', Status: Active Now' : ', Status: Upcoming'}
             </span>
           </h3>
-          {/* Badges */}
+          {/* Badges - First row */}
           <div className="flex flex-wrap items-center gap-1.5 mt-1">
             <Tooltip content={event.isDaily ? "Occurs every day" : `Occurs on: ${daysDisplay}`} position="bottom">
-              <Badge variant={event.isDaily ? "success" : "primary"} size="sm" className="cursor-help">
-                {daysDisplay}
+              <Badge variant="primary" size="sm" className="cursor-help">
+                📅 {daysDisplay}
               </Badge>
             </Tooltip>
             <Tooltip content={`Event duration: ${event.durationMinutes} minutes`} position="bottom">
               <Badge variant="warning" size="sm" className="cursor-help">
-                {event.durationMinutes}m
+                ⏱️ {event.durationMinutes}m
               </Badge>
             </Tooltip>
-            {isActive && (
-              <Badge variant="success" size="sm" pulse className="glow-success font-semibold">
+          </div>
+          {/* Second row: Active badge */}
+          {isActive && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <Badge variant="success" size="sm" pulse className="glow-success font-semibold cursor-help">
                 🎮 ACTIVE NOW
               </Badge>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Event Icon Display */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center text-5xl sm:text-6xl">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center text-4xl sm:text-5xl">
           {event.icon}
         </div>
       </div>
@@ -128,25 +131,25 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
       {/* Content Section */}
       <div className="flex-1 flex flex-col justify-center">
         {/* Event Time Info */}
-        <div className="mb-3 p-2 bg-gray-700/50 rounded text-sm">
-          <div className="text-gray-300">
-            <span className="text-gray-400">🕐 Start Time (GMT+8):</span>{" "}
-            <span className="font-semibold">
+        <div className="mb-3 p-2 bg-surface-elevated rounded text-sm">
+          <div className="text-text-secondary">
+            <span className="text-text-muted">🕐 Start Time (GMT+8):</span>{" "}
+            <span className="font-semibold text-text-primary">
               {String(event.startTime.hour).padStart(2, '0')}:{String(event.startTime.minute).padStart(2, '0')}
             </span>
           </div>
-          <div className="text-gray-300">
-            <span className="text-gray-400">📅 Schedule:</span>{" "}
-            <span className="font-semibold">{daysDisplay}</span>
+          <div className="text-text-secondary">
+            <span className="text-text-muted">📅 Schedule:</span>{" "}
+            <span className="font-semibold text-text-primary">{daysDisplay}</span>
           </div>
         </div>
 
         {/* Next Occurrence */}
         <div className="mb-2">
-          <div className="text-xs sm:text-sm font-semibold text-gray-300 mb-1">
+          <div className="text-xs sm:text-sm font-semibold text-text-secondary mb-1">
             {isActive ? "🎮 Event Active - Ends:" : "⏰ Next Occurrence:"}
           </div>
-          <div className="text-white text-sm sm:text-base font-bold mb-2">
+          <div className="text-text-primary text-sm sm:text-base font-bold mb-2">
             {formatInGMT8(
               isActive ? new Date(nextOccurrence.getTime() + event.durationMinutes * 60 * 1000) : nextOccurrence,
               "MMM dd, yyyy hh:mm a"
@@ -165,10 +168,10 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-xs text-gray-400 mb-1 font-game">
+                  <div className="text-xs text-text-muted mb-1 font-game">
                     {isActive ? 'Time Left' : 'Countdown'}
                   </div>
-                  <div className="font-mono text-lg sm:text-xl font-bold text-white leading-tight font-game-decorative">
+                  <div className="font-mono text-lg sm:text-xl font-bold text-text-primary leading-tight font-game-decorative">
                     {timeRemaining !== null
                       ? formatTimeRemaining(timeRemaining)
                       : "--:--:--"}
@@ -176,16 +179,6 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Event Color Badge */}
-        <div className="text-center mb-2">
-          <div
-            className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-white"
-            style={{ backgroundColor: event.color }}
-          >
-            {event.name}
           </div>
         </div>
       </div>
