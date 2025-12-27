@@ -200,27 +200,20 @@ export default function GuildHomePage() {
       </section>
 
       {/* Quick Links Footer */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400 font-game mb-2">
-            Need therapy? LXRDGRIM has Death & Cookies sessions available.
-          </p>
-          <p className="text-gray-500 font-game text-sm mb-4 italic">
-            "We turn disasters into strategies. Join us in the beautiful chaos."
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm mb-6">
-            <a href="/timers" className="text-primary hover:text-primary-light font-game">Boss Timers</a>
+      <footer className="fixed bottom-0 left-0 right-0 glass backdrop-blur-sm border-t border-primary/20 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+          <div className="flex flex-wrap justify-center gap-3 text-xs mb-2">
+            <a href="/timers" className="text-primary hover:text-primary-light font-game transition-colors">Boss Timers</a>
             <span className="text-gray-600">•</span>
-            <a href="/leaderboard" className="text-accent hover:text-accent-light font-game">Leaderboards</a>
+            <a href="/leaderboard" className="text-accent hover:text-accent-light font-game transition-colors">Leaderboards</a>
             <span className="text-gray-600">•</span>
-            <a href="https://discord.gg/EUWXd5tPa7" className="text-primary hover:text-primary-light font-game">Discord</a>
+            <a href="https://discord.gg/EUWXd5tPa7" className="text-primary hover:text-primary-light font-game transition-colors">Discord</a>
           </div>
           <div className="text-xs text-gray-600 font-game">
-            <p>Managed by Goblok's Crayon Intelligence | Powered by the Jalo Bot | Therapy Services by LXRDGRIM</p>
-            <p className="mt-1">Friendly fire incidents may occur (thanks Ztig)</p>
+            <p>Managed by Goblok's Crayon Intelligence | Powered by the Jalo Bot | Therapy by LXRDGRIM</p>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 }
