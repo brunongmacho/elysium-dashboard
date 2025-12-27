@@ -14,7 +14,8 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
-import { Breadcrumb } from "@/components/ui";
+import { Breadcrumb, Typography } from "@/components/ui";
+import { Stack } from "@/components/layout";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
 export default function LeaderboardPage() {
@@ -149,7 +150,7 @@ export default function LeaderboardPage() {
 
   return (
     <>
-    <div className="space-y-6">
+    <Stack gap="lg">
       {/* Breadcrumb */}
       <Breadcrumb
         items={[
@@ -159,12 +160,14 @@ export default function LeaderboardPage() {
       />
 
       {/* Header - Responsive sizing */}
-      <div>
-        <h1 className="text-3xl sm:text-4xl text-gold text-rpg-title mb-2">Leaderboards</h1>
-        <p className="text-sm sm:text-base text-gray-300 font-game">
+      <Stack gap="sm">
+        <Typography variant="h1" className="text-3xl sm:text-4xl text-gold">
+          Leaderboards
+        </Typography>
+        <Typography variant="body" className="text-sm sm:text-base text-gray-300">
           Top performers in attendance and bidding points
-        </p>
-      </div>
+        </Typography>
+      </Stack>
 
       {/* Leaderboard Type Tabs */}
       <div className="flex justify-center">
@@ -458,11 +461,11 @@ export default function LeaderboardPage() {
 
       {/* Last Update Time */}
       {data && data.timestamp && (
-        <div className="text-center text-xs text-gray-500">
+        <Typography variant="caption" className="text-center">
           Last updated: {toLocaleStringGMT8(data.timestamp)}
-        </div>
+        </Typography>
       )}
-    </div>
+    </Stack>
     </>
   );
 }
