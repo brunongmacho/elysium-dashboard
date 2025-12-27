@@ -222,6 +222,76 @@ export default function GuildHomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Guild stats rotation data
+  const guildStatsRotation = useMemo(() => {
+    const statSets = [
+      [
+        { value: "100%", label: "Jalo Bot Financial Accuracy", sublabel: "(HesuCrypto: 0%)", color: "primary" },
+        { value: "∞/0", label: "HesuCrypto's Net Worth", sublabel: "(Quantum State)", color: "accent" },
+        { value: "127", label: "LXRDGRIM's Therapy Clients", sublabel: "", color: "success" },
+        { value: "9999", label: "Ztig's Ally Precision Score", sublabel: "", color: "danger" }
+      ],
+      [
+        { value: "12,000", label: "AmielJohn's Hunger Level", sublabel: "(Tactical Snacking)", color: "primary" },
+        { value: "47", label: "Goblok's Crayon Strategy Plans", sublabel: "(All Genius)", color: "accent" },
+        { value: "89", label: "Azryth's Nightlight Collection", sublabel: "(Hello Kitty)", color: "success" },
+        { value: "347", label: "AE28's Stone Tablets", sublabel: "(Analog NFTs)", color: "danger" }
+      ],
+      [
+        { value: "892", label: "Carrera's Time Crimes", sublabel: "(700 Tactical)", color: "primary" },
+        { value: "50,000", label: "Coconuts Thrown by PanCoco", sublabel: "(Zero Eaten)", color: "accent" },
+        { value: "3.2M", label: "Chunchunmaru Sword Followers", sublabel: "(Influencer)", color: "success" },
+        { value: "0%", label: "Daleee's Spell Accuracy", sublabel: "(Perfectly Wrong)", color: "danger" }
+      ],
+      [
+        { value: "189db", label: "Maria's Volume Level", sublabel: "(Jet Engine: 140)", color: "primary" },
+        { value: "47", label: "Marsha11's Filing Cabinets", sublabel: "(Still Loses)", color: "accent" },
+        { value: "1.2M", label: "Miang's Words Spoken", sublabel: "(Never Silent)", color: "success" },
+        { value: "0", label: "erwarrr's Verbal Communication", sublabel: "(Aggressive Silence)", color: "danger" }
+      ],
+      [
+        { value: "5000g", label: "Munchyy's Apology Note Value", sublabel: "(Illegible)", color: "primary" },
+        { value: "17", label: "JeffEpstein's Orphanages", sublabel: "(Cookies: ∞)", color: "accent" },
+        { value: "12", label: "惡1ce's Evil Charity Franchises", sublabel: "(Guilt Empire)", color: "success" },
+        { value: "50m", label: "Enaira's Economic Chaos Radius", sublabel: "(Paradox Zone)", color: "danger" }
+      ],
+      [
+        { value: "9999", label: "Evand3r's Non-Spoon Weapons Used", sublabel: "(Still No Spoon)", color: "primary" },
+        { value: "6'10\"", label: "Shawty's Actual Height", sublabel: "(Claims 5'0\")", color: "accent" },
+        { value: "347", label: "Riku's Key Collection", sublabel: "(None Correct)", color: "success" },
+        { value: "∞", label: "Jayzzzzzzz's Sleep Debt", sublabel: "(Caffeinated Death)", color: "danger" }
+      ],
+      [
+        { value: "47", label: "Iguro's Wrong Portal Recruits", sublabel: "(1200% Success)", color: "primary" },
+        { value: "47", label: "erwarrr's Silent Choir Members", sublabel: "(Judging You)", color: "accent" },
+        { value: "14", label: "CheeseCakee's Geneva Clauses", sublabel: "(Dairy WMDs)", color: "success" },
+        { value: "12", label: "Fever's Filed Apocalypses", sublabel: "(1 Pending)", color: "danger" }
+      ],
+      [
+        { value: "60%", label: "Varys' Rumor Accuracy", sublabel: "(40% Fabricated)", color: "primary" },
+        { value: "9999x", label: "ladyhoho's Tragic Giggle Combo", sublabel: "(Send Therapist)", color: "accent" },
+        { value: "7", label: "LXRDGRIM's Self-Help Books", sublabel: "(Bestsellers)", color: "success" },
+        { value: "+400%", label: "Guild Treasury Growth", sublabel: "(Enaira's Fault)", color: "danger" }
+      ],
+      [
+        { value: "100%", label: "Byakko's Squeak Monetization", sublabel: "(47 Kingdoms)", color: "primary" },
+        { value: "3 Years", label: "Inihaw's Restaurant Waitlist", sublabel: "(Vegan BBQ)", color: "accent" },
+        { value: "89", label: "Cogwind's Safety Violations", sublabel: "(All Profitable)", color: "success" },
+        { value: "5000", label: "DadaXxD's Morale Buff", sublabel: "(XD Energy)", color: "danger" }
+      ],
+      [
+        { value: "0-9999", label: "Ace's Gambling Record", sublabel: "(Battle: 9999-0)", color: "primary" },
+        { value: "47", label: "Hayacinth's Barriers Destroyed", sublabel: "(Via Sneeze)", color: "accent" },
+        { value: "∞", label: "Ayane69's Trip-Based Wins", sublabel: "(Grace: 0)", color: "success" },
+        { value: "100m", label: "Cutie's Moral Paralysis Radius", sublabel: "(Must Protecc)", color: "danger" }
+      ]
+    ];
+
+    // Truly random selection instead of sequential
+    const randomIndex = Math.floor(Math.random() * statSets.length);
+    return statSets[randomIndex];
+  }, [seed]);
+
   // Get random members for activities and achievements
   const { currentActivities, legendaryAchievements } = useMemo(() => {
     const members = Object.entries(memberLore as Record<string, MemberLoreData>);
@@ -358,33 +428,75 @@ export default function GuildHomePage() {
         </div>
       </section>
 
-      {/* Guild Stats Overview */}
+      {/* Guild Stats Overview - Dynamic */}
       <section>
         <h2 className="text-2xl sm:text-3xl md:text-4xl text-gold text-rpg-title mb-6">Guild Stats (Mostly Accurate)</h2>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-transform duration-200 glow-primary">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-bright mb-2 font-game-decorative">100%</div>
-            <div className="text-xs sm:text-sm text-gray-400 font-game">Jalo Bot Financial Accuracy</div>
-            <div className="text-xs text-gray-500 font-game mt-1">(HesuCrypto: 0%)</div>
-          </div>
-
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-transform duration-200 glow-accent">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent-bright mb-2 font-game-decorative">∞/0</div>
-            <div className="text-xs sm:text-sm text-gray-400 font-game">HesuCrypto's Net Worth</div>
-            <div className="text-xs text-success-bright font-game mt-1">(Quantum State)</div>
-          </div>
-
-          <div className="glass backdrop-blur-sm rounded-lg border border-success/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-transform duration-200 glow-success">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-success-bright mb-2 font-game-decorative">127</div>
-            <div className="text-xs sm:text-sm text-gray-400 font-game">LXRDGRIM's Therapy Clients</div>
-          </div>
-
-          <div className="glass backdrop-blur-sm rounded-lg border border-danger/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-transform duration-200 glow-danger">
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-danger-bright mb-2 font-game-decorative">9999</div>
-            <div className="text-xs sm:text-sm text-gray-400 font-game">Ztig's Ally Precision Score</div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {guildStatsRotation.map((stat, index) => (
+            <div
+              key={`${stat.label}-${seed}-${index}`}
+              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
+              style={{
+                animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
+              }}
+            >
+              <div className={`text-2xl sm:text-3xl md:text-4xl font-bold text-${stat.color}-bright mb-2 font-game-decorative transition-all duration-500`}>
+                {stat.value}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game transition-all duration-500">
+                {stat.label}
+              </div>
+              {stat.sublabel && (
+                <div className={`text-xs ${stat.sublabel.includes('∞') || stat.sublabel.includes('All') ? 'text-success-bright' : 'text-gray-500'} font-game mt-1 transition-all duration-500`}>
+                  {stat.sublabel}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
+
+        <div className="mt-4 text-center text-xs text-gray-500 italic">
+          Rotating every 30 seconds • Live guild statistics
+        </div>
+
+        <style jsx>{`
+          @keyframes fadeInOutScale {
+            0% {
+              opacity: 0;
+              transform: scale(0.85) translateY(20px);
+            }
+            3% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+            93% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: scale(0.85) translateY(-20px);
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            @keyframes fadeInOutScale {
+              0% {
+                opacity: 0;
+              }
+              3% {
+                opacity: 1;
+              }
+              93% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+              }
+            }
+          }
+        `}</style>
       </section>
 
       {/* Current Guild Activities - Dynamic */}
