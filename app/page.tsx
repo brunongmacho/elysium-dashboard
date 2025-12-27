@@ -59,12 +59,7 @@ export default function GuildHomePage() {
     // Extract current activities (6 items)
     const activities = shuffled.slice(0, 6).map(([name, data]) => {
       // Use reputation field as it's already a good summary
-      let text = data.reputation || data.specialty || 'Causing legendary chaos';
-
-      // Ensure it fits (max 80 characters)
-      if (text.length > 80) {
-        text = text.substring(0, 77) + '...';
-      }
+      const text = data.reputation || data.specialty || 'Causing legendary chaos';
 
       return {
         name,
@@ -75,16 +70,12 @@ export default function GuildHomePage() {
 
     // Extract legendary achievements (5 items)
     const achievements = shuffled.slice(6, 11).map(([name, data]) => {
-      // Create concise specialty (max 60 characters)
-      let specialty = data.specialty?.trim() || 'Master of legendary feats';
-      if (specialty.length > 60) {
-        specialty = specialty.substring(0, 57) + '...';
-      }
+      const specialty = data.specialty?.trim() || 'Master of legendary feats';
 
       return {
         name,
         title: data.title || 'The Legendary One',
-        specialty: specialty,
+        specialty,
         icon: getIconForMember(name, data)
       };
     });
@@ -234,7 +225,12 @@ export default function GuildHomePage() {
                   {activity.icon}
                 </span>
                 <span className="text-gray-300">
-                  <span className="text-accent-bright font-semibold">{activity.name}</span>: {activity.text}
+                  <a
+                    href={`/profile/${activity.name}`}
+                    className="text-accent-bright font-semibold hover:text-accent transition-colors"
+                  >
+                    {activity.name}
+                  </a>: {activity.text}
                 </span>
               </div>
             ))}
@@ -276,7 +272,12 @@ export default function GuildHomePage() {
                     {achievement.icon}
                   </span>
                   <span className="text-gray-300">
-                    <span className="text-accent-bright font-semibold">{achievement.name}</span> - {achievement.specialty}
+                    <a
+                      href={`/profile/${achievement.name}`}
+                      className="text-accent-bright font-semibold hover:text-accent transition-colors"
+                    >
+                      {achievement.name}
+                    </a> - {achievement.specialty}
                   </span>
                 </li>
               ))}
