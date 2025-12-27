@@ -14,7 +14,7 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
-import Footer from "@/components/Footer";
+import { Breadcrumb } from "@/components/ui";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
 export default function LeaderboardPage() {
@@ -149,7 +149,15 @@ export default function LeaderboardPage() {
 
   return (
     <>
-    <div className="space-y-6 pb-32">
+    <div className="space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Leaderboards', current: true },
+        ]}
+      />
+
       {/* Header - Responsive sizing */}
       <div>
         <h1 className="text-3xl sm:text-4xl text-gold text-rpg-title mb-2">Leaderboards</h1>
@@ -455,7 +463,6 @@ export default function LeaderboardPage() {
         </div>
       )}
     </div>
-    <Footer />
     </>
   );
 }

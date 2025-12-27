@@ -2,6 +2,7 @@
 
 import { useState, useCallback, memo, useMemo, useEffect } from "react";
 import Image from "next/image";
+import confetti from "canvas-confetti";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
 import Tooltip from "./Tooltip";
@@ -56,6 +57,35 @@ function BossCard({
     setIsMarking(true);
     try {
       await onMarkAsKilled(boss.bossName, killedBy, killTime, spawnTime);
+
+      // Celebrate with confetti!
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#dc2626', '#f97316', '#fbbf24', '#f59e0b'],
+      });
+
+      // Add another burst slightly delayed for extra celebration
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#dc2626', '#f97316'],
+        });
+      }, 250);
+
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#dc2626', '#f97316'],
+        });
+      }, 400);
     } finally {
       setIsMarking(false);
     }
@@ -126,7 +156,12 @@ function BossCard({
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className={`text-lg sm:text-xl font-bold line-clamp-2 font-game-decorative ${boss.status === 'spawned' ? 'text-energy text-danger' : 'text-white'}`}>{boss.bossName}</h3>
+          <h3 className={`text-lg sm:text-xl font-bold line-clamp-2 font-game-decorative ${boss.status === 'spawned' ? 'text-energy text-danger' : 'text-white'}`}>
+            {boss.bossName}
+            <span className="sr-only">
+              {boss.status === 'spawned' ? ', Status: Spawned' : ', Status: Not spawned'}
+            </span>
+          </h3>
           {/* First row: Points and Type */}
           <div className="flex items-center gap-1.5 mt-1">
             <Tooltip content="Points awarded for attendance" position="bottom">
@@ -260,6 +295,8 @@ function BossCard({
                   handleMarkAsKilled();
                 }}
                 disabled={isMarking}
+                aria-label={`Mark ${boss.bossName} as killed`}
+                aria-busy={isMarking}
                 className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
               >
                 {isMarking ? "Marking..." : "Mark as Killed"}
@@ -280,6 +317,8 @@ function BossCard({
                   handleCancelSpawn();
                 }}
                 disabled={isCancelling}
+                aria-label={`Cancel spawn timer for ${boss.bossName}`}
+                aria-busy={isCancelling}
                 className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
               >
                 {isCancelling ? "Cancelling..." : "Cancel Spawn"}
