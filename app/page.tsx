@@ -41,7 +41,16 @@ export default function GuildHomePage() {
             className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
           >
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">⏰</div>
+              <svg
+                className="w-10 h-10 sm:w-12 sm:h-12 text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
               <div>
                 <h3 className="text-lg sm:text-xl font-bold text-primary-bright font-game-decorative">Boss Timers</h3>
                 <p className="text-xs sm:text-sm text-gray-400 font-game">Track spawn times</p>
@@ -55,7 +64,16 @@ export default function GuildHomePage() {
             className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
           >
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">🏆</div>
+              <svg
+                className="w-10 h-10 sm:w-12 sm:h-12 text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+              >
+                <path d="M12 15l-2 5-3-1 2-5-2-1 1-4 4-1 4 1 1 4-2 1 2 5-3 1-2-5z" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="12" cy="7" r="3" />
+              </svg>
               <div>
                 <h3 className="text-lg sm:text-xl font-bold text-accent-bright font-game-decorative">Leaderboards</h3>
                 <p className="text-xs sm:text-sm text-gray-400 font-game">View rankings</p>
