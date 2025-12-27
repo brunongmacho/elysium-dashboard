@@ -16,20 +16,45 @@ export function calculateNextOccurrence(event: EventSchedule, currentTime: numbe
   const currentDay = gmt8Now.getUTCDay();
 
   if (event.isDaily) {
-    // For daily events, check if today's occurrence has passed
+    // For daily events, check if today's occurrence has completely finished
     const eventTime = new Date(gmt8Now);
     eventTime.setUTCHours(event.startTime.hour, event.startTime.minute, 0, 0);
 
-    const eventTimeMs = eventTime.getTime();
+    const eventStartMs = eventTime.getTime();
+    const eventEndMs = eventStartMs + (event.durationMinutes * 60 * 1000);
     const nowMs = gmt8Now.getTime();
 
-    if (eventTimeMs > nowMs) {
-      // Event hasn't occurred today yet
-      return new Date(eventTimeMs - gmt8Offset);
+    // Check if event crosses midnight
+    const eventEndTime = new Date(eventEndMs);
+    const eventCrossesMidnight = eventEndTime.getUTCDate() !== eventTime.getUTCDate();
+
+    if (eventCrossesMidnight) {
+      // Event crosses midnight - need to check both today's and yesterday's occurrence
+      const yesterdayEventStart = new Date(eventTime);
+      yesterdayEventStart.setUTCDate(yesterdayEventStart.getUTCDate() - 1);
+      const yesterdayEventEnd = yesterdayEventStart.getTime() + (event.durationMinutes * 60 * 1000);
+
+      // If we're in the portion of yesterday's event that extends to today, return yesterday's start
+      if (nowMs < yesterdayEventEnd) {
+        return new Date(yesterdayEventStart.getTime() - gmt8Offset);
+      }
+      // Otherwise, if today's event hasn't ended, return today's start
+      else if (nowMs < eventEndMs) {
+        return new Date(eventStartMs - gmt8Offset);
+      }
+      // Event has completely finished, schedule for tomorrow
+      else {
+        eventTime.setUTCDate(eventTime.getUTCDate() + 1);
+        return new Date(eventTime.getTime() - gmt8Offset);
+      }
     } else {
-      // Event already passed today, schedule for tomorrow
-      eventTime.setUTCDate(eventTime.getUTCDate() + 1);
-      return new Date(eventTime.getTime() - gmt8Offset);
+      // Normal case - event doesn't cross midnight
+      if (nowMs < eventEndMs) {
+        return new Date(eventStartMs - gmt8Offset);
+      } else {
+        eventTime.setUTCDate(eventTime.getUTCDate() + 1);
+        return new Date(eventTime.getTime() - gmt8Offset);
+      }
     }
   } else {
     // For weekly events, find the next occurrence
@@ -46,16 +71,31 @@ export function calculateNextOccurrence(event: EventSchedule, currentTime: numbe
 
       if (event.days.includes(checkDay)) {
         if (i === 0) {
-          // Event is today, check if it's already passed
+          // Event is today, check if it has completely finished
           const timeInMinutes = currentHour * 60 + currentMinute;
-          const eventTimeInMinutes = event.startTime.hour * 60 + event.startTime.minute;
+          const eventStartMinutes = event.startTime.hour * 60 + event.startTime.minute;
+          const eventEndMinutes = eventStartMinutes + event.durationMinutes;
 
-          if (eventTimeInMinutes > timeInMinutes) {
-            // Event hasn't occurred yet today
-            daysToAdd = 0;
-            found = true;
-            break;
+          // Handle events that cross midnight (e.g., 23:00 + 120min = 01:00 next day)
+          const crossesMidnight = eventEndMinutes >= 24 * 60;
+
+          if (crossesMidnight) {
+            // Event crosses midnight - it's still active if current time is after start OR before end (wrapped)
+            const eventEndWrapped = eventEndMinutes - (24 * 60);
+            if (timeInMinutes >= eventStartMinutes || timeInMinutes < eventEndWrapped) {
+              daysToAdd = 0;
+              found = true;
+              break;
+            }
+          } else {
+            // Normal case - event doesn't cross midnight
+            if (timeInMinutes < eventEndMinutes) {
+              daysToAdd = 0;
+              found = true;
+              break;
+            }
           }
+          // Otherwise, continue searching for next occurrence
         } else {
           // Event is on a future day
           daysToAdd = i;
