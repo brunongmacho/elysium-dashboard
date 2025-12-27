@@ -5,11 +5,46 @@ export default function Footer() {
     <footer className="fixed bottom-0 left-0 right-0 glass backdrop-blur-sm border-t border-primary/20 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-center">
         <div className="flex flex-wrap justify-center items-center gap-3 text-xs mb-2">
-          <a href="/" className="text-primary hover:text-primary-light font-game transition-colors">Home</a>
+          <a href="/" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
+            <svg
+              className="w-3.5 h-3.5 text-primary group-hover:text-primary-light transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+            >
+              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Home
+          </a>
           <span className="text-gray-600">•</span>
-          <a href="/timers" className="text-primary hover:text-primary-light font-game transition-colors">Boss Timers</a>
+          <a href="/timers" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
+            <svg
+              className="w-3.5 h-3.5 text-primary group-hover:text-primary-light transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Boss Timers
+          </a>
           <span className="text-gray-600">•</span>
-          <a href="/leaderboard" className="text-accent hover:text-accent-light font-game transition-colors">Leaderboards</a>
+          <a href="/leaderboard" className="inline-flex items-center gap-1.5 text-accent hover:text-accent-light font-game transition-colors group">
+            <svg
+              className="w-3.5 h-3.5 text-accent group-hover:text-accent-light transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+            >
+              <path d="M12 15l-2 5-3-1 2-5-2-1 1-4 4-1 4 1 1 4-2 1 2 5-3 1-2-5z" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="7" r="3" />
+            </svg>
+            Leaderboards
+          </a>
           <span className="text-gray-600">•</span>
           <a
             href="https://discord.gg/EUWXd5tPa7"
