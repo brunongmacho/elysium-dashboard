@@ -5,7 +5,8 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { formatInGMT8 } from "@/lib/timezone";
 import Image from "next/image";
-import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal } from "@/components/ui";
+import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal, Typography } from "@/components/ui";
+import { Stack, Grid } from "@/components/layout";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -72,7 +73,7 @@ export default function MemberProfilePage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <Stack gap="lg">
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -80,7 +81,7 @@ export default function MemberProfilePage() {
           ]}
         />
         <ProfileSkeleton />
-      </div>
+      </Stack>
     );
   }
 
@@ -100,9 +101,9 @@ export default function MemberProfilePage() {
               {isSignedIn && isOwnProfile ? (
                 // Signed in user viewing their own non-existent profile
                 <>
-                  <h2 className="text-xl sm:text-2xl text-gold text-rpg-title mb-4">
+                  <Typography variant="h2" className="text-xl sm:text-2xl text-gold mb-4">
                     Welcome, {session.user?.name}!
-                  </h2>
+                  </Typography>
                   <div className="text-danger text-lg sm:text-xl font-game-decorative mb-6">
                     You're not in the guild database yet
                   </div>
@@ -188,9 +189,9 @@ export default function MemberProfilePage() {
             {/* Info Card - Only show for signed-in users viewing their own profile */}
             {isSignedIn && isOwnProfile && (
               <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-6 card-3d">
-                <h3 className="text-lg sm:text-xl text-primary-bright font-game-decorative mb-4">
+                <Typography variant="h3" className="text-lg sm:text-xl text-primary-bright mb-4">
                   💡 What happens once you're added?
-                </h3>
+                </Typography>
                 <div className="text-gray-300 font-game text-sm space-y-2">
                   <p className="flex items-start gap-2">
                     <span className="text-success-bright">✓</span>
@@ -225,7 +226,7 @@ export default function MemberProfilePage() {
   const lore = (memberLore as Record<string, MemberLoreData>)[profile.username];
 
   return (
-    <div className="space-y-8">
+    <Stack gap="xl">
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
@@ -237,51 +238,79 @@ export default function MemberProfilePage() {
 
         {/* Header */}
         <ScrollReveal>
-          <div className="mb-8">
-            <h1 className="text-4xl sm:text-5xl text-gold text-rpg-title mb-4">{profile.username}</h1>
+          <Stack gap="sm" className="mb-8">
+            <Typography variant="h1" className="text-4xl sm:text-5xl text-gold">
+              {profile.username}
+            </Typography>
           {lore && (
-            <p className="text-xl sm:text-2xl text-silver font-game-decorative italic mb-2">{lore.title}</p>
+            <Typography variant="h2" className="text-xl sm:text-2xl text-silver italic">
+              {lore.title}
+            </Typography>
           )}
-            <p className="text-primary-light font-game">
+            <Typography variant="body" className="text-primary-light">
               Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
-            </p>
-          </div>
+            </Typography>
+          </Stack>
         </ScrollReveal>
 
         {/* Member Lore Section */}
         {lore && (
           <div className="glass backdrop-blur-sm rounded-lg border-2 border-accent/50 p-4 sm:p-6 mb-8 glow-accent card-3d hover:scale-[1.01] transition-transform duration-200">
-            <h2 className="text-2xl sm:text-3xl text-gold text-rpg-title mb-6">📜 Legend & Lore</h2>
+            <Typography variant="h2" className="text-2xl sm:text-3xl text-gold mb-6">
+              📜 Legend & Lore
+            </Typography>
 
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-accent-bright mb-3 font-game-decorative">Origin Story</h3>
-                <p className="text-gray-300 leading-relaxed font-game text-sm sm:text-base">{lore.lore}</p>
-              </div>
+            <Stack gap="lg">
+              <Stack gap="sm">
+                <Typography variant="h3" className="text-lg sm:text-xl font-semibold text-accent-bright">
+                  Origin Story
+                </Typography>
+                <Typography variant="body" className="text-gray-300 leading-relaxed text-sm sm:text-base">
+                  {lore.lore}
+                </Typography>
+              </Stack>
 
-              <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-accent-bright mb-3 font-game-decorative">Recent Developments</h3>
-                <p className="text-gray-300 leading-relaxed font-game text-sm sm:text-base">{lore.recent_developments}</p>
-              </div>
+              <Stack gap="sm">
+                <Typography variant="h3" className="text-lg sm:text-xl font-semibold text-accent-bright">
+                  Recent Developments
+                </Typography>
+                <Typography variant="body" className="text-gray-300 leading-relaxed text-sm sm:text-base">
+                  {lore.recent_developments}
+                </Typography>
+              </Stack>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <Grid columns={{ xs: 1, md: 2 }} gap="md" className="mt-4">
                 <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
-                  <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Specialty</h4>
-                  <p className="text-gray-300 text-sm font-game">{lore.specialty}</p>
+                  <Typography variant="h4" className="text-sm sm:text-base font-semibold text-primary-bright mb-2">
+                    Specialty
+                  </Typography>
+                  <Typography variant="small" className="text-gray-300">
+                    {lore.specialty}
+                  </Typography>
                 </div>
                 <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
-                  <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Reputation</h4>
-                  <p className="text-gray-300 text-sm font-game">{lore.reputation}</p>
+                  <Typography variant="h4" className="text-sm sm:text-base font-semibold text-primary-bright mb-2">
+                    Reputation
+                  </Typography>
+                  <Typography variant="small" className="text-gray-300">
+                    {lore.reputation}
+                  </Typography>
                 </div>
-              </div>
+              </Grid>
 
               <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4">
-                <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-2 font-game">Stats</h4>
-                <p className="text-gray-300 text-xs sm:text-sm font-mono">{lore.stats}</p>
+                <Typography variant="h4" className="text-sm sm:text-base font-semibold text-primary-bright mb-2">
+                  Stats
+                </Typography>
+                <Typography variant="caption" className="text-gray-300 font-mono">
+                  {lore.stats}
+                </Typography>
               </div>
 
-              <div>
-                <h4 className="text-sm sm:text-base font-semibold text-primary-bright mb-3 font-game">Signature Skills</h4>
+              <Stack gap="sm">
+                <Typography variant="h4" className="text-sm sm:text-base font-semibold text-primary-bright">
+                  Signature Skills
+                </Typography>
                 <div className="flex flex-wrap gap-2">
                   {lore.skills.map((skill, index) => (
                     <span
@@ -292,14 +321,14 @@ export default function MemberProfilePage() {
                     </span>
                   ))}
                 </div>
-              </div>
-            </div>
+              </Stack>
+            </Stack>
           </div>
         )}
 
         {/* Stats Grid */}
         <ScrollReveal delay={0.1}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          <Grid columns={{ xs: 1, sm: 2, lg: 3 }} gap="lg" className="mb-8">
             <StatCard
               label="💰 Points Available"
               value={profile.pointsAvailable}
@@ -325,13 +354,15 @@ export default function MemberProfilePage() {
               change={consumptionRate > 75 ? 'High spender' : consumptionRate > 50 ? 'Moderate' : 'Conservative'}
               className="sm:col-span-2 lg:col-span-1"
             />
-          </div>
+          </Grid>
         </ScrollReveal>
 
         {/* Points Breakdown */}
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 mb-8 card-3d hover:scale-[1.01] transition-transform duration-200">
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">💎 Points Summary</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
+            💎 Points Summary
+          </Typography>
+          <Grid columns={{ xs: 1, sm: 3 }} gap="lg">
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Earned</div>
               <div className="text-xl sm:text-2xl font-bold text-accent-bright font-game-decorative">+{profile.pointsEarned}</div>
@@ -344,13 +375,15 @@ export default function MemberProfilePage() {
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Available</div>
               <div className="text-xl sm:text-2xl font-bold text-primary-bright font-game-decorative">{profile.pointsAvailable}</div>
             </div>
-          </div>
+          </Grid>
         </div>
 
         {/* Member Info */}
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 mt-8 card-3d hover:scale-[1.01] transition-transform duration-200">
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">ℹ️ Member Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
+            ℹ️ Member Information
+          </Typography>
+          <Grid columns={{ xs: 1, md: 3 }} gap="md" className="text-xs sm:text-sm">
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-3 sm:p-4">
               <span className="text-primary-light font-game block mb-1">Last Active:</span>
               <span className="text-white font-game-decorative">{formatInGMT8(profile.lastActive, "MMM dd, yyyy hh:mm a")}</span>
@@ -363,8 +396,8 @@ export default function MemberProfilePage() {
               <span className="text-primary-light font-game block mb-1">This Month:</span>
               <span className="text-accent-bright font-semibold font-game-decorative">{profile.attendance.thisMonth} bosses</span>
             </div>
-          </div>
+          </Grid>
         </div>
-    </div>
+    </Stack>
   );
 }

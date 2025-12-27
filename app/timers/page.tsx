@@ -8,7 +8,9 @@ import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
-import { Breadcrumb } from "@/components/ui";
+import { Breadcrumb, Typography } from "@/components/ui";
+import { Stack, Grid } from "@/components/layout";
+import { Icon } from "@/components/icons";
 import { TimerProvider } from "@/contexts/TimerContext";
 import type { BossTimersResponse, BossKillResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
@@ -117,7 +119,7 @@ export default function Home() {
   return (
     <TimerProvider>
       <>
-      <div className="space-y-6">
+      <Stack gap="lg">
         {/* Breadcrumb */}
         <Breadcrumb
           items={[
@@ -128,14 +130,14 @@ export default function Home() {
 
         {/* Header */}
         <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl text-gold text-rpg-title mb-2">
+        <Stack gap="sm">
+          <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold">
             Boss Spawn Timers
-          </h1>
-          <p className="text-sm sm:text-base text-gray-300 font-game">
+          </Typography>
+          <Typography variant="body" className="text-sm sm:text-base text-gray-300">
             Real-time tracking of all boss spawns
-          </p>
-        </div>
+          </Typography>
+        </Stack>
 
         {/* Refresh Button */}
         <button
@@ -150,19 +152,11 @@ export default function Home() {
           title="Refresh boss timers"
           aria-label="Refresh boss timers"
         >
-          <svg
-            className={`w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-500 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180'}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
+          <Icon
+            name="refresh"
+            size="md"
+            className={`text-gray-400 group-hover:text-primary transition-colors duration-500 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180'}`}
+          />
           <span className="hidden sm:inline text-sm text-gray-300 group-hover:text-white transition-colors">
             {isRefreshing ? 'Refreshing...' : 'Refresh'}
           </span>
@@ -171,7 +165,7 @@ export default function Home() {
 
       {/* Stats Bar */}
       {data && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+        <Grid columns={{ xs: 2, md: 4 }} gap="md">
           <Tooltip content="All bosses being tracked in the system" fullWidth>
             <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help">
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
@@ -204,7 +198,7 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
             </div>
           </Tooltip>
-        </div>
+        </Grid>
       )}
 
       {/* Loading State */}
@@ -241,11 +235,11 @@ export default function Home() {
 
       {/* Last Update Time */}
       {data && data.timestamp && (
-        <div className="text-center text-xs text-gray-500">
+        <Typography variant="caption" className="text-center">
           Last updated: {toLocaleStringGMT8(data.timestamp)}
-        </div>
+        </Typography>
       )}
-      </div>
+      </Stack>
       </>
     </TimerProvider>
   );
