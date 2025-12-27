@@ -691,15 +691,27 @@ textarea:focus-visible {
 }
 
 /* Custom utilities */
-/* Content must be above background pseudo-elements */
+/* Layering system for .animated-gradient children */
+/* All children above background by default */
 .animated-gradient > * {
   z-index: 1;
 }
 
-/* Apply relative positioning only to content areas, not nav or fixed elements */
+/* Main content and footer with relative positioning */
 .animated-gradient > main,
 .animated-gradient > footer {
   position: relative;
+}
+
+/* Navigation above all content */
+.animated-gradient > nav {
+  z-index: 100 !important;
+}
+
+/* Fixed elements (like back to top) above content but below nav */
+.animated-gradient > button[class*="fixed"],
+.animated-gradient > div[class*="fixed"] {
+  z-index: 90 !important;
 }
 
 @layer utilities {
