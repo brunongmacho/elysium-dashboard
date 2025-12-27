@@ -60,18 +60,6 @@ export default function RootLayout({
               </div>
             </main>
 
-            {/* Footer */}
-            <footer className="mt-auto py-8 border-t border-gray-800">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center text-gray-400 text-sm">
-                  <p>© {new Date().getFullYear()} Elysium Guild. All rights reserved.</p>
-                  <p className="mt-2 text-xs text-gray-500">
-                    Built with ❤️ for the guild
-                  </p>
-                </div>
-              </div>
-            </footer>
-
             {/* Back to Top Button */}
             <BackToTop />
           </div>

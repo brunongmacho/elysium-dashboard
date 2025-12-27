@@ -23,9 +23,18 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            <Tooltip content="View all boss spawn timers and countdowns" position="bottom">
+            <Tooltip content="Return to home page" position="bottom">
               <a
                 href="/"
+                className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                aria-label="Navigate to Home page"
+              >
+                Home
+              </a>
+            </Tooltip>
+            <Tooltip content="View all boss spawn timers and countdowns" position="bottom">
+              <a
+                href="/timers"
                 className="text-gray-300 hover:text-primary-light px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 aria-label="Navigate to Boss Timers page"
               >
@@ -146,6 +155,13 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <a
               href="/"
+              className="block text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home
+            </a>
+            <a
+              href="/timers"
               className="block text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
