@@ -6,12 +6,17 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 import ThemeSelector from "./ThemeSelector";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
-import { LoginModal } from "./LoginModal";
+
+// Dynamically import LoginModal to prevent SSR hydration issues
+const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
+  ssr: false,
+});
 
 export default function Navbar() {
   const { data: session, status } = useSession();

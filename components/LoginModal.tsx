@@ -79,10 +79,10 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     setIsLoading(false);
   };
 
-  // Don't render portal until mounted (client-side only)
+  // Don't render until mounted (prevents SSR issues)
   if (!isMounted) return null;
 
-  const modalContent = (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -218,9 +218,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
-
-  // Render modal in a portal at document.body level
-  return createPortal(modalContent, document.body);
 }
