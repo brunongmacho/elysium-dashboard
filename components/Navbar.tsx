@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,11 +11,13 @@ import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
+import { LoginModal } from "./LoginModal";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -125,7 +127,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <button
-                  onClick={() => signIn("discord")}
+                  onClick={() => setIsLoginModalOpen(true)}
                   className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   <Icon name="discord" size="md" />
@@ -257,7 +259,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => {
-                    signIn("discord");
+                    setIsLoginModalOpen(true);
                     setIsMobileMenuOpen(false);
                   }}
                   className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-md text-base font-medium transition-colors"
@@ -271,6 +273,12 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </nav>
   );
 }

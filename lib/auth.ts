@@ -130,6 +130,6 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: AUTH.SESSION_MAX_AGE / 1000, // Convert to seconds - cache session to reduce Discord API calls and avoid rate limiting
+    maxAge: AUTH.REMEMBER_ME_MAX_AGE / 1000, // Convert to seconds - 7 days max session (remember me)
   },
 };
