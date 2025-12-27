@@ -118,12 +118,21 @@ export async function GET() {
             killedBy = lastAttendance[0].memberName;
             nextSpawnTime = calculateNextSpawn(bossName, lastKillTime);
 
-            // Auto-advance predicted spawn if it has already passed
-            // Keep adding intervals until we get a future spawn time
+            // Auto-advance predicted spawn if it has already passed AND grace period expired
+            // Only add intervals if we're past the grace period of the calculated spawn
             const now = new Date();
             const interval = getBossSpawnInterval(bossName);
             if (nextSpawnTime && interval) {
               while (nextSpawnTime.getTime() <= now.getTime()) {
+                // Check if we're still within grace period of this spawn time
+                const gracePeriodEnd = new Date(nextSpawnTime.getTime() + BOSS_TIMER.GRACE_PERIOD);
+
+                // If we're still within grace period, keep this spawn time (don't advance)
+                if (now <= gracePeriodEnd) {
+                  break;
+                }
+
+                // Past grace period, advance to next interval
                 nextSpawnTime = new Date(nextSpawnTime.getTime() + interval * 60 * 60 * 1000);
               }
             }
