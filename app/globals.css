@@ -687,6 +687,7 @@ textarea:focus-visible {
   .tap-target {
     min-width: 44px;
     min-height: 44px;
+    touch-action: manipulation;
   }
 
   /* Responsive container with safe padding */
@@ -712,7 +713,7 @@ textarea:focus-visible {
   @media (max-width: 640px) {
     .glass,
     .glass-strong {
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(4px);
     }
   }
 
@@ -721,5 +722,83 @@ textarea:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 4px;
+  }
+
+  /* Depth and elevation utilities */
+  .surface-base {
+    background-color: var(--color-bg-primary);
+  }
+
+  .surface-raised {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      var(--color-bg-secondary) 100%
+    );
+  }
+
+  .surface-overlay {
+    background-color: var(--color-bg-tertiary);
+  }
+
+  /* Interactive state utilities */
+  .interactive {
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .interactive:hover {
+    transform: translateY(-2px);
+  }
+
+  .interactive:active {
+    transform: translateY(0);
+  }
+
+  /* Truncate utilities */
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .truncate-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  /* Blur utilities for progressive loading */
+  .blur-up {
+    filter: blur(20px);
+    transition: filter 0.3s ease-out;
+  }
+
+  .blur-up.loaded {
+    filter: blur(0);
+  }
+
+  /* Status pulse animation */
+  .status-pulse {
+    position: relative;
+  }
+
+  .status-pulse::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 }

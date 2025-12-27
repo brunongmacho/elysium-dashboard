@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import BossCard from "./BossCard";
+import { FilterChip } from "./ui/FilterChip";
 import type { BossTimerDisplay } from "@/types/database";
 
 interface BossTimerGridProps {
@@ -122,6 +123,53 @@ export default function BossTimerGrid({
             </select>
           </div>
         </div>
+
+        {/* Active Filters Chips */}
+        {(searchQuery || filterType !== "all" || filterStatus !== "all") && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {searchQuery && (
+              <FilterChip
+                label={`Search: "${searchQuery}"`}
+                onRemove={() => setSearchQuery("")}
+                color="primary"
+                icon={<span>🔍</span>}
+              />
+            )}
+            {filterType !== "all" && (
+              <FilterChip
+                label={filterType === "timer" ? "Timer-Based" : "Schedule-Based"}
+                onRemove={() => setFilterType("all")}
+                color="accent"
+              />
+            )}
+            {filterStatus !== "all" && (
+              <FilterChip
+                label={
+                  filterStatus === "spawned"
+                    ? "Spawned"
+                    : filterStatus === "soon"
+                    ? "Soon"
+                    : "Tracking"
+                }
+                onRemove={() => setFilterStatus("all")}
+                color={
+                  filterStatus === "spawned"
+                    ? "danger"
+                    : filterStatus === "soon"
+                    ? "warning"
+                    : "success"
+                }
+                icon={
+                  filterStatus === "spawned"
+                    ? <span>🔴</span>
+                    : filterStatus === "soon"
+                    ? <span>🟡</span>
+                    : <span>🟢</span>
+                }
+              />
+            )}
+          </div>
+        )}
 
         {/* Results Count */}
         <div className="mt-4 text-sm text-gray-400">

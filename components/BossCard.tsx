@@ -5,6 +5,7 @@ import Image from "next/image";
 import confetti from "canvas-confetti";
 import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
+import { ConfirmationModal } from "./ui/ConfirmationModal";
 import Tooltip from "./Tooltip";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
@@ -33,6 +34,7 @@ function BossCard({
   const [isMarking, setIsMarking] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const createRipple = useRipple();
 
   // Use shared timer from context (performance optimization)
@@ -91,18 +93,17 @@ function BossCard({
     }
   }, [onMarkAsKilled, boss.bossName]);
 
-  const handleCancelSpawn = useCallback(async () => {
+  const handleCancelSpawn = useCallback(() => {
+    setShowCancelConfirm(true);
+  }, []);
+
+  const handleConfirmCancelSpawn = useCallback(async () => {
     if (!onCancelSpawn) return;
-
-    const confirmed = window.confirm(
-      `Are you sure you want to cancel the spawn timer for ${boss.bossName}? This will delete the timer entry.`
-    );
-
-    if (!confirmed) return;
 
     setIsCancelling(true);
     try {
       await onCancelSpawn(boss.bossName);
+      setShowCancelConfirm(false);
     } finally {
       setIsCancelling(false);
     }
@@ -297,7 +298,7 @@ function BossCard({
                 disabled={isMarking}
                 aria-label={`Mark ${boss.bossName} as killed`}
                 aria-busy={isMarking}
-                className={`ripple-container ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+                className={`ripple-container tap-target ${isAdmin && boss.nextSpawnTime && !boss.isPredicted ? 'sm:flex-1' : 'w-full'} bg-danger hover:bg-danger/90 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
               >
                 {isMarking ? "Marking..." : "Mark as Killed"}
               </button>
@@ -319,7 +320,7 @@ function BossCard({
                 disabled={isCancelling}
                 aria-label={`Cancel spawn timer for ${boss.bossName}`}
                 aria-busy={isCancelling}
-                className={`ripple-container ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base`}
+                className={`ripple-container tap-target ${canMarkAsKilled ? 'sm:flex-1' : 'w-full'} bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 text-white font-semibold py-2 sm:py-3 px-4 rounded transition-all duration-200 hover:shadow-lg hover:scale-[1.02] active:scale-95 text-sm sm:text-base min-h-touch`}
               >
                 {isCancelling ? "Cancelling..." : "Cancel Spawn"}
               </button>
@@ -335,6 +336,19 @@ function BossCard({
         onClose={() => setShowModal(false)}
         onConfirm={handleConfirmKill}
         defaultKilledBy={userName}
+      />
+
+      {/* Cancel Spawn Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showCancelConfirm}
+        onClose={() => setShowCancelConfirm(false)}
+        onConfirm={handleConfirmCancelSpawn}
+        title="Cancel Boss Timer?"
+        description={`Are you sure you want to cancel the spawn timer for ${boss.bossName}? This will delete the timer entry and cannot be undone.`}
+        confirmLabel="Delete Timer"
+        cancelLabel="Keep Timer"
+        variant="danger"
+        isLoading={isCancelling}
       />
     </div>
   );

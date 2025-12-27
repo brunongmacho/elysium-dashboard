@@ -23,3 +23,18 @@ export type { PageTransitionProps } from './PageTransition';
 
 export { ScrollReveal } from './ScrollReveal';
 export type { ScrollRevealProps } from './ScrollReveal';
+
+export { FilterChip } from './FilterChip';
+export type { FilterChipProps } from './FilterChip';
+
+export { StatusIndicator } from './StatusIndicator';
+export type { StatusIndicatorProps } from './StatusIndicator';
+
+export { Autocomplete } from './Autocomplete';
+export type { AutocompleteProps, AutocompleteOption } from './Autocomplete';
+
+export { SkipLink } from './SkipLink';
+export type { SkipLinkProps } from './SkipLink';
+
+export { ConfirmationModal } from './ConfirmationModal';
+export type { ConfirmationModalProps } from './ConfirmationModal';
