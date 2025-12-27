@@ -58,7 +58,7 @@ export default function RootLayout({
             <GuildHeader />
 
             {/* Main Content */}
-            <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            <main id="main-content" className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-8">
               <div className="relative">
                 {children}
               </div>

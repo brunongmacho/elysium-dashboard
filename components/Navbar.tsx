@@ -53,17 +53,17 @@ export default function Navbar() {
 
   return (
     <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Title */}
-          <div className="flex items-center flex-shrink-0">
-            <h1 className="text-xl md:text-2xl font-bold text-white">
-              ⚔️ <span className="md:hidden">Dashboard</span>
+          {/* Mobile Logo - Only on mobile */}
+          <div className="flex items-center flex-shrink-0 md:hidden">
+            <h1 className="text-xl font-bold text-white">
+              Dashboard
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          {/* Desktop Navigation - Left aligned */}
+          <div className="hidden md:flex items-center space-x-1">
             <NavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
               Home
             </NavLink>
@@ -81,14 +81,17 @@ export default function Navbar() {
             <NavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
               Leaderboards
             </NavLink>
+          </div>
 
+          {/* Right Side - Theme & Auth */}
+          <div className="hidden md:flex items-center gap-4">
             {/* Theme Selector */}
             <ThemeSelector />
 
             {/* Auth Section */}
-            <div className="pl-4 border-l border-primary/20">
+            <div className="flex items-center">
               {status === "loading" ? (
-                <div className="text-gray-400 text-sm">Loading...</div>
+                <div className="text-gray-400 text-sm whitespace-nowrap">Loading...</div>
               ) : session ? (
                 <div className="flex items-center gap-3">
                   {/* User Info - Clickable to Profile */}
@@ -106,16 +109,16 @@ export default function Navbar() {
                       />
                     )}
                     <div className="flex flex-col">
-                      <span className="text-white text-sm font-medium hover:text-primary transition-colors">
+                      <span className="text-white text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                         {session.user?.name}
                       </span>
                       {!session.isInGuild && (
-                        <span className="text-danger text-xs">
+                        <span className="text-danger text-xs whitespace-nowrap">
                           Not in guild
                         </span>
                       )}
                       {session.roleBadge && (
-                        <span className="text-success text-xs">
+                        <span className="text-success text-xs whitespace-nowrap">
                           {session.roleBadge}
                         </span>
                       )}
@@ -125,7 +128,7 @@ export default function Navbar() {
                   {/* Sign Out Button */}
                   <button
                     onClick={() => signOut()}
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium bg-gray-700 hover:bg-gray-600 transition-colors"
+                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium bg-gray-700 hover:bg-gray-600 transition-colors whitespace-nowrap"
                   >
                     Sign Out
                   </button>
@@ -133,7 +136,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => setIsLoginModalOpen(true)}
-                  className="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap"
                 >
                   <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
