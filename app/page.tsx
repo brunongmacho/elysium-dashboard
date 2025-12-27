@@ -16,6 +16,64 @@ interface MemberLoreData {
 
 // Helper to get an icon/emoji based on member specialty
 function getIconForMember(name: string, data: MemberLoreData): string {
+  // Member-specific icon mapping (prevents duplicates)
+  const memberIcons: Record<string, string> = {
+    'AmielJohn': '🍖',       // Caloric Warlord - meat/food consumption
+    'Azryth': '💡',          // Nightlight Assassin
+    'Byakko': '🐯',          // Marketing Divine Tiger
+    'Carrera': '⏰',         // Temporal Weapons Specialist
+    'CheeseCakee': '🧀',     // Lactose Weapons Engineer
+    'Chunchunmaru': '📱',    // Self-Aware Meme Legend (social media)
+    'Daleee': '🎓',          // Professor of Wrongness
+    'Enaira': '💸',          // Economic Singularity
+    'erwarrr': '🔇',         // Militant Silence
+    'Evand3r': '🥄',         // Legendary Spoon Seeker
+    'Fever': '📋',           // Apocalypse Administrator
+    'Goblok': '🖍️',          // Transcendent Fool Emperor (crayon)
+    'Helvenica': '🔤',       // Font War Criminal
+    'Hercules': '💪',        // Divine Retirement Plan
+    'Hesucrypto': '💰',      // Quantum Financier
+    'Iguro': '🌀',           // Accidental Recruitment Director (portals)
+    'Inihaw': '🥗',          // Ethical Grillmaster General (vegan)
+    'Jalo': '🤡',            // Oracle of Incorrectness
+    'Jayzzzzzzz': '😴',      // Wakeful Nightmare
+    'JeffEpstein': '🍪',     // Nominative Paradox Saint (cookies)
+    'ladyhoho': '😂',        // Laughing Abyss
+    'LXRDGRIM': '☠️',        // Reaper Therapist Chancellor
+    'M1ssy': '💉',           // Anaphylactic Tactician (epipen)
+    'Maria': '📢',           // Decibel Tyrant (loud)
+    'Marsha11': '📁',        // Archival Martyr (files)
+    'Miang': '🗣️',           // Infinite Narrator (talking)
+    'Munchyy': '🗡️',         // Assassination Artist
+    'Onirgerep': '⏪',       // Temporal Reversal Anomaly (backwards)
+    'PotatoCheese': '🥔',    // Carbohydrate Martyr Saint
+    'Riku': '🔑',            // Keychain Calamity
+    'Shawty': '📏',          // Tall Delusion King
+    'Skadushy': '🌓',        // Thermodynamic Heretic (shadow/light)
+    'Varys': '🕵️',          // Rumor Industrialist (spy)
+    'xSelah': '💃',          // Perpetual Motion Disaster
+    'Ztig': '🎯',            // Friendly Fire Legend
+    'PanCoco': '🥥',         // Tropical Hazmat Warrior
+    'Ace': '🎲',             // Cosmic Spite Champion (gambling)
+    'lanZ6': '🦋',           // Vibes Prophet Chancellor (butterfly)
+    'Ayane69': '🍂',         // Catastrophic Ninja Legend (falling)
+    'Tinitira': '👁️',        // Sightless Oracle
+    'Hayacinth': '🌸',       // Biological Artillery Commander
+    'LaxusLawliet': '🍬',    // Disappointed Namesake (sweets)
+    'Cogwind': '⚙️',         // Mad Engineer Laureate
+    'DadaXxD': '🐸',         // Meme Hierophant (Pepe)
+    'AE28': '🪨',            // Stone Age Supremacist
+    '惡1ce': '🧊',           // Benevolent Evil Overlord (ice)
+    'Caera': '🤝',           // Diplomatic Calamity
+    'Cutie': '🌺',           // Weaponized Adorableness
+  };
+
+  // Check for member-specific icon first
+  if (memberIcons[name]) {
+    return memberIcons[name];
+  }
+
+  // Fallback to keyword-based matching
   const specialty = data.specialty.toLowerCase();
   const title = data.title.toLowerCase();
   const reputation = data.reputation.toLowerCase();
