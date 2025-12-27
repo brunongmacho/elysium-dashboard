@@ -58,28 +58,17 @@ export default function GuildHomePage() {
 
     // Extract current activities (6 items)
     const activities = shuffled.slice(0, 6).map(([name, data]) => {
-      // Create a concise summary from recent_developments
-      const sentences = data.recent_developments?.split('. ').filter(s => s && s.trim().length > 0) || [];
+      // Use reputation field as it's already a good summary
+      let text = data.reputation || data.specialty || 'Causing legendary chaos';
 
-      if (sentences.length === 0) {
-        return {
-          name,
-          text: 'Currently causing legendary chaos',
-          icon: getIconForMember(name, data)
-        };
-      }
-
-      const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
-
-      // Create a short summary (max 80 characters)
-      let summary = randomSentence?.trim() || 'Doing legendary things';
-      if (summary.length > 80) {
-        summary = summary.substring(0, 77) + '...';
+      // Ensure it fits (max 80 characters)
+      if (text.length > 80) {
+        text = text.substring(0, 77) + '...';
       }
 
       return {
         name,
-        text: summary,
+        text,
         icon: getIconForMember(name, data)
       };
     });
