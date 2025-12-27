@@ -62,6 +62,28 @@ export function calculateNextOccurrence(event: EventSchedule, currentTime: numbe
       return new Date(currentTime);
     }
 
+    // First, check if yesterday's event is still running (for events that cross midnight)
+    const yesterday = (currentDay - 1 + 7) % 7;
+    if (event.days.includes(yesterday)) {
+      const eventStartMinutes = event.startTime.hour * 60 + event.startTime.minute;
+      const eventEndMinutes = eventStartMinutes + event.durationMinutes;
+
+      if (eventEndMinutes >= 24 * 60) {
+        // Yesterday's event crosses midnight
+        const eventEndWrapped = eventEndMinutes - (24 * 60);
+        const timeInMinutes = currentHour * 60 + currentMinute;
+
+        // Check if we're in the wrapped portion (after midnight) of yesterday's event
+        if (timeInMinutes <= eventEndWrapped) {
+          // Return yesterday's event start time
+          const yesterdayOccurrence = new Date(gmt8Now);
+          yesterdayOccurrence.setUTCDate(yesterdayOccurrence.getUTCDate() - 1);
+          yesterdayOccurrence.setUTCHours(event.startTime.hour, event.startTime.minute, 0, 0);
+          return new Date(yesterdayOccurrence.getTime() - gmt8Offset);
+        }
+      }
+    }
+
     // Find next day when event occurs
     let daysToAdd = 0;
     let found = false;
@@ -80,9 +102,9 @@ export function calculateNextOccurrence(event: EventSchedule, currentTime: numbe
           const crossesMidnight = eventEndMinutes >= 24 * 60;
 
           if (crossesMidnight) {
-            // Event crosses midnight - it's still active if current time is after start OR before end (wrapped)
-            const eventEndWrapped = eventEndMinutes - (24 * 60);
-            if (timeInMinutes >= eventStartMinutes || timeInMinutes < eventEndWrapped) {
+            // Event crosses midnight - it's still active if current time is after start
+            // (We already checked the wrapped portion above for yesterday's event)
+            if (timeInMinutes >= eventStartMinutes) {
               daysToAdd = 0;
               found = true;
               break;

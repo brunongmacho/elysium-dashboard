@@ -135,7 +135,13 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
           <div className="text-text-secondary">
             <span className="text-text-muted">🕐 Start Time (GMT+8):</span>{" "}
             <span className="font-semibold text-text-primary">
-              {String(event.startTime.hour).padStart(2, '0')}:{String(event.startTime.minute).padStart(2, '0')}
+              {(() => {
+                const hour = event.startTime.hour;
+                const minute = event.startTime.minute;
+                const period = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+                return `${displayHour}:${String(minute).padStart(2, '0')} ${period}`;
+              })()}
             </span>
           </div>
           <div className="text-text-secondary">
