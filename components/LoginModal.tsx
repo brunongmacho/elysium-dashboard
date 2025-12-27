@@ -124,16 +124,16 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
               </p>
 
               {/* Remember Me Checkbox */}
-              <div className="mb-6">
+              <div className="mb-6 flex justify-center">
                 <button
                   type="button"
                   onClick={() => !isLoading && setRememberMe(!rememberMe)}
                   disabled={isLoading}
-                  className="flex items-center gap-3 cursor-pointer group w-full text-left"
+                  className="flex items-center gap-3 cursor-pointer group"
                 >
                   <div
                     className={`
-                      w-5 h-5 border-2 rounded
+                      w-5 h-5 border-2 rounded flex-shrink-0
                       transition-all duration-200
                       flex items-center justify-center
                       ${rememberMe
