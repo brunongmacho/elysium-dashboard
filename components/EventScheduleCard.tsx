@@ -93,7 +93,7 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className={`text-lg sm:text-xl font-bold line-clamp-2 font-game-decorative ${isActive ? 'text-energy text-green-400' : 'text-white'}`}>
+          <h3 className={`text-base sm:text-lg font-bold font-game-decorative ${isActive ? 'text-energy text-green-400' : 'text-white'}`}>
             {event.icon} {event.name}
             <span className="sr-only">
               {isActive ? ', Status: Active Now' : ', Status: Upcoming'}
