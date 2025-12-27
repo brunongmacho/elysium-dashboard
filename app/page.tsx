@@ -1,8 +1,90 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import Footer from "@/components/Footer";
+import memberLore from "@/member-lore.json";
+
+interface MemberLoreData {
+  title: string;
+  lore: string;
+  recent_developments: string;
+  specialty: string;
+  reputation: string;
+  stats: string;
+  skills: string[];
+}
+
+// Helper to get an icon/emoji based on member specialty
+function getIconForMember(name: string, data: MemberLoreData): string {
+  const specialty = data.specialty.toLowerCase();
+  const title = data.title.toLowerCase();
+
+  if (specialty.includes('time') || title.includes('temporal')) return '🔮';
+  if (specialty.includes('food') || specialty.includes('snack') || title.includes('caloric')) return '🍪';
+  if (specialty.includes('finance') || specialty.includes('economic')) return '💎';
+  if (specialty.includes('therapy') || specialty.includes('death')) return '☠️';
+  if (specialty.includes('silence') || specialty.includes('quiet')) return '🔇';
+  if (specialty.includes('font') || specialty.includes('design')) return '🎨';
+  if (specialty.includes('combat') || specialty.includes('warrior')) return '⚔️';
+  if (specialty.includes('academic') || specialty.includes('scholar')) return '📚';
+  if (specialty.includes('divine') || specialty.includes('tiger')) return '🐯';
+  if (specialty.includes('portal') || specialty.includes('magic')) return '🌀';
+  if (specialty.includes('apocalypse') || specialty.includes('filing')) return '📊';
+  if (specialty.includes('sweet') || specialty.includes('cookie')) return '🍰';
+
+  // Default icons based on position in alphabet
+  const firstChar = name.charAt(0).toUpperCase();
+  const icons = ['⚡', '🔥', '✨', '💫', '🌟', '⭐'];
+  return icons[firstChar.charCodeAt(0) % icons.length];
+}
 
 export default function GuildHomePage() {
+  const [seed, setSeed] = useState(0);
+
+  // Rotate content every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeed((prev) => prev + 1);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Get random members for activities and achievements
+  const { currentActivities, legendaryAchievements } = useMemo(() => {
+    const members = Object.entries(memberLore as Record<string, MemberLoreData>);
+
+    // Simple seeded shuffle
+    const shuffled = [...members].sort(() => {
+      const random = Math.sin(seed) * 10000;
+      return random - Math.floor(random);
+    });
+
+    // Extract current activities (6 items)
+    const activities = shuffled.slice(0, 6).map(([name, data]) => {
+      // Extract a snippet from recent_developments
+      const sentences = data.recent_developments.split('. ');
+      const highlight = sentences[Math.floor(Math.sin(seed + name.length) * 1000) % sentences.length];
+      return {
+        name,
+        text: highlight,
+        icon: getIconForMember(name, data)
+      };
+    });
+
+    // Extract legendary achievements (5 items)
+    const achievements = shuffled.slice(6, 11).map(([name, data]) => {
+      return {
+        name,
+        title: data.title,
+        specialty: data.specialty,
+        reputation: data.reputation,
+        icon: getIconForMember(name, data)
+      };
+    });
+
+    return { currentActivities: activities, legendaryAchievements: achievements };
+  }, [seed]);
+
   return (
     <div className="space-y-8 pb-32">
       {/* Hero Section - Guild Welcome */}
@@ -134,37 +216,26 @@ export default function GuildHomePage() {
         </div>
       </section>
 
-      {/* Current Guild Status */}
+      {/* Current Guild Activities - Dynamic */}
       <section>
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 sm:p-6 card-3d hover:scale-[1.01] transition-transform duration-200">
           <h3 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">📜 Current Guild Activities</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm font-game">
-              <div className="flex items-start gap-2">
-                <span className="text-success">✓</span>
-                <span className="text-gray-300">Cold Snack War: <span className="text-success">Peaceful</span> (Treaty active)</span>
+            {currentActivities.map((activity, index) => (
+              <div key={activity.name + index} className="flex items-start gap-2">
+                <span className={`text-${['success', 'primary', 'accent', 'danger', 'success', 'primary'][index % 6]}`}>
+                  {activity.icon}
+                </span>
+                <span className="text-gray-300">
+                  <span className="text-accent-bright font-semibold">{activity.name}</span>: {activity.text}
+                </span>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="text-primary">⚡</span>
-                <span className="text-gray-300">Evand3r's Spoon Quest: <span className="text-accent">Day 1,706</span> (still missing)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-accent">🔮</span>
-                <span className="text-gray-300">Carrera: Currently in <span className="text-primary">next week</span></span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-danger">💎</span>
-                <span className="text-gray-300">HesuCrypto: <span className="text-accent">Broke AND Rich</span> (simultaneously)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-success">📊</span>
-                <span className="text-gray-300">Fever's Filing: Void status <span className="text-success">OPTIMIZED</span></span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-primary">🍪</span>
-                <span className="text-gray-300">JeffEpstein's Cookies: <span className="text-accent-bright">Still really good</span></span>
-              </div>
-            </div>
+            ))}
           </div>
+          <div className="mt-4 text-center text-xs text-gray-500 italic">
+            Rotating every 30 seconds • Live from guild member activities
+          </div>
+        </div>
       </section>
 
       {/* Guild Info */}
@@ -188,31 +259,25 @@ export default function GuildHomePage() {
             </div>
           </div>
 
-          {/* Guild Legends */}
+          {/* Guild Legends - Dynamic */}
           <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 md:p-8 card-3d hover:scale-[1.01] transition-transform duration-200">
             <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">Legendary Achievements</h2>
             <ul className="space-y-3 sm:space-y-4 text-gray-300 font-game text-xs sm:text-sm">
-              <li className="flex items-start gap-2 leading-relaxed">
-                <span className="text-primary-bright font-bold text-base sm:text-lg flex-shrink-0">⚡</span>
-                <span>The Cold Snack War (AmielJohn vs M1ssy) - Now peaceful via Jerky Non-Proliferation Treaty</span>
-              </li>
-              <li className="flex items-start gap-2 leading-relaxed">
-                <span className="text-accent-bright font-bold text-base sm:text-lg flex-shrink-0">🔮</span>
-                <span>Carrera's Time Crimes: 892 (700 tactical) - Strategic lateness is now a legitimate tactic</span>
-              </li>
-              <li className="flex items-start gap-2 leading-relaxed">
-                <span className="text-danger-bright font-bold text-base sm:text-lg flex-shrink-0">💎</span>
-                <span>HesuCrypto's Jalo Bot - Achieved financial sentience, manages guild treasury with 100% accuracy (HesuCrypto: banned from 12 exchanges)</span>
-              </li>
-              <li className="flex items-start gap-2 leading-relaxed">
-                <span className="text-success-bright font-bold text-base sm:text-lg flex-shrink-0">📊</span>
-                <span>Fever's Apocalypse Filing System - The void is organized, color-coded, and optimized</span>
-              </li>
-              <li className="flex items-start gap-2 leading-relaxed">
-                <span className="text-primary-bright font-bold text-base sm:text-lg flex-shrink-0">🍪</span>
-                <span>惡1ce's Evil Sweets - 12 charity franchises funded by weaponized wholesomeness</span>
-              </li>
+              {legendaryAchievements.map((achievement, index) => (
+                <li key={achievement.name + index} className="flex items-start gap-2 leading-relaxed">
+                  <span className={`text-${['primary', 'accent', 'danger', 'success', 'primary'][index % 5]}-bright font-bold text-base sm:text-lg flex-shrink-0`}>
+                    {achievement.icon}
+                  </span>
+                  <span>
+                    <span className="text-accent-bright font-semibold">{achievement.name}</span>
+                    <span className="text-gray-400 italic"> ({achievement.title})</span> - {achievement.specialty}
+                  </span>
+                </li>
+              ))}
             </ul>
+            <div className="mt-4 text-center text-xs text-gray-500 italic">
+              Rotating every 30 seconds • Celebrating guild legends
+            </div>
           </div>
         </div>
       </section>
