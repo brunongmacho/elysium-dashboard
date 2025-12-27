@@ -390,7 +390,7 @@ export default function GuildHomePage() {
       {/* Current Guild Activities - Dynamic */}
       <section>
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 sm:p-6 card-3d hover:scale-[1.01] transition-transform duration-200">
-          <h3 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">📜 Current Guild Activities</h3>
+          <h3 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">📜 Guild Member Chronicles</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm font-game">
             {currentActivities.map((activity, index) => (
               <div key={activity.name + index} className="flex items-start gap-2">
@@ -409,7 +409,7 @@ export default function GuildHomePage() {
             ))}
           </div>
           <div className="mt-4 text-center text-xs text-gray-500 italic">
-            Rotating every 30 seconds • Live from guild member activities
+            Rotating every 30 seconds • Member reputations and current status
           </div>
         </div>
       </section>
@@ -437,7 +437,7 @@ export default function GuildHomePage() {
 
           {/* Guild Legends - Dynamic */}
           <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 md:p-8 card-3d hover:scale-[1.01] transition-transform duration-200">
-            <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">Legendary Achievements</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl text-gold text-rpg-title mb-6">⚔️ Legendary Specialties</h2>
             <ul className="space-y-3 sm:space-y-4 text-gray-300 font-game text-xs sm:text-sm">
               {legendaryAchievements.map((achievement, index) => (
                 <li key={achievement.name + index} className="flex items-start gap-2 leading-relaxed">
@@ -456,7 +456,7 @@ export default function GuildHomePage() {
               ))}
             </ul>
             <div className="mt-4 text-center text-xs text-gray-500 italic">
-              Rotating every 30 seconds • Celebrating guild legends
+              Rotating every 30 seconds • Showcasing unique member abilities
             </div>
           </div>
         </div>
