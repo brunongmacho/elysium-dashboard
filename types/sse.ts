@@ -16,6 +16,8 @@ export type SSEEventType =
   | 'boss:updated'
   | 'rotation:changed'
   | 'leaderboard:updated'
+  | 'event:active'
+  | 'event:soon'
   | 'connected'
   | 'heartbeat'
 
@@ -69,6 +71,20 @@ export interface LeaderboardUpdatedData {
   lastUpdated: string
 }
 
+export interface EventActiveData {
+  eventName: string
+  startTime: string
+  endTime: string
+  durationMinutes: number
+}
+
+export interface EventSoonData {
+  eventName: string
+  startTime: string
+  timeRemaining: number
+  durationMinutes: number
+}
+
 export interface ConnectedData {
   timestamp: string
   clientId: string
@@ -98,6 +114,8 @@ export type BossSoonEvent = SSEEvent<BossSoonData>
 export type BossUpdatedEvent = SSEEvent<BossUpdatedData>
 export type RotationChangedEvent = SSEEvent<RotationChangedData>
 export type LeaderboardUpdatedEvent = SSEEvent<LeaderboardUpdatedData>
+export type EventActiveEvent = SSEEvent<EventActiveData>
+export type EventSoonEvent = SSEEvent<EventSoonData>
 export type ConnectedEvent = SSEEvent<ConnectedData>
 export type HeartbeatEvent = SSEEvent<HeartbeatData>
 
@@ -112,6 +130,8 @@ export type AnySSEEvent =
   | BossUpdatedEvent
   | RotationChangedEvent
   | LeaderboardUpdatedEvent
+  | EventActiveEvent
+  | EventSoonEvent
   | ConnectedEvent
   | HeartbeatEvent
 

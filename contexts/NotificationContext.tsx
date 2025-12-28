@@ -13,13 +13,14 @@ import {
   areNotificationsEnabled,
   setNotificationsEnabled,
   showBossSpawnNotification,
+  showEventNotification,
   getNotificationSettings,
   saveNotificationSettings,
   type NotificationPermissionStatus,
   type NotificationSettings,
 } from '@/lib/notifications'
-import { useSSE, useBossSpawned, useBossSoon } from './SSEContext'
-import type { BossSpawnedData, BossSoonData } from '@/types/sse'
+import { useSSE, useBossSpawned, useBossSoon, useSSEEvent } from './SSEContext'
+import type { BossSpawnedData, BossSoonData, EventActiveData, EventSoonData } from '@/types/sse'
 
 // ============================================================================
 // CONTEXT TYPES
@@ -87,9 +88,31 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     [isEnabled, settings.bossSoon, permission]
   )
 
+  // Handle event active notifications
+  const handleEventActive = useCallback(
+    (data: EventActiveData) => {
+      if (!isEnabled || !settings.events || permission !== 'granted') return
+
+      showEventNotification(data.eventName)
+    },
+    [isEnabled, settings.events, permission]
+  )
+
+  // Handle event soon notifications (< 15 min)
+  const handleEventSoon = useCallback(
+    (data: EventSoonData) => {
+      if (!isEnabled || !settings.events || permission !== 'granted') return
+
+      showEventNotification(data.eventName, data.timeRemaining)
+    },
+    [isEnabled, settings.events, permission]
+  )
+
   // Subscribe to SSE events
   useBossSpawned(handleBossSpawned, [handleBossSpawned])
   useBossSoon(handleBossSoon, [handleBossSoon])
+  useSSEEvent('event:active', handleEventActive, [handleEventActive])
+  useSSEEvent('event:soon', handleEventSoon, [handleEventSoon])
 
   // Request permission
   const handleRequestPermission = useCallback(async () => {

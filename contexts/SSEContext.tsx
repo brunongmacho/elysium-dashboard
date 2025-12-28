@@ -122,6 +122,8 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
     eventSource.addEventListener('boss:spawned', handleBossEvent)
     eventSource.addEventListener('boss:soon', handleBossEvent)
     eventSource.addEventListener('boss:updated', handleBossEvent)
+    eventSource.addEventListener('event:active', handleBossEvent)
+    eventSource.addEventListener('event:soon', handleBossEvent)
     eventSource.addEventListener('leaderboard:updated', handleBossEvent)
   }, [enabled, state.connectionAttempts])
 
