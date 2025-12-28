@@ -37,6 +37,15 @@ export default function NotificationButton() {
     return null
   }
 
+  // Calculate how many notification types are enabled
+  const enabledCount = isEnabled
+    ? [settings.bossSpawns, settings.bossSoon, settings.events].filter(Boolean).length
+    : 0
+
+  // Check if all settings are enabled or disabled
+  const allEnabled = settings.bossSpawns && settings.bossSoon && settings.events
+  const allDisabled = !settings.bossSpawns && !settings.bossSoon && !settings.events
+
   const handleButtonClick = async () => {
     if (permission === 'denied') {
       alert(
@@ -48,25 +57,55 @@ export default function NotificationButton() {
       return
     }
 
-    if (!isEnabled) {
-      // If disabled, enable notifications
-      toggleNotifications(true)
+    // Request permission if not granted
+    if (permission === 'default') {
+      await toggleNotifications(true)
+    }
+
+    // Always show dropdown when clicking
+    setShowSettings(!showSettings)
+  }
+
+  const handleToggleAll = () => {
+    if (allEnabled) {
+      // Disable all
+      updateSettings({
+        bossSpawns: false,
+        bossSoon: false,
+        events: false,
+      })
+      toggleNotifications(false)
     } else {
-      // If enabled, show settings dropdown
-      setShowSettings(!showSettings)
+      // Enable all
+      updateSettings({
+        bossSpawns: true,
+        bossSoon: true,
+        events: true,
+      })
+      toggleNotifications(true)
     }
   }
 
   const getTooltipText = () => {
     if (permission === 'denied') return 'Notifications blocked - check browser settings'
-    if (!isEnabled) return 'Enable notifications for bosses & events'
-    return 'Notifications enabled - click to configure'
+    if (!isEnabled || enabledCount === 0) return 'Enable notifications for bosses & events'
+    if (enabledCount === 1) return '1 notification type enabled - click to configure'
+    if (enabledCount === 2) return '2 notification types enabled - click to configure'
+    return 'All notifications enabled - click to configure'
   }
 
   const getIconName = (): 'bell' | 'bell-off' | 'bell-on' => {
     if (permission === 'denied') return 'bell-off'
-    if (!isEnabled) return 'bell'
+    if (!isEnabled || enabledCount === 0) return 'bell'
     return 'bell-on'
+  }
+
+  // Get glow intensity based on enabled count
+  const getGlowIntensity = () => {
+    if (!isEnabled || enabledCount === 0) return 'opacity-50'
+    if (enabledCount === 1) return 'opacity-70'
+    if (enabledCount === 2) return 'opacity-90'
+    return 'opacity-100'
   }
 
   return (
@@ -75,26 +114,32 @@ export default function NotificationButton() {
         <button
           onClick={handleButtonClick}
           className={`
-            p-2 rounded-md transition-all duration-200
+            p-2 rounded-md transition-all duration-200 relative
             ${
-              isEnabled
+              enabledCount > 0
                 ? 'text-primary hover:text-primary-light bg-primary/10 hover:bg-primary/20'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700'
             }
             ${permission === 'denied' ? 'opacity-50 cursor-not-allowed' : ''}
           `}
-          aria-label={isEnabled ? 'Configure notifications' : 'Enable notifications'}
+          style={{
+            boxShadow:
+              enabledCount > 0 && !showSettings
+                ? `0 0 ${4 * enabledCount}px ${theme.colors.primary}${Math.round(25 * enabledCount).toString(16)}`
+                : 'none',
+          }}
+          aria-label={enabledCount > 0 ? 'Configure notifications' : 'Enable notifications'}
         >
           <Icon
             name={getIconName()}
             size="md"
-            className={isEnabled && !showSettings ? 'animate-pulse' : ''}
+            className={`${getGlowIntensity()} ${enabledCount > 0 && !showSettings ? 'animate-pulse' : ''}`}
           />
         </button>
       </Tooltip>
 
       {/* Settings Dropdown */}
-      {showSettings && isEnabled && (
+      {showSettings && permission !== 'denied' && (
         <div
           className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-80 glass backdrop-blur-sm border rounded-lg shadow-lg p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[80vh] overflow-y-auto"
           style={{
@@ -108,10 +153,14 @@ export default function NotificationButton() {
               Notification Settings
             </div>
             <button
-              onClick={() => toggleNotifications(false)}
-              className="text-xs text-danger hover:text-danger-light transition-colors whitespace-nowrap"
+              onClick={handleToggleAll}
+              className={`text-xs transition-colors whitespace-nowrap ${
+                allEnabled
+                  ? 'text-danger hover:text-danger-light'
+                  : 'text-success hover:text-success-light'
+              }`}
             >
-              Disable All
+              {allEnabled ? 'Disable All' : 'Enable All'}
             </button>
           </div>
 
