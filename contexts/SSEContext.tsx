@@ -14,7 +14,6 @@ import type {
   BossSpawnedData,
   BossSoonData,
   BossUpdatedData,
-  RotationChangedData,
 } from '@/types/sse'
 
 // ============================================================================
@@ -123,7 +122,6 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
     eventSource.addEventListener('boss:spawned', handleBossEvent)
     eventSource.addEventListener('boss:soon', handleBossEvent)
     eventSource.addEventListener('boss:updated', handleBossEvent)
-    eventSource.addEventListener('rotation:changed', handleBossEvent)
     eventSource.addEventListener('leaderboard:updated', handleBossEvent)
   }, [enabled, state.connectionAttempts])
 
@@ -292,8 +290,4 @@ export function useBossSoon(handler: (data: BossSoonData) => void, deps: React.D
 
 export function useBossUpdated(handler: (data: BossUpdatedData) => void, deps: React.DependencyList = []) {
   useSSEEvent('boss:updated', handler, deps)
-}
-
-export function useRotationChanged(handler: (data: RotationChangedData) => void, deps: React.DependencyList = []) {
-  useSSEEvent('rotation:changed', handler, deps)
 }
