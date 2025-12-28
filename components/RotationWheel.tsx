@@ -17,15 +17,18 @@ export interface RotationWheelProps {
   nextGuild: string
 }
 
-export function RotationWheel({ currentGuild, guilds, currentIndex, isOurTurn, nextGuild }: RotationWheelProps) {
+export function RotationWheel({ currentGuild, guilds = [], currentIndex, isOurTurn, nextGuild }: RotationWheelProps) {
+  // Ensure guilds is an array
+  const safeGuilds = Array.isArray(guilds) ? guilds : []
+
   // Calculate positions for guilds in a circle
   const guildPositions = useMemo(() => {
-    const totalGuilds = guilds.length
+    const totalGuilds = safeGuilds.length
     const radius = 120 // pixels
     const centerX = 150
     const centerY = 150
 
-    return guilds.map((guild, index) => {
+    return safeGuilds.map((guild, index) => {
       // Start from top and go clockwise
       const angle = (index * 360) / totalGuilds - 90 // -90 to start from top
       const radian = (angle * Math.PI) / 180
@@ -41,7 +44,7 @@ export function RotationWheel({ currentGuild, guilds, currentIndex, isOurTurn, n
         isOurGuild: guild === 'ELYSIUM',
       }
     })
-  }, [guilds, currentIndex])
+  }, [safeGuilds, currentIndex])
 
   return (
     <div className="flex flex-col items-center gap-6">

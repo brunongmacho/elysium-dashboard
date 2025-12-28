@@ -35,7 +35,8 @@ export function BossRotationView() {
   })
 
   // Filter bosses that have rotation data
-  const rotatingBosses = bosses?.filter((boss) => boss.rotation?.isRotating) || []
+  const safeBosses = Array.isArray(bosses) ? bosses : []
+  const rotatingBosses = safeBosses.filter((boss) => boss.rotation?.isRotating)
 
   // Count bosses by turn status
   const ourTurnCount = rotatingBosses.filter((b) => b.rotation?.isOurTurn).length

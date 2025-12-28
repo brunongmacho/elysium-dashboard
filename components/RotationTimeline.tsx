@@ -16,7 +16,10 @@ export interface RotationTimelineProps {
   nextGuild: string
 }
 
-export function RotationTimeline({ guilds, currentIndex, isOurTurn }: RotationTimelineProps) {
+export function RotationTimeline({ guilds = [], currentIndex, isOurTurn }: RotationTimelineProps) {
+  // Ensure guilds is an array
+  const safeGuilds = Array.isArray(guilds) ? guilds : []
+
   return (
     <div className="space-y-6">
       {/* Timeline */}
@@ -26,13 +29,13 @@ export function RotationTimeline({ guilds, currentIndex, isOurTurn }: RotationTi
         <div
           className="absolute top-8 left-0 h-1 bg-gradient-to-r from-success to-primary transition-all duration-1000"
           style={{
-            width: `${((currentIndex + 1) / guilds.length) * 100}%`,
+            width: `${safeGuilds.length > 0 ? ((currentIndex + 1) / safeGuilds.length) * 100 : 0}%`,
           }}
         ></div>
 
         {/* Guild Nodes */}
         <div className="relative flex justify-between items-start">
-          {guilds.map((guild, index) => {
+          {safeGuilds.map((guild, index) => {
             const isCurrent = index === currentIndex
             const isPast = index < currentIndex
             const isOurGuild = guild === 'ELYSIUM'
@@ -147,14 +150,14 @@ export function RotationTimeline({ guilds, currentIndex, isOurTurn }: RotationTi
         <div className="flex items-center justify-between mb-2">
           <span className="text-gray-400 text-sm">Rotation Progress</span>
           <span className="text-white font-semibold">
-            {currentIndex + 1} / {guilds.length}
+            {currentIndex + 1} / {safeGuilds.length}
           </span>
         </div>
         <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
           <motion.div
             className="h-full bg-gradient-to-r from-success to-primary"
             initial={{ width: 0 }}
-            animate={{ width: `${((currentIndex + 1) / guilds.length) * 100}%` }}
+            animate={{ width: `${((currentIndex + 1) / safeGuilds.length) * 100}%` }}
             transition={{ duration: 1, ease: 'easeOut' }}
           />
         </div>
@@ -162,7 +165,7 @@ export function RotationTimeline({ guilds, currentIndex, isOurTurn }: RotationTi
 
       {/* Guild List */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {guilds.map((guild, index) => {
+        {safeGuilds.map((guild, index) => {
           const isCurrent = index === currentIndex
           const isOurGuild = guild === 'ELYSIUM'
 
