@@ -98,8 +98,8 @@ export default function NotificationButton() {
         <div
           className="absolute right-0 mt-2 w-72 glass backdrop-blur-sm border rounded-lg shadow-lg p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
           style={{
-            borderColor: `${theme.primary}33`,
-            backgroundColor: `${theme.surface}f0`,
+            borderColor: `${theme.colors.primary}33`,
+            backgroundColor: '#1f2937f0',
           }}
         >
           {/* Header */}
@@ -178,8 +178,8 @@ function ToggleSwitch({ label, description, checked, onChange, theme }: ToggleSw
         <div
           className="w-11 h-6 rounded-full transition-all duration-200 peer-focus:ring-2 peer-focus:ring-offset-2 peer-focus:ring-offset-gray-800"
           style={{
-            backgroundColor: checked ? theme.primary : '#4B5563',
-            boxShadow: checked ? `0 0 10px ${theme.primary}66` : 'none',
+            backgroundColor: checked ? theme.colors.primary : '#4B5563',
+            boxShadow: checked ? `0 0 10px ${theme.colors.primary}66` : 'none',
           }}
         />
         <div
