@@ -906,6 +906,28 @@ textarea:focus-visible {
     animation: border-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  /* Event active border pulse animation */
+  @keyframes event-active-pulse {
+    0%, 100% {
+      border-color: var(--color-success);
+      box-shadow:
+        0 0 20px color-mix(in srgb, var(--color-success) 40%, transparent),
+        0 0 40px color-mix(in srgb, var(--color-success) 20%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--color-success) 10%, transparent);
+    }
+    50% {
+      border-color: color-mix(in srgb, var(--color-success) 80%, transparent);
+      box-shadow:
+        0 0 30px color-mix(in srgb, var(--color-success) 60%, transparent),
+        0 0 60px color-mix(in srgb, var(--color-success) 30%, transparent),
+        inset 0 0 30px color-mix(in srgb, var(--color-success) 15%, transparent);
+    }
+  }
+
+  .event-active-border {
+    animation: event-active-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
   /* Boss soon border glow animation */
   @keyframes border-glow-soon {
     0%, 100% {

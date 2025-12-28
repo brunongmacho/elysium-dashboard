@@ -14,6 +14,7 @@ import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
 import SegmentedControl from "@/components/SegmentedControl";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack } from "@/components/layout";
 import { LEADERBOARD, UI } from "@/lib/constants";
@@ -392,10 +393,10 @@ export default function LeaderboardPage() {
                     {leaderboardType === "attendance" ? (
                       <>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
-                          {(entry as AttendanceLeaderboardEntry).totalKills}
+                          <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).totalKills} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
-                          +{(entry as AttendanceLeaderboardEntry).pointsEarned}
+                          +<AnimatedCounter value={(entry as AttendanceLeaderboardEntry).pointsEarned} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3">
                           <div className="flex items-center gap-1 sm:gap-2">
@@ -408,7 +409,7 @@ export default function LeaderboardPage() {
                               />
                             </div>
                             <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
-                              {(entry as AttendanceLeaderboardEntry).attendanceRate}%
+                              <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).attendanceRate} duration={800} decimals={0} />%
                             </span>
                           </div>
                         </td>
@@ -416,13 +417,13 @@ export default function LeaderboardPage() {
                     ) : (
                       <>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-primary-bright font-semibold text-sm sm:text-base font-game-decorative">
-                          +{(entry as PointsLeaderboardEntry).pointsEarned}
+                          +<AnimatedCounter value={(entry as PointsLeaderboardEntry).pointsEarned} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright text-sm sm:text-base hidden sm:table-cell font-game-decorative">
-                          {(entry as PointsLeaderboardEntry).pointsAvailable}
+                          <AnimatedCounter value={(entry as PointsLeaderboardEntry).pointsAvailable} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-danger-bright text-sm sm:text-base hidden md:table-cell font-game-decorative">
-                          -{(entry as PointsLeaderboardEntry).pointsSpent}
+                          -<AnimatedCounter value={(entry as PointsLeaderboardEntry).pointsSpent} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 hidden md:table-cell">
                           <div className="flex items-center gap-2">
@@ -435,7 +436,7 @@ export default function LeaderboardPage() {
                               />
                             </div>
                             <span className="text-accent-bright font-semibold text-sm min-w-[45px] text-right font-game-decorative">
-                              {(entry as PointsLeaderboardEntry).consumptionRate}%
+                              <AnimatedCounter value={(entry as PointsLeaderboardEntry).consumptionRate} duration={800} decimals={0} />%
                             </span>
                           </div>
                         </td>

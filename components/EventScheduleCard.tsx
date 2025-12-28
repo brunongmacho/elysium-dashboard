@@ -85,7 +85,7 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${isActive ? 'event-active-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
       style={{
         boxShadow: glowStyle,
       }}

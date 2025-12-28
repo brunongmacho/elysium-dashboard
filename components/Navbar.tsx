@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 import ThemeSelector from "./ThemeSelector";
+import NotificationButton from "./NotificationButton";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import type { BossTimersResponse } from "@/types/api";
@@ -84,7 +85,10 @@ export default function Navbar() {
           </div>
 
           {/* Right Side - Theme & Auth */}
-          <div className="hidden md:flex items-center gap-4 absolute right-0">
+          <div className="hidden md:flex items-center gap-3 absolute right-0">
+            {/* Notification Button */}
+            <NotificationButton />
+
             {/* Theme Selector */}
             <ThemeSelector />
 
@@ -214,8 +218,9 @@ export default function Navbar() {
                 Leaderboards
               </MobileNavLink>
 
-            {/* Theme Selector */}
-            <div className="px-3 py-2">
+            {/* Notification & Theme */}
+            <div className="px-3 py-2 flex items-center gap-3">
+              <NotificationButton />
               <ThemeSelector />
             </div>
 
