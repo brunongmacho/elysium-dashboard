@@ -409,7 +409,7 @@ export default function LeaderboardPage() {
                               />
                             </div>
                             <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
-                              <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).attendanceRate} duration={800} decimals={0} />%
+                              <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).attendanceRate} duration={800} />%
                             </span>
                           </div>
                         </td>
@@ -436,7 +436,7 @@ export default function LeaderboardPage() {
                               />
                             </div>
                             <span className="text-accent-bright font-semibold text-sm min-w-[45px] text-right font-game-decorative">
-                              <AnimatedCounter value={(entry as PointsLeaderboardEntry).consumptionRate} duration={800} decimals={0} />%
+                              <AnimatedCounter value={(entry as PointsLeaderboardEntry).consumptionRate} duration={800} />%
                             </span>
                           </div>
                         </td>
