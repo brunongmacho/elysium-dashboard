@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import useSWR from "swr";
 import memberLore from "@/member-lore.json";
 import guildStats from "@/guild-stats.json";
 import { Section, Stack, Grid } from "@/components/layout";
 import { Typography } from "@/components/ui";
 import { Icon } from "@/components/icons";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import Tooltip from "@/components/Tooltip";
+import type { BossTimersResponse } from "@/types/api";
+import { swrFetcher } from "@/lib/fetch-utils";
 
 interface MemberLoreData {
   title: string;
@@ -197,6 +202,71 @@ function getIconForMember(name: string, data: MemberLoreData): string {
   const firstChar = name.charAt(0).toUpperCase();
   const icons = ['⚡', '🔥', '✨', '💫', '🌟', '⭐', '🎯', '⚔️', '🛡️', '🎨', '🔮', '💎'];
   return icons[firstChar.charCodeAt(0) % icons.length];
+}
+
+// Quick Stats Component with Real-time Data
+function QuickStats() {
+  // Fetch boss timers
+  const { data: bossData } = useSWR<BossTimersResponse>(
+    '/api/bosses',
+    swrFetcher,
+    { refreshInterval: 30000 }
+  );
+
+  const stats = useMemo(() => {
+    if (!bossData?.bosses) {
+      return {
+        total: 0,
+        spawned: 0,
+        soon: 0,
+        tracking: 0,
+      };
+    }
+
+    return {
+      total: bossData.count || 0,
+      spawned: bossData.bosses.filter((b) => b.status === 'spawned').length,
+      soon: bossData.bosses.filter((b) => b.status === 'soon').length,
+      tracking: bossData.bosses.filter((b) => b.status === 'ready').length,
+    };
+  }, [bossData]);
+
+  return (
+    <Grid columns={{ xs: 2, md: 4 }} gap="md">
+      <Tooltip content="Total number of bosses being tracked" fullWidth>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help glow-primary">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-game-decorative">
+            <AnimatedCounter value={stats.total} />
+          </div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Total Bosses</div>
+        </div>
+      </Tooltip>
+      <Tooltip content="Bosses currently alive and ready to fight!" fullWidth>
+        <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center glow-danger hover:scale-105 transition-transform duration-200 cursor-help">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-danger font-game-decorative">
+            <AnimatedCounter value={stats.spawned} />
+          </div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Spawned Now</div>
+        </div>
+      </Tooltip>
+      <Tooltip content="Bosses spawning within 30 minutes" fullWidth>
+        <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200 cursor-help">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent font-game-decorative">
+            <AnimatedCounter value={stats.soon} />
+          </div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Spawning Soon</div>
+        </div>
+      </Tooltip>
+      <Tooltip content="Bosses with active countdown timers" fullWidth>
+        <div className="glass backdrop-blur-sm rounded-lg border border-success p-3 sm:p-4 text-center glow-success hover:scale-105 transition-transform duration-200 cursor-help">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-success font-game-decorative">
+            <AnimatedCounter value={stats.tracking} />
+          </div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
+        </div>
+      </Tooltip>
+    </Grid>
+  );
 }
 
 export default function GuildHomePage() {
@@ -439,6 +509,14 @@ export default function GuildHomePage() {
             </div>
           </a>
         </Grid>
+      </Section>
+
+      {/* Quick Stats - Real-time Data */}
+      <Section>
+        <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold mb-6">
+          📊 Live Guild Stats
+        </Typography>
+        <QuickStats />
       </Section>
 
       {/* Guild Stats Overview - Dynamic */}

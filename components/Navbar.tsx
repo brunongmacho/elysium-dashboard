@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -8,10 +8,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 import ThemeSelector from "./ThemeSelector";
+import NotificationButton from "./NotificationButton";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
+import { ALL_EVENTS } from "@/data/eventSchedules";
+import { calculateNextOccurrence } from "@/lib/event-utils";
 
 // Dynamically import LoginModal to prevent SSR hydration issues
 const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
@@ -23,6 +26,16 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  // Update current time every second for event badge calculation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -33,6 +46,25 @@ export default function Navbar() {
 
   // Count spawned bosses
   const spawnedBossCount = bossData?.bosses?.filter(boss => boss.status === 'spawned').length || 0;
+
+  // Count active events
+  const activeEventCount = useMemo(() => {
+    const now = currentTime;
+    let activeCount = 0;
+
+    ALL_EVENTS.forEach((event) => {
+      const nextOcc = calculateNextOccurrence(event, now);
+      const timeUntil = nextOcc.getTime() - now;
+      const eventEndTime = nextOcc.getTime() + (event.durationMinutes * 60 * 1000);
+
+      // Check if currently active
+      if (timeUntil < 0 && now < eventEndTime) {
+        activeCount++;
+      }
+    });
+
+    return activeCount;
+  }, [currentTime]);
 
   // Close mobile menu on Escape key
   useEffect(() => {
@@ -75,7 +107,12 @@ export default function Navbar() {
             >
               Boss Timers
             </NavLink>
-            <NavLink href="/events" active={pathname === '/events'} icon={<Icon name="calendar" size="sm" />}>
+            <NavLink
+              href="/events"
+              active={pathname === '/events'}
+              icon={<Icon name="calendar" size="sm" />}
+              badge={activeEventCount > 0 ? activeEventCount : undefined}
+            >
               Events
             </NavLink>
             <NavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
@@ -84,7 +121,10 @@ export default function Navbar() {
           </div>
 
           {/* Right Side - Theme & Auth */}
-          <div className="hidden md:flex items-center gap-4 absolute right-0">
+          <div className="hidden md:flex items-center gap-3 absolute right-0">
+            {/* Notification Button */}
+            <NotificationButton />
+
             {/* Theme Selector */}
             <ThemeSelector />
 
@@ -207,15 +247,21 @@ export default function Navbar() {
               >
                 Boss Timers
               </MobileNavLink>
-              <MobileNavLink href="/events" active={pathname === '/events'} icon={<Icon name="calendar" size="sm" />}>
+              <MobileNavLink
+                href="/events"
+                active={pathname === '/events'}
+                icon={<Icon name="calendar" size="sm" />}
+                badge={activeEventCount > 0 ? activeEventCount : undefined}
+              >
                 Events
               </MobileNavLink>
               <MobileNavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
                 Leaderboards
               </MobileNavLink>
 
-            {/* Theme Selector */}
-            <div className="px-3 py-2">
+            {/* Notification & Theme */}
+            <div className="px-3 py-2 flex items-center gap-3">
+              <NotificationButton />
               <ThemeSelector />
             </div>
 
