@@ -15,7 +15,6 @@ import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
 import { calculateNextOccurrence } from "@/lib/event-utils";
-import { useTimer } from "@/contexts/TimerContext";
 
 // Dynamically import LoginModal to prevent SSR hydration issues
 const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
@@ -27,7 +26,16 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const { currentTime } = useTimer();
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  // Update current time every second for event badge calculation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
