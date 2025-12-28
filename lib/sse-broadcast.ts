@@ -31,10 +31,12 @@ export function formatSSEMessage(eventType: SSEEventType, data: unknown): string
  */
 export function broadcastSSE(eventType: SSEEventType, data: unknown) {
   const message = formatSSEMessage(eventType, data)
+  const encoder = new TextEncoder()
+  const encodedMessage = encoder.encode(message)
 
   sseClients.forEach((controller, clientId) => {
     try {
-      controller.enqueue(message)
+      controller.enqueue(encodedMessage)
     } catch (error) {
       console.error(`Failed to send to client ${clientId}:`, error)
       // Remove disconnected clients

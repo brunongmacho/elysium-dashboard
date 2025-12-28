@@ -6,26 +6,17 @@
 import { NextRequest } from 'next/server'
 import { sseClients, formatSSEMessage } from '@/lib/sse-broadcast'
 
+// Force dynamic rendering - prevents static generation
+export const dynamic = 'force-dynamic'
+
 /**
  * SSE GET endpoint - establishes connection
  */
 export async function GET(request: NextRequest) {
   const clientId = crypto.randomUUID()
-
-  // Create a TransformStream for SSE
-  const stream = new TransformStream()
-  const writer = stream.writable.getWriter()
   const encoder = new TextEncoder()
 
-  // Send initial connection event
-  const connectMessage = formatSSEMessage('connected', {
-    clientId,
-    timestamp: new Date().toISOString(),
-  })
-  writer.write(encoder.encode(connectMessage))
-
   // Store the client connection
-  // Note: We can't directly store the writer, so we'll use a custom controller
   let controller: ReadableStreamDefaultController
 
   const readable = new ReadableStream({
@@ -38,13 +29,13 @@ export async function GET(request: NextRequest) {
         clientId,
         timestamp: new Date().toISOString(),
       })
-      controller.enqueue(connectMessage)
+      controller.enqueue(encoder.encode(connectMessage))
 
       // Send initial heartbeat
       const heartbeat = formatSSEMessage('heartbeat', {
         timestamp: new Date().toISOString(),
       })
-      controller.enqueue(heartbeat)
+      controller.enqueue(encoder.encode(heartbeat))
     },
     cancel() {
       // Clean up when client disconnects
@@ -60,7 +51,7 @@ export async function GET(request: NextRequest) {
         const heartbeat = formatSSEMessage('heartbeat', {
           timestamp: new Date().toISOString(),
         })
-        controller.enqueue(heartbeat)
+        controller.enqueue(encoder.encode(heartbeat))
       } catch (error) {
         console.error('Heartbeat failed:', error)
         clearInterval(heartbeatInterval)
