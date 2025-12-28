@@ -96,18 +96,20 @@ export default function NotificationButton() {
       {/* Settings Dropdown */}
       {showSettings && isEnabled && (
         <div
-          className="absolute right-0 mt-2 w-72 glass backdrop-blur-sm border rounded-lg shadow-lg p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+          className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-80 glass backdrop-blur-sm border rounded-lg shadow-lg p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[80vh] overflow-y-auto"
           style={{
             borderColor: `${theme.colors.primary}33`,
             backgroundColor: '#1f2937f0',
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-white font-semibold font-game">Notification Settings</div>
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <div className="text-white font-semibold font-game text-sm sm:text-base">
+              Notification Settings
+            </div>
             <button
               onClick={() => toggleNotifications(false)}
-              className="text-xs text-danger hover:text-danger-light transition-colors"
+              className="text-xs text-danger hover:text-danger-light transition-colors whitespace-nowrap"
             >
               Disable All
             </button>
@@ -158,37 +160,45 @@ interface ToggleSwitchProps {
 }
 
 function ToggleSwitch({ label, description, checked, onChange, theme }: ToggleSwitchProps) {
+  const handleToggle = () => {
+    onChange(!checked)
+  }
+
   return (
-    <label className="flex items-center justify-between cursor-pointer group">
-      <div className="flex-1">
+    <div className="flex items-center justify-between group">
+      <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-white group-hover:text-primary transition-colors font-game">
           {label}
         </div>
-        <div className="text-xs text-gray-400">{description}</div>
+        <div className="text-xs text-gray-400 break-words">{description}</div>
       </div>
 
       {/* Toggle Switch */}
-      <div className="relative ml-3">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          className="sr-only peer"
-        />
-        <div
-          className="w-11 h-6 rounded-full transition-all duration-200 peer-focus:ring-2 peer-focus:ring-offset-2 peer-focus:ring-offset-gray-800"
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-label={`Toggle ${label}`}
+        onClick={handleToggle}
+        className="relative ml-3 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-full transition-all duration-200"
+        style={{
+          width: '44px',
+          height: '24px',
+          backgroundColor: checked ? theme.colors.primary : '#4B5563',
+          boxShadow: checked ? `0 0 10px ${theme.colors.primary}66` : 'none',
+          outlineColor: theme.colors.primary,
+        }}
+      >
+        <span
+          className="absolute left-0.5 top-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out"
           style={{
-            backgroundColor: checked ? theme.colors.primary : '#4B5563',
-            boxShadow: checked ? `0 0 10px ${theme.colors.primary}66` : 'none',
-          }}
-        />
-        <div
-          className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 peer-checked:translate-x-5"
-          style={{
+            width: '20px',
+            height: '20px',
+            transform: checked ? 'translateX(20px)' : 'translateX(0)',
             boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
           }}
         />
-      </div>
-    </label>
+      </button>
+    </div>
   )
 }
