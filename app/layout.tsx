@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Cinzel_Decorative } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import Navbar from "@/components/Navbar";
-import GuildHeader from "@/components/GuildHeader";
-import BackToTop from "@/components/BackToTop";
-import Footer from "@/components/Footer";
+import { LayoutContent } from "@/components/LayoutContent";
 
 // Fantasy RPG-style fonts for Lordnine Infinite Class theme
 const cinzel = Cinzel({
@@ -47,29 +44,7 @@ export default function RootLayout({
     <html lang="en" className={`${cinzel.variable} ${cinzelDecorative.variable}`}>
       <body className="antialiased font-game min-h-screen flex flex-col">
         <Providers>
-          <a href="#main-content" className="skip-link">
-            Skip to main content
-          </a>
-          <div className="flex-1 flex flex-col animated-gradient">
-            {/* Navigation */}
-            <Navbar />
-
-            {/* Guild Header Banner */}
-            <GuildHeader />
-
-            {/* Main Content */}
-            <main id="main-content" className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-8">
-              <div className="relative">
-                {children}
-              </div>
-            </main>
-
-            {/* Footer - sticky at bottom */}
-            <Footer />
-
-            {/* Back to Top Button */}
-            <BackToTop />
-          </div>
+          <LayoutContent>{children}</LayoutContent>
         </Providers>
       </body>
     </html>
