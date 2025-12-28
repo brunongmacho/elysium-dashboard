@@ -39,10 +39,10 @@ export default function NotificationButton() {
     return 'Notifications enabled - click to configure'
   }
 
-  const getIconName = () => {
-    if (permission === 'denied') return 'notification-off'
-    if (!isEnabled) return 'notification'
-    return 'notification-on'
+  const getIconName = (): 'bell' | 'bell-off' | 'bell-on' => {
+    if (permission === 'denied') return 'bell-off'
+    if (!isEnabled) return 'bell'
+    return 'bell-on'
   }
 
   return (
@@ -62,7 +62,7 @@ export default function NotificationButton() {
           aria-label={isEnabled ? 'Disable notifications' : 'Enable notifications'}
         >
           <Icon
-            name={getIconName() as any}
+            name={getIconName()}
             size="md"
             className={isEnabled ? 'animate-pulse' : ''}
           />
