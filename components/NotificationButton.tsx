@@ -18,11 +18,6 @@ export default function NotificationButton() {
   const [showSettings, setShowSettings] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Don't render if not supported
-  if (!isSupported) {
-    return null
-  }
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -36,6 +31,11 @@ export default function NotificationButton() {
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [showSettings])
+
+  // Don't render if not supported (check after all hooks)
+  if (!isSupported) {
+    return null
+  }
 
   const handleButtonClick = async () => {
     if (permission === 'denied') {
