@@ -66,7 +66,10 @@ export default function NotificationButton() {
     setShowSettings(!showSettings)
   }
 
-  const handleToggleAll = () => {
+  const handleToggleAll = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     if (allEnabled) {
       // Disable all
       updateSettings({
