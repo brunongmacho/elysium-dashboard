@@ -7,7 +7,7 @@
 
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import type { BossTimerDisplay } from '@/types/database'
+import type { BossTimersResponse } from '@/types/api'
 import { RotationWheel } from './RotationWheel'
 import { RotationTimeline } from './RotationTimeline'
 import { Badge } from './ui'
@@ -20,7 +20,7 @@ export function BossRotationView() {
   const [viewMode, setViewMode] = useState<'wheel' | 'timeline'>('wheel')
 
   // Fetch boss data with SWR
-  const { data: bosses, error, mutate } = useSWR<BossTimerDisplay[]>('/api/bosses', fetcher, {
+  const { data, error, mutate } = useSWR<BossTimersResponse>('/api/bosses', fetcher, {
     refreshInterval: 30000, // Refresh every 30 seconds as fallback
     revalidateOnFocus: true,
   })
@@ -35,6 +35,7 @@ export function BossRotationView() {
   })
 
   // Filter bosses that have rotation data
+  const bosses = data?.bosses || []
   const safeBosses = Array.isArray(bosses) ? bosses : []
   const rotatingBosses = safeBosses.filter((boss) => boss.rotation?.isRotating)
 
@@ -51,7 +52,7 @@ export function BossRotationView() {
     )
   }
 
-  if (!bosses) {
+  if (!data) {
     return (
       <div className="glass rounded-lg p-8">
         <div className="animate-pulse space-y-4">
