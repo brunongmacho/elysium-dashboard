@@ -125,18 +125,18 @@ export default function NotificationButton() {
             }
             ${permission === 'denied' ? 'opacity-50 cursor-not-allowed' : ''}
           `}
-          style={{
-            boxShadow:
-              enabledCount > 0 && !showSettings
-                ? `0 0 ${4 * enabledCount}px ${theme.colors.primary}${Math.round(25 * enabledCount).toString(16)}`
-                : 'none',
-          }}
           aria-label={enabledCount > 0 ? 'Configure notifications' : 'Enable notifications'}
         >
           <Icon
             name={getIconName()}
             size="md"
             className={`${getGlowIntensity()} ${enabledCount > 0 && !showSettings ? 'animate-pulse' : ''}`}
+            style={{
+              filter:
+                enabledCount > 0 && !showSettings
+                  ? `drop-shadow(0 0 ${2 * enabledCount}px ${theme.colors.primary}) drop-shadow(0 0 ${4 * enabledCount}px ${theme.colors.primary})`
+                  : 'none',
+            }}
           />
         </button>
       </Tooltip>
