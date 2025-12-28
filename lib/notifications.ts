@@ -71,7 +71,6 @@ export function showBossSpawnNotification(bossName: string, timeRemaining?: numb
     badge: '/icon-96x96.png',
     tag: `boss-${bossName}`,
     requireInteraction: false,
-    timestamp: Date.now(),
   }
 
   const notification = showNotification(`🔥 ${bossName}`, options)
@@ -100,7 +99,6 @@ export function showEventNotification(eventName: string, timeRemaining?: number)
     badge: '/icon-96x96.png',
     tag: `event-${eventName}`,
     requireInteraction: false,
-    timestamp: Date.now(),
   }
 
   const notification = showNotification(`📅 ${eventName}`, options)
