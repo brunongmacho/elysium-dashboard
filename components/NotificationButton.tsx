@@ -224,9 +224,9 @@ export default function NotificationButton() {
                     color:
                       permission === 'granted'
                         ? theme.colors.primary
-                        : permission === 'denied'
-                          ? theme.colors.danger
-                          : theme.colors.warning,
+                        : permission === 'default'
+                          ? theme.colors.warning
+                          : theme.colors.danger,
                   }}
                 >
                   {permission}
