@@ -9,6 +9,7 @@ import { useNotifications } from '@/contexts/NotificationContext'
 import { useTheme } from '@/contexts/ThemeContext'
 import { Icon } from './icons'
 import Tooltip from './Tooltip'
+import { showBossSpawnNotification } from '@/lib/notifications'
 
 export default function NotificationButton() {
   const { isSupported, permission, isEnabled, settings, toggleNotifications, updateSettings } =
@@ -111,6 +112,41 @@ export default function NotificationButton() {
     return 'opacity-100'
   }
 
+  // Test notification function
+  const handleTestNotification = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (permission !== 'granted') {
+      alert('Please enable notifications first!')
+      return
+    }
+
+    // Play test sound
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const oscillator = audioContext.createOscillator()
+      const gainNode = audioContext.createGain()
+
+      oscillator.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+
+      oscillator.frequency.value = 800
+      oscillator.type = 'sine'
+
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5)
+
+      oscillator.start(audioContext.currentTime)
+      oscillator.stop(audioContext.currentTime + 0.5)
+    } catch (error) {
+      console.warn('Could not play test sound:', error)
+    }
+
+    // Show test notification
+    showBossSpawnNotification('Test Boss', 0)
+  }
+
   return (
     <div className="relative" ref={dropdownRef}>
       <Tooltip content={getTooltipText()} position="bottom">
@@ -195,6 +231,24 @@ export default function NotificationButton() {
               onChange={(checked) => updateSettings({ events: checked })}
               theme={theme}
             />
+          </div>
+
+          {/* Test Notification Button */}
+          <div className="mt-4 pt-4 border-t" style={{ borderColor: `${theme.colors.primary}22` }}>
+            <button
+              onClick={handleTestNotification}
+              className="w-full py-2 px-4 rounded-md font-game text-sm transition-all duration-200 hover:scale-105"
+              style={{
+                backgroundColor: `${theme.colors.primary}20`,
+                color: theme.colors.primary,
+                border: `1px solid ${theme.colors.primary}40`,
+              }}
+            >
+              🔔 Test Notification
+            </button>
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Click to test notification + sound
+            </p>
           </div>
         </div>
       )}
