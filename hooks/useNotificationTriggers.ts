@@ -13,7 +13,7 @@ import { useNotifications } from '@/contexts/NotificationContext'
 import { showBossSpawnNotification, showEventNotification } from '@/lib/notifications'
 import { ALL_EVENTS } from '@/data/eventSchedules'
 import { calculateNextOccurrence } from '@/lib/event-utils'
-import type { BossTimersResponse, BossTimerDisplay } from '@/types/api'
+import type { BossTimersResponse } from '@/types/api'
 
 interface BossNotificationState {
   nextSpawnTime: number
