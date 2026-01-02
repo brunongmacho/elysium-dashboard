@@ -40,25 +40,12 @@ export function useNotificationTriggers() {
 
   // Check for boss state changes
   useEffect(() => {
-    if (!isEnabled || permission !== 'granted' || !bossData?.bosses) {
-      console.log('[Notifications] Skipped check:', { isEnabled, permission, hasBossData: !!bossData?.bosses })
-      return
-    }
-
-    console.log('[Notifications] Checking boss states...', {
-      bossCount: bossData.bosses.length,
-      settings,
-    })
+    if (!isEnabled || permission !== 'granted' || !bossData?.bosses) return
 
     bossData.bosses.forEach((boss) => {
       const previousState = previousBossStates.current[boss.bossName]
       const currentState = boss.status
       const cooldownKey = `boss-${boss.bossName}-${currentState}`
-
-      // Log state changes
-      if (previousState !== currentState) {
-        console.log(`[Notifications] ${boss.bossName}: ${previousState || 'undefined'} → ${currentState}`)
-      }
 
       // Detect boss spawned
       if (
@@ -68,8 +55,6 @@ export function useNotificationTriggers() {
         previousState !== undefined &&
         !notificationCooldowns.current.has(cooldownKey)
       ) {
-        console.log(`[Notifications] 🔔 BOSS SPAWNED: ${boss.bossName}`)
-
         // Play notification sound
         playNotificationSound()
 
@@ -91,8 +76,6 @@ export function useNotificationTriggers() {
         previousState !== undefined &&
         !notificationCooldowns.current.has(cooldownKey)
       ) {
-        console.log(`[Notifications] ⏰ BOSS SOON: ${boss.bossName}`)
-
         // Calculate time remaining from next spawn time
         const timeRemaining = boss.nextSpawnTime ? new Date(boss.nextSpawnTime).getTime() - Date.now() : 0
 
@@ -116,14 +99,10 @@ export function useNotificationTriggers() {
 
   // Check for event state changes (every 10 seconds)
   useEffect(() => {
-    if (!isEnabled || permission !== 'granted' || !settings.events) {
-      console.log('[Notifications] Skipped event check:', { isEnabled, permission, eventsEnabled: settings.events })
-      return
-    }
+    if (!isEnabled || permission !== 'granted' || !settings.events) return
 
     const checkEvents = () => {
       const now = Date.now()
-      console.log('[Notifications] Checking event states...')
 
       ALL_EVENTS.forEach((event) => {
         const nextOcc = calculateNextOccurrence(event, now)
@@ -134,19 +113,12 @@ export function useNotificationTriggers() {
         const currentState = isActive ? 'active' : 'inactive'
         const cooldownKey = `event-${event.name}-active`
 
-        // Log state changes
-        if (previousState && previousState !== currentState) {
-          console.log(`[Notifications] ${event.name}: ${previousState} → ${currentState}`)
-        }
-
         // Detect event became active
         if (
           isActive &&
           previousState === 'inactive' &&
           !notificationCooldowns.current.has(cooldownKey)
         ) {
-          console.log(`[Notifications] 📅 EVENT STARTED: ${event.name}`)
-
           // Play notification sound
           playNotificationSound()
 
