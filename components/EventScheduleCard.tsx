@@ -8,7 +8,7 @@ import type { EventSchedule } from "@/types/eventSchedule";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useTimer } from "@/contexts/TimerContext";
-import { calculateEventGlow, generateGlowStyle } from "@/lib/event-glow";
+import { calculateEventGlow } from "@/lib/event-glow";
 import { calculateNextOccurrence, formatEventDays } from "@/lib/event-utils";
 
 interface EventScheduleCardProps {
@@ -68,27 +68,29 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
   // Format days for display
   const daysDisplay = formatEventDays(event.days, event.isDaily);
 
-  // Calculate dynamic glow based on time remaining
-  const { borderColor, glowStyle } = useMemo(() => {
+  // Calculate dynamic electric animation based on time remaining
+  const { borderColor, electricClass, electricColor } = useMemo(() => {
     if (isActive) {
       return {
         borderColor: 'border-green-500',
-        glowStyle: generateGlowStyle('#10b981', 80),
+        electricClass: 'electric-extreme',
+        electricColor: '#10b981',
       };
     }
     const glowData = calculateEventGlow(timeRemaining);
     return {
       borderColor: glowData.borderColor,
-      glowStyle: generateGlowStyle(glowData.color, glowData.intensity),
+      electricClass: glowData.electricClass,
+      electricColor: glowData.electricColor,
     };
   }, [timeRemaining, isActive]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${isActive ? 'event-active-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${electricClass} ${isActive ? 'event-active-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
       style={{
-        boxShadow: glowStyle,
-      }}
+        '--electric-color': electricColor,
+      } as React.CSSProperties}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">

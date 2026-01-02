@@ -11,7 +11,7 @@ import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
-import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
+import { calculateBossGlow } from "@/lib/boss-glow";
 import { useTimer } from "@/contexts/TimerContext";
 
 interface BossCardProps {
@@ -138,21 +138,22 @@ function BossCard({
     return { progressPercentage: percentage, timeRemaining: remaining };
   }, [boss.nextSpawnTime, currentTime]);
 
-  // Calculate dynamic, theme-aware glow based on time remaining
-  const { borderColor, glowStyle } = useMemo(() => {
+  // Calculate dynamic, theme-aware electric animation based on time remaining
+  const { borderColor, electricClass, electricColor } = useMemo(() => {
     const glowData = calculateBossGlow(timeRemaining);
     return {
       borderColor: glowData.borderColor,
-      glowStyle: generateGlowStyle(glowData.color, glowData.intensity),
+      electricClass: glowData.electricClass,
+      electricColor: glowData.electricColor,
     };
   }, [timeRemaining]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${boss.status === 'spawned' ? 'boss-spawned-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${electricClass} ${boss.status === 'spawned' ? 'boss-spawned-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
       style={{
-        boxShadow: glowStyle,
-      }}
+        '--electric-color': electricColor,
+      } as React.CSSProperties}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">

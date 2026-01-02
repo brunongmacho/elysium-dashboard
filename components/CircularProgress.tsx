@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { calculateBossGlow, generateDropShadow } from "@/lib/boss-glow";
+import { calculateBossGlow } from "@/lib/boss-glow";
 
 interface CircularProgressProps {
   percentage: number; // 0-100
@@ -32,13 +32,17 @@ export default function CircularProgress({
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (percentage / 100) * circumference;
 
-  // Calculate dynamic, theme-aware glow based on time remaining
-  const { glowColor, glowIntensity, strokeColor } = useMemo(() => {
+  // Calculate dynamic, theme-aware electric glow based on time remaining
+  const { glowColor, glowIntensity, strokeColor, electricFilter } = useMemo(() => {
     const glowData = calculateBossGlow(timeRemaining);
+    // Create layered drop-shadow for electric effect on progress ring
+    const baseIntensity = glowData.intensity * 0.3; // Scale down for SVG
+    const filter = `drop-shadow(0 0 ${baseIntensity}px ${glowData.electricColor}) drop-shadow(0 0 ${baseIntensity * 1.5}px ${glowData.electricColor}) drop-shadow(0 0 ${baseIntensity * 0.5}px ${glowData.electricColor})`;
     return {
       glowColor: glowData.color,
       glowIntensity: glowData.intensity,
       strokeColor: glowData.tailwindStroke,
+      electricFilter: filter,
     };
   }, [timeRemaining]);
 
@@ -74,7 +78,7 @@ export default function CircularProgress({
           strokeLinecap="round"
           className={`${strokeColor} transition-all duration-1000 ease-out`}
           style={{
-            filter: `drop-shadow(0 0 ${glowIntensity}px ${glowColor}) drop-shadow(0 0 ${glowIntensity * 0.5}px ${glowColor})`,
+            filter: electricFilter,
           }}
         />
       </svg>
