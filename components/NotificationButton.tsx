@@ -7,6 +7,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNotifications } from '@/contexts/NotificationContext'
 import { useTheme } from '@/contexts/ThemeContext'
+import { useNotificationTriggers } from '@/hooks/useNotificationTriggers'
 import { Icon } from './icons'
 import Tooltip from './Tooltip'
 
@@ -15,6 +16,7 @@ export default function NotificationButton() {
     useNotifications()
   const { themes, currentTheme } = useTheme()
   const theme = themes[currentTheme]
+  const monitoringStatus = useNotificationTriggers()
   const [showSettings, setShowSettings] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -195,6 +197,71 @@ export default function NotificationButton() {
               onChange={(checked) => updateSettings({ events: checked })}
               theme={theme}
             />
+          </div>
+
+          {/* Diagnostic Status */}
+          <div
+            className="mt-4 pt-4 border-t"
+            style={{ borderColor: `${theme.colors.primary}22` }}
+          >
+            <div className="text-xs font-game text-gray-400 space-y-1.5">
+              <div className="flex justify-between">
+                <span>Monitoring:</span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    color: monitoringStatus.isMonitoring ? theme.colors.primary : theme.colors.danger,
+                  }}
+                >
+                  {monitoringStatus.isMonitoring ? '✓ Active' : '✗ Inactive'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Permission:</span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    color:
+                      permission === 'granted'
+                        ? theme.colors.primary
+                        : permission === 'denied'
+                          ? theme.colors.danger
+                          : theme.colors.warning,
+                  }}
+                >
+                  {permission}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Tracking Bosses:</span>
+                <span className="font-semibold text-white">{monitoringStatus.bossCount}</span>
+              </div>
+              {monitoringStatus.bossCount > 0 && (
+                <div className="mt-2 pt-2 border-t" style={{ borderColor: `${theme.colors.primary}11` }}>
+                  <div className="text-xs text-gray-500 mb-1">Boss States:</div>
+                  <div className="space-y-0.5">
+                    {Object.entries(monitoringStatus.bossStates).map(([bossName, state]) => (
+                      <div key={bossName} className="flex justify-between text-xs">
+                        <span className="text-gray-400">{bossName}:</span>
+                        <span
+                          className="font-semibold"
+                          style={{
+                            color:
+                              state === 'spawned'
+                                ? theme.colors.danger
+                                : state === 'soon'
+                                  ? theme.colors.warning
+                                  : theme.colors.primary,
+                          }}
+                        >
+                          {state}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

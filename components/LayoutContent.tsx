@@ -11,16 +11,12 @@ import GuildHeader from '@/components/GuildHeader'
 import BackToTop from '@/components/BackToTop'
 import Footer from '@/components/Footer'
 import { BackgroundParticles } from '@/components/BackgroundParticles'
-import { useNotificationTriggers } from '@/hooks/useNotificationTriggers'
 
 interface LayoutContentProps {
   children: ReactNode
 }
 
 export function LayoutContent({ children }: LayoutContentProps) {
-  // Enable notification triggers for boss spawns and events
-  useNotificationTriggers()
-
   return (
     <>
       {/* Animated Background Particles */}

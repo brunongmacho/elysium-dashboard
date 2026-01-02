@@ -22,10 +22,17 @@ interface EventState {
   [eventName: string]: 'active' | 'inactive'
 }
 
+export interface NotificationMonitoringStatus {
+  isMonitoring: boolean
+  bossCount: number
+  bossStates: BossState
+  lastUpdate: number | null
+}
+
 /**
  * Hook that monitors boss and event states and triggers notifications
  */
-export function useNotificationTriggers() {
+export function useNotificationTriggers(): NotificationMonitoringStatus {
   const { isEnabled, settings, permission } = useNotifications()
   const previousBossStates = useRef<BossState>({})
   const previousEventStates = useRef<EventState>({})
@@ -45,51 +52,58 @@ export function useNotificationTriggers() {
     bossData.bosses.forEach((boss) => {
       const previousState = previousBossStates.current[boss.bossName]
       const currentState = boss.status
-      const cooldownKey = `boss-${boss.bossName}-${currentState}`
+
+      // Initialize previous state on first poll (don't trigger notifications)
+      if (previousState === undefined) {
+        previousBossStates.current[boss.bossName] = currentState
+        return
+      }
 
       // Detect boss spawned
       if (
         settings.bossSpawns &&
         currentState === 'spawned' &&
-        previousState !== 'spawned' &&
-        previousState !== undefined &&
-        !notificationCooldowns.current.has(cooldownKey)
+        previousState !== 'spawned'
       ) {
-        // Play notification sound
-        playNotificationSound()
+        const cooldownKey = `boss-${boss.bossName}-spawned`
+        if (!notificationCooldowns.current.has(cooldownKey)) {
+          // Play notification sound
+          playNotificationSound()
 
-        // Show notification
-        showBossSpawnNotification(boss.bossName)
+          // Show notification
+          showBossSpawnNotification(boss.bossName)
 
-        // Add cooldown (10 minutes)
-        notificationCooldowns.current.add(cooldownKey)
-        setTimeout(() => {
-          notificationCooldowns.current.delete(cooldownKey)
-        }, 10 * 60 * 1000)
+          // Add cooldown (10 minutes)
+          notificationCooldowns.current.add(cooldownKey)
+          setTimeout(() => {
+            notificationCooldowns.current.delete(cooldownKey)
+          }, 10 * 60 * 1000)
+        }
       }
 
       // Detect boss soon (< 30 min)
       if (
         settings.bossSoon &&
         currentState === 'soon' &&
-        previousState !== 'soon' &&
-        previousState !== undefined &&
-        !notificationCooldowns.current.has(cooldownKey)
+        previousState !== 'soon'
       ) {
-        // Calculate time remaining from next spawn time
-        const timeRemaining = boss.nextSpawnTime ? new Date(boss.nextSpawnTime).getTime() - Date.now() : 0
+        const cooldownKey = `boss-${boss.bossName}-soon`
+        if (!notificationCooldowns.current.has(cooldownKey)) {
+          // Calculate time remaining from next spawn time
+          const timeRemaining = boss.nextSpawnTime ? new Date(boss.nextSpawnTime).getTime() - Date.now() : 0
 
-        // Play notification sound
-        playNotificationSound()
+          // Play notification sound
+          playNotificationSound()
 
-        // Show notification
-        showBossSpawnNotification(boss.bossName, timeRemaining)
+          // Show notification
+          showBossSpawnNotification(boss.bossName, timeRemaining)
 
-        // Add cooldown (30 minutes)
-        notificationCooldowns.current.add(cooldownKey)
-        setTimeout(() => {
-          notificationCooldowns.current.delete(cooldownKey)
-        }, 30 * 60 * 1000)
+          // Add cooldown (30 minutes)
+          notificationCooldowns.current.add(cooldownKey)
+          setTimeout(() => {
+            notificationCooldowns.current.delete(cooldownKey)
+          }, 30 * 60 * 1000)
+        }
       }
 
       // Update previous state
@@ -145,6 +159,14 @@ export function useNotificationTriggers() {
 
     return () => clearInterval(interval)
   }, [isEnabled, settings.events, permission])
+
+  // Return monitoring status for diagnostics
+  return {
+    isMonitoring: isEnabled && permission === 'granted',
+    bossCount: bossData?.bosses?.length || 0,
+    bossStates: previousBossStates.current,
+    lastUpdate: bossData ? Date.now() : null,
+  }
 }
 
 /**
