@@ -127,25 +127,14 @@ export function useNotificationTriggers(): NotificationMonitoringStatus {
         const isActive = timeUntil < 0 && now < eventEndTime
         const previousState = previousEventStates.current[event.name]
         const currentState = isActive ? 'active' : 'inactive'
-        const cooldownKey = `event-${event.name}-active`
 
-        // Detect event became active
-        if (
-          isActive &&
-          previousState === 'inactive' &&
-          !notificationCooldowns.current.has(cooldownKey)
-        ) {
+        // Detect event became active (state change from inactive to active)
+        if (isActive && previousState === 'inactive') {
           // Play notification sound
           playNotificationSound()
 
           // Show notification
           showEventNotification(event.name)
-
-          // Add cooldown (event duration + 5 minutes)
-          notificationCooldowns.current.add(cooldownKey)
-          setTimeout(() => {
-            notificationCooldowns.current.delete(cooldownKey)
-          }, (event.durationMinutes + 5) * 60 * 1000)
         }
 
         // Update previous state
