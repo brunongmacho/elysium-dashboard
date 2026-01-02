@@ -444,16 +444,16 @@ export default function GuildHomePage() {
           {/* Event Schedule */}
           <a
             href="/events"
-            className="group glass backdrop-blur-sm rounded-lg border border-success/30 p-4 sm:p-6 hover:border-success transition-all duration-200 card-3d hover:scale-105 glow-success"
+            className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
           >
             <div className="flex items-center gap-3 sm:gap-4">
               <Icon
                 name="calendar"
                 size="2xl"
-                className="text-success group-hover:text-success-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
               />
               <div>
-                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-success-bright">
+                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
                   Events
                 </Typography>
                 <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
