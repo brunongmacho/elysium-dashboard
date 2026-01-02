@@ -1,21 +1,24 @@
 /**
  * Client-side notification triggers
- * Detects boss spawns and event starts, triggers notifications
+ * Uses countdown timers (like the dashboard displays) to trigger notifications at exact thresholds
+ * More accurate than polling API status - no delays from caching or polling intervals
  */
 
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
 import { swrFetcher } from '@/lib/fetch-utils'
 import { useNotifications } from '@/contexts/NotificationContext'
 import { showBossSpawnNotification, showEventNotification } from '@/lib/notifications'
 import { ALL_EVENTS } from '@/data/eventSchedules'
 import { calculateNextOccurrence } from '@/lib/event-utils'
-import type { BossTimersResponse } from '@/types/api'
+import type { BossTimersResponse, BossTimerDisplay } from '@/types/api'
 
-interface BossState {
-  [bossName: string]: 'spawned' | 'soon' | 'ready' | 'unknown'
+interface BossNotificationState {
+  nextSpawnTime: number
+  soonNotified: boolean
+  spawnedNotified: boolean
 }
 
 interface EventState {
@@ -25,91 +28,90 @@ interface EventState {
 export interface NotificationMonitoringStatus {
   isMonitoring: boolean
   bossCount: number
-  bossStates: BossState
+  bossStates: { [bossName: string]: string }
   lastUpdate: number | null
 }
 
+const THIRTY_MINUTES = 30 * 60 * 1000
+const NOTIFICATION_WINDOW = 2000 // 2 second window to trigger notification
+
 /**
- * Hook that monitors boss and event states and triggers notifications
+ * Hook that monitors boss and event countdowns and triggers notifications at exact thresholds
  */
 export function useNotificationTriggers(): NotificationMonitoringStatus {
   const { isEnabled, settings, permission } = useNotifications()
-  const previousBossStates = useRef<BossState>({})
+  const [currentTime, setCurrentTime] = useState(Date.now())
+  const bossStatesRef = useRef<Map<string, BossNotificationState>>(new Map())
   const previousEventStates = useRef<EventState>({})
-  const notificationCooldowns = useRef<Set<string>>(new Set())
 
-  // Fetch boss data every 10 seconds
+  // Fetch boss data once, then refresh every 5 minutes (only to catch manual updates)
   const { data: bossData } = useSWR<BossTimersResponse>(
     isEnabled ? '/api/bosses' : null,
     swrFetcher,
-    { refreshInterval: 10000 }
+    { refreshInterval: 5 * 60 * 1000 } // 5 minutes instead of 10 seconds
   )
 
-  // Check for boss state changes
+  // Update current time every second (like dashboard countdown timers)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Initialize/update boss states when data changes
+  useEffect(() => {
+    if (!bossData?.bosses) return
+
+    bossData.bosses.forEach((boss) => {
+      if (!boss.nextSpawnTime) return
+
+      const nextSpawnTime = new Date(boss.nextSpawnTime).getTime()
+      const existing = bossStatesRef.current.get(boss.bossName)
+
+      // If spawn time changed (boss was killed/respawned), reset notification flags
+      if (!existing || existing.nextSpawnTime !== nextSpawnTime) {
+        bossStatesRef.current.set(boss.bossName, {
+          nextSpawnTime,
+          soonNotified: false,
+          spawnedNotified: false,
+        })
+      }
+    })
+  }, [bossData])
+
+  // Check countdown thresholds every second
   useEffect(() => {
     if (!isEnabled || permission !== 'granted' || !bossData?.bosses) return
 
-    bossData.bosses.forEach((boss) => {
-      const previousState = previousBossStates.current[boss.bossName]
-      const currentState = boss.status
+    bossStatesRef.current.forEach((state, bossName) => {
+      const timeRemaining = state.nextSpawnTime - currentTime
 
-      // Initialize previous state on first poll (don't trigger notifications)
-      if (previousState === undefined) {
-        previousBossStates.current[boss.bossName] = currentState
-        return
-      }
-
-      // Detect boss spawned
+      // Boss spawned notification (at 0 minutes, with 2 second window)
       if (
         settings.bossSpawns &&
-        currentState === 'spawned' &&
-        previousState !== 'spawned'
+        !state.spawnedNotified &&
+        timeRemaining <= 0 &&
+        timeRemaining > -NOTIFICATION_WINDOW
       ) {
-        const cooldownKey = `boss-${boss.bossName}-spawned`
-        if (!notificationCooldowns.current.has(cooldownKey)) {
-          // Play notification sound
-          playNotificationSound()
-
-          // Show notification
-          showBossSpawnNotification(boss.bossName)
-
-          // Add cooldown (10 minutes)
-          notificationCooldowns.current.add(cooldownKey)
-          setTimeout(() => {
-            notificationCooldowns.current.delete(cooldownKey)
-          }, 10 * 60 * 1000)
-        }
+        playNotificationSound()
+        showBossSpawnNotification(bossName)
+        state.spawnedNotified = true
       }
 
-      // Detect boss soon (< 30 min)
+      // Boss soon notification (at 30 minutes, with 2 second window)
       if (
         settings.bossSoon &&
-        currentState === 'soon' &&
-        previousState !== 'soon'
+        !state.soonNotified &&
+        timeRemaining <= THIRTY_MINUTES &&
+        timeRemaining > THIRTY_MINUTES - NOTIFICATION_WINDOW
       ) {
-        const cooldownKey = `boss-${boss.bossName}-soon`
-        if (!notificationCooldowns.current.has(cooldownKey)) {
-          // Calculate time remaining from next spawn time
-          const timeRemaining = boss.nextSpawnTime ? new Date(boss.nextSpawnTime).getTime() - Date.now() : 0
-
-          // Play notification sound
-          playNotificationSound()
-
-          // Show notification
-          showBossSpawnNotification(boss.bossName, timeRemaining)
-
-          // Add cooldown (30 minutes)
-          notificationCooldowns.current.add(cooldownKey)
-          setTimeout(() => {
-            notificationCooldowns.current.delete(cooldownKey)
-          }, 30 * 60 * 1000)
-        }
+        playNotificationSound()
+        showBossSpawnNotification(bossName, timeRemaining)
+        state.soonNotified = true
       }
-
-      // Update previous state
-      previousBossStates.current[boss.bossName] = currentState
     })
-  }, [bossData, isEnabled, settings, permission])
+  }, [currentTime, isEnabled, settings, permission, bossData])
 
   // Check for event state changes (every 10 seconds)
   useEffect(() => {
@@ -161,10 +163,22 @@ export function useNotificationTriggers(): NotificationMonitoringStatus {
   }, [isEnabled, settings.events, permission])
 
   // Return monitoring status for diagnostics
+  const bossStates: { [bossName: string]: string } = {}
+  bossStatesRef.current.forEach((state, bossName) => {
+    const timeRemaining = state.nextSpawnTime - currentTime
+    if (timeRemaining <= 0) {
+      bossStates[bossName] = 'spawned'
+    } else if (timeRemaining <= THIRTY_MINUTES) {
+      bossStates[bossName] = 'soon'
+    } else {
+      bossStates[bossName] = 'ready'
+    }
+  })
+
   return {
     isMonitoring: isEnabled && permission === 'granted',
-    bossCount: bossData?.bosses?.length || 0,
-    bossStates: previousBossStates.current,
+    bossCount: bossStatesRef.current.size,
+    bossStates,
     lastUpdate: bossData ? Date.now() : null,
   }
 }
