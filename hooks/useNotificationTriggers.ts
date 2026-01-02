@@ -43,9 +43,9 @@ export function useNotificationTriggers() {
     if (!isEnabled || permission !== 'granted' || !bossData?.bosses) return
 
     bossData.bosses.forEach((boss) => {
-      const previousState = previousBossStates.current[boss.name]
+      const previousState = previousBossStates.current[boss.bossName]
       const currentState = boss.status
-      const cooldownKey = `boss-${boss.name}-${currentState}`
+      const cooldownKey = `boss-${boss.bossName}-${currentState}`
 
       // Detect boss spawned
       if (
@@ -59,7 +59,7 @@ export function useNotificationTriggers() {
         playNotificationSound()
 
         // Show notification
-        showBossSpawnNotification(boss.name)
+        showBossSpawnNotification(boss.bossName)
 
         // Add cooldown (10 minutes)
         notificationCooldowns.current.add(cooldownKey)
@@ -76,14 +76,14 @@ export function useNotificationTriggers() {
         previousState !== undefined &&
         !notificationCooldowns.current.has(cooldownKey)
       ) {
-        // Calculate time remaining from respawn time
-        const timeRemaining = boss.respawnTime ? new Date(boss.respawnTime).getTime() - Date.now() : 0
+        // Calculate time remaining from next spawn time
+        const timeRemaining = boss.nextSpawnTime ? new Date(boss.nextSpawnTime).getTime() - Date.now() : 0
 
         // Play notification sound
         playNotificationSound()
 
         // Show notification
-        showBossSpawnNotification(boss.name, timeRemaining)
+        showBossSpawnNotification(boss.bossName, timeRemaining)
 
         // Add cooldown (30 minutes)
         notificationCooldowns.current.add(cooldownKey)
@@ -93,7 +93,7 @@ export function useNotificationTriggers() {
       }
 
       // Update previous state
-      previousBossStates.current[boss.name] = currentState
+      previousBossStates.current[boss.bossName] = currentState
     })
   }, [bossData, isEnabled, settings, permission])
 
