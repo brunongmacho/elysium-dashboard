@@ -7,7 +7,7 @@ import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
 import { ConfirmationModal, Badge } from "./ui";
 import Tooltip from "./Tooltip";
-import ElectricBorder from "./ElectricBorder";
+import BorderEffect from "./BorderEffect";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
@@ -162,8 +162,8 @@ function BossCard({
     <div
       className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${boss.status === 'spawned' ? 'boss-spawned-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col relative`}
     >
-      {/* Electric Border Effect */}
-      <ElectricBorder intensity={electricIntensity} color={electricColor} />
+      {/* Border Effect */}
+      <BorderEffect intensity={electricIntensity} color={electricColor} />
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">

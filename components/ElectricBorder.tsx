@@ -170,6 +170,8 @@ export default function ElectricBorder({
           border: `3px solid ${color}`,
           filter: `blur(${settings.blur3}px)`,
           opacity: 0.3,
+          willChange: 'filter, opacity',
+          transform: 'translateZ(0)',
         }}
       />
 
@@ -180,6 +182,8 @@ export default function ElectricBorder({
           border: `2.5px solid ${color}`,
           filter: `blur(${settings.blur2}px)`,
           opacity: 0.4,
+          willChange: 'filter, opacity',
+          transform: 'translateZ(0)',
         }}
       />
 
@@ -190,6 +194,8 @@ export default function ElectricBorder({
           border: `2px solid ${color}`,
           filter: `url(#${filter2Id.current})`,
           opacity: 0.5,
+          willChange: 'filter',
+          transform: 'translateZ(0)',
         }}
       />
 
@@ -200,6 +206,8 @@ export default function ElectricBorder({
           border: `2px solid ${color}`,
           filter: `url(#${filter1Id.current})`,
           opacity: 1,
+          willChange: 'filter',
+          transform: 'translateZ(0)',
         }}
       />
 
@@ -209,9 +217,10 @@ export default function ElectricBorder({
         style={{
           background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
           mixBlendMode: 'overlay',
-          transform: 'scale(1.02)',
+          transform: 'scale(1.02) translateZ(0)',
           filter: 'blur(12px)',
           opacity: 0.1,
+          willChange: 'transform',
         }}
       />
 
@@ -221,8 +230,9 @@ export default function ElectricBorder({
         style={{
           background: `linear-gradient(-30deg, ${gradientColor}, transparent, ${gradientColor})`,
           filter: 'blur(24px)',
-          transform: 'scale(1.08)',
+          transform: 'scale(1.08) translateZ(0)',
           opacity: 0.2,
+          willChange: 'transform',
         }}
       />
     </>
