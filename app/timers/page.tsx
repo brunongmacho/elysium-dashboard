@@ -167,7 +167,10 @@ export default function Home() {
       {data && (
         <Grid columns={{ xs: 2, md: 4 }} gap="md">
           <Tooltip content="All bosses being tracked in the system" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help">
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-primary/30 electric-low p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+              style={{ '--electric-color': 'var(--color-primary-light)' } as React.CSSProperties}
+            >
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
                 <AnimatedCounter value={data.count} />
               </div>
@@ -175,7 +178,10 @@ export default function Home() {
             </div>
           </Tooltip>
           <Tooltip content="Bosses currently alive and ready to fight" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center glow-danger hover:scale-105 transition-transform duration-200 cursor-help">
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-danger electric-extreme p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+              style={{ '--electric-color': 'var(--color-danger)' } as React.CSSProperties}
+            >
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
               </div>
@@ -183,7 +189,10 @@ export default function Home() {
             </div>
           </Tooltip>
           <Tooltip content="Bosses spawning within 30 minutes - prepare your party!" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200 cursor-help">
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-accent electric-high p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+              style={{ '--electric-color': 'var(--color-accent)' } as React.CSSProperties}
+            >
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
               </div>
@@ -191,7 +200,10 @@ export default function Home() {
             </div>
           </Tooltip>
           <Tooltip content="Bosses with active countdown timers" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200 cursor-help">
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-primary electric-medium p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+              style={{ '--electric-color': 'var(--color-primary)' } as React.CSSProperties}
+            >
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
               </div>
