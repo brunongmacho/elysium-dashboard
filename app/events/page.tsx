@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import EventScheduleCard from "@/components/EventScheduleCard";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
+import NotificationButton from "@/components/NotificationButton";
 import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
 import { TimerProvider, useTimer } from "@/contexts/TimerContext";
@@ -84,6 +85,7 @@ function EventScheduleContent() {
             Daily and weekly game event countdowns (GMT+8)
           </Typography>
         </Stack>
+        <NotificationButton />
       </div>
 
       {/* Stats Bar */}
