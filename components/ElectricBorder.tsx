@@ -13,7 +13,10 @@ export default function ElectricBorder({
   color = '#3b82f6',
   className = ''
 }: ElectricBorderProps) {
-  const filterId = useRef(`electric-filter-${Math.random().toString(36).substr(2, 9)}`);
+  const filter1Id = useRef(`electric-filter1-${Math.random().toString(36).substr(2, 9)}`);
+  const filter2Id = useRef(`electric-filter2-${Math.random().toString(36).substr(2, 9)}`);
+  const filter3Id = useRef(`electric-filter3-${Math.random().toString(36).substr(2, 9)}`);
+  const filter4Id = useRef(`electric-filter4-${Math.random().toString(36).substr(2, 9)}`);
 
   // Intensity settings for turbulence animation
   const settings = {
@@ -25,176 +28,178 @@ export default function ElectricBorder({
 
   const gradientColor = `${color}20`; // 12% opacity - much more subtle
 
+  // Helper function to create turbulence filter
+  const createTurbulenceFilter = (filterId: string, seed1: number, seed2: number, seed3: number, seed4: number, durationMultiplier: number) => (
+    <filter
+      id={filterId}
+      colorInterpolationFilters="sRGB"
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%"
+    >
+      {/* First turbulence */}
+      <feTurbulence
+        type="turbulence"
+        baseFrequency={settings.baseFrequency}
+        numOctaves={settings.numOctaves}
+        result="noise1"
+        seed={seed1}
+      />
+      <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+        <animate
+          attributeName="dx"
+          values={`0; 350; 0; -350; 0`}
+          dur={`${settings.duration * durationMultiplier}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+        <animate
+          attributeName="dy"
+          values={`0; -350; 0; 350; 0`}
+          dur={`${settings.duration * durationMultiplier}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+      </feOffset>
+
+      {/* Second turbulence */}
+      <feTurbulence
+        type="turbulence"
+        baseFrequency={settings.baseFrequency}
+        numOctaves={settings.numOctaves}
+        result="noise2"
+        seed={seed2}
+      />
+      <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+        <animate
+          attributeName="dx"
+          values={`0; -350; 0; 350; 0`}
+          dur={`${settings.duration * durationMultiplier}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+        <animate
+          attributeName="dy"
+          values={`0; 350; 0; -350; 0`}
+          dur={`${settings.duration * durationMultiplier}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+      </feOffset>
+
+      {/* Third turbulence */}
+      <feTurbulence
+        type="turbulence"
+        baseFrequency={settings.baseFrequency}
+        numOctaves={settings.numOctaves}
+        result="noise3"
+        seed={seed3}
+      />
+      <feOffset in="noise3" dx="0" dy="0" result="offsetNoise3">
+        <animate
+          attributeName="dx"
+          values={`0; 250; 0; -250; 0`}
+          dur={`${settings.duration * durationMultiplier * 1.3}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+        <animate
+          attributeName="dy"
+          values={`0; 250; 0; -250; 0`}
+          dur={`${settings.duration * durationMultiplier * 1.3}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+      </feOffset>
+
+      {/* Fourth turbulence */}
+      <feTurbulence
+        type="turbulence"
+        baseFrequency={settings.baseFrequency}
+        numOctaves={settings.numOctaves}
+        result="noise4"
+        seed={seed4}
+      />
+      <feOffset in="noise4" dx="0" dy="0" result="offsetNoise4">
+        <animate
+          attributeName="dx"
+          values={`0; -200; 0; 200; 0`}
+          dur={`${settings.duration * durationMultiplier * 0.7}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+        <animate
+          attributeName="dy"
+          values={`0; -200; 0; 200; 0`}
+          dur={`${settings.duration * durationMultiplier * 0.7}s`}
+          repeatCount="indefinite"
+          calcMode="ease-in-out"
+        />
+      </feOffset>
+
+      <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+      <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+      <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="combinedNoise"
+        scale={settings.scale}
+        xChannelSelector="R"
+        yChannelSelector="B"
+      />
+    </filter>
+  );
+
   return (
     <>
-      {/* SVG Filters with animated turbulence */}
+      {/* SVG Filters with animated turbulence - 4 independent filters */}
       <svg className="absolute w-0 h-0 pointer-events-none">
         <defs>
-          <filter
-            id={filterId.current}
-            colorInterpolationFilters="sRGB"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
-          >
-            {/* First turbulence - circular motion (top-right quadrant) */}
-            <feTurbulence
-              type="turbulence"
-              baseFrequency={settings.baseFrequency}
-              numOctaves={settings.numOctaves}
-              result="noise1"
-              seed="1"
-            />
-            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
-              <animate
-                attributeName="dx"
-                values={`0; 350; 0; -350; 0`}
-                dur={`${settings.duration}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-              <animate
-                attributeName="dy"
-                values={`0; -350; 0; 350; 0`}
-                dur={`${settings.duration}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-            </feOffset>
-
-            {/* Second turbulence - opposite circular motion */}
-            <feTurbulence
-              type="turbulence"
-              baseFrequency={settings.baseFrequency}
-              numOctaves={settings.numOctaves}
-              result="noise2"
-              seed="3"
-            />
-            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
-              <animate
-                attributeName="dx"
-                values={`0; -350; 0; 350; 0`}
-                dur={`${settings.duration}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-              <animate
-                attributeName="dy"
-                values={`0; 350; 0; -350; 0`}
-                dur={`${settings.duration}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-            </feOffset>
-
-            {/* Third turbulence - diagonal swirl */}
-            <feTurbulence
-              type="turbulence"
-              baseFrequency={settings.baseFrequency}
-              numOctaves={settings.numOctaves}
-              result="noise3"
-              seed="5"
-            />
-            <feOffset in="noise3" dx="0" dy="0" result="offsetNoise3">
-              <animate
-                attributeName="dx"
-                values={`0; 250; 0; -250; 0`}
-                dur={`${settings.duration * 1.3}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-              <animate
-                attributeName="dy"
-                values={`0; 250; 0; -250; 0`}
-                dur={`${settings.duration * 1.3}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-            </feOffset>
-
-            {/* Fourth turbulence - chaotic swirl with different timing */}
-            <feTurbulence
-              type="turbulence"
-              baseFrequency={settings.baseFrequency}
-              numOctaves={settings.numOctaves}
-              result="noise4"
-              seed="7"
-            />
-            <feOffset in="noise4" dx="0" dy="0" result="offsetNoise4">
-              <animate
-                attributeName="dx"
-                values={`0; -200; 0; 200; 0`}
-                dur={`${settings.duration * 0.7}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-              <animate
-                attributeName="dy"
-                values={`0; -200; 0; 200; 0`}
-                dur={`${settings.duration * 0.7}s`}
-                repeatCount="indefinite"
-                calcMode="ease-in-out"
-              />
-            </feOffset>
-
-            {/* Combine vertical movements */}
-            <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
-
-            {/* Combine horizontal movements */}
-            <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
-
-            {/* Blend both directions with color-dodge for electric effect */}
-            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
-
-            {/* Apply displacement to create wavy border */}
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="combinedNoise"
-              scale={settings.scale}
-              xChannelSelector="R"
-              yChannelSelector="B"
-            />
-          </filter>
+          {createTurbulenceFilter(filter1Id.current, 1, 3, 5, 7, 1.0)}
+          {createTurbulenceFilter(filter2Id.current, 11, 13, 17, 19, 0.9)}
+          {createTurbulenceFilter(filter3Id.current, 23, 29, 31, 37, 1.1)}
+          {createTurbulenceFilter(filter4Id.current, 41, 43, 47, 53, 0.8)}
         </defs>
       </svg>
 
-      {/* Layer 4 - Outermost glow with strongest blur */}
+      {/* Layer 4 - Outermost glow with strongest blur and independent turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `3px solid ${color}`,
-          filter: `blur(${settings.blur3}px)`,
-          opacity: 0.3,
+          filter: `blur(${settings.blur3}px) url(#${filter4Id.current})`,
+          opacity: 0.25,
         }}
       />
 
-      {/* Layer 3 - Medium glow */}
+      {/* Layer 3 - Medium glow with independent turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `2.5px solid ${color}`,
-          filter: `blur(${settings.blur2}px)`,
-          opacity: 0.4,
+          filter: `blur(${settings.blur2}px) url(#${filter3Id.current})`,
+          opacity: 0.35,
         }}
       />
 
-      {/* Layer 2 - Subtle glow close to main border */}
+      {/* Layer 2 - Subtle glow with independent turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `2px solid ${color}`,
-          filter: `blur(${settings.blur1}px)`,
-          opacity: 0.5,
+          filter: `blur(${settings.blur1}px) url(#${filter2Id.current})`,
+          opacity: 0.45,
         }}
       />
 
-      {/* Layer 1 - Main electric border with turbulence filter */}
+      {/* Layer 1 - Main electric border with independent turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `2px solid ${color}`,
-          filter: `url(#${filterId.current})`,
+          filter: `url(#${filter1Id.current})`,
+          opacity: 1,
         }}
       />
 
