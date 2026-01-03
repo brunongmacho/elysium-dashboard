@@ -159,103 +159,67 @@ export default function ElectricBorder({
         </defs>
       </svg>
 
-      {/* Border Container with gradient background */}
+      {/* Layer 4 - Outermost glow with strongest blur */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
-          background: `linear-gradient(-30deg, ${gradientColor}, transparent, ${gradientColor})`,
-          padding: '2px',
+          border: `3px solid ${color}`,
+          filter: `blur(${settings.blur3}px)`,
+          opacity: 0.3,
         }}
-      >
-        <div className="relative w-full h-full">
-          {/* Outer border layer with semi-transparent color */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              border: `2px solid ${color}80`,
-              paddingRight: '4px',
-              paddingBottom: '4px',
-            }}
-          >
-            {/* Main electric border with turbulence filter */}
-            <div
-              className="absolute rounded-lg"
-              style={{
-                inset: 0,
-                border: `2px solid ${color}`,
-                marginTop: '-4px',
-                marginLeft: '-4px',
-                filter: `url(#${filterId.current})`,
-              }}
-            />
-          </div>
+      />
 
-          {/* Glow layer 1 - subtle blur */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              border: `2px solid ${color}`,
-              filter: `blur(${settings.blur1}px)`,
-              opacity: 0.6,
-            }}
-          />
+      {/* Layer 3 - Medium glow */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        style={{
+          border: `2.5px solid ${color}`,
+          filter: `blur(${settings.blur2}px)`,
+          opacity: 0.4,
+        }}
+      />
 
-          {/* Glow layer 2 - medium blur */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              border: `2px solid ${color}`,
-              filter: `blur(${settings.blur2}px)`,
-              opacity: 0.5,
-            }}
-          />
+      {/* Layer 2 - Subtle glow close to main border */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        style={{
+          border: `2px solid ${color}`,
+          filter: `blur(${settings.blur1}px)`,
+          opacity: 0.5,
+        }}
+      />
 
-          {/* Glow layer 3 - strong blur for aura */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              border: `2px solid ${color}`,
-              filter: `blur(${settings.blur3}px)`,
-              opacity: 0.4,
-            }}
-          />
+      {/* Layer 1 - Main electric border with turbulence filter */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        style={{
+          border: `2px solid ${color}`,
+          filter: `url(#${filterId.current})`,
+        }}
+      />
 
-          {/* Overlay 1 - diagonal gradient with overlay blend */}
-          <div
-            className="absolute inset-0 rounded-lg overflow-hidden"
-            style={{
-              background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
-              mixBlendMode: 'overlay',
-              transform: 'scale(1.05)',
-              filter: 'blur(12px)',
-              opacity: 0.15,
-            }}
-          />
+      {/* Overlay effects for shimmer */}
+      <div
+        className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none"
+        style={{
+          background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
+          mixBlendMode: 'overlay',
+          transform: 'scale(1.02)',
+          filter: 'blur(12px)',
+          opacity: 0.1,
+        }}
+      />
 
-          {/* Overlay 2 - softer diagonal gradient */}
-          <div
-            className="absolute inset-0 rounded-lg overflow-hidden"
-            style={{
-              background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
-              mixBlendMode: 'overlay',
-              transform: 'scale(1.05)',
-              filter: 'blur(16px)',
-              opacity: 0.08,
-            }}
-          />
-
-          {/* Background glow - large blur behind everything */}
-          <div
-            className="absolute inset-0 rounded-lg -z-10"
-            style={{
-              background: `linear-gradient(-30deg, ${color}, transparent, ${color})`,
-              filter: 'blur(32px)',
-              transform: 'scale(1.1)',
-              opacity: 0.15,
-            }}
-          />
-        </div>
-      </div>
+      {/* Background gradient glow */}
+      <div
+        className="absolute inset-0 rounded-lg -z-10 pointer-events-none"
+        style={{
+          background: `linear-gradient(-30deg, ${gradientColor}, transparent, ${gradientColor})`,
+          filter: 'blur(24px)',
+          transform: 'scale(1.08)',
+          opacity: 0.2,
+        }}
+      />
     </>
   );
 }
