@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 interface ElectricBorderProps {
   intensity?: 'low' | 'medium' | 'high' | 'extreme';
@@ -13,201 +13,221 @@ export default function ElectricBorder({
   color = '#3b82f6',
   className = ''
 }: ElectricBorderProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [borderPath, setBorderPath] = useState('');
+  const filterId = useRef(`electric-filter-${Math.random().toString(36).substr(2, 9)}`);
 
-  // Intensity settings - controls zigzag amplitude and frequency
+  // Intensity settings for turbulence animation
   const settings = {
-    low: { strokeWidth: 2.5, blur: 8, jitter: 4, segmentSize: 25, updateInterval: 150 },
-    medium: { strokeWidth: 3, blur: 10, jitter: 6, segmentSize: 20, updateInterval: 100 },
-    high: { strokeWidth: 3.5, blur: 12, jitter: 8, segmentSize: 15, updateInterval: 80 },
-    extreme: { strokeWidth: 4, blur: 15, jitter: 12, segmentSize: 12, updateInterval: 50 },
+    low: { baseFrequency: 0.015, numOctaves: 8, scale: 15, duration: 8, blur1: 1, blur2: 4, blur3: 8 },
+    medium: { baseFrequency: 0.02, numOctaves: 10, scale: 25, duration: 6, blur1: 2, blur2: 6, blur3: 12 },
+    high: { baseFrequency: 0.025, numOctaves: 12, scale: 35, duration: 4, blur1: 3, blur2: 8, blur3: 16 },
+    extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 45, duration: 3, blur1: 4, blur2: 10, blur3: 20 },
   }[intensity];
 
-  useEffect(() => {
-    if (!svgRef.current) return;
-
-    const svg = svgRef.current;
-
-    const updateBorder = () => {
-      const rect = svg.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
-      const { jitter, segmentSize } = settings;
-
-      // Generate continuous electric border around entire perimeter
-      const generateElectricPerimeter = () => {
-        const path: string[] = [];
-        const cornerRadius = 8; // Match card border radius
-
-        // Start at top-left corner (after radius)
-        path.push(`M ${cornerRadius} 0`);
-
-        // TOP EDGE - with smooth electric curves
-        let x = cornerRadius;
-        let prevJitterY = 0;
-        while (x < width - cornerRadius) {
-          x += segmentSize;
-          const actualX = Math.min(x, width - cornerRadius);
-          const jitterY = (Math.random() - 0.5) * jitter;
-
-          // Use quadratic curves for smoother, more rounded electric effect
-          const controlX = actualX - segmentSize / 2;
-          const controlY = (prevJitterY + jitterY) / 2;
-          path.push(`Q ${controlX} ${controlY} ${actualX} ${jitterY}`);
-          prevJitterY = jitterY;
-        }
-
-        // Top-right corner - smooth curve
-        path.push(`Q ${width} 0 ${width} ${cornerRadius}`);
-
-        // RIGHT EDGE - with smooth electric curves
-        let y = cornerRadius;
-        let prevJitterX = width;
-        while (y < height - cornerRadius) {
-          y += segmentSize;
-          const actualY = Math.min(y, height - cornerRadius);
-          const jitterX = width + (Math.random() - 0.5) * jitter;
-
-          const controlY = actualY - segmentSize / 2;
-          const controlX = (prevJitterX + jitterX) / 2;
-          path.push(`Q ${controlX} ${controlY} ${jitterX} ${actualY}`);
-          prevJitterX = jitterX;
-        }
-
-        // Bottom-right corner - smooth curve
-        path.push(`Q ${width} ${height} ${width - cornerRadius} ${height}`);
-
-        // BOTTOM EDGE - with smooth electric curves
-        x = width - cornerRadius;
-        prevJitterY = height;
-        while (x > cornerRadius) {
-          x -= segmentSize;
-          const actualX = Math.max(x, cornerRadius);
-          const jitterY = height + (Math.random() - 0.5) * jitter;
-
-          const controlX = actualX + segmentSize / 2;
-          const controlY = (prevJitterY + jitterY) / 2;
-          path.push(`Q ${controlX} ${controlY} ${actualX} ${jitterY}`);
-          prevJitterY = jitterY;
-        }
-
-        // Bottom-left corner - smooth curve
-        path.push(`Q 0 ${height} 0 ${height - cornerRadius}`);
-
-        // LEFT EDGE - with smooth electric curves
-        y = height - cornerRadius;
-        prevJitterX = 0;
-        while (y > cornerRadius) {
-          y -= segmentSize;
-          const actualY = Math.max(y, cornerRadius);
-          const jitterX = (Math.random() - 0.5) * jitter;
-
-          const controlY = actualY + segmentSize / 2;
-          const controlX = (prevJitterX + jitterX) / 2;
-          path.push(`Q ${controlX} ${controlY} ${jitterX} ${actualY}`);
-          prevJitterX = jitterX;
-        }
-
-        // Top-left corner - smooth curve
-        path.push(`Q 0 0 ${cornerRadius} 0`);
-        path.push('Z');
-
-        return path.join(' ');
-      };
-
-      setBorderPath(generateElectricPerimeter());
-    };
-
-    // Initial render
-    updateBorder();
-
-    // Animate the electric border
-    const interval = setInterval(updateBorder, settings.updateInterval);
-
-    // Handle resize
-    const handleResize = () => updateBorder();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [intensity, settings]);
+  const gradientColor = `${color}66`; // 40% opacity
 
   return (
-    <svg
-      ref={svgRef}
-      className={`absolute inset-0 pointer-events-none overflow-visible ${className}`}
-      style={{ width: '100%', height: '100%' }}
-    >
-      <defs>
-        <filter id={`electric-glow-${intensity}`} x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation={settings.blur} result="blur" />
-          <feColorMatrix
-            in="blur"
-            type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 4 0"
-            result="glow"
+    <>
+      {/* SVG Filters with animated turbulence */}
+      <svg className="absolute w-0 h-0 pointer-events-none">
+        <defs>
+          <filter
+            id={filterId.current}
+            colorInterpolationFilters="sRGB"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
+            {/* First turbulence - vertical movement */}
+            <feTurbulence
+              type="turbulence"
+              baseFrequency={settings.baseFrequency}
+              numOctaves={settings.numOctaves}
+              result="noise1"
+              seed="1"
+            />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+              <animate
+                attributeName="dy"
+                values={`700; 0`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+              />
+            </feOffset>
+
+            {/* Second turbulence - opposite vertical movement */}
+            <feTurbulence
+              type="turbulence"
+              baseFrequency={settings.baseFrequency}
+              numOctaves={settings.numOctaves}
+              result="noise2"
+              seed="1"
+            />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+              <animate
+                attributeName="dy"
+                values={`0; -700`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+              />
+            </feOffset>
+
+            {/* Third turbulence - horizontal movement */}
+            <feTurbulence
+              type="turbulence"
+              baseFrequency={settings.baseFrequency}
+              numOctaves={settings.numOctaves}
+              result="noise3"
+              seed="2"
+            />
+            <feOffset in="noise3" dx="0" dy="0" result="offsetNoise3">
+              <animate
+                attributeName="dx"
+                values={`490; 0`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+              />
+            </feOffset>
+
+            {/* Fourth turbulence - opposite horizontal movement */}
+            <feTurbulence
+              type="turbulence"
+              baseFrequency={settings.baseFrequency}
+              numOctaves={settings.numOctaves}
+              result="noise4"
+              seed="2"
+            />
+            <feOffset in="noise4" dx="0" dy="0" result="offsetNoise4">
+              <animate
+                attributeName="dx"
+                values={`0; -490`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="linear"
+              />
+            </feOffset>
+
+            {/* Combine vertical movements */}
+            <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+
+            {/* Combine horizontal movements */}
+            <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+
+            {/* Blend both directions with color-dodge for electric effect */}
+            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+
+            {/* Apply displacement to create wavy border */}
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="combinedNoise"
+              scale={settings.scale}
+              xChannelSelector="R"
+              yChannelSelector="B"
+            />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Border Container with gradient background */}
+      <div
+        className="absolute inset-0 rounded-lg pointer-events-none"
+        style={{
+          background: `linear-gradient(-30deg, ${gradientColor}, transparent, ${gradientColor})`,
+          padding: '2px',
+        }}
+      >
+        <div className="relative w-full h-full">
+          {/* Outer border layer with semi-transparent color */}
+          <div
+            className="absolute inset-0 rounded-lg"
+            style={{
+              border: `2px solid ${color}80`,
+              paddingRight: '4px',
+              paddingBottom: '4px',
+            }}
+          >
+            {/* Main electric border with turbulence filter */}
+            <div
+              className="absolute rounded-lg"
+              style={{
+                inset: 0,
+                border: `2px solid ${color}`,
+                marginTop: '-4px',
+                marginLeft: '-4px',
+                filter: `url(#${filterId.current})`,
+              }}
+            />
+          </div>
+
+          {/* Glow layer 1 - subtle blur */}
+          <div
+            className="absolute inset-0 rounded-lg"
+            style={{
+              border: `2px solid ${color}`,
+              filter: `blur(${settings.blur1}px)`,
+              opacity: 0.6,
+            }}
           />
-          <feMerge>
-            <feMergeNode in="glow" />
-            <feMergeNode in="glow" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
 
-      {/* Strong outer glow layer */}
-      <path
-        d={borderPath}
-        fill="none"
-        stroke={color}
-        strokeWidth={settings.strokeWidth * 4}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity={0.4}
-        filter={`url(#electric-glow-${intensity})`}
-      />
+          {/* Glow layer 2 - medium blur */}
+          <div
+            className="absolute inset-0 rounded-lg"
+            style={{
+              border: `2px solid ${color}`,
+              filter: `blur(${settings.blur2}px)`,
+              opacity: 0.5,
+            }}
+          />
 
-      {/* Medium glow layer */}
-      <path
-        d={borderPath}
-        fill="none"
-        stroke={color}
-        strokeWidth={settings.strokeWidth * 2.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity={0.6}
-        style={{
-          filter: `blur(${settings.blur / 2}px)`
-        }}
-      />
+          {/* Glow layer 3 - strong blur for aura */}
+          <div
+            className="absolute inset-0 rounded-lg"
+            style={{
+              border: `2px solid ${color}`,
+              filter: `blur(${settings.blur3}px)`,
+              opacity: 0.4,
+            }}
+          />
 
-      {/* Main electric border */}
-      <path
-        d={borderPath}
-        fill="none"
-        stroke={color}
-        strokeWidth={settings.strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity={1}
-        style={{
-          filter: `drop-shadow(0 0 ${settings.blur / 2}px ${color}) drop-shadow(0 0 ${settings.blur}px ${color})`
-        }}
-      />
+          {/* Overlay 1 - diagonal gradient with overlay blend */}
+          <div
+            className="absolute inset-0 rounded-lg overflow-hidden"
+            style={{
+              background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
+              mixBlendMode: 'overlay',
+              transform: 'scale(1.05)',
+              filter: 'blur(12px)',
+              opacity: 0.6,
+            }}
+          />
 
-      {/* Bright inner core */}
-      <path
-        d={borderPath}
-        fill="none"
-        stroke="white"
-        strokeWidth={settings.strokeWidth * 0.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity={0.95}
-      />
-    </svg>
+          {/* Overlay 2 - softer diagonal gradient */}
+          <div
+            className="absolute inset-0 rounded-lg overflow-hidden"
+            style={{
+              background: 'linear-gradient(-30deg, white, transparent 30%, transparent 70%, white)',
+              mixBlendMode: 'overlay',
+              transform: 'scale(1.05)',
+              filter: 'blur(16px)',
+              opacity: 0.3,
+            }}
+          />
+
+          {/* Background glow - large blur behind everything */}
+          <div
+            className="absolute inset-0 rounded-lg -z-10"
+            style={{
+              background: `linear-gradient(-30deg, ${color}, transparent, ${color})`,
+              filter: 'blur(32px)',
+              transform: 'scale(1.1)',
+              opacity: 0.3,
+            }}
+          />
+        </div>
+      </div>
+    </>
   );
 }
