@@ -258,8 +258,8 @@ function QuickStats() {
         </div>
       </Tooltip>
       <Tooltip content="Bosses with active countdown timers" fullWidth>
-        <div className="glass backdrop-blur-sm rounded-lg border border-success p-3 sm:p-4 text-center glow-success hover:scale-105 transition-transform duration-200 cursor-help">
-          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-success font-game-decorative">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200 cursor-help">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-game-decorative">
             <AnimatedCounter value={stats.tracking} />
           </div>
           <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
@@ -541,7 +541,7 @@ export default function GuildHomePage() {
                 {stat.label}
               </div>
               {stat.sublabel && (
-                <div className={`text-xs ${stat.sublabel.includes('∞') || stat.sublabel.includes('All') ? 'text-success-bright' : 'text-gray-500'} font-game mt-1 transition-all duration-500`}>
+                <div className={`text-xs ${stat.sublabel.includes('∞') || stat.sublabel.includes('All') ? 'text-accent-bright' : 'text-gray-500'} font-game mt-1 transition-all duration-500`}>
                   {stat.sublabel}
                 </div>
               )}
