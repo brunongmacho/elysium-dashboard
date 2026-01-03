@@ -163,37 +163,37 @@ export default function ElectricBorder({
         </defs>
       </svg>
 
-      {/* Layer 4 - Outermost glow with strongest blur and independent turbulence */}
+      {/* Layer 4 - Outermost glow with strongest blur (no turbulence) */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `3px solid ${color}`,
-          filter: `blur(${settings.blur3}px) url(#${filter4Id.current})`,
-          opacity: 0.25,
+          filter: `blur(${settings.blur3}px)`,
+          opacity: 0.3,
         }}
       />
 
-      {/* Layer 3 - Medium glow with independent turbulence */}
+      {/* Layer 3 - Medium glow (no turbulence) */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `2.5px solid ${color}`,
-          filter: `blur(${settings.blur2}px) url(#${filter3Id.current})`,
-          opacity: 0.35,
+          filter: `blur(${settings.blur2}px)`,
+          opacity: 0.4,
         }}
       />
 
-      {/* Layer 2 - Subtle glow with independent turbulence */}
+      {/* Layer 2 - Subtle glow with light turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `2px solid ${color}`,
-          filter: `blur(${settings.blur1}px) url(#${filter2Id.current})`,
-          opacity: 0.45,
+          filter: `url(#${filter2Id.current})`,
+          opacity: 0.5,
         }}
       />
 
-      {/* Layer 1 - Main electric border with independent turbulence */}
+      {/* Layer 1 - Main electric border with turbulence */}
       <div
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
