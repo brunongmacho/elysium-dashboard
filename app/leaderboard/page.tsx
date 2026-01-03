@@ -22,13 +22,62 @@ import { Stack } from "@/components/layout";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
 // Helper function to get rank tier styling
-function getRankTier(rank: number): { color: string; glow: string; title: string; badge: string } {
-  if (rank === 1) return { color: 'gold', glow: 'glow-gold', title: 'Guild Champion', badge: '👑' };
-  if (rank <= 3) return { color: 'silver', glow: 'glow-silver', title: 'Elite Guardian', badge: '⚔️' };
-  if (rank <= 10) return { color: 'primary', glow: 'glow-primary', title: 'Veteran Warrior', badge: '🛡️' };
-  if (rank <= 25) return { color: 'accent', glow: 'glow-accent', title: 'Skilled Fighter', badge: '🗡️' };
-  if (rank <= 50) return { color: 'success', glow: '', title: 'Brave Adventurer', badge: '⚡' };
-  return { color: 'gray', glow: '', title: 'Guild Member', badge: '🎯' };
+function getRankTier(rank: number): {
+  borderClass: string;
+  hoverBgClass: string;
+  textClass: string;
+  glow: string;
+  title: string;
+  badge: string;
+} {
+  if (rank === 1) return {
+    borderClass: 'border-l-yellow-500/30 hover:border-l-yellow-500',
+    hoverBgClass: 'hover:bg-yellow-500/10',
+    textClass: 'text-yellow-400',
+    glow: 'glow-gold',
+    title: 'Guild Champion',
+    badge: '👑'
+  };
+  if (rank <= 3) return {
+    borderClass: 'border-l-gray-400/30 hover:border-l-gray-400',
+    hoverBgClass: 'hover:bg-gray-400/10',
+    textClass: 'text-gray-300',
+    glow: 'glow-silver',
+    title: 'Elite Guardian',
+    badge: '⚔️'
+  };
+  if (rank <= 10) return {
+    borderClass: 'border-l-primary/30 hover:border-l-primary',
+    hoverBgClass: 'hover:bg-primary/10',
+    textClass: 'text-primary-light',
+    glow: 'glow-primary',
+    title: 'Veteran Warrior',
+    badge: '🛡️'
+  };
+  if (rank <= 25) return {
+    borderClass: 'border-l-accent/30 hover:border-l-accent',
+    hoverBgClass: 'hover:bg-accent/10',
+    textClass: 'text-accent-light',
+    glow: 'glow-accent',
+    title: 'Skilled Fighter',
+    badge: '🗡️'
+  };
+  if (rank <= 50) return {
+    borderClass: 'border-l-success/30 hover:border-l-success',
+    hoverBgClass: 'hover:bg-success/10',
+    textClass: 'text-success-light',
+    glow: '',
+    title: 'Brave Adventurer',
+    badge: '⚡'
+  };
+  return {
+    borderClass: 'border-l-gray-600/30 hover:border-l-gray-600',
+    hoverBgClass: 'hover:bg-gray-600/10',
+    textClass: 'text-gray-400',
+    glow: '',
+    title: 'Guild Member',
+    badge: '🎯'
+  };
 }
 
 export default function LeaderboardPage() {
@@ -514,7 +563,7 @@ export default function LeaderboardPage() {
                   return (
                     <motion.tr
                       key={entry.memberId}
-                      className={`hover:bg-${tier.color}/10 transition-all duration-200 group ${tier.glow} border-l-2 border-l-${tier.color}/30 hover:border-l-${tier.color}`}
+                      className={`${tier.hoverBgClass} transition-all duration-200 group ${tier.glow} border-l-2 ${tier.borderClass}`}
                       initial={{ opacity: 0, x: -20 }}
                       animate={tableAnim.isVisible ? { opacity: 1, x: 0 } : {}}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -528,13 +577,13 @@ export default function LeaderboardPage() {
                                 {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
                               </span>
                             ) : (
-                              <span className={`text-${tier.color}-light text-sm sm:text-base font-game-decorative flex items-center gap-1`}>
+                              <span className={`${tier.textClass} text-sm sm:text-base font-game-decorative flex items-center gap-1`}>
                                 <span className="text-base">{tier.badge}</span>
                                 {entry.rank}
                               </span>
                             )}
                           </div>
-                          <div className={`text-xs text-${tier.color}-bright/70 font-game hidden sm:block`}>
+                          <div className={`text-xs ${tier.textClass} opacity-70 font-game hidden sm:block`}>
                             {tier.title}
                           </div>
                         </div>
