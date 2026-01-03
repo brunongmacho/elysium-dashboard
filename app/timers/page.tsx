@@ -8,7 +8,8 @@ import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
-import ElectricBorder from "@/components/ElectricBorder";
+import BorderEffect from "@/components/BorderEffect";
+import EffectModeToggle from "@/components/EffectModeToggle";
 import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
 import { Icon } from "@/components/icons";
@@ -141,28 +142,33 @@ export default function Home() {
           </Typography>
         </Stack>
 
-        {/* Refresh Button */}
-        <button
-          onClick={() => {
-            setIsRefreshing(true);
-            forceRefresh();
-            // Small delay to show loading state
-            setTimeout(() => setIsRefreshing(false), UI.REFRESH_BUTTON_DELAY);
-          }}
-          disabled={isRefreshing}
-          className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          title="Refresh boss timers"
-          aria-label="Refresh boss timers"
-        >
-          <Icon
-            name="refresh"
-            size="md"
-            className={`text-gray-400 group-hover:text-primary transition-colors duration-500 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180'}`}
-          />
-          <span className="hidden sm:inline text-sm text-gray-300 group-hover:text-white transition-colors">
-            {isRefreshing ? 'Refreshing...' : 'Refresh'}
-          </span>
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Effect Mode Toggle */}
+          <EffectModeToggle />
+
+          {/* Refresh Button */}
+          <button
+            onClick={() => {
+              setIsRefreshing(true);
+              forceRefresh();
+              // Small delay to show loading state
+              setTimeout(() => setIsRefreshing(false), UI.REFRESH_BUTTON_DELAY);
+            }}
+            disabled={isRefreshing}
+            className="group flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700 hover:border-primary/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Refresh boss timers"
+            aria-label="Refresh boss timers"
+          >
+            <Icon
+              name="refresh"
+              size="md"
+              className={`text-gray-400 group-hover:text-primary transition-colors duration-500 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180'}`}
+            />
+            <span className="hidden sm:inline text-sm text-gray-300 group-hover:text-white transition-colors">
+              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Stats Bar */}
@@ -174,7 +180,7 @@ export default function Home() {
               onClick={() => setStatusFilter(null)}
               style={{ opacity: statusFilter === null ? 1 : 0.7 }}
             >
-              <ElectricBorder intensity="low" color="#fca5a5" />
+              <BorderEffect intensity="low" color="#fca5a5" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.count} />
               </div>
@@ -187,7 +193,7 @@ export default function Home() {
               onClick={() => setStatusFilter(statusFilter === 'spawned' ? null : 'spawned')}
               style={{ opacity: statusFilter === 'spawned' ? 1 : 0.7 }}
             >
-              <ElectricBorder intensity="extreme" color="#dc2626" />
+              <BorderEffect intensity="extreme" color="#dc2626" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
               </div>
@@ -200,7 +206,7 @@ export default function Home() {
               onClick={() => setStatusFilter(statusFilter === 'soon' ? null : 'soon')}
               style={{ opacity: statusFilter === 'soon' ? 1 : 0.7 }}
             >
-              <ElectricBorder intensity="high" color="#ea580c" />
+              <BorderEffect intensity="high" color="#ea580c" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
               </div>
@@ -213,7 +219,7 @@ export default function Home() {
               onClick={() => setStatusFilter(statusFilter === 'ready' ? null : 'ready')}
               style={{ opacity: statusFilter === 'ready' ? 1 : 0.7 }}
             >
-              <ElectricBorder intensity="medium" color="#dc2626" />
+              <BorderEffect intensity="medium" color="#dc2626" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
               </div>

@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import EventScheduleCard from "@/components/EventScheduleCard";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
-import ElectricBorder from "@/components/ElectricBorder";
+import BorderEffect from "@/components/BorderEffect";
+import EffectModeToggle from "@/components/EffectModeToggle";
 import { Breadcrumb, Typography } from "@/components/ui";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { Stack, Grid } from "@/components/layout";
@@ -123,6 +124,9 @@ function EventScheduleContent() {
             Daily and weekly game event countdowns (GMT+8)
           </Typography>
         </Stack>
+
+        {/* Effect Mode Toggle */}
+        <EffectModeToggle />
       </div>
 
       {/* Stats Bar */}
@@ -133,7 +137,7 @@ function EventScheduleContent() {
             onClick={() => setStatusFilter(null)}
             style={{ opacity: statusFilter === null ? 1 : 0.7 }}
           >
-            <ElectricBorder intensity="low" color="#fca5a5" />
+            <BorderEffect intensity="low" color="#fca5a5" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
               <AnimatedCounter value={stats.total} />
             </div>
@@ -146,7 +150,7 @@ function EventScheduleContent() {
             onClick={() => setStatusFilter(statusFilter === 'active' ? null : 'active')}
             style={{ opacity: statusFilter === 'active' ? 1 : 0.7 }}
           >
-            <ElectricBorder intensity="extreme" color="#047857" />
+            <BorderEffect intensity="extreme" color="#047857" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-success font-game-decorative relative z-10">
               <AnimatedCounter value={stats.active} />
             </div>
@@ -159,7 +163,7 @@ function EventScheduleContent() {
             onClick={() => setStatusFilter(statusFilter === 'soon' ? null : 'soon')}
             style={{ opacity: statusFilter === 'soon' ? 1 : 0.7 }}
           >
-            <ElectricBorder intensity="high" color="#ea580c" />
+            <BorderEffect intensity="high" color="#ea580c" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative relative z-10">
               <AnimatedCounter value={stats.soon} />
             </div>
@@ -172,7 +176,7 @@ function EventScheduleContent() {
             onClick={() => setStatusFilter(statusFilter === 'today' ? null : 'today')}
             style={{ opacity: statusFilter === 'today' ? 1 : 0.7 }}
           >
-            <ElectricBorder intensity="medium" color="#dc2626" />
+            <BorderEffect intensity="medium" color="#dc2626" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
               <AnimatedCounter value={stats.today} />
             </div>
