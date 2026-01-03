@@ -13,7 +13,6 @@ import Tooltip from "@/components/Tooltip";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { useParallax } from "@/hooks/useParallax";
 
 interface MemberLoreData {
   title: string;
@@ -279,7 +278,6 @@ export default function GuildHomePage() {
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
 
   // Scroll animation hooks
-  const heroParallax = useParallax({ speed: 0.3, direction: 'down' });
   const quickAccessAnim = useScrollAnimation({ threshold: 0.2 });
   const quickStatsAnim = useScrollAnimation({ threshold: 0.2 });
   const guildStatsAnim = useScrollAnimation({ threshold: 0.2 });
@@ -400,93 +398,32 @@ export default function GuildHomePage() {
 
   return (
     <Stack gap="xl" className="pb-32">
-      {/* Hero Section - Guild Welcome with Parallax */}
-      <motion.section
-        ref={heroParallax.ref as any}
-        className="relative py-8 sm:py-12 overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8"
-        style={{ y: heroParallax.offset }}
-      >
+      {/* Hero Section - Guild Welcome */}
+      <section className="relative py-8 sm:py-12 overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         {/* Background Glow Effects */}
-        <motion.div
-          className="absolute inset-0 overflow-hidden pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-        >
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/20 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-danger/20 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.3, 0.4, 0.3],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          />
-        </motion.div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-danger/20 rounded-full blur-3xl"></div>
+        </div>
 
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
+        <div className="relative">
           <Stack gap="md" align="center" className="text-center">
             {/* Guild Name */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Typography variant="display" className="text-5xl sm:text-6xl md:text-7xl text-gold">
-                ⚔️ ELYSIUM
-              </Typography>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <Typography variant="h2" className="text-xl sm:text-2xl text-silver">
-                Where Chaos Becomes Strategy
-              </Typography>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-            >
-              <Typography variant="body" className="text-base sm:text-lg text-gray-300 max-w-3xl italic">
-                "Where stupidity becomes genius and friendly fire is tactical."
-              </Typography>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-            >
-              <Typography variant="small" className="text-xs sm:text-sm text-gray-400">
-                Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
-              </Typography>
-            </motion.div>
+            <Typography variant="display" className="text-5xl sm:text-6xl md:text-7xl text-gold">
+              ⚔️ ELYSIUM
+            </Typography>
+            <Typography variant="h2" className="text-xl sm:text-2xl text-silver">
+              Where Chaos Becomes Strategy
+            </Typography>
+            <Typography variant="body" className="text-base sm:text-lg text-gray-300 max-w-3xl italic">
+              "Where stupidity becomes genius and friendly fire is tactical."
+            </Typography>
+            <Typography variant="small" className="text-xs sm:text-sm text-gray-400">
+              Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
+            </Typography>
           </Stack>
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
       {/* Quick Access Navigation */}
       <motion.div
