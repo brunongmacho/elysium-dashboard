@@ -1387,20 +1387,376 @@ textarea:focus-visible {
     }
   }
 
-  /* Apply electric animations with varying speeds */
+  /* Apply electric animations with varying speeds and create electric arc overlays */
   .electric-low {
     animation: electric-pulse-low 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-low::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--electric-color) 2%,
+      transparent 4%,
+      transparent 48%,
+      var(--electric-color) 50%,
+      transparent 52%,
+      transparent 96%,
+      var(--electric-color) 98%,
+      transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-low 3s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  @keyframes electric-arc-low {
+    0%, 100% { opacity: 0; }
+    15% { opacity: 0.3; transform: translateX(0); }
+    17% { opacity: 0; transform: translateX(2px); }
+    65% { opacity: 0.4; transform: translateX(0); }
+    67% { opacity: 0; transform: translateX(-2px); }
   }
 
   .electric-medium {
     animation: electric-pulse-medium 2s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-medium::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    background:
+      linear-gradient(45deg,
+        transparent 0%,
+        var(--electric-color) 1%,
+        transparent 3%,
+        transparent 24%,
+        var(--electric-color) 26%,
+        transparent 28%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 72%,
+        var(--electric-color) 74%,
+        transparent 76%,
+        transparent 97%,
+        var(--electric-color) 99%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-medium 2s ease-in-out infinite;
+    z-index: -1;
+    filter: blur(1px);
+  }
+
+  .electric-medium::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg,
+      transparent,
+      var(--electric-color),
+      transparent,
+      transparent,
+      var(--electric-color),
+      transparent
+    ) 1;
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-border-flicker 2s ease-in-out infinite;
+  }
+
+  @keyframes electric-arc-medium {
+    0%, 100% { opacity: 0; transform: rotate(0deg); }
+    8% { opacity: 0.6; transform: rotate(2deg); }
+    10% { opacity: 0; transform: rotate(-1deg); }
+    42% { opacity: 0.7; transform: rotate(-2deg); }
+    44% { opacity: 0; transform: rotate(1deg); }
+    78% { opacity: 0.5; transform: rotate(1deg); }
+    80% { opacity: 0; transform: rotate(0deg); }
+  }
+
+  @keyframes electric-border-flicker {
+    0%, 100% { opacity: 0; }
+    8%, 42%, 78% { opacity: 0.4; }
+    10%, 44%, 80% { opacity: 0; }
   }
 
   .electric-high {
     animation: electric-pulse-high 1.5s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-high::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 10% 20%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 90% 30%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 50% 80%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 30% 50%, var(--electric-color) 0%, transparent 2%),
+      linear-gradient(135deg,
+        transparent 0%,
+        var(--electric-color) 1%,
+        transparent 2%,
+        transparent 18%,
+        var(--electric-color) 20%,
+        transparent 22%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 78%,
+        var(--electric-color) 80%,
+        transparent 82%,
+        transparent 98%,
+        var(--electric-color) 99%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-high 1.5s ease-in-out infinite;
+    z-index: -1;
+    filter: blur(0.5px);
+  }
+
+  .electric-high::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+      var(--electric-color) 0%,
+      transparent 10%,
+      transparent 45%,
+      var(--electric-color) 50%,
+      transparent 55%,
+      transparent 90%,
+      var(--electric-color) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-zigzag 1.5s ease-in-out infinite;
+    -webkit-mask:
+      linear-gradient(90deg, black 0%, transparent 2%, transparent 98%, black 100%),
+      linear-gradient(0deg, black 0%, transparent 2%, transparent 98%, black 100%);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(90deg, black 0%, transparent 2%, transparent 98%, black 100%),
+      linear-gradient(0deg, black 0%, transparent 2%, transparent 98%, black 100%);
+    mask-composite: exclude;
+    z-index: -1;
+  }
+
+  @keyframes electric-arc-high {
+    0%, 100% { opacity: 0; transform: scale(1) rotate(0deg); }
+    5% { opacity: 0.8; transform: scale(1.02) rotate(3deg); }
+    7% { opacity: 0.2; transform: scale(0.98) rotate(-2deg); }
+    18% { opacity: 0.7; transform: scale(1.01) rotate(-1deg); }
+    33% { opacity: 0.9; transform: scale(1.03) rotate(2deg); }
+    35% { opacity: 0.3; transform: scale(0.99) rotate(-3deg); }
+    50% { opacity: 0.6; transform: scale(1) rotate(1deg); }
+    67% { opacity: 0.85; transform: scale(1.02) rotate(-2deg); }
+    69% { opacity: 0.2; transform: scale(0.98) rotate(2deg); }
+    85% { opacity: 0.75; transform: scale(1.01) rotate(-1deg); }
+  }
+
+  @keyframes electric-zigzag {
+    0%, 100% { opacity: 0; }
+    5%, 33%, 67% { opacity: 0.6; }
+    7%, 35%, 69% { opacity: 0; }
   }
 
   .electric-extreme {
     animation: electric-pulse-extreme 1s ease-in-out infinite;
+    position: relative;
+    overflow: visible;
+  }
+
+  .electric-extreme::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 5% 15%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 95% 20%, var(--electric-color) 0%, transparent 5%),
+      radial-gradient(circle at 15% 85%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 85% 80%, var(--electric-color) 0%, transparent 5%),
+      radial-gradient(circle at 50% 10%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 50% 90%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 20% 50%, var(--electric-color) 0%, transparent 2%),
+      radial-gradient(circle at 80% 50%, var(--electric-color) 0%, transparent 2%),
+      linear-gradient(var(--electric-arc-angle, 45deg),
+        transparent 0%,
+        var(--electric-color) 0.5%,
+        transparent 1.5%,
+        transparent 12%,
+        var(--electric-color) 13%,
+        transparent 14%,
+        transparent 24%,
+        var(--electric-color) 25.5%,
+        transparent 27%,
+        transparent 36%,
+        var(--electric-color) 37%,
+        transparent 38%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 62%,
+        var(--electric-color) 63%,
+        transparent 64%,
+        transparent 73%,
+        var(--electric-color) 74.5%,
+        transparent 76%,
+        transparent 86%,
+        var(--electric-color) 87%,
+        transparent 88%,
+        transparent 98.5%,
+        var(--electric-color) 99.5%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-extreme 1s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  .electric-extreme::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    border: 3px solid var(--electric-color);
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-border-crackle 1s ease-in-out infinite;
+    z-index: -1;
+    box-shadow:
+      0 0 0 1px var(--electric-color),
+      inset 0 0 0 1px var(--electric-color);
+  }
+
+  @keyframes electric-arc-extreme {
+    0% {
+      opacity: 0;
+      transform: scale(1) rotate(0deg);
+      filter: blur(0px);
+      --electric-arc-angle: 45deg;
+    }
+    3% {
+      opacity: 0.95;
+      transform: scale(1.04) rotate(4deg);
+      filter: blur(0.3px);
+      --electric-arc-angle: 42deg;
+    }
+    5% {
+      opacity: 0.3;
+      transform: scale(0.97) rotate(-3deg);
+      filter: blur(1px);
+      --electric-arc-angle: 48deg;
+    }
+    7% {
+      opacity: 0.85;
+      transform: scale(1.02) rotate(2deg);
+      filter: blur(0.5px);
+      --electric-arc-angle: 44deg;
+    }
+    14% {
+      opacity: 1;
+      transform: scale(1.05) rotate(-5deg);
+      filter: blur(0.2px);
+      --electric-arc-angle: 50deg;
+    }
+    16% {
+      opacity: 0.4;
+      transform: scale(0.96) rotate(3deg);
+      filter: blur(1.2px);
+      --electric-arc-angle: 40deg;
+    }
+    28% {
+      opacity: 0.9;
+      transform: scale(1.03) rotate(-2deg);
+      filter: blur(0.4px);
+      --electric-arc-angle: 46deg;
+    }
+    42% {
+      opacity: 0.95;
+      transform: scale(1.04) rotate(5deg);
+      filter: blur(0.3px);
+      --electric-arc-angle: 43deg;
+    }
+    44% {
+      opacity: 0.35;
+      transform: scale(0.98) rotate(-4deg);
+      filter: blur(1.1px);
+      --electric-arc-angle: 47deg;
+    }
+    58% {
+      opacity: 0.88;
+      transform: scale(1.02) rotate(1deg);
+      filter: blur(0.5px);
+      --electric-arc-angle: 45deg;
+    }
+    71% {
+      opacity: 0.93;
+      transform: scale(1.03) rotate(-3deg);
+      filter: blur(0.4px);
+      --electric-arc-angle: 48deg;
+    }
+    73% {
+      opacity: 0.38;
+      transform: scale(0.97) rotate(4deg);
+      filter: blur(1px);
+      --electric-arc-angle: 42deg;
+    }
+    86% {
+      opacity: 0.86;
+      transform: scale(1.02) rotate(-2deg);
+      filter: blur(0.6px);
+      --electric-arc-angle: 46deg;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1) rotate(0deg);
+      filter: blur(0px);
+      --electric-arc-angle: 45deg;
+    }
+  }
+
+  @keyframes electric-border-crackle {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    3%, 14%, 42%, 71% {
+      opacity: 0.7;
+      transform: scale(1.01);
+      filter: drop-shadow(0 0 2px var(--electric-color));
+    }
+    5%, 16%, 44%, 73% {
+      opacity: 0;
+      transform: scale(0.99);
+    }
+    7%, 28%, 58%, 86% {
+      opacity: 0.5;
+      transform: scale(1.005);
+      filter: drop-shadow(0 0 3px var(--electric-color));
+    }
   }
 }
