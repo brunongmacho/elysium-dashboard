@@ -541,7 +541,7 @@ export default function GuildHomePage() {
                 {stat.label}
               </div>
               {stat.sublabel && (
-                <div className={`text-xs ${stat.sublabel.includes('∞') || stat.sublabel.includes('All') ? 'text-success-bright' : 'text-gray-500'} font-game mt-1 transition-all duration-500`}>
+                <div className={`text-xs ${stat.sublabel.includes('∞') || stat.sublabel.includes('All') ? 'text-accent-bright' : 'text-gray-500'} font-game mt-1 transition-all duration-500`}>
                   {stat.sublabel}
                 </div>
               )}
