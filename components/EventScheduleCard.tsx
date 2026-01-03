@@ -4,6 +4,7 @@ import { useMemo, memo } from "react";
 import CircularProgress from "./CircularProgress";
 import { Badge } from "./ui";
 import Tooltip from "./Tooltip";
+import ElectricBorder from "./ElectricBorder";
 import type { EventSchedule } from "@/types/eventSchedule";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
@@ -69,29 +70,37 @@ function EventScheduleCard({ event }: EventScheduleCardProps) {
   const daysDisplay = formatEventDays(event.days, event.isDaily);
 
   // Calculate dynamic electric animation based on time remaining
-  const { borderColor, electricClass, electricColor } = useMemo(() => {
+  const { borderColor, electricIntensity, electricColor } = useMemo(() => {
     if (isActive) {
       return {
         borderColor: 'border-green-500',
-        electricClass: 'electric-extreme',
+        electricIntensity: 'extreme' as const,
         electricColor: '#10b981',
       };
     }
     const glowData = calculateEventGlow(timeRemaining);
+
+    // Map electric class to intensity level
+    const intensityMap: Record<string, 'low' | 'medium' | 'high' | 'extreme'> = {
+      'electric-low': 'low',
+      'electric-medium': 'medium',
+      'electric-high': 'high',
+      'electric-extreme': 'extreme',
+    };
+
     return {
       borderColor: glowData.borderColor,
-      electricClass: glowData.electricClass,
+      electricIntensity: intensityMap[glowData.electricClass] || 'medium',
       electricColor: glowData.electricColor,
     };
   }, [timeRemaining, isActive]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${electricClass} ${isActive ? 'event-active-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
-      style={{
-        '--electric-color': electricColor,
-      } as React.CSSProperties}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${isActive ? 'event-active-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col relative`}
     >
+      {/* Electric Border Effect */}
+      <ElectricBorder intensity={electricIntensity} color={electricColor} />
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">

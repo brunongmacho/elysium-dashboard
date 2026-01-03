@@ -8,6 +8,7 @@ import BossTimerGrid from "@/components/BossTimerGrid";
 import { BossGridSkeleton } from "@/components/SkeletonLoader";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
+import ElectricBorder from "@/components/ElectricBorder";
 import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
 import { Icon } from "@/components/icons";
@@ -167,47 +168,39 @@ export default function Home() {
       {data && (
         <Grid columns={{ xs: 2, md: 4 }} gap="md">
           <Tooltip content="All bosses being tracked in the system" fullWidth>
-            <div
-              className="glass backdrop-blur-sm rounded-lg border border-primary/30 electric-low p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
-              style={{ '--electric-color': 'var(--color-primary-light)' } as React.CSSProperties}
-            >
-              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
+            <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+              <ElectricBorder intensity="low" color="var(--color-primary-light)" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.count} />
               </div>
-              <div className="text-xs sm:text-sm text-gray-400 font-game">Total Bosses</div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Total Bosses</div>
             </div>
           </Tooltip>
           <Tooltip content="Bosses currently alive and ready to fight" fullWidth>
-            <div
-              className="glass backdrop-blur-sm rounded-lg border border-danger electric-extreme p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
-              style={{ '--electric-color': 'var(--color-danger)' } as React.CSSProperties}
-            >
-              <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative">
+            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+              <ElectricBorder intensity="extreme" color="var(--color-danger)" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
               </div>
-              <div className="text-xs sm:text-sm text-gray-400 font-game">Spawned</div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Spawned</div>
             </div>
           </Tooltip>
           <Tooltip content="Bosses spawning within 30 minutes - prepare your party!" fullWidth>
-            <div
-              className="glass backdrop-blur-sm rounded-lg border border-accent electric-high p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
-              style={{ '--electric-color': 'var(--color-accent)' } as React.CSSProperties}
-            >
-              <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">
+            <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+              <ElectricBorder intensity="high" color="var(--color-accent)" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
               </div>
-              <div className="text-xs sm:text-sm text-gray-400 font-game">Soon (&lt;30min)</div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Soon (&lt;30min)</div>
             </div>
           </Tooltip>
           <Tooltip content="Bosses with active countdown timers" fullWidth>
-            <div
-              className="glass backdrop-blur-sm rounded-lg border border-primary electric-medium p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
-              style={{ '--electric-color': 'var(--color-primary)' } as React.CSSProperties}
-            >
-              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
+            <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+              <ElectricBorder intensity="medium" color="var(--color-primary)" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
               </div>
-              <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
+              <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Tracking</div>
             </div>
           </Tooltip>
         </Grid>
