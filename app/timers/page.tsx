@@ -181,10 +181,10 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Total Bosses</div>
             </div>
           </Tooltip>
-          <Tooltip content="Click to show only spawned bosses" fullWidth>
+          <Tooltip content="Click to toggle spawned bosses filter" fullWidth>
             <div
               className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
-              onClick={() => setStatusFilter('spawned')}
+              onClick={() => setStatusFilter(statusFilter === 'spawned' ? null : 'spawned')}
               style={{ opacity: statusFilter === 'spawned' ? 1 : 0.7 }}
             >
               <ElectricBorder intensity="extreme" color="#dc2626" />
@@ -194,10 +194,10 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Spawned</div>
             </div>
           </Tooltip>
-          <Tooltip content="Click to show bosses spawning soon" fullWidth>
+          <Tooltip content="Click to toggle soon filter" fullWidth>
             <div
               className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
-              onClick={() => setStatusFilter('soon')}
+              onClick={() => setStatusFilter(statusFilter === 'soon' ? null : 'soon')}
               style={{ opacity: statusFilter === 'soon' ? 1 : 0.7 }}
             >
               <ElectricBorder intensity="high" color="#ea580c" />
@@ -207,10 +207,10 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Soon (&lt;30min)</div>
             </div>
           </Tooltip>
-          <Tooltip content="Click to show tracking bosses" fullWidth>
+          <Tooltip content="Click to toggle tracking filter" fullWidth>
             <div
               className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
-              onClick={() => setStatusFilter('ready')}
+              onClick={() => setStatusFilter(statusFilter === 'ready' ? null : 'ready')}
               style={{ opacity: statusFilter === 'ready' ? 1 : 0.7 }}
             >
               <ElectricBorder intensity="medium" color="#dc2626" />
