@@ -275,87 +275,10 @@ export default function LeaderboardPage() {
         />
       </div>
 
-      {/* Statistics Cards */}
-      {!isLoading && !error && leaderboardData.length > 0 && (
-        <motion.div
-          ref={statsAnim.ref as any}
-          initial={{ opacity: 0, y: 30 }}
-          animate={statsAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center card-3d glow-primary"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-primary-bright font-game-decorative">
-              <AnimatedCounter value={stats.total} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Total {leaderboardType === "attendance" ? "Kills" : "Points"}
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 text-center card-3d glow-accent"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-accent-bright font-game-decorative">
-              <AnimatedCounter value={stats.topValue} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Top Player
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-success/30 p-4 text-center card-3d glow-success"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-success-bright font-game-decorative">
-              <AnimatedCounter value={stats.perfectCount} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              {leaderboardType === "attendance" ? "Perfect Attendance" : "Rich Members (1000+)"}
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-gold/30 p-4 text-center card-3d"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-gold font-game-decorative">
-              <AnimatedCounter value={stats.avgValue} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Average {leaderboardType === "attendance" ? "Kills" : "Points"}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
 
       {/* Podium for Top 3 */}
       {!isLoading && !error && podiumData.length > 0 && (
-        <motion.div
-          ref={podiumAnim.ref as any}
-          initial={{ opacity: 0, y: 50 }}
-          animate={podiumAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <LeaderboardPodium entries={podiumData} type={leaderboardType} />
-        </motion.div>
+        <LeaderboardPodium entries={podiumData} type={leaderboardType} />
       )}
 
       {/* Filters */}
@@ -499,13 +422,7 @@ export default function LeaderboardPage() {
 
       {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
-        <motion.div
-          ref={tableAnim.ref as any}
-          initial={{ opacity: 0, y: 50 }}
-          animate={tableAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden"
-        >
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-primary/20 border-b border-primary/30">
@@ -643,7 +560,7 @@ export default function LeaderboardPage() {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Empty State */}
