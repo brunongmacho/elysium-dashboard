@@ -7,11 +7,12 @@ import CircularProgress from "./CircularProgress";
 import MarkAsKilledModal from "./MarkAsKilledModal";
 import { ConfirmationModal, Badge } from "./ui";
 import Tooltip from "./Tooltip";
+import ElectricBorder from "./ElectricBorder";
 import type { BossTimerDisplay } from "@/types/database";
 import { formatInGMT8 } from "@/lib/timezone";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
-import { calculateBossGlow, generateGlowStyle } from "@/lib/boss-glow";
+import { calculateBossGlow } from "@/lib/boss-glow";
 import { useTimer } from "@/contexts/TimerContext";
 
 interface BossCardProps {
@@ -138,22 +139,31 @@ function BossCard({
     return { progressPercentage: percentage, timeRemaining: remaining };
   }, [boss.nextSpawnTime, currentTime]);
 
-  // Calculate dynamic, theme-aware glow based on time remaining
-  const { borderColor, glowStyle } = useMemo(() => {
+  // Calculate dynamic, theme-aware electric animation based on time remaining
+  const { borderColor, electricIntensity, electricColor } = useMemo(() => {
     const glowData = calculateBossGlow(timeRemaining);
+
+    // Map electric class to intensity level
+    const intensityMap: Record<string, 'low' | 'medium' | 'high' | 'extreme'> = {
+      'electric-low': 'low',
+      'electric-medium': 'medium',
+      'electric-high': 'high',
+      'electric-extreme': 'extreme',
+    };
+
     return {
       borderColor: glowData.borderColor,
-      glowStyle: generateGlowStyle(glowData.color, glowData.intensity),
+      electricIntensity: intensityMap[glowData.electricClass] || 'medium',
+      electricColor: glowData.electricColor,
     };
   }, [timeRemaining]);
 
   return (
     <div
-      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${boss.status === 'spawned' ? 'boss-spawned-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col`}
-      style={{
-        boxShadow: glowStyle,
-      }}
+      className={`glass backdrop-blur-sm rounded-lg border-2 ${borderColor} ${boss.status === 'spawned' ? 'boss-spawned-border' : ''} shadow-lg p-4 card-3d transition-all duration-1000 overflow-visible h-full flex flex-col relative`}
     >
+      {/* Electric Border Effect */}
+      <ElectricBorder intensity={electricIntensity} color={electricColor} />
       {/* Header */}
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
