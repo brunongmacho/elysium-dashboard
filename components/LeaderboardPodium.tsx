@@ -97,6 +97,8 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
           if (!entry) return null;
 
           const colors = getColors(entry.rank);
+          // Animation sequence: 3rd place first, then 2nd, then 1st (for dramatic reveal)
+          const animationDelay = entry.rank === 3 ? 0 : entry.rank === 2 ? 0.3 : 0.6;
 
           return (
             <motion.div
@@ -106,7 +108,7 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
               animate={{ opacity: 1, y: 0, rotateY: 0 }}
               transition={{
                 duration: 0.6,
-                delay: index * 0.2,
+                delay: animationDelay,
                 type: "spring",
                 stiffness: 100,
               }}
@@ -196,9 +198,17 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
                   flex items-center justify-center
                   relative
                 `}
+                initial={{ opacity: 0, scaleY: 0 }}
+                animate={{ opacity: 1, scaleY: 1 }}
+                transition={{
+                  duration: 0.5,
+                  delay: animationDelay + 0.3,
+                  ease: "easeOut",
+                }}
                 style={{
                   transformStyle: "preserve-3d",
                   transform: "rotateX(-5deg)",
+                  transformOrigin: "bottom",
                 }}
                 whileHover={{
                   transform: "rotateX(0deg) scale(1.02)",
