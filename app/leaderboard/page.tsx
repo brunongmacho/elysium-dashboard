@@ -21,65 +21,6 @@ import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack } from "@/components/layout";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
-// Helper function to get rank tier styling
-function getRankTier(rank: number): {
-  borderClass: string;
-  hoverBgClass: string;
-  textClass: string;
-  glow: string;
-  title: string;
-  badge: string;
-} {
-  if (rank === 1) return {
-    borderClass: 'border-yellow-500/30 hover:border-yellow-500',
-    hoverBgClass: 'hover:bg-yellow-500/10',
-    textClass: 'text-yellow-400',
-    glow: 'glow-gold',
-    title: 'Guild Champion',
-    badge: '👑'
-  };
-  if (rank <= 3) return {
-    borderClass: 'border-gray-400/30 hover:border-gray-400',
-    hoverBgClass: 'hover:bg-gray-400/10',
-    textClass: 'text-gray-300',
-    glow: 'glow-silver',
-    title: 'Elite Guardian',
-    badge: '⚔️'
-  };
-  if (rank <= 10) return {
-    borderClass: 'border-primary/30 hover:border-primary',
-    hoverBgClass: 'hover:bg-primary/10',
-    textClass: 'text-primary-light',
-    glow: 'glow-primary',
-    title: 'Veteran Warrior',
-    badge: '🛡️'
-  };
-  if (rank <= 25) return {
-    borderClass: 'border-accent/30 hover:border-accent',
-    hoverBgClass: 'hover:bg-accent/10',
-    textClass: 'text-accent-light',
-    glow: 'glow-accent',
-    title: 'Skilled Fighter',
-    badge: '🗡️'
-  };
-  if (rank <= 50) return {
-    borderClass: 'border-success/30 hover:border-success',
-    hoverBgClass: 'hover:bg-success/10',
-    textClass: 'text-success-light',
-    glow: '',
-    title: 'Brave Adventurer',
-    badge: '⚡'
-  };
-  return {
-    borderClass: 'border-gray-600/30 hover:border-gray-600',
-    hoverBgClass: 'hover:bg-gray-600/10',
-    textClass: 'text-gray-400',
-    glow: '',
-    title: 'Guild Member',
-    badge: '🎯'
-  };
-}
-
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
@@ -558,36 +499,20 @@ export default function LeaderboardPage() {
                 )}
               </thead>
               <tbody className="divide-y divide-primary/10">
-                {leaderboardData.map((entry, index) => {
-                  const tier = getRankTier(entry.rank);
-                  return (
-                    <motion.tr
-                      key={entry.memberId}
-                      className={`${tier.hoverBgClass} transition-all duration-200 group ${tier.glow} border-l-2 ${tier.borderClass}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={tableAnim.isVisible ? { opacity: 1, x: 0 } : {}}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      whileHover={{ scale: 1.01, x: 5 }}
-                    >
-                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
-                        <div className="flex flex-col items-start gap-1">
-                          <div className="flex items-center gap-2">
-                            {entry.rank <= 3 ? (
-                              <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
-                                {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
-                              </span>
-                            ) : (
-                              <span className={`${tier.textClass} text-sm sm:text-base font-game-decorative flex items-center gap-1`}>
-                                <span className="text-base">{tier.badge}</span>
-                                {entry.rank}
-                              </span>
-                            )}
-                          </div>
-                          <div className={`text-xs ${tier.textClass} opacity-70 font-game hidden sm:block`}>
-                            {tier.title}
-                          </div>
-                        </div>
-                      </td>
+                {leaderboardData.map((entry, index) => (
+                  <tr
+                    key={entry.memberId}
+                    className="hover:bg-primary/10 transition-all duration-200 group"
+                  >
+                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
+                      {entry.rank <= 3 ? (
+                        <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
+                          {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
+                        </span>
+                      ) : (
+                        <span className="text-primary-light text-sm sm:text-base font-game-decorative">{entry.rank}</span>
+                      )}
+                    </td>
                       <td className="px-2 sm:px-4 py-2 sm:py-3">
                         <a
                           href={`/profile/${entry.memberId}`}
@@ -648,9 +573,8 @@ export default function LeaderboardPage() {
                         </td>
                       </>
                     )}
-                    </motion.tr>
-                  );
-                })}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
