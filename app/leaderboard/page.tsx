@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import useSWR from "swr";
-import { motion } from "framer-motion";
 import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry,
@@ -11,7 +10,6 @@ import type { LeaderboardResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
@@ -28,13 +26,6 @@ export default function LeaderboardPage() {
   const [selectedWeek, setSelectedWeek] = useState<string>(""); // Format: YYYY-MM-DD (week start date)
   const [limit, setLimit] = useState<number>(LEADERBOARD.DEFAULT_LIMIT);
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Scroll animation hooks
-  const headerAnim = useScrollAnimation({ threshold: 0.2 });
-  const statsAnim = useScrollAnimation({ threshold: 0.2 });
-  const podiumAnim = useScrollAnimation({ threshold: 0.2 });
-  const filtersAnim = useScrollAnimation({ threshold: 0.2 });
-  const tableAnim = useScrollAnimation({ threshold: 0.2 });
 
   // Debounce search query to reduce API calls
   const debouncedSearch = useDebounce(searchQuery, LEADERBOARD.DEBOUNCE_DELAY);
@@ -158,31 +149,6 @@ export default function LeaderboardPage() {
     }));
   }, [podiumLeaderboardData, leaderboardType]);
 
-  // Calculate statistics for cards
-  const stats = useMemo(() => {
-    if (!leaderboardData || leaderboardData.length === 0) {
-      return { total: 0, topValue: 0, perfectCount: 0, avgValue: 0 };
-    }
-
-    if (leaderboardType === "attendance") {
-      const attendanceData = leaderboardData as AttendanceLeaderboardEntry[];
-      const totalKills = attendanceData.reduce((sum, e) => sum + e.totalKills, 0);
-      const perfectAttendance = attendanceData.filter(e => e.attendanceRate === 100).length;
-      const avgKills = Math.round(totalKills / attendanceData.length);
-      const topKills = attendanceData[0]?.totalKills || 0;
-
-      return { total: totalKills, topValue: topKills, perfectCount: perfectAttendance, avgValue: avgKills };
-    } else {
-      const pointsData = leaderboardData as PointsLeaderboardEntry[];
-      const totalPoints = pointsData.reduce((sum, e) => sum + e.pointsEarned, 0);
-      const topPoints = pointsData[0]?.pointsEarned || 0;
-      const avgPoints = Math.round(totalPoints / pointsData.length);
-      const richMembers = pointsData.filter(e => e.pointsAvailable >= 1000).length;
-
-      return { total: totalPoints, topValue: topPoints, perfectCount: richMembers, avgValue: avgPoints };
-    }
-  }, [leaderboardData, leaderboardType]);
-
   return (
     <>
     <Stack gap="lg">
@@ -194,22 +160,15 @@ export default function LeaderboardPage() {
         ]}
       />
 
-      {/* Header - Responsive sizing with animation */}
-      <motion.div
-        ref={headerAnim.ref as any}
-        initial={{ opacity: 0, y: 30 }}
-        animate={headerAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-      >
-        <Stack gap="sm">
-          <Typography variant="h1" className="text-3xl sm:text-4xl text-gold">
-            Leaderboards
-          </Typography>
-          <Typography variant="body" className="text-sm sm:text-base text-gray-300">
-            Top performers in attendance and bidding points
-          </Typography>
-        </Stack>
-      </motion.div>
+      {/* Header - Responsive sizing */}
+      <Stack gap="sm">
+        <Typography variant="h1" className="text-3xl sm:text-4xl text-gold">
+          Leaderboards
+        </Typography>
+        <Typography variant="body" className="text-sm sm:text-base text-gray-300">
+          Top performers in attendance and bidding points
+        </Typography>
+      </Stack>
 
       {/* Leaderboard Type Tabs */}
       <div className="flex justify-center">
@@ -223,97 +182,13 @@ export default function LeaderboardPage() {
         />
       </div>
 
-      {/* Statistics Cards */}
-      {!isLoading && !error && leaderboardData.length > 0 && (
-        <motion.div
-          ref={statsAnim.ref as any}
-          initial={{ opacity: 0, y: 30 }}
-          animate={statsAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center card-3d glow-primary"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-primary-bright font-game-decorative">
-              <AnimatedCounter value={stats.total} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Total {leaderboardType === "attendance" ? "Kills" : "Points"}
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 text-center card-3d glow-accent"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-accent-bright font-game-decorative">
-              <AnimatedCounter value={stats.topValue} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Top Player
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-success/30 p-4 text-center card-3d glow-success"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-success-bright font-game-decorative">
-              <AnimatedCounter value={stats.perfectCount} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              {leaderboardType === "attendance" ? "Perfect Attendance" : "Rich Members (1000+)"}
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-gold/30 p-4 text-center card-3d"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={statsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl font-bold text-gold font-game-decorative">
-              <AnimatedCounter value={stats.avgValue} />
-            </div>
-            <div className="text-sm text-gray-400 font-game mt-1">
-              Average {leaderboardType === "attendance" ? "Kills" : "Points"}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-
       {/* Podium for Top 3 */}
       {!isLoading && !error && podiumData.length > 0 && (
-        <motion.div
-          ref={podiumAnim.ref as any}
-          initial={{ opacity: 0, y: 50 }}
-          animate={podiumAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <LeaderboardPodium entries={podiumData} type={leaderboardType} />
-        </motion.div>
+        <LeaderboardPodium entries={podiumData} type={leaderboardType} />
       )}
 
       {/* Filters */}
-      <motion.div
-        ref={filtersAnim.ref as any}
-        initial={{ opacity: 0, y: 30 }}
-        animate={filtersAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 card-3d hover:scale-[1.01] transition-transform duration-200"
-      >
+      <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 card-3d hover:scale-[1.01] transition-transform duration-200">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
@@ -428,7 +303,7 @@ export default function LeaderboardPage() {
             Showing {data.count} of {data.total} members
           </div>
         )}
-      </motion.div>
+      </div>
 
       {/* Loading State */}
       {isLoading && <LeaderboardSkeleton />}
@@ -447,13 +322,7 @@ export default function LeaderboardPage() {
 
       {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
-        <motion.div
-          ref={tableAnim.ref as any}
-          initial={{ opacity: 0, y: 50 }}
-          animate={tableAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden"
-        >
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-primary/20 border-b border-primary/30">
@@ -513,14 +382,14 @@ export default function LeaderboardPage() {
                         <span className="text-primary-light text-sm sm:text-base font-game-decorative">{entry.rank}</span>
                       )}
                     </td>
-                      <td className="px-2 sm:px-4 py-2 sm:py-3">
-                        <a
-                          href={`/profile/${entry.memberId}`}
-                          className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
-                        >
-                          {entry.username}
-                        </a>
-                      </td>
+                    <td className="px-2 sm:px-4 py-2 sm:py-3">
+                      <a
+                        href={`/profile/${entry.memberId}`}
+                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
+                      >
+                        {entry.username}
+                      </a>
+                    </td>
                     {leaderboardType === "attendance" ? (
                       <>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
@@ -578,7 +447,7 @@ export default function LeaderboardPage() {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Empty State */}
