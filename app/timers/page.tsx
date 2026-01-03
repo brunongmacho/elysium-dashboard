@@ -22,6 +22,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
   const { data, error, isLoading, mutate } = useSWR<BossTimersResponse>(
@@ -167,8 +168,12 @@ export default function Home() {
       {/* Stats Bar */}
       {data && (
         <Grid columns={{ xs: 2, md: 4 }} gap="md">
-          <Tooltip content="All bosses being tracked in the system" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+          <Tooltip content="Click to show all bosses" fullWidth>
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
+              onClick={() => setStatusFilter(null)}
+              style={{ opacity: statusFilter === null ? 1 : 0.7 }}
+            >
               <ElectricBorder intensity="low" color="#fca5a5" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.count} />
@@ -176,8 +181,12 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Total Bosses</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses currently alive and ready to fight" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+          <Tooltip content="Click to show only spawned bosses" fullWidth>
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-danger p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
+              onClick={() => setStatusFilter('spawned')}
+              style={{ opacity: statusFilter === 'spawned' ? 1 : 0.7 }}
+            >
               <ElectricBorder intensity="extreme" color="#dc2626" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "spawned").length} />
@@ -185,8 +194,12 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Spawned</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses spawning within 30 minutes - prepare your party!" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+          <Tooltip content="Click to show bosses spawning soon" fullWidth>
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
+              onClick={() => setStatusFilter('soon')}
+              style={{ opacity: statusFilter === 'soon' ? 1 : 0.7 }}
+            >
               <ElectricBorder intensity="high" color="#ea580c" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "soon").length} />
@@ -194,8 +207,12 @@ export default function Home() {
               <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">Soon (&lt;30min)</div>
             </div>
           </Tooltip>
-          <Tooltip content="Bosses with active countdown timers" fullWidth>
-            <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
+          <Tooltip content="Click to show tracking bosses" fullWidth>
+            <div
+              className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-pointer relative"
+              onClick={() => setStatusFilter('ready')}
+              style={{ opacity: statusFilter === 'ready' ? 1 : 0.7 }}
+            >
               <ElectricBorder intensity="medium" color="#dc2626" />
               <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
                 <AnimatedCounter value={data.bosses.filter((b) => b.status === "ready").length} />
@@ -229,7 +246,7 @@ export default function Home() {
       {/* Boss Grid */}
       {data && data.success && (
         <BossTimerGrid
-          bosses={data.bosses}
+          bosses={statusFilter ? data.bosses.filter((b) => b.status === statusFilter) : data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
           onCancelSpawn={handleCancelSpawn}
           canMarkAsKilled={session?.canMarkAsKilled || false}
