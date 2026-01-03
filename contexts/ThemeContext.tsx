@@ -335,19 +335,22 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeName>('crimson');
+  // Initialize theme from localStorage if available (client-side only)
+  const [currentTheme, setCurrentTheme] = useState<ThemeName>(() => {
+    // Only access localStorage on client-side
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('guild-theme') as ThemeName;
+      if (savedTheme && themes[savedTheme]) {
+        return savedTheme;
+      }
+    }
+    return 'crimson';
+  });
   const [mounted, setMounted] = useState(false);
 
-  // Load theme from localStorage on mount (only on client)
+  // Mark as mounted
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('guild-theme') as ThemeName;
-    if (savedTheme && themes[savedTheme]) {
-      setCurrentTheme(savedTheme);
-    } else {
-      // Set default theme if no saved theme
-      setCurrentTheme('crimson');
-    }
   }, []);
 
   // Update CSS variables when theme changes (only on client)
