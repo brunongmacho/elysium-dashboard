@@ -469,7 +469,7 @@ export default function LeaderboardPage() {
               </thead>
               <tbody className="divide-y divide-primary/10">
                 {leaderboardData.map((entry, index) => {
-                  const tier = getRankTier(entry.rank);
+                  const tier = getRankTier(entry.rank || index + 1);
                   return (
                     <tr
                       key={entry.memberId}
@@ -478,14 +478,14 @@ export default function LeaderboardPage() {
                       <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                         <div className="flex flex-col items-start gap-1">
                           <div className="flex items-center gap-2">
-                            {entry.rank <= 3 ? (
+                            {(entry.rank || index + 1) <= 3 ? (
                               <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
-                                {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
+                                {(entry.rank || index + 1) === 1 ? "🥇" : (entry.rank || index + 1) === 2 ? "🥈" : "🥉"}
                               </span>
                             ) : (
                               <span className={`${tier.textClass} text-sm sm:text-base font-game-decorative flex items-center gap-1`}>
                                 <span className="text-base">{tier.badge}</span>
-                                {entry.rank}
+                                {entry.rank || index + 1}
                               </span>
                             )}
                           </div>
