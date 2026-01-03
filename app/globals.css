@@ -1412,7 +1412,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-arc-low 3s ease-in-out infinite;
-    z-index: -1;
+    z-index: 0;
   }
 
   @keyframes electric-arc-low {
@@ -1454,7 +1454,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-arc-medium 2s ease-in-out infinite;
-    z-index: -1;
+    z-index: 0;
     filter: blur(1px);
   }
 
@@ -1475,6 +1475,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-border-flicker 2s ease-in-out infinite;
+    z-index: 0;
   }
 
   @keyframes electric-arc-medium {
@@ -1528,7 +1529,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-arc-high 1.5s ease-in-out infinite;
-    z-index: -1;
+    z-index: 0;
     filter: blur(0.5px);
   }
 
@@ -1560,7 +1561,7 @@ textarea:focus-visible {
       linear-gradient(90deg, black 0%, transparent 2%, transparent 98%, black 100%),
       linear-gradient(0deg, black 0%, transparent 2%, transparent 98%, black 100%);
     mask-composite: exclude;
-    z-index: -1;
+    z-index: 0;
   }
 
   @keyframes electric-arc-high {
@@ -1634,7 +1635,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-arc-extreme 1s ease-in-out infinite;
-    z-index: -1;
+    z-index: 0;
   }
 
   .electric-extreme::after {
@@ -1646,7 +1647,7 @@ textarea:focus-visible {
     opacity: 0;
     pointer-events: none;
     animation: electric-border-crackle 1s ease-in-out infinite;
-    z-index: -1;
+    z-index: 0;
     box-shadow:
       0 0 0 1px var(--electric-color),
       inset 0 0 0 1px var(--electric-color);
