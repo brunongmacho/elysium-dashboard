@@ -278,7 +278,11 @@ export default function LeaderboardPage() {
 
       {/* Podium for Top 3 */}
       {!isLoading && !error && podiumData.length > 0 && (
-        <LeaderboardPodium entries={podiumData} type={leaderboardType} />
+        <LeaderboardPodium
+          key={leaderboardType}
+          entries={podiumData}
+          type={leaderboardType}
+        />
       )}
 
       {/* Filters */}
