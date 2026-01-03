@@ -89,7 +89,10 @@ function EventScheduleContent() {
       {/* Stats Bar */}
       <Grid columns={{ xs: 2, md: 4 }} gap="md">
         <Tooltip content="All scheduled events being tracked" fullWidth>
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help">
+          <div
+            className="glass backdrop-blur-sm rounded-lg border border-primary/30 electric-low p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+            style={{ '--electric-color': 'var(--color-primary-light)' } as React.CSSProperties}
+          >
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
               <AnimatedCounter value={stats.total} />
             </div>
@@ -97,7 +100,10 @@ function EventScheduleContent() {
           </div>
         </Tooltip>
         <Tooltip content="Events currently active - join now!" fullWidth>
-          <div className="glass backdrop-blur-sm rounded-lg border border-success p-3 sm:p-4 text-center glow-success hover:scale-105 transition-transform duration-200 cursor-help">
+          <div
+            className="glass backdrop-blur-sm rounded-lg border border-success electric-extreme p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+            style={{ '--electric-color': 'var(--color-success)' } as React.CSSProperties}
+          >
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-success font-game-decorative">
               <AnimatedCounter value={stats.active} />
             </div>
@@ -105,7 +111,10 @@ function EventScheduleContent() {
           </div>
         </Tooltip>
         <Tooltip content="Events starting within 1 hour - get ready!" fullWidth>
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center glow-accent hover:scale-105 transition-transform duration-200 cursor-help">
+          <div
+            className="glass backdrop-blur-sm rounded-lg border border-accent electric-high p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+            style={{ '--electric-color': 'var(--color-accent)' } as React.CSSProperties}
+          >
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">
               <AnimatedCounter value={stats.soon} />
             </div>
@@ -113,7 +122,10 @@ function EventScheduleContent() {
           </div>
         </Tooltip>
         <Tooltip content="Events happening today" fullWidth>
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center glow-primary hover:scale-105 transition-transform duration-200 cursor-help">
+          <div
+            className="glass backdrop-blur-sm rounded-lg border border-primary electric-medium p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help"
+            style={{ '--electric-color': 'var(--color-primary)' } as React.CSSProperties}
+          >
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">
               <AnimatedCounter value={stats.today} />
             </div>
