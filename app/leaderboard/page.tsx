@@ -473,13 +473,13 @@ export default function LeaderboardPage() {
                   return (
                     <tr
                       key={entry.memberId}
-                      className={`${tier.bgClass} transition-all duration-200 group ${tier.glow} border-l-2 ${tier.borderClass}`}
+                      className={`${tier.bgClass} transition-colors duration-150 group ${tier.glow} border-l-2 ${tier.borderClass}`}
                     >
                       <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                         <div className="flex flex-col items-start gap-1">
                           <div className="flex items-center gap-2">
                             {(entry.rank || index + 1) <= 3 ? (
-                              <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
+                              <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-150">
                                 {(entry.rank || index + 1) === 1 ? "🥇" : (entry.rank || index + 1) === 2 ? "🥈" : "🥉"}
                               </span>
                             ) : (
@@ -497,7 +497,7 @@ export default function LeaderboardPage() {
                     <td className="px-2 sm:px-4 py-2 sm:py-3">
                       <a
                         href={`/profile/${entry.memberId}`}
-                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
+                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-colors duration-150 group-hover:text-accent-bright text-xs sm:text-sm font-game"
                       >
                         {entry.username}
                       </a>
