@@ -246,12 +246,14 @@ export default function Home() {
       {/* Boss Grid */}
       {data && data.success && (
         <BossTimerGrid
-          bosses={statusFilter ? data.bosses.filter((b) => b.status === statusFilter) : data.bosses}
+          bosses={data.bosses}
           onMarkAsKilled={handleMarkAsKilled}
           onCancelSpawn={handleCancelSpawn}
           canMarkAsKilled={session?.canMarkAsKilled || false}
           isAdmin={session?.isAdmin || false}
           userName={session?.user?.name || ""}
+          externalFilterStatus={statusFilter}
+          onFilterStatusChange={setStatusFilter}
         />
       )}
 
