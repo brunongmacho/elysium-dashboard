@@ -355,11 +355,13 @@ export default function GuildHomePage() {
 
     // Use shuffled index to select stat set (shuffle with repeat all)
     if (shuffledIndices.length === 0) {
-      return statsData[0] || fallbackStats;
+      const firstStats = statsData[0];
+      return (Array.isArray(firstStats) && firstStats.length > 0) ? firstStats : fallbackStats;
     }
 
     const currentIndex = shuffledIndices[currentShuffleIndex];
-    return statsData[currentIndex] || fallbackStats;
+    const selectedStats = statsData[currentIndex];
+    return (Array.isArray(selectedStats) && selectedStats.length > 0) ? selectedStats : fallbackStats;
   }, [shuffledIndices, currentShuffleIndex]);
 
   // Get random members for activities and achievements
