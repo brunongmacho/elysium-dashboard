@@ -8,133 +8,111 @@ interface ElectricBorderProps {
   className?: string;
 }
 
-interface Arc {
-  id: number;
-  path: string;
-  opacity: number;
-  lifespan: number;
-}
-
 export default function ElectricBorder({
   intensity = 'medium',
   color = '#3b82f6',
   className = ''
 }: ElectricBorderProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [arcs, setArcs] = useState<Arc[]>([]);
-  const nextIdRef = useRef(0);
+  const [borderPath, setBorderPath] = useState('');
 
-  // Intensity settings
+  // Intensity settings - controls zigzag amplitude and frequency
   const settings = {
-    low: { strokeWidth: 1.5, blur: 3, maxArcs: 2, arcInterval: 800, segmentSize: 15 },
-    medium: { strokeWidth: 2, blur: 4, maxArcs: 3, arcInterval: 500, segmentSize: 12 },
-    high: { strokeWidth: 2.5, blur: 5, maxArcs: 4, arcInterval: 300, segmentSize: 10 },
-    extreme: { strokeWidth: 3, blur: 6, maxArcs: 6, arcInterval: 150, segmentSize: 8 },
+    low: { strokeWidth: 2, blur: 4, jitter: 3, segmentSize: 20, updateInterval: 150 },
+    medium: { strokeWidth: 2.5, blur: 5, jitter: 5, segmentSize: 15, updateInterval: 100 },
+    high: { strokeWidth: 3, blur: 6, jitter: 7, segmentSize: 12, updateInterval: 80 },
+    extreme: { strokeWidth: 3.5, blur: 8, jitter: 10, segmentSize: 10, updateInterval: 50 },
   }[intensity];
 
   useEffect(() => {
     if (!svgRef.current) return;
 
     const svg = svgRef.current;
-    const rect = svg.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
 
-    // Generate a single electric arc along one edge
-    const generateElectricArc = () => {
-      const edges = [
-        { start: [0, 0], end: [width, 0], axis: 'x' }, // Top
-        { start: [width, 0], end: [width, height], axis: 'y' }, // Right
-        { start: [width, height], end: [0, height], axis: 'x' }, // Bottom
-        { start: [0, height], end: [0, 0], axis: 'y' }, // Left
-      ];
+    const updateBorder = () => {
+      const rect = svg.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const { jitter, segmentSize } = settings;
 
-      const edge = edges[Math.floor(Math.random() * edges.length)];
-      const [startX, startY] = edge.start;
-      const [endX, endY] = edge.end;
+      // Generate continuous electric border around entire perimeter
+      const generateElectricPerimeter = () => {
+        const path: string[] = [];
+        const cornerRadius = 8; // Match card border radius
 
-      // Random segment along the edge
-      const edgeLength = edge.axis === 'x' ? Math.abs(endX - startX) : Math.abs(endY - startY);
-      const segmentStart = Math.random() * (edgeLength * 0.7); // Don't go all the way to corners
-      const segmentLength = Math.random() * edgeLength * 0.4 + edgeLength * 0.1;
+        // Start at top-left corner (after radius)
+        path.push(`M ${cornerRadius} 0`);
 
-      const path: string[] = [];
-      let currentPos = segmentStart;
-
-      if (edge.axis === 'x') {
-        const y = startY;
-        const direction = endX > startX ? 1 : -1;
-        path.push(`M ${startX + currentPos * direction} ${y}`);
-
-        while (currentPos < segmentStart + segmentLength) {
-          currentPos += settings.segmentSize;
-          const x = startX + currentPos * direction;
-          const jitterY = y + (Math.random() - 0.5) * 12; // Random zigzag
-          const jitterX = x + (Math.random() - 0.5) * 4;
-
-          // Create sharp angles for lightning effect
-          path.push(`L ${jitterX} ${jitterY}`);
-
-          // Occasionally add branching
-          if (Math.random() > 0.85) {
-            const branchLength = Math.random() * 15 + 10;
-            const branchY = jitterY + (Math.random() - 0.5) * branchLength;
-            const branchX = jitterX + (Math.random() - 0.5) * 8;
-            path.push(`L ${branchX} ${branchY} M ${jitterX} ${jitterY}`);
-          }
+        // TOP EDGE - with electric zigzag
+        let x = cornerRadius;
+        while (x < width - cornerRadius) {
+          x += segmentSize;
+          const actualX = Math.min(x, width - cornerRadius);
+          const jitterY = (Math.random() - 0.5) * jitter;
+          path.push(`L ${actualX} ${jitterY}`);
         }
-      } else {
-        const x = startX;
-        const direction = endY > startY ? 1 : -1;
-        path.push(`M ${x} ${startY + currentPos * direction}`);
 
-        while (currentPos < segmentStart + segmentLength) {
-          currentPos += settings.segmentSize;
-          const y = startY + currentPos * direction;
-          const jitterX = x + (Math.random() - 0.5) * 12; // Random zigzag
-          const jitterY = y + (Math.random() - 0.5) * 4;
+        // Top-right corner arc
+        path.push(`Q ${width} 0 ${width} ${cornerRadius}`);
 
-          path.push(`L ${jitterX} ${jitterY}`);
-
-          // Occasionally add branching
-          if (Math.random() > 0.85) {
-            const branchLength = Math.random() * 15 + 10;
-            const branchX = jitterX + (Math.random() - 0.5) * branchLength;
-            const branchY = jitterY + (Math.random() - 0.5) * 8;
-            path.push(`L ${branchX} ${branchY} M ${jitterX} ${jitterY}`);
-          }
+        // RIGHT EDGE - with electric zigzag
+        let y = cornerRadius;
+        while (y < height - cornerRadius) {
+          y += segmentSize;
+          const actualY = Math.min(y, height - cornerRadius);
+          const jitterX = width + (Math.random() - 0.5) * jitter;
+          path.push(`L ${jitterX} ${actualY}`);
         }
-      }
 
-      return path.join(' ');
+        // Bottom-right corner arc
+        path.push(`Q ${width} ${height} ${width - cornerRadius} ${height}`);
+
+        // BOTTOM EDGE - with electric zigzag
+        x = width - cornerRadius;
+        while (x > cornerRadius) {
+          x -= segmentSize;
+          const actualX = Math.max(x, cornerRadius);
+          const jitterY = height + (Math.random() - 0.5) * jitter;
+          path.push(`L ${actualX} ${jitterY}`);
+        }
+
+        // Bottom-left corner arc
+        path.push(`Q 0 ${height} 0 ${height - cornerRadius}`);
+
+        // LEFT EDGE - with electric zigzag
+        y = height - cornerRadius;
+        while (y > cornerRadius) {
+          y -= segmentSize;
+          const actualY = Math.max(y, cornerRadius);
+          const jitterX = (Math.random() - 0.5) * jitter;
+          path.push(`L ${jitterX} ${actualY}`);
+        }
+
+        // Top-left corner arc
+        path.push(`Q 0 0 ${cornerRadius} 0`);
+        path.push('Z');
+
+        return path.join(' ');
+      };
+
+      setBorderPath(generateElectricPerimeter());
     };
 
-    // Create new arcs periodically
-    const arcInterval = setInterval(() => {
-      setArcs(prev => {
-        // Remove expired arcs
-        const now = Date.now();
-        const active = prev.filter(arc => now - arc.lifespan < 200);
+    // Initial render
+    updateBorder();
 
-        // Add new arc if under limit
-        if (active.length < settings.maxArcs) {
-          const newArc: Arc = {
-            id: nextIdRef.current++,
-            path: generateElectricArc(),
-            opacity: Math.random() * 0.5 + 0.5,
-            lifespan: now,
-          };
-          return [...active, newArc];
-        }
+    // Animate the electric border
+    const interval = setInterval(updateBorder, settings.updateInterval);
 
-        return active;
-      });
-    }, settings.arcInterval);
+    // Handle resize
+    const handleResize = () => updateBorder();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(arcInterval);
+      clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [intensity, settings.maxArcs, settings.arcInterval, settings.segmentSize]);
+  }, [intensity, settings]);
 
   return (
     <svg
@@ -143,52 +121,57 @@ export default function ElectricBorder({
       style={{ width: '100%', height: '100%' }}
     >
       <defs>
-        <filter id={`electric-glow-${intensity}`} x="-200%" y="-200%" width="400%" height="400%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation={settings.blur} />
+        <filter id={`electric-glow-${intensity}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation={settings.blur} result="blur" />
           <feColorMatrix
+            in="blur"
             type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 0"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 0"
+            result="glow"
           />
-          <feBlend in="SourceGraphic" mode="screen" />
+          <feMerge>
+            <feMergeNode in="glow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
       </defs>
 
-      {arcs.map((arc) => (
-        <g key={arc.id}>
-          {/* Glow layer */}
-          <path
-            d={arc.path}
-            fill="none"
-            stroke={color}
-            strokeWidth={settings.strokeWidth * 2}
-            strokeLinecap="round"
-            strokeLinejoin="bevel"
-            opacity={arc.opacity * 0.3}
-            filter={`url(#electric-glow-${intensity})`}
-          />
-          {/* Main arc */}
-          <path
-            d={arc.path}
-            fill="none"
-            stroke={color}
-            strokeWidth={settings.strokeWidth}
-            strokeLinecap="round"
-            strokeLinejoin="bevel"
-            opacity={arc.opacity}
-            style={{ filter: `drop-shadow(0 0 ${settings.blur}px ${color})` }}
-          />
-          {/* Bright core */}
-          <path
-            d={arc.path}
-            fill="none"
-            stroke="white"
-            strokeWidth={settings.strokeWidth * 0.3}
-            strokeLinecap="round"
-            strokeLinejoin="bevel"
-            opacity={arc.opacity * 0.8}
-          />
-        </g>
-      ))}
+      {/* Outer glow layer */}
+      <path
+        d={borderPath}
+        fill="none"
+        stroke={color}
+        strokeWidth={settings.strokeWidth * 3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity={0.2}
+        filter={`url(#electric-glow-${intensity})`}
+      />
+
+      {/* Main electric border */}
+      <path
+        d={borderPath}
+        fill="none"
+        stroke={color}
+        strokeWidth={settings.strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity={0.9}
+        style={{
+          filter: `drop-shadow(0 0 ${settings.blur}px ${color}) drop-shadow(0 0 ${settings.blur * 2}px ${color})`
+        }}
+      />
+
+      {/* Bright inner core */}
+      <path
+        d={borderPath}
+        fill="none"
+        stroke="white"
+        strokeWidth={settings.strokeWidth * 0.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity={0.9}
+      />
     </svg>
   );
 }
