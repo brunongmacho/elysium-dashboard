@@ -91,7 +91,7 @@ function EventScheduleContent() {
       <Grid columns={{ xs: 2, md: 4 }} gap="md">
         <Tooltip content="All scheduled events being tracked" fullWidth>
           <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
-            <ElectricBorder intensity="low" color="var(--color-primary-light)" />
+            <ElectricBorder intensity="low" color="#fca5a5" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
               <AnimatedCounter value={stats.total} />
             </div>
@@ -100,7 +100,7 @@ function EventScheduleContent() {
         </Tooltip>
         <Tooltip content="Events currently active - join now!" fullWidth>
           <div className="glass backdrop-blur-sm rounded-lg border border-success p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
-            <ElectricBorder intensity="extreme" color="var(--color-success)" />
+            <ElectricBorder intensity="extreme" color="#047857" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-success font-game-decorative relative z-10">
               <AnimatedCounter value={stats.active} />
             </div>
@@ -109,7 +109,7 @@ function EventScheduleContent() {
         </Tooltip>
         <Tooltip content="Events starting within 1 hour - get ready!" fullWidth>
           <div className="glass backdrop-blur-sm rounded-lg border border-accent p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
-            <ElectricBorder intensity="high" color="var(--color-accent)" />
+            <ElectricBorder intensity="high" color="#ea580c" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative relative z-10">
               <AnimatedCounter value={stats.soon} />
             </div>
@@ -118,7 +118,7 @@ function EventScheduleContent() {
         </Tooltip>
         <Tooltip content="Events happening today" fullWidth>
           <div className="glass backdrop-blur-sm rounded-lg border border-primary p-3 sm:p-4 text-center hover:scale-105 transition-transform duration-200 cursor-help relative">
-            <ElectricBorder intensity="medium" color="var(--color-primary)" />
+            <ElectricBorder intensity="medium" color="#dc2626" />
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative relative z-10">
               <AnimatedCounter value={stats.today} />
             </div>
