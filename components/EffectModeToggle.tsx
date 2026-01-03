@@ -3,7 +3,7 @@
 import { useVisualEffects, type EffectMode } from "@/contexts/VisualEffectsContext";
 
 export default function EffectModeToggle() {
-  const { effectMode, setEffectMode } = useVisualEffects();
+  const { effectMode, setEffectMode, isLoaded } = useVisualEffects();
 
   const modes: { value: EffectMode; label: string; icon: string }[] = [
     { value: "electric", label: "Electric", icon: "⚡" },
@@ -19,13 +19,15 @@ export default function EffectModeToggle() {
           <button
             key={mode.value}
             onClick={() => setEffectMode(mode.value)}
+            disabled={!isLoaded}
             className={`
               px-3 py-1.5 rounded text-xs font-medium transition-all duration-200
               ${
-                effectMode === mode.value
+                isLoaded && effectMode === mode.value
                   ? "bg-primary text-white shadow-lg"
                   : "bg-gray-700/50 text-gray-400 hover:bg-gray-600/50 hover:text-gray-200"
               }
+              ${!isLoaded ? "opacity-50 cursor-wait" : ""}
             `}
             title={`Switch to ${mode.label} effect`}
           >
