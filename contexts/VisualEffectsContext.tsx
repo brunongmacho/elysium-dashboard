@@ -7,6 +7,7 @@ export type EffectMode = "electric" | "glow" | "off";
 interface VisualEffectsContextType {
   effectMode: EffectMode;
   setEffectMode: (mode: EffectMode) => void;
+  isLoaded: boolean;
 }
 
 const VisualEffectsContext = createContext<VisualEffectsContextType | undefined>(undefined);
@@ -14,22 +15,25 @@ const VisualEffectsContext = createContext<VisualEffectsContextType | undefined>
 const STORAGE_KEY = "elysium-visual-effects";
 
 export function VisualEffectsProvider({ children }: { children: ReactNode }) {
-  // Initialize from localStorage to prevent flickering
-  const [effectMode, setEffectModeState] = useState<EffectMode>(() => {
-    if (typeof window === "undefined") return "electric";
+  const [effectMode, setEffectModeState] = useState<EffectMode>("electric");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from localStorage after mount (client-side only)
+  useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return (saved as EffectMode) || "electric";
-  });
+    if (saved && (saved === "electric" || saved === "glow" || saved === "off")) {
+      setEffectModeState(saved as EffectMode);
+    }
+    setIsLoaded(true);
+  }, []);
 
   const setEffectMode = (mode: EffectMode) => {
     setEffectModeState(mode);
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, mode);
-    }
+    localStorage.setItem(STORAGE_KEY, mode);
   };
 
   return (
-    <VisualEffectsContext.Provider value={{ effectMode, setEffectMode }}>
+    <VisualEffectsContext.Provider value={{ effectMode, setEffectMode, isLoaded }}>
       {children}
     </VisualEffectsContext.Provider>
   );
