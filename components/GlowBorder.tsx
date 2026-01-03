@@ -28,15 +28,22 @@ export default function GlowBorder({ intensity, color }: GlowBorderProps) {
   const duration = 3;
 
   useEffect(() => {
-    // Create subtle pulsing animation with the current color
+    // Create smooth pulsing animation with gradual transitions
     const keyframes = `
       @keyframes ${animationId.current} {
-        0%, 100% {
+        0% {
           box-shadow:
             0 0 ${settings.blur}px ${settings.spread}px ${color}${Math.round(settings.opacity * 0.5 * 255).toString(16).padStart(2, '0')},
             0 0 ${settings.blur * 1.5}px ${settings.spread * 0.5}px ${color}${Math.round(settings.opacity * 0.35 * 255).toString(16).padStart(2, '0')},
             inset 0 0 ${settings.blur * 0.5}px ${color}${Math.round(settings.opacity * 0.15 * 255).toString(16).padStart(2, '0')};
           border-color: ${color}${Math.round(settings.opacity * 0.7 * 255).toString(16).padStart(2, '0')};
+        }
+        25% {
+          box-shadow:
+            0 0 ${settings.blur * 1.1}px ${settings.spread * 1.1}px ${color}${Math.round(settings.opacity * 0.6 * 255).toString(16).padStart(2, '0')},
+            0 0 ${settings.blur * 1.65}px ${settings.spread * 0.65}px ${color}${Math.round(settings.opacity * 0.425 * 255).toString(16).padStart(2, '0')},
+            inset 0 0 ${settings.blur * 0.6}px ${color}${Math.round(settings.opacity * 0.2 * 255).toString(16).padStart(2, '0')};
+          border-color: ${color}${Math.round(settings.opacity * 0.8 * 255).toString(16).padStart(2, '0')};
         }
         50% {
           box-shadow:
@@ -44,6 +51,20 @@ export default function GlowBorder({ intensity, color }: GlowBorderProps) {
             0 0 ${settings.blur * 1.8}px ${settings.spread * 0.8}px ${color}${Math.round(settings.opacity * 0.5 * 255).toString(16).padStart(2, '0')},
             inset 0 0 ${settings.blur * 0.7}px ${color}${Math.round(settings.opacity * 0.25 * 255).toString(16).padStart(2, '0')};
           border-color: ${color}${Math.round(settings.opacity * 0.9 * 255).toString(16).padStart(2, '0')};
+        }
+        75% {
+          box-shadow:
+            0 0 ${settings.blur * 1.1}px ${settings.spread * 1.1}px ${color}${Math.round(settings.opacity * 0.6 * 255).toString(16).padStart(2, '0')},
+            0 0 ${settings.blur * 1.65}px ${settings.spread * 0.65}px ${color}${Math.round(settings.opacity * 0.425 * 255).toString(16).padStart(2, '0')},
+            inset 0 0 ${settings.blur * 0.6}px ${color}${Math.round(settings.opacity * 0.2 * 255).toString(16).padStart(2, '0')};
+          border-color: ${color}${Math.round(settings.opacity * 0.8 * 255).toString(16).padStart(2, '0')};
+        }
+        100% {
+          box-shadow:
+            0 0 ${settings.blur}px ${settings.spread}px ${color}${Math.round(settings.opacity * 0.5 * 255).toString(16).padStart(2, '0')},
+            0 0 ${settings.blur * 1.5}px ${settings.spread * 0.5}px ${color}${Math.round(settings.opacity * 0.35 * 255).toString(16).padStart(2, '0')},
+            inset 0 0 ${settings.blur * 0.5}px ${color}${Math.round(settings.opacity * 0.15 * 255).toString(16).padStart(2, '0')};
+          border-color: ${color}${Math.round(settings.opacity * 0.7 * 255).toString(16).padStart(2, '0')};
         }
       }
     `;
@@ -69,7 +90,7 @@ export default function GlowBorder({ intensity, color }: GlowBorderProps) {
         className="absolute inset-0 rounded-lg pointer-events-none"
         style={{
           border: `${settings.borderWidth}px solid ${color}`,
-          animation: `${animationId.current} ${duration}s ease-in-out infinite`,
+          animation: `${animationId.current} ${duration}s cubic-bezier(0.4, 0, 0.2, 1) infinite`,
           willChange: 'box-shadow, border-color',
           transform: 'translateZ(0)',
         }}
