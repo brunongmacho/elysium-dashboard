@@ -17,13 +17,13 @@ export default function ElectricBorder({
 
   // Intensity settings for turbulence animation
   const settings = {
-    low: { baseFrequency: 0.015, numOctaves: 8, scale: 8, duration: 8, blur1: 1, blur2: 4, blur3: 8 },
-    medium: { baseFrequency: 0.02, numOctaves: 10, scale: 12, duration: 6, blur1: 2, blur2: 6, blur3: 12 },
-    high: { baseFrequency: 0.025, numOctaves: 12, scale: 16, duration: 4, blur1: 3, blur2: 8, blur3: 16 },
-    extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 20, duration: 3, blur1: 4, blur2: 10, blur3: 20 },
+    low: { baseFrequency: 0.015, numOctaves: 8, scale: 8, duration: 10, blur1: 1, blur2: 4, blur3: 8 },
+    medium: { baseFrequency: 0.02, numOctaves: 10, scale: 12, duration: 8, blur1: 2, blur2: 6, blur3: 12 },
+    high: { baseFrequency: 0.025, numOctaves: 12, scale: 16, duration: 6, blur1: 3, blur2: 8, blur3: 16 },
+    extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 20, duration: 4, blur1: 4, blur2: 10, blur3: 20 },
   }[intensity];
 
-  const gradientColor = `${color}66`; // 40% opacity
+  const gradientColor = `${color}20`; // 12% opacity - much more subtle
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function ElectricBorder({
             width="140%"
             height="140%"
           >
-            {/* First turbulence - vertical movement */}
+            {/* First turbulence - circular motion (top-right quadrant) */}
             <feTurbulence
               type="turbulence"
               baseFrequency={settings.baseFrequency}
@@ -48,65 +48,93 @@ export default function ElectricBorder({
             />
             <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
               <animate
-                attributeName="dy"
-                values={`700; 0`}
+                attributeName="dx"
+                values={`0; 350; 0; -350; 0`}
                 dur={`${settings.duration}s`}
                 repeatCount="indefinite"
-                calcMode="linear"
+                calcMode="ease-in-out"
+              />
+              <animate
+                attributeName="dy"
+                values={`0; -350; 0; 350; 0`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="ease-in-out"
               />
             </feOffset>
 
-            {/* Second turbulence - opposite vertical movement */}
+            {/* Second turbulence - opposite circular motion */}
             <feTurbulence
               type="turbulence"
               baseFrequency={settings.baseFrequency}
               numOctaves={settings.numOctaves}
               result="noise2"
-              seed="1"
+              seed="3"
             />
             <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
               <animate
-                attributeName="dy"
-                values={`0; -700`}
+                attributeName="dx"
+                values={`0; -350; 0; 350; 0`}
                 dur={`${settings.duration}s`}
                 repeatCount="indefinite"
-                calcMode="linear"
+                calcMode="ease-in-out"
+              />
+              <animate
+                attributeName="dy"
+                values={`0; 350; 0; -350; 0`}
+                dur={`${settings.duration}s`}
+                repeatCount="indefinite"
+                calcMode="ease-in-out"
               />
             </feOffset>
 
-            {/* Third turbulence - horizontal movement */}
+            {/* Third turbulence - diagonal swirl */}
             <feTurbulence
               type="turbulence"
               baseFrequency={settings.baseFrequency}
               numOctaves={settings.numOctaves}
               result="noise3"
-              seed="2"
+              seed="5"
             />
             <feOffset in="noise3" dx="0" dy="0" result="offsetNoise3">
               <animate
                 attributeName="dx"
-                values={`490; 0`}
-                dur={`${settings.duration}s`}
+                values={`0; 250; 0; -250; 0`}
+                dur={`${settings.duration * 1.3}s`}
                 repeatCount="indefinite"
-                calcMode="linear"
+                calcMode="ease-in-out"
+              />
+              <animate
+                attributeName="dy"
+                values={`0; 250; 0; -250; 0`}
+                dur={`${settings.duration * 1.3}s`}
+                repeatCount="indefinite"
+                calcMode="ease-in-out"
               />
             </feOffset>
 
-            {/* Fourth turbulence - opposite horizontal movement */}
+            {/* Fourth turbulence - chaotic swirl with different timing */}
             <feTurbulence
               type="turbulence"
               baseFrequency={settings.baseFrequency}
               numOctaves={settings.numOctaves}
               result="noise4"
-              seed="2"
+              seed="7"
             />
             <feOffset in="noise4" dx="0" dy="0" result="offsetNoise4">
               <animate
                 attributeName="dx"
-                values={`0; -490`}
-                dur={`${settings.duration}s`}
+                values={`0; -200; 0; 200; 0`}
+                dur={`${settings.duration * 0.7}s`}
                 repeatCount="indefinite"
-                calcMode="linear"
+                calcMode="ease-in-out"
+              />
+              <animate
+                attributeName="dy"
+                values={`0; -200; 0; 200; 0`}
+                dur={`${settings.duration * 0.7}s`}
+                repeatCount="indefinite"
+                calcMode="ease-in-out"
               />
             </feOffset>
 
@@ -200,7 +228,7 @@ export default function ElectricBorder({
               mixBlendMode: 'overlay',
               transform: 'scale(1.05)',
               filter: 'blur(12px)',
-              opacity: 0.6,
+              opacity: 0.15,
             }}
           />
 
@@ -212,7 +240,7 @@ export default function ElectricBorder({
               mixBlendMode: 'overlay',
               transform: 'scale(1.05)',
               filter: 'blur(16px)',
-              opacity: 0.3,
+              opacity: 0.08,
             }}
           />
 
@@ -223,7 +251,7 @@ export default function ElectricBorder({
               background: `linear-gradient(-30deg, ${color}, transparent, ${color})`,
               filter: 'blur(32px)',
               transform: 'scale(1.1)',
-              opacity: 0.3,
+              opacity: 0.15,
             }}
           />
         </div>
