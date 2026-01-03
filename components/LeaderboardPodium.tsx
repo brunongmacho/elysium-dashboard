@@ -120,15 +120,16 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
               style={{ transformStyle: "preserve-3d" }}
             >
               {/* Card */}
-              <motion.div
-                className={`
-                  glass backdrop-blur-sm rounded-lg border-2 ${colors.border} ${colors.glow}
-                  bg-gradient-to-b ${colors.bg}
-                  p-3 sm:p-4 text-center relative overflow-hidden
-                  transform-gpu
-                `}
-                whileHover={{ boxShadow: `0 0 ${entry.rank === 1 ? '40px' : '30px'} ${entry.rank === 1 ? 'rgba(234,179,8,0.7)' : entry.rank === 2 ? 'rgba(156,163,175,0.6)' : 'rgba(217,119,6,0.6)'}` }}
-              >
+              <Link href={`/profile/${entry.memberId}`} className="block">
+                <motion.div
+                  className={`
+                    glass backdrop-blur-sm rounded-lg border-2 ${colors.border} ${colors.glow}
+                    bg-gradient-to-b ${colors.bg}
+                    p-3 sm:p-4 text-center relative overflow-hidden
+                    transform-gpu cursor-pointer
+                  `}
+                  whileHover={{ boxShadow: `0 0 ${entry.rank === 1 ? '40px' : '30px'} ${entry.rank === 1 ? 'rgba(234,179,8,0.7)' : entry.rank === 2 ? 'rgba(156,163,175,0.6)' : 'rgba(217,119,6,0.6)'}` }}
+                >
                 {/* Animated background sparkle effect */}
                 {entry.rank === 1 && (
                   <motion.div
@@ -174,12 +175,9 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
                 </div>
 
                 {/* Username */}
-                <Link
-                  href={`/profile/${entry.memberId}`}
-                  className="block text-sm sm:text-base text-white font-semibold mb-2 hover:text-primary active:scale-95 transition-all truncate font-game relative z-10"
-                >
+                <div className="block text-sm sm:text-base text-white font-semibold mb-2 truncate font-game relative z-10">
                   {entry.username}
-                </Link>
+                </div>
 
                 {/* Value */}
                 <div className="text-xl sm:text-2xl font-bold text-white mb-1 font-game-decorative relative z-10">
@@ -187,6 +185,7 @@ function LeaderboardPodium({ entries, type }: LeaderboardPodiumProps) {
                 </div>
                 <div className="text-xs sm:text-sm text-gray-400 font-game relative z-10">{entry.label}</div>
               </motion.div>
+              </Link>
 
               {/* Podium Base with 3D effect */}
               <motion.div

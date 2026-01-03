@@ -477,7 +477,8 @@ export default function LeaderboardPage() {
                   return (
                     <tr
                       key={entry.memberId}
-                      className={`${tier.bgClass} transition-colors duration-150 group ${tier.glow} border-l-2 ${tier.borderClass}`}
+                      onClick={() => window.location.href = `/profile/${entry.memberId}`}
+                      className={`${tier.bgClass} transition-colors duration-150 group ${tier.glow} border-l-4 ${tier.borderClass} cursor-pointer`}
                     >
                       <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                         <div className="flex flex-col items-start gap-1">
@@ -499,12 +500,9 @@ export default function LeaderboardPage() {
                         </div>
                       </td>
                     <td className="px-2 sm:px-4 py-2 sm:py-3">
-                      <a
-                        href={`/profile/${entry.memberId}`}
-                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-colors duration-150 group-hover:text-accent-bright text-xs sm:text-sm font-game"
-                      >
+                      <div className="text-primary-bright font-medium text-xs sm:text-sm font-game">
                         {entry.username}
-                      </a>
+                      </div>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
