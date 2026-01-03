@@ -3,19 +3,8 @@
 @tailwind utilities;
 
 :root {
-  /* Guild Theme Colors - Default: Crimson War */
-  --color-primary: #dc2626;
-  --color-primary-dark: #991b1b;
-  --color-primary-light: #fca5a5;
-
-  --color-accent: #ea580c;
-  --color-accent-dark: #c2410c;
-  --color-accent-light: #fdba74;
-
-  --color-success: #047857;
-  --color-warning: #d97706;
-  --color-danger: #dc2626;
-  --color-info: #3b82f6;
+  /* Guild Theme Colors - Set dynamically by theme selector */
+  /* Default values are injected via inline script in layout.tsx to prevent flash */
 
   --color-bg-primary: #111827;
   --color-bg-secondary: #1f2937;

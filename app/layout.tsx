@@ -43,13 +43,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cinzel.variable} ${cinzelDecorative.variable}`}>
       <head>
-        {/* Prevent theme flash by setting CSS variables before React hydrates */}
+        {/* Prevent theme flash by injecting theme CSS before any other styles */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  const themes = ${JSON.stringify({
+                  const themes = {
                     crimson: { primary: '#dc2626', primaryDark: '#991b1b', primaryLight: '#fca5a5', accent: '#ea580c', accentDark: '#c2410c', accentLight: '#fdba74', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#3b82f6' },
                     wine: { primary: '#9f1239', primaryDark: '#881337', primaryLight: '#fda4af', accent: '#be123c', accentDark: '#9f1239', accentLight: '#fecdd3', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#9f1239' },
                     magenta: { primary: '#d946ef', primaryDark: '#a21caf', primaryLight: '#f0abfc', accent: '#e879f9', accentDark: '#c026d3', accentLight: '#f5d0fe', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#d946ef' },
@@ -66,22 +66,26 @@ export default function RootLayout({
                     arctic: { primary: '#0ea5e9', primaryDark: '#0284c7', primaryLight: '#7dd3fc', accent: '#38bdf8', accentDark: '#0ea5e9', accentLight: '#bae6fd', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#0ea5e9' },
                     cyber: { primary: '#0891b2', primaryDark: '#0e7490', primaryLight: '#67e8f9', accent: '#9333ea', accentDark: '#7e22ce', accentLight: '#d8b4fe', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#0891b2' },
                     purple: { primary: '#7c3aed', primaryDark: '#6d28d9', primaryLight: '#c4b5fd', accent: '#db2777', accentDark: '#be185d', accentLight: '#f9a8d4', success: '#047857', warning: '#d97706', danger: '#dc2626', info: '#7c3aed' }
-                  })};
+                  };
 
                   const savedTheme = localStorage.getItem('guild-theme') || 'crimson';
                   const theme = themes[savedTheme] || themes.crimson;
-                  const root = document.documentElement;
 
-                  root.style.setProperty('--color-primary', theme.primary);
-                  root.style.setProperty('--color-primary-dark', theme.primaryDark);
-                  root.style.setProperty('--color-primary-light', theme.primaryLight);
-                  root.style.setProperty('--color-accent', theme.accent);
-                  root.style.setProperty('--color-accent-dark', theme.accentDark);
-                  root.style.setProperty('--color-accent-light', theme.accentLight);
-                  root.style.setProperty('--color-success', theme.success);
-                  root.style.setProperty('--color-warning', theme.warning);
-                  root.style.setProperty('--color-danger', theme.danger);
-                  root.style.setProperty('--color-info', theme.info);
+                  // Inject inline style tag with CSS variables - executes before external CSS
+                  const style = document.createElement('style');
+                  style.innerHTML = \`:root {
+                    --color-primary: \${theme.primary};
+                    --color-primary-dark: \${theme.primaryDark};
+                    --color-primary-light: \${theme.primaryLight};
+                    --color-accent: \${theme.accent};
+                    --color-accent-dark: \${theme.accentDark};
+                    --color-accent-light: \${theme.accentLight};
+                    --color-success: \${theme.success};
+                    --color-warning: \${theme.warning};
+                    --color-danger: \${theme.danger};
+                    --color-info: \${theme.info};
+                  }\`;
+                  document.head.appendChild(style);
                 } catch (e) {}
               })();
             `,
