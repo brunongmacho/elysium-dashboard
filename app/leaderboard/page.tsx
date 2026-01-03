@@ -31,7 +31,7 @@ function getRankTier(rank: number): {
   badge: string;
 } {
   if (rank === 1) return {
-    borderClass: 'border-l-yellow-500/30 hover:border-l-yellow-500',
+    borderClass: 'border-yellow-500/30 hover:border-yellow-500',
     hoverBgClass: 'hover:bg-yellow-500/10',
     textClass: 'text-yellow-400',
     glow: 'glow-gold',
@@ -39,7 +39,7 @@ function getRankTier(rank: number): {
     badge: '👑'
   };
   if (rank <= 3) return {
-    borderClass: 'border-l-gray-400/30 hover:border-l-gray-400',
+    borderClass: 'border-gray-400/30 hover:border-gray-400',
     hoverBgClass: 'hover:bg-gray-400/10',
     textClass: 'text-gray-300',
     glow: 'glow-silver',
@@ -47,7 +47,7 @@ function getRankTier(rank: number): {
     badge: '⚔️'
   };
   if (rank <= 10) return {
-    borderClass: 'border-l-primary/30 hover:border-l-primary',
+    borderClass: 'border-primary/30 hover:border-primary',
     hoverBgClass: 'hover:bg-primary/10',
     textClass: 'text-primary-light',
     glow: 'glow-primary',
@@ -55,7 +55,7 @@ function getRankTier(rank: number): {
     badge: '🛡️'
   };
   if (rank <= 25) return {
-    borderClass: 'border-l-accent/30 hover:border-l-accent',
+    borderClass: 'border-accent/30 hover:border-accent',
     hoverBgClass: 'hover:bg-accent/10',
     textClass: 'text-accent-light',
     glow: 'glow-accent',
@@ -63,7 +63,7 @@ function getRankTier(rank: number): {
     badge: '🗡️'
   };
   if (rank <= 50) return {
-    borderClass: 'border-l-success/30 hover:border-l-success',
+    borderClass: 'border-success/30 hover:border-success',
     hoverBgClass: 'hover:bg-success/10',
     textClass: 'text-success-light',
     glow: '',
@@ -71,7 +71,7 @@ function getRankTier(rank: number): {
     badge: '⚡'
   };
   return {
-    borderClass: 'border-l-gray-600/30 hover:border-l-gray-600',
+    borderClass: 'border-gray-600/30 hover:border-gray-600',
     hoverBgClass: 'hover:bg-gray-600/10',
     textClass: 'text-gray-400',
     glow: '',
