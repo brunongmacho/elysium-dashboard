@@ -45,8 +45,9 @@ export function useNotificationTriggers(): NotificationMonitoringStatus {
   const previousEventStates = useRef<EventState>({})
 
   // Fetch boss data once, then refresh every 5 minutes (only to catch manual updates)
+  // Always fetch so data is ready when notifications are enabled
   const { data: bossData } = useSWR<BossTimersResponse>(
-    isEnabled ? '/api/bosses' : null,
+    '/api/bosses',
     swrFetcher,
     { refreshInterval: 5 * 60 * 1000 } // 5 minutes instead of 10 seconds
   )
