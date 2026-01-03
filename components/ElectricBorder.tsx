@@ -17,10 +17,10 @@ export default function ElectricBorder({
 
   // Intensity settings for turbulence animation
   const settings = {
-    low: { baseFrequency: 0.015, numOctaves: 8, scale: 15, duration: 8, blur1: 1, blur2: 4, blur3: 8 },
-    medium: { baseFrequency: 0.02, numOctaves: 10, scale: 25, duration: 6, blur1: 2, blur2: 6, blur3: 12 },
-    high: { baseFrequency: 0.025, numOctaves: 12, scale: 35, duration: 4, blur1: 3, blur2: 8, blur3: 16 },
-    extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 45, duration: 3, blur1: 4, blur2: 10, blur3: 20 },
+    low: { baseFrequency: 0.015, numOctaves: 8, scale: 8, duration: 8, blur1: 1, blur2: 4, blur3: 8 },
+    medium: { baseFrequency: 0.02, numOctaves: 10, scale: 12, duration: 6, blur1: 2, blur2: 6, blur3: 12 },
+    high: { baseFrequency: 0.025, numOctaves: 12, scale: 16, duration: 4, blur1: 3, blur2: 8, blur3: 16 },
+    extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 20, duration: 3, blur1: 4, blur2: 10, blur3: 20 },
   }[intensity];
 
   const gradientColor = `${color}66`; // 40% opacity
