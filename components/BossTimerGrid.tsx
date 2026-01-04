@@ -12,6 +12,8 @@ interface BossTimerGridProps {
   canMarkAsKilled?: boolean;
   isAdmin?: boolean;
   userName?: string;
+  externalFilterStatus?: string | null;
+  onFilterStatusChange?: (status: string | null) => void;
 }
 
 export default function BossTimerGrid({
@@ -21,10 +23,25 @@ export default function BossTimerGrid({
   canMarkAsKilled = false,
   isAdmin = false,
   userName = "",
+  externalFilterStatus,
+  onFilterStatusChange,
 }: BossTimerGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"all" | "timer" | "schedule">("all");
-  const [filterStatus, setFilterStatus] = useState<"all" | "spawned" | "soon" | "ready">("all");
+  const [internalFilterStatus, setInternalFilterStatus] = useState<"all" | "spawned" | "soon" | "ready">("all");
+
+  // Use external filter status if provided, otherwise use internal state
+  const filterStatus = externalFilterStatus !== undefined
+    ? (externalFilterStatus || "all") as "all" | "spawned" | "soon" | "ready"
+    : internalFilterStatus;
+
+  const handleFilterStatusChange = (newStatus: "all" | "spawned" | "soon" | "ready") => {
+    if (onFilterStatusChange) {
+      onFilterStatusChange(newStatus === "all" ? null : newStatus);
+    } else {
+      setInternalFilterStatus(newStatus);
+    }
+  };
 
   // Filter and search bosses
   const filteredBosses = useMemo(() => {
@@ -107,7 +124,7 @@ export default function BossTimerGrid({
             <select
               value={filterStatus}
               onChange={(e) =>
-                setFilterStatus(
+                handleFilterStatusChange(
                   e.target.value as "all" | "spawned" | "soon" | "ready"
                 )
               }
@@ -151,7 +168,7 @@ export default function BossTimerGrid({
                     ? "Soon"
                     : "Tracking"
                 }
-                onRemove={() => setFilterStatus("all")}
+                onRemove={() => handleFilterStatusChange("all")}
                 color={
                   filterStatus === "spawned"
                     ? "danger"

@@ -1,6 +1,6 @@
 /**
- * Event Glow Color Utility
- * Dynamically calculates glow colors and intensity based on time remaining for scheduled events
+ * Event Electric Animation Utility
+ * Dynamically calculates electric animation intensity and colors based on time remaining for scheduled events
  * Uses theme colors for consistent styling
  */
 
@@ -9,6 +9,8 @@ interface GlowResult {
   intensity: number;
   borderColor: string;
   tailwindStroke: string;
+  electricClass: string;
+  electricColor: string;
 }
 
 /**
@@ -91,6 +93,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 30,
       borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
+      electricClass: 'electric-extreme',
+      electricColor: danger,
     };
   }
 
@@ -103,6 +107,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 25,
       borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
+      electricClass: 'electric-extreme',
+      electricColor: danger,
     };
   }
 
@@ -115,6 +121,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 22,
       borderColor: 'border-danger',
       tailwindStroke: 'stroke-danger',
+      electricClass: 'electric-high',
+      electricColor: blendedColor,
     };
   }
 
@@ -127,6 +135,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 18,
       borderColor: 'border-accent-dark',
       tailwindStroke: 'stroke-accent-dark',
+      electricClass: 'electric-high',
+      electricColor: blendedColor,
     };
   }
 
@@ -137,6 +147,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 15,
       borderColor: 'border-accent',
       tailwindStroke: 'stroke-accent',
+      electricClass: 'electric-high',
+      electricColor: accent,
     };
   }
 
@@ -149,6 +161,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 12,
       borderColor: 'border-accent',
       tailwindStroke: 'stroke-accent',
+      electricClass: 'electric-medium',
+      electricColor: blendedColor,
     };
   }
 
@@ -161,6 +175,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 10,
       borderColor: 'border-accent-light',
       tailwindStroke: 'stroke-accent-light',
+      electricClass: 'electric-medium',
+      electricColor: blendedColor,
     };
   }
 
@@ -173,6 +189,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 8,
       borderColor: 'border-primary-dark',
       tailwindStroke: 'stroke-primary-dark',
+      electricClass: 'electric-medium',
+      electricColor: blendedColor,
     };
   }
 
@@ -185,6 +203,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
       intensity: 6,
       borderColor: 'border-primary',
       tailwindStroke: 'stroke-primary',
+      electricClass: 'electric-low',
+      electricColor: blendedColor,
     };
   }
 
@@ -194,6 +214,8 @@ export function calculateEventGlow(timeRemaining: number | null): GlowResult {
     intensity: 4,
     borderColor: 'border-primary-light',
     tailwindStroke: 'stroke-primary-light',
+    electricClass: 'electric-low',
+    electricColor: primaryLight,
   };
 }
 

@@ -144,9 +144,17 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     setSettings((prev) => {
       const updated = { ...prev, ...newSettings }
       saveNotificationSettings(updated)
+
+      // If any setting is enabled, ensure notifications are globally enabled
+      const anyEnabled = updated.bossSpawns || updated.bossSoon || updated.events
+      if (anyEnabled && !isEnabled) {
+        setIsEnabled(true)
+        setNotificationsEnabled(true)
+      }
+
       return updated
     })
-  }, [])
+  }, [isEnabled])
 
   const value: NotificationContextValue = {
     isSupported,

@@ -3,19 +3,8 @@
 @tailwind utilities;
 
 :root {
-  /* Guild Theme Colors - Default: Crimson War */
-  --color-primary: #dc2626;
-  --color-primary-dark: #991b1b;
-  --color-primary-light: #fca5a5;
-
-  --color-accent: #ea580c;
-  --color-accent-dark: #c2410c;
-  --color-accent-light: #fdba74;
-
-  --color-success: #047857;
-  --color-warning: #d97706;
-  --color-danger: #dc2626;
-  --color-info: #3b82f6;
+  /* Guild Theme Colors - Set dynamically by theme selector */
+  /* Default values are injected via inline script in layout.tsx to prevent flash */
 
   --color-bg-primary: #111827;
   --color-bg-secondary: #1f2937;
@@ -944,5 +933,820 @@ textarea:focus-visible {
 
   .boss-soon-border {
     animation: border-glow-soon 3s ease-in-out infinite;
+  }
+
+  /* Electric Animation - Base intensity with subtle flicker */
+  @keyframes electric-pulse-low {
+    0% {
+      box-shadow:
+        0 0 5px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent),
+        inset 0 0 5px color-mix(in srgb, var(--electric-color) 5%, transparent);
+      filter: brightness(1);
+    }
+    15% {
+      box-shadow:
+        0 0 12px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        0 0 25px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.15);
+    }
+    17% {
+      box-shadow:
+        0 0 4px color-mix(in srgb, var(--electric-color) 15%, transparent),
+        0 0 8px color-mix(in srgb, var(--electric-color) 8%, transparent),
+        inset 0 0 3px color-mix(in srgb, var(--electric-color) 3%, transparent);
+      filter: brightness(0.95);
+    }
+    20% {
+      box-shadow:
+        0 0 10px color-mix(in srgb, var(--electric-color) 35%, transparent),
+        0 0 20px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        inset 0 0 8px color-mix(in srgb, var(--electric-color) 8%, transparent);
+      filter: brightness(1.1);
+    }
+    50% {
+      box-shadow:
+        0 0 6px color-mix(in srgb, var(--electric-color) 25%, transparent),
+        0 0 12px color-mix(in srgb, var(--electric-color) 12%, transparent),
+        inset 0 0 5px color-mix(in srgb, var(--electric-color) 5%, transparent);
+      filter: brightness(1.02);
+    }
+    65% {
+      box-shadow:
+        0 0 14px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 28px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        inset 0 0 12px color-mix(in srgb, var(--electric-color) 12%, transparent);
+      filter: brightness(1.18);
+    }
+    67% {
+      box-shadow:
+        0 0 5px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        0 0 10px color-mix(in srgb, var(--electric-color) 9%, transparent),
+        inset 0 0 4px color-mix(in srgb, var(--electric-color) 4%, transparent);
+      filter: brightness(0.98);
+    }
+    100% {
+      box-shadow:
+        0 0 5px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent),
+        inset 0 0 5px color-mix(in srgb, var(--electric-color) 5%, transparent);
+      filter: brightness(1);
+    }
+  }
+
+  /* Electric Animation - Medium intensity with more erratic behavior */
+  @keyframes electric-pulse-medium {
+    0% {
+      box-shadow:
+        0 0 10px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        0 0 20px color-mix(in srgb, var(--electric-color) 25%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 15%, transparent),
+        inset 0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.05) drop-shadow(0 0 3px var(--electric-color));
+    }
+    8% {
+      box-shadow:
+        0 0 25px color-mix(in srgb, var(--electric-color) 70%, transparent),
+        0 0 50px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 75px color-mix(in srgb, var(--electric-color) 28%, transparent),
+        inset 0 0 25px color-mix(in srgb, var(--electric-color) 20%, transparent);
+      filter: brightness(1.3) drop-shadow(0 0 8px var(--electric-color));
+    }
+    10% {
+      box-shadow:
+        0 0 8px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        0 0 15px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        0 0 22px color-mix(in srgb, var(--electric-color) 10%, transparent),
+        inset 0 0 6px color-mix(in srgb, var(--electric-color) 6%, transparent);
+      filter: brightness(0.95) drop-shadow(0 0 2px var(--electric-color));
+    }
+    25% {
+      box-shadow:
+        0 0 18px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        0 0 35px color-mix(in srgb, var(--electric-color) 35%, transparent),
+        0 0 52px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        inset 0 0 15px color-mix(in srgb, var(--electric-color) 15%, transparent);
+      filter: brightness(1.18) drop-shadow(0 0 6px var(--electric-color));
+    }
+    42% {
+      box-shadow:
+        0 0 28px color-mix(in srgb, var(--electric-color) 75%, transparent),
+        0 0 55px color-mix(in srgb, var(--electric-color) 50%, transparent),
+        0 0 82px color-mix(in srgb, var(--electric-color) 32%, transparent),
+        inset 0 0 28px color-mix(in srgb, var(--electric-color) 22%, transparent);
+      filter: brightness(1.35) drop-shadow(0 0 10px var(--electric-color));
+    }
+    44% {
+      box-shadow:
+        0 0 10px color-mix(in srgb, var(--electric-color) 35%, transparent),
+        0 0 20px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 12%, transparent),
+        inset 0 0 8px color-mix(in srgb, var(--electric-color) 8%, transparent);
+      filter: brightness(1) drop-shadow(0 0 3px var(--electric-color));
+    }
+    60% {
+      box-shadow:
+        0 0 15px color-mix(in srgb, var(--electric-color) 48%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        0 0 45px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        inset 0 0 12px color-mix(in srgb, var(--electric-color) 12%, transparent);
+      filter: brightness(1.12) drop-shadow(0 0 5px var(--electric-color));
+    }
+    78% {
+      box-shadow:
+        0 0 22px color-mix(in srgb, var(--electric-color) 65%, transparent),
+        0 0 45px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        0 0 68px color-mix(in srgb, var(--electric-color) 26%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--electric-color) 18%, transparent);
+      filter: brightness(1.25) drop-shadow(0 0 8px var(--electric-color));
+    }
+    80% {
+      box-shadow:
+        0 0 12px color-mix(in srgb, var(--electric-color) 38%, transparent),
+        0 0 24px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        0 0 36px color-mix(in srgb, var(--electric-color) 14%, transparent),
+        inset 0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.05) drop-shadow(0 0 4px var(--electric-color));
+    }
+    100% {
+      box-shadow:
+        0 0 10px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        0 0 20px color-mix(in srgb, var(--electric-color) 25%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 15%, transparent),
+        inset 0 0 10px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.05) drop-shadow(0 0 3px var(--electric-color));
+    }
+  }
+
+  /* Electric Animation - High intensity with chaotic flicker and micro-jitter */
+  @keyframes electric-pulse-high {
+    0% {
+      box-shadow:
+        0 0 15px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 45px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 15px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 25px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.1) drop-shadow(0 0 5px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    5% {
+      box-shadow:
+        0 0 35px var(--electric-color),
+        0 0 70px color-mix(in srgb, var(--electric-color) 85%, transparent),
+        0 0 105px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 140px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        inset 0 0 35px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        inset 0 0 55px color-mix(in srgb, var(--electric-color) 25%, transparent);
+      filter: brightness(1.45) drop-shadow(0 0 14px var(--electric-color));
+      transform: translate(0.5px, -0.5px);
+    }
+    7% {
+      box-shadow:
+        0 0 10px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        0 0 20px color-mix(in srgb, var(--electric-color) 28%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        0 0 40px color-mix(in srgb, var(--electric-color) 10%, transparent),
+        inset 0 0 10px color-mix(in srgb, var(--electric-color) 12%, transparent),
+        inset 0 0 18px color-mix(in srgb, var(--electric-color) 6%, transparent);
+      filter: brightness(0.92) drop-shadow(0 0 3px var(--electric-color));
+      transform: translate(-0.5px, 0.5px);
+    }
+    18% {
+      box-shadow:
+        0 0 28px color-mix(in srgb, var(--electric-color) 78%, transparent),
+        0 0 55px color-mix(in srgb, var(--electric-color) 58%, transparent),
+        0 0 82px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        0 0 110px color-mix(in srgb, var(--electric-color) 28%, transparent),
+        inset 0 0 28px color-mix(in srgb, var(--electric-color) 32%, transparent),
+        inset 0 0 45px color-mix(in srgb, var(--electric-color) 18%, transparent);
+      filter: brightness(1.32) drop-shadow(0 0 11px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    33% {
+      box-shadow:
+        0 0 40px var(--electric-color),
+        0 0 80px color-mix(in srgb, var(--electric-color) 90%, transparent),
+        0 0 120px color-mix(in srgb, var(--electric-color) 68%, transparent),
+        0 0 160px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        inset 0 0 65px color-mix(in srgb, var(--electric-color) 28%, transparent);
+      filter: brightness(1.5) drop-shadow(0 0 16px var(--electric-color));
+      transform: translate(-0.5px, -0.5px);
+    }
+    35% {
+      box-shadow:
+        0 0 12px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 24px color-mix(in srgb, var(--electric-color) 32%, transparent),
+        0 0 36px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        0 0 48px color-mix(in srgb, var(--electric-color) 12%, transparent),
+        inset 0 0 12px color-mix(in srgb, var(--electric-color) 15%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--electric-color) 8%, transparent);
+      filter: brightness(0.95) drop-shadow(0 0 4px var(--electric-color));
+      transform: translate(0.5px, 0.5px);
+    }
+    50% {
+      box-shadow:
+        0 0 25px color-mix(in srgb, var(--electric-color) 72%, transparent),
+        0 0 50px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        0 0 75px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        0 0 100px color-mix(in srgb, var(--electric-color) 26%, transparent),
+        inset 0 0 25px color-mix(in srgb, var(--electric-color) 28%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--electric-color) 16%, transparent);
+      filter: brightness(1.25) drop-shadow(0 0 10px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    67% {
+      box-shadow:
+        0 0 38px var(--electric-color),
+        0 0 75px color-mix(in srgb, var(--electric-color) 88%, transparent),
+        0 0 112px color-mix(in srgb, var(--electric-color) 65%, transparent),
+        0 0 150px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        inset 0 0 38px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        inset 0 0 60px color-mix(in srgb, var(--electric-color) 26%, transparent);
+      filter: brightness(1.48) drop-shadow(0 0 15px var(--electric-color));
+      transform: translate(0.5px, 0);
+    }
+    69% {
+      box-shadow:
+        0 0 14px color-mix(in srgb, var(--electric-color) 48%, transparent),
+        0 0 28px color-mix(in srgb, var(--electric-color) 34%, transparent),
+        0 0 42px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        0 0 56px color-mix(in srgb, var(--electric-color) 14%, transparent),
+        inset 0 0 14px color-mix(in srgb, var(--electric-color) 16%, transparent),
+        inset 0 0 22px color-mix(in srgb, var(--electric-color) 9%, transparent);
+      filter: brightness(0.98) drop-shadow(0 0 4px var(--electric-color));
+      transform: translate(0, -0.5px);
+    }
+    85% {
+      box-shadow:
+        0 0 30px color-mix(in srgb, var(--electric-color) 80%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 62%, transparent),
+        0 0 90px color-mix(in srgb, var(--electric-color) 46%, transparent),
+        0 0 120px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        inset 0 0 30px color-mix(in srgb, var(--electric-color) 34%, transparent),
+        inset 0 0 48px color-mix(in srgb, var(--electric-color) 20%, transparent);
+      filter: brightness(1.35) drop-shadow(0 0 12px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    100% {
+      box-shadow:
+        0 0 15px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 45px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 15px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 25px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(1.1) drop-shadow(0 0 5px var(--electric-color));
+      transform: translate(0, 0);
+    }
+  }
+
+  /* Electric Animation - Extreme intensity with violent flickering and jitter */
+  @keyframes electric-pulse-extreme {
+    0% {
+      box-shadow:
+        0 0 20px var(--electric-color),
+        0 0 40px color-mix(in srgb, var(--electric-color) 80%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 80px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 100px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--electric-color) 20%, transparent);
+      filter: brightness(1.2) drop-shadow(0 0 8px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    3% {
+      box-shadow:
+        0 0 45px var(--electric-color),
+        0 0 90px var(--electric-color),
+        0 0 135px color-mix(in srgb, var(--electric-color) 85%, transparent),
+        0 0 180px color-mix(in srgb, var(--electric-color) 65%, transparent),
+        0 0 225px color-mix(in srgb, var(--electric-color) 48%, transparent),
+        inset 0 0 45px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        inset 0 0 80px color-mix(in srgb, var(--electric-color) 38%, transparent);
+      filter: brightness(1.65) drop-shadow(0 0 20px var(--electric-color));
+      transform: translate(1px, -1px);
+    }
+    5% {
+      box-shadow:
+        0 0 12px color-mix(in srgb, var(--electric-color) 50%, transparent),
+        0 0 24px color-mix(in srgb, var(--electric-color) 35%, transparent),
+        0 0 36px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        0 0 48px color-mix(in srgb, var(--electric-color) 12%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 6%, transparent),
+        inset 0 0 12px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        inset 0 0 22px color-mix(in srgb, var(--electric-color) 9%, transparent);
+      filter: brightness(0.85) drop-shadow(0 0 4px var(--electric-color));
+      transform: translate(-1px, 1px);
+    }
+    7% {
+      box-shadow:
+        0 0 38px var(--electric-color),
+        0 0 75px color-mix(in srgb, var(--electric-color) 92%, transparent),
+        0 0 112px color-mix(in srgb, var(--electric-color) 72%, transparent),
+        0 0 150px color-mix(in srgb, var(--electric-color) 58%, transparent),
+        0 0 188px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        inset 0 0 38px color-mix(in srgb, var(--electric-color) 52%, transparent),
+        inset 0 0 65px color-mix(in srgb, var(--electric-color) 32%, transparent);
+      filter: brightness(1.52) drop-shadow(0 0 17px var(--electric-color));
+      transform: translate(0.5px, 0.5px);
+    }
+    14% {
+      box-shadow:
+        0 0 50px var(--electric-color),
+        0 0 100px var(--electric-color),
+        0 0 150px color-mix(in srgb, var(--electric-color) 88%, transparent),
+        0 0 200px color-mix(in srgb, var(--electric-color) 70%, transparent),
+        0 0 250px color-mix(in srgb, var(--electric-color) 52%, transparent),
+        inset 0 0 50px color-mix(in srgb, var(--electric-color) 65%, transparent),
+        inset 0 0 90px color-mix(in srgb, var(--electric-color) 42%, transparent);
+      filter: brightness(1.7) drop-shadow(0 0 22px var(--electric-color));
+      transform: translate(-0.5px, -0.5px);
+    }
+    16% {
+      box-shadow:
+        0 0 15px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        0 0 30px color-mix(in srgb, var(--electric-color) 38%, transparent),
+        0 0 45px color-mix(in srgb, var(--electric-color) 25%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 15%, transparent),
+        0 0 75px color-mix(in srgb, var(--electric-color) 8%, transparent),
+        inset 0 0 15px color-mix(in srgb, var(--electric-color) 20%, transparent),
+        inset 0 0 28px color-mix(in srgb, var(--electric-color) 11%, transparent);
+      filter: brightness(0.9) drop-shadow(0 0 5px var(--electric-color));
+      transform: translate(1px, 0);
+    }
+    28% {
+      box-shadow:
+        0 0 42px var(--electric-color),
+        0 0 84px color-mix(in srgb, var(--electric-color) 95%, transparent),
+        0 0 126px color-mix(in srgb, var(--electric-color) 78%, transparent),
+        0 0 168px color-mix(in srgb, var(--electric-color) 62%, transparent),
+        0 0 210px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        inset 0 0 42px color-mix(in srgb, var(--electric-color) 58%, transparent),
+        inset 0 0 75px color-mix(in srgb, var(--electric-color) 36%, transparent);
+      filter: brightness(1.58) drop-shadow(0 0 19px var(--electric-color));
+      transform: translate(0, -1px);
+    }
+    42% {
+      box-shadow:
+        0 0 48px var(--electric-color),
+        0 0 95px var(--electric-color),
+        0 0 142px color-mix(in srgb, var(--electric-color) 90%, transparent),
+        0 0 190px color-mix(in srgb, var(--electric-color) 72%, transparent),
+        0 0 238px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        inset 0 0 48px color-mix(in srgb, var(--electric-color) 62%, transparent),
+        inset 0 0 85px color-mix(in srgb, var(--electric-color) 40%, transparent);
+      filter: brightness(1.68) drop-shadow(0 0 21px var(--electric-color));
+      transform: translate(-1px, 0);
+    }
+    44% {
+      box-shadow:
+        0 0 18px color-mix(in srgb, var(--electric-color) 58%, transparent),
+        0 0 35px color-mix(in srgb, var(--electric-color) 42%, transparent),
+        0 0 52px color-mix(in srgb, var(--electric-color) 28%, transparent),
+        0 0 70px color-mix(in srgb, var(--electric-color) 18%, transparent),
+        0 0 88px color-mix(in srgb, var(--electric-color) 10%, transparent),
+        inset 0 0 18px color-mix(in srgb, var(--electric-color) 22%, transparent),
+        inset 0 0 32px color-mix(in srgb, var(--electric-color) 12%, transparent);
+      filter: brightness(0.92) drop-shadow(0 0 6px var(--electric-color));
+      transform: translate(0.5px, -0.5px);
+    }
+    58% {
+      box-shadow:
+        0 0 40px var(--electric-color),
+        0 0 80px color-mix(in srgb, var(--electric-color) 93%, transparent),
+        0 0 120px color-mix(in srgb, var(--electric-color) 75%, transparent),
+        0 0 160px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 200px color-mix(in srgb, var(--electric-color) 44%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        inset 0 0 70px color-mix(in srgb, var(--electric-color) 34%, transparent);
+      filter: brightness(1.55) drop-shadow(0 0 18px var(--electric-color));
+      transform: translate(0, 1px);
+    }
+    71% {
+      box-shadow:
+        0 0 46px var(--electric-color),
+        0 0 92px var(--electric-color),
+        0 0 138px color-mix(in srgb, var(--electric-color) 87%, transparent),
+        0 0 184px color-mix(in srgb, var(--electric-color) 68%, transparent),
+        0 0 230px color-mix(in srgb, var(--electric-color) 50%, transparent),
+        inset 0 0 46px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        inset 0 0 82px color-mix(in srgb, var(--electric-color) 38%, transparent);
+      filter: brightness(1.62) drop-shadow(0 0 20px var(--electric-color));
+      transform: translate(-0.5px, 0.5px);
+    }
+    73% {
+      box-shadow:
+        0 0 16px color-mix(in srgb, var(--electric-color) 52%, transparent),
+        0 0 32px color-mix(in srgb, var(--electric-color) 36%, transparent),
+        0 0 48px color-mix(in srgb, var(--electric-color) 24%, transparent),
+        0 0 64px color-mix(in srgb, var(--electric-color) 14%, transparent),
+        0 0 80px color-mix(in srgb, var(--electric-color) 7%, transparent),
+        inset 0 0 16px color-mix(in srgb, var(--electric-color) 19%, transparent),
+        inset 0 0 30px color-mix(in srgb, var(--electric-color) 10%, transparent);
+      filter: brightness(0.88) drop-shadow(0 0 5px var(--electric-color));
+      transform: translate(1px, 1px);
+    }
+    86% {
+      box-shadow:
+        0 0 35px var(--electric-color),
+        0 0 70px color-mix(in srgb, var(--electric-color) 90%, transparent),
+        0 0 105px color-mix(in srgb, var(--electric-color) 70%, transparent),
+        0 0 140px color-mix(in srgb, var(--electric-color) 55%, transparent),
+        0 0 175px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        inset 0 0 35px color-mix(in srgb, var(--electric-color) 50%, transparent),
+        inset 0 0 60px color-mix(in srgb, var(--electric-color) 30%, transparent);
+      filter: brightness(1.48) drop-shadow(0 0 16px var(--electric-color));
+      transform: translate(0, 0);
+    }
+    100% {
+      box-shadow:
+        0 0 20px var(--electric-color),
+        0 0 40px color-mix(in srgb, var(--electric-color) 80%, transparent),
+        0 0 60px color-mix(in srgb, var(--electric-color) 60%, transparent),
+        0 0 80px color-mix(in srgb, var(--electric-color) 45%, transparent),
+        0 0 100px color-mix(in srgb, var(--electric-color) 30%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--electric-color) 40%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--electric-color) 20%, transparent);
+      filter: brightness(1.2) drop-shadow(0 0 8px var(--electric-color));
+      transform: translate(0, 0);
+    }
+  }
+
+  /* Apply electric animations with varying speeds and create electric arc overlays */
+  .electric-low {
+    animation: electric-pulse-low 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-low::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--electric-color) 2%,
+      transparent 4%,
+      transparent 48%,
+      var(--electric-color) 50%,
+      transparent 52%,
+      transparent 96%,
+      var(--electric-color) 98%,
+      transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-low 3s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @keyframes electric-arc-low {
+    0%, 100% { opacity: 0; }
+    15% { opacity: 0.3; transform: translateX(0); }
+    17% { opacity: 0; transform: translateX(2px); }
+    65% { opacity: 0.4; transform: translateX(0); }
+    67% { opacity: 0; transform: translateX(-2px); }
+  }
+
+  .electric-medium {
+    animation: electric-pulse-medium 2s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-medium::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    background:
+      linear-gradient(45deg,
+        transparent 0%,
+        var(--electric-color) 1%,
+        transparent 3%,
+        transparent 24%,
+        var(--electric-color) 26%,
+        transparent 28%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 72%,
+        var(--electric-color) 74%,
+        transparent 76%,
+        transparent 97%,
+        var(--electric-color) 99%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-medium 2s ease-in-out infinite;
+    z-index: 0;
+    filter: blur(1px);
+  }
+
+  .electric-medium::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg,
+      transparent,
+      var(--electric-color),
+      transparent,
+      transparent,
+      var(--electric-color),
+      transparent
+    ) 1;
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-border-flicker 2s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @keyframes electric-arc-medium {
+    0%, 100% { opacity: 0; transform: rotate(0deg); }
+    8% { opacity: 0.6; transform: rotate(2deg); }
+    10% { opacity: 0; transform: rotate(-1deg); }
+    42% { opacity: 0.7; transform: rotate(-2deg); }
+    44% { opacity: 0; transform: rotate(1deg); }
+    78% { opacity: 0.5; transform: rotate(1deg); }
+    80% { opacity: 0; transform: rotate(0deg); }
+  }
+
+  @keyframes electric-border-flicker {
+    0%, 100% { opacity: 0; }
+    8%, 42%, 78% { opacity: 0.4; }
+    10%, 44%, 80% { opacity: 0; }
+  }
+
+  .electric-high {
+    animation: electric-pulse-high 1.5s ease-in-out infinite;
+    position: relative;
+  }
+
+  .electric-high::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 10% 20%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 90% 30%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 50% 80%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 30% 50%, var(--electric-color) 0%, transparent 2%),
+      linear-gradient(135deg,
+        transparent 0%,
+        var(--electric-color) 1%,
+        transparent 2%,
+        transparent 18%,
+        var(--electric-color) 20%,
+        transparent 22%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 78%,
+        var(--electric-color) 80%,
+        transparent 82%,
+        transparent 98%,
+        var(--electric-color) 99%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-high 1.5s ease-in-out infinite;
+    z-index: 0;
+    filter: blur(0.5px);
+  }
+
+  .electric-high::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+      var(--electric-color) 0%,
+      transparent 10%,
+      transparent 45%,
+      var(--electric-color) 50%,
+      transparent 55%,
+      transparent 90%,
+      var(--electric-color) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-zigzag 1.5s ease-in-out infinite;
+    -webkit-mask:
+      linear-gradient(90deg, black 0%, transparent 2%, transparent 98%, black 100%),
+      linear-gradient(0deg, black 0%, transparent 2%, transparent 98%, black 100%);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(90deg, black 0%, transparent 2%, transparent 98%, black 100%),
+      linear-gradient(0deg, black 0%, transparent 2%, transparent 98%, black 100%);
+    mask-composite: exclude;
+    z-index: 0;
+  }
+
+  @keyframes electric-arc-high {
+    0%, 100% { opacity: 0; transform: scale(1) rotate(0deg); }
+    5% { opacity: 0.8; transform: scale(1.02) rotate(3deg); }
+    7% { opacity: 0.2; transform: scale(0.98) rotate(-2deg); }
+    18% { opacity: 0.7; transform: scale(1.01) rotate(-1deg); }
+    33% { opacity: 0.9; transform: scale(1.03) rotate(2deg); }
+    35% { opacity: 0.3; transform: scale(0.99) rotate(-3deg); }
+    50% { opacity: 0.6; transform: scale(1) rotate(1deg); }
+    67% { opacity: 0.85; transform: scale(1.02) rotate(-2deg); }
+    69% { opacity: 0.2; transform: scale(0.98) rotate(2deg); }
+    85% { opacity: 0.75; transform: scale(1.01) rotate(-1deg); }
+  }
+
+  @keyframes electric-zigzag {
+    0%, 100% { opacity: 0; }
+    5%, 33%, 67% { opacity: 0.6; }
+    7%, 35%, 69% { opacity: 0; }
+  }
+
+  .electric-extreme {
+    animation: electric-pulse-extreme 1s ease-in-out infinite;
+    position: relative;
+    overflow: visible;
+  }
+
+  .electric-extreme::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 5% 15%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 95% 20%, var(--electric-color) 0%, transparent 5%),
+      radial-gradient(circle at 15% 85%, var(--electric-color) 0%, transparent 4%),
+      radial-gradient(circle at 85% 80%, var(--electric-color) 0%, transparent 5%),
+      radial-gradient(circle at 50% 10%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 50% 90%, var(--electric-color) 0%, transparent 3%),
+      radial-gradient(circle at 20% 50%, var(--electric-color) 0%, transparent 2%),
+      radial-gradient(circle at 80% 50%, var(--electric-color) 0%, transparent 2%),
+      linear-gradient(var(--electric-arc-angle, 45deg),
+        transparent 0%,
+        var(--electric-color) 0.5%,
+        transparent 1.5%,
+        transparent 12%,
+        var(--electric-color) 13%,
+        transparent 14%,
+        transparent 24%,
+        var(--electric-color) 25.5%,
+        transparent 27%,
+        transparent 36%,
+        var(--electric-color) 37%,
+        transparent 38%,
+        transparent 48%,
+        var(--electric-color) 50%,
+        transparent 52%,
+        transparent 62%,
+        var(--electric-color) 63%,
+        transparent 64%,
+        transparent 73%,
+        var(--electric-color) 74.5%,
+        transparent 76%,
+        transparent 86%,
+        var(--electric-color) 87%,
+        transparent 88%,
+        transparent 98.5%,
+        var(--electric-color) 99.5%,
+        transparent 100%
+      );
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-arc-extreme 1s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  .electric-extreme::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    border: 3px solid var(--electric-color);
+    opacity: 0;
+    pointer-events: none;
+    animation: electric-border-crackle 1s ease-in-out infinite;
+    z-index: 0;
+    box-shadow:
+      0 0 0 1px var(--electric-color),
+      inset 0 0 0 1px var(--electric-color);
+  }
+
+  @keyframes electric-arc-extreme {
+    0% {
+      opacity: 0;
+      transform: scale(1) rotate(0deg);
+      filter: blur(0px);
+      --electric-arc-angle: 45deg;
+    }
+    3% {
+      opacity: 0.95;
+      transform: scale(1.04) rotate(4deg);
+      filter: blur(0.3px);
+      --electric-arc-angle: 42deg;
+    }
+    5% {
+      opacity: 0.3;
+      transform: scale(0.97) rotate(-3deg);
+      filter: blur(1px);
+      --electric-arc-angle: 48deg;
+    }
+    7% {
+      opacity: 0.85;
+      transform: scale(1.02) rotate(2deg);
+      filter: blur(0.5px);
+      --electric-arc-angle: 44deg;
+    }
+    14% {
+      opacity: 1;
+      transform: scale(1.05) rotate(-5deg);
+      filter: blur(0.2px);
+      --electric-arc-angle: 50deg;
+    }
+    16% {
+      opacity: 0.4;
+      transform: scale(0.96) rotate(3deg);
+      filter: blur(1.2px);
+      --electric-arc-angle: 40deg;
+    }
+    28% {
+      opacity: 0.9;
+      transform: scale(1.03) rotate(-2deg);
+      filter: blur(0.4px);
+      --electric-arc-angle: 46deg;
+    }
+    42% {
+      opacity: 0.95;
+      transform: scale(1.04) rotate(5deg);
+      filter: blur(0.3px);
+      --electric-arc-angle: 43deg;
+    }
+    44% {
+      opacity: 0.35;
+      transform: scale(0.98) rotate(-4deg);
+      filter: blur(1.1px);
+      --electric-arc-angle: 47deg;
+    }
+    58% {
+      opacity: 0.88;
+      transform: scale(1.02) rotate(1deg);
+      filter: blur(0.5px);
+      --electric-arc-angle: 45deg;
+    }
+    71% {
+      opacity: 0.93;
+      transform: scale(1.03) rotate(-3deg);
+      filter: blur(0.4px);
+      --electric-arc-angle: 48deg;
+    }
+    73% {
+      opacity: 0.38;
+      transform: scale(0.97) rotate(4deg);
+      filter: blur(1px);
+      --electric-arc-angle: 42deg;
+    }
+    86% {
+      opacity: 0.86;
+      transform: scale(1.02) rotate(-2deg);
+      filter: blur(0.6px);
+      --electric-arc-angle: 46deg;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1) rotate(0deg);
+      filter: blur(0px);
+      --electric-arc-angle: 45deg;
+    }
+  }
+
+  @keyframes electric-border-crackle {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    3%, 14%, 42%, 71% {
+      opacity: 0.7;
+      transform: scale(1.01);
+      filter: drop-shadow(0 0 2px var(--electric-color));
+    }
+    5%, 16%, 44%, 73% {
+      opacity: 0;
+      transform: scale(0.99);
+    }
+    7%, 28%, 58%, 86% {
+      opacity: 0.5;
+      transform: scale(1.005);
+      filter: drop-shadow(0 0 3px var(--electric-color));
+    }
   }
 }

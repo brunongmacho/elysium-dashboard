@@ -18,7 +18,7 @@ interface LayoutContentProps {
 }
 
 export function LayoutContent({ children }: LayoutContentProps) {
-  // Enable notification triggers for boss spawns and events
+  // Enable notification triggers
   useNotificationTriggers()
 
   return (
