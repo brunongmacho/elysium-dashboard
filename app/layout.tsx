@@ -3,6 +3,7 @@ import { Cinzel, Cinzel_Decorative } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { LayoutContent } from "@/components/LayoutContent";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Fantasy RPG-style fonts for Lordnine Infinite Class theme
 const cinzel = Cinzel({
@@ -96,6 +97,7 @@ export default function RootLayout({
         <Providers>
           <LayoutContent>{children}</LayoutContent>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
