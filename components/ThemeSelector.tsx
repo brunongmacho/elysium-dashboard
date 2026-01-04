@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Icon } from '@/components/icons';
@@ -17,36 +17,31 @@ export default function ThemeSelector() {
     setMounted(true);
   }, []);
 
-  // Calculate dropdown position when opened
-  useEffect(() => {
+  // Calculate dropdown position when opened - use layout effect to avoid flicker
+  useLayoutEffect(() => {
     if (isOpen && buttonRef.current && typeof window !== 'undefined') {
-      // Use requestAnimationFrame to ensure positioning happens before render
-      requestAnimationFrame(() => {
-        if (!buttonRef.current) return;
+      const rect = buttonRef.current.getBoundingClientRect();
+      const isMobile = window.innerWidth < 640; // sm breakpoint
+      const dropdownWidth = isMobile ? window.innerWidth - 32 : 320; // Account for w-[calc(100vw-2rem)] or sm:w-80
 
-        const rect = buttonRef.current.getBoundingClientRect();
-        const isMobile = window.innerWidth < 640; // sm breakpoint
-        const dropdownWidth = isMobile ? window.innerWidth - 32 : 320; // Account for w-[calc(100vw-2rem)] or sm:w-80
+      if (isMobile) {
+        // On mobile, position with margin to keep within viewport
+        setPosition({
+          top: rect.bottom + 8,
+          right: 0,
+          isMobile: true,
+        });
+      } else {
+        // On desktop, ensure dropdown doesn't go off-screen
+        const rightEdge = window.innerWidth - rect.right;
+        const maxRight = Math.max(16, Math.min(rightEdge, window.innerWidth - dropdownWidth - 16));
 
-        if (isMobile) {
-          // On mobile, position with margin to keep within viewport
-          setPosition({
-            top: rect.bottom + 8,
-            right: 0,
-            isMobile: true,
-          });
-        } else {
-          // On desktop, ensure dropdown doesn't go off-screen
-          const rightEdge = window.innerWidth - rect.right;
-          const maxRight = Math.max(16, Math.min(rightEdge, window.innerWidth - dropdownWidth - 16));
-
-          setPosition({
-            top: rect.bottom + 8,
-            right: maxRight,
-            isMobile: false,
-          });
-        }
-      });
+        setPosition({
+          top: rect.bottom + 8,
+          right: maxRight,
+          isMobile: false,
+        });
+      }
     } else if (!isOpen) {
       // Reset position when closed
       setPosition(null);
