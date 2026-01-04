@@ -1751,22 +1751,128 @@ textarea:focus-visible {
   }
 }
 
-/* Disable all animations when user preference is set */
+/* Disable all animations and effects when user preference is set */
 html.no-animations *,
 html.no-animations *::before,
 html.no-animations *::after {
+  /* Disable all animations */
+  animation: none !important;
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
+
+  /* Disable all transitions */
+  transition: none !important;
   transition-duration: 0.01ms !important;
+
+  /* Disable transforms */
+  transform: none !important;
+
+  /* Remove all visual effects */
+  filter: none !important;
+  backdrop-filter: none !important;
+
+  /* Remove glow effects */
+  box-shadow: none !important;
+  text-shadow: none !important;
+
+  /* Disable smooth scrolling */
   scroll-behavior: auto !important;
 }
 
-/* Disable background animations specifically */
+/* Preserve essential shadows for UI depth but remove glows */
+html.no-animations .glass,
+html.no-animations .glass-strong {
+  backdrop-filter: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Disable background gradient animation */
 html.no-animations .animated-gradient {
   animation: none !important;
+  background: var(--color-bg-primary) !important;
 }
 
 html.no-animations .animated-gradient::before,
 html.no-animations .animated-gradient::after {
+  display: none !important;
+}
+
+/* Disable all framer-motion animations */
+html.no-animations [data-projection-id] {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+/* Disable specific effect classes */
+html.no-animations .electric-low,
+html.no-animations .electric-medium,
+html.no-animations .electric-high,
+html.no-animations .electric-extreme {
   animation: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+html.no-animations .electric-low::before,
+html.no-animations .electric-low::after,
+html.no-animations .electric-medium::before,
+html.no-animations .electric-medium::after,
+html.no-animations .electric-high::before,
+html.no-animations .electric-high::after,
+html.no-animations .electric-extreme::before,
+html.no-animations .electric-extreme::after {
+  display: none !important;
+}
+
+/* Disable boss card effects */
+html.no-animations .boss-card-pulse,
+html.no-animations .boss-spawned-border,
+html.no-animations .boss-soon-border {
+  animation: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable event effects */
+html.no-animations .event-active-border {
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable glow effects */
+html.no-animations .glow-primary,
+html.no-animations .glow-accent,
+html.no-animations .glow-success,
+html.no-animations .glow-warning,
+html.no-animations .glow-danger,
+html.no-animations .pulse-glow-slow,
+html.no-animations .pulse-glow-fast {
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable text effects */
+html.no-animations .text-glow,
+html.no-animations .text-energy,
+html.no-animations .text-neon {
+  animation: none !important;
+  text-shadow: none !important;
+}
+
+/* Disable hover effects */
+html.no-animations .hover-lift:hover,
+html.no-animations .card-interactive:hover,
+html.no-animations .interactive:hover {
+  transform: none !important;
+}
+
+/* Disable particle effects */
+html.no-animations canvas {
+  display: none !important;
+}
+
+/* Keep minimal transitions only on the toggle button itself for visual feedback */
+html.no-animations button[aria-label*="animations"],
+html.no-animations button[aria-pressed] {
+  transition: background-color 0.15s ease, color 0.15s ease !important;
 }

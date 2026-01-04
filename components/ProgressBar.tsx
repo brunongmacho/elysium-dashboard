@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useVisualEffects } from "@/contexts/VisualEffectsContext";
 
 interface ProgressBarProps {
   value: number; // 0-100
@@ -21,19 +22,20 @@ export default function ProgressBar({
   className = "",
   animated = true,
 }: ProgressBarProps) {
+  const { animationsEnabled } = useVisualEffects();
   const [width, setWidth] = useState(0);
 
   const percentage = maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0;
 
   useEffect(() => {
-    if (animated) {
+    if (animated && animationsEnabled) {
       // Animate the width
       const timeout = setTimeout(() => setWidth(percentage), 100);
       return () => clearTimeout(timeout);
     } else {
       setWidth(percentage);
     }
-  }, [percentage, animated]);
+  }, [percentage, animated, animationsEnabled]);
 
   const colorClasses = {
     success: "bg-success",

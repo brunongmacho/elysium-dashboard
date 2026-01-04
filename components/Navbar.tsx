@@ -448,12 +448,12 @@ function AnimationsToggle() {
   const { animationsEnabled, setAnimationsEnabled, isLoaded } = useVisualEffects();
 
   return (
-    <Tooltip content={animationsEnabled ? "Disable animations" : "Enable animations"} fullWidth>
+    <Tooltip content={animationsEnabled ? "Disable animations" : "Enable animations"} position="bottom">
       <button
         onClick={() => setAnimationsEnabled(!animationsEnabled)}
         disabled={!isLoaded}
         className={`
-          relative p-2 rounded-md transition-all duration-200 flex-shrink-0
+          relative p-2 rounded-md flex-shrink-0
           ${!isLoaded ? "opacity-50 cursor-wait" : ""}
           ${animationsEnabled
             ? "bg-primary/10 text-primary hover:bg-primary/20"

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { useVisualEffects } from '@/contexts/VisualEffectsContext';
 
 export interface ScrollRevealProps {
   children: React.ReactNode;
@@ -26,6 +27,16 @@ export function ScrollReveal({
   triggerOnce = true,
 }: ScrollRevealProps) {
   const { ref, isVisible } = useScrollAnimation({ triggerOnce });
+  const { animationsEnabled } = useVisualEffects();
+
+  // If animations are disabled, render without motion
+  if (!animationsEnabled) {
+    return (
+      <div ref={ref as any} className={className}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <motion.div

@@ -6,6 +6,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useVisualEffects } from '@/contexts/VisualEffectsContext'
 
 export interface UseAnimatedCountOptions {
   /**
@@ -75,6 +76,7 @@ export function useAnimatedCount(
     onComplete,
   } = options
 
+  const { animationsEnabled } = useVisualEffects()
   const [value, setValue] = useState(autoStart ? 0 : end)
   const [isAnimating, setIsAnimating] = useState(false)
   const startTimeRef = useRef<number | null>(null)
@@ -124,6 +126,13 @@ export function useAnimatedCount(
    * Start animation
    */
   const start = () => {
+    // Skip animation if animations are disabled
+    if (!animationsEnabled) {
+      setValue(end)
+      setIsAnimating(false)
+      return
+    }
+
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current)
     }
@@ -157,7 +166,7 @@ export function useAnimatedCount(
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [end, autoStart])
+  }, [end, autoStart, animationsEnabled])
 
   return {
     value,
