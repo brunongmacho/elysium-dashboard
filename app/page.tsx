@@ -401,26 +401,26 @@ export default function GuildHomePage() {
   return (
     <Stack gap="xl" className="pb-32">
       {/* Hero Section - Guild Welcome */}
-      <section className="relative py-8 sm:py-12 overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-6 sm:py-10 md:py-12 overflow-hidden">
         {/* Background Glow Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-danger/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-danger/20 rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative">
           <Stack gap="md" align="center" className="text-center">
             {/* Guild Name */}
-            <Typography variant="display" className="text-5xl sm:text-6xl md:text-7xl text-gold">
+            <Typography variant="display" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gold">
               ⚔️ ELYSIUM
             </Typography>
-            <Typography variant="h2" className="text-xl sm:text-2xl text-silver">
+            <Typography variant="h2" className="text-lg sm:text-xl md:text-2xl text-silver">
               Where Chaos Becomes Strategy
             </Typography>
-            <Typography variant="body" className="text-base sm:text-lg text-gray-300 max-w-3xl italic">
+            <Typography variant="body" className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl italic px-4">
               "Where stupidity becomes genius and friendly fire is tactical."
             </Typography>
-            <Typography variant="small" className="text-xs sm:text-sm text-gray-400">
+            <Typography variant="small" className="text-xs sm:text-sm text-gray-400 px-4">
               Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
             </Typography>
           </Stack>
@@ -435,7 +435,7 @@ export default function GuildHomePage() {
         transition={{ duration: 0.6 }}
       >
         <Section>
-          <Grid columns={{ xs: 1, sm: 2, lg: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="md">
             {/* Boss Timers */}
             <motion.a
               href="/timers"
@@ -594,11 +594,11 @@ export default function GuildHomePage() {
             </Typography>
           </motion.div>
 
-          <Grid columns={{ xs: 1, sm: 2, lg: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="md">
           {guildStatsRotation.map((stat, index) => (
             <div
               key={`${stat.label}-${seed}-${index}`}
-              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
+              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
               style={{
                 animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
               }}
@@ -707,15 +707,15 @@ export default function GuildHomePage() {
       {/* Guild Info */}
       <motion.section
         ref={guildInfoAnim.ref as any}
-        className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gray-900/30 backdrop-blur-sm"
+        className="py-6 sm:py-8 md:py-10 bg-gray-900/30 backdrop-blur-sm rounded-lg"
         initial={{ opacity: 0 }}
         animate={guildInfoAnim.isVisible ? { opacity: 1 } : {}}
         transition={{ duration: 0.8 }}
       >
-        <Grid columns={{ xs: 1, lg: 2 }} gap="lg">
+        <Grid columns={{ xs: 1, md: 2 }} gap="lg">
           {/* About the Guild */}
           <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 md:p-8 card-3d"
+            className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 card-3d"
             initial={{ opacity: 0, x: -50 }}
             animate={guildInfoAnim.isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -741,7 +741,7 @@ export default function GuildHomePage() {
 
           {/* Guild Legends - Dynamic */}
           <motion.div
-            className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 md:p-8 card-3d"
+            className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 card-3d"
             initial={{ opacity: 0, x: 50 }}
             animate={guildInfoAnim.isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}

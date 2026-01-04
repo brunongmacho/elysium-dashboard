@@ -95,7 +95,7 @@ export default function MemberProfilePage() {
         <div className="flex items-center justify-center min-h-[60vh] pb-32">
           <div className="max-w-2xl w-full space-y-6">
             {/* Error Card */}
-            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-6 sm:p-8 text-center glow-danger card-3d">
+            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 sm:p-6 text-center glow-danger card-3d">
               <div className="text-4xl sm:text-5xl mb-4">⚠️</div>
 
               {isSignedIn && isOwnProfile ? (
