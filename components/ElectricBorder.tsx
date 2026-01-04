@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useMemo, memo } from 'react';
 
 interface ElectricBorderProps {
   intensity?: 'low' | 'medium' | 'high' | 'extreme';
@@ -8,7 +8,7 @@ interface ElectricBorderProps {
   className?: string;
 }
 
-export default function ElectricBorder({
+const ElectricBorder = memo(function ElectricBorder({
   intensity = 'medium',
   color = '#3b82f6',
   className = ''
@@ -19,17 +19,18 @@ export default function ElectricBorder({
   const filter4Id = useRef(`electric-filter4-${Math.random().toString(36).substr(2, 9)}`);
 
   // Intensity settings for turbulence animation
-  const settings = {
+  const settings = useMemo(() => ({
     low: { baseFrequency: 0.015, numOctaves: 8, scale: 4, duration: 10, blur1: 1, blur2: 4, blur3: 8 },
     medium: { baseFrequency: 0.02, numOctaves: 10, scale: 6, duration: 8, blur1: 2, blur2: 6, blur3: 12 },
     high: { baseFrequency: 0.025, numOctaves: 12, scale: 8, duration: 6, blur1: 3, blur2: 8, blur3: 16 },
     extreme: { baseFrequency: 0.03, numOctaves: 14, scale: 10, duration: 4, blur1: 4, blur2: 10, blur3: 20 },
-  }[intensity];
+  }[intensity]), [intensity]);
 
-  const gradientColor = `${color}20`; // 12% opacity - much more subtle
+  const gradientColor = useMemo(() => `${color}20`, [color]); // 12% opacity - much more subtle
 
-  // Helper function to create turbulence filter
-  const createTurbulenceFilter = (filterId: string, seed1: number, seed2: number, seed3: number, seed4: number, durationMultiplier: number) => (
+  // Memoized filter elements
+  const filters = useMemo(() => {
+    const createTurbulenceFilter = (filterId: string, seed1: number, seed2: number, seed3: number, seed4: number, durationMultiplier: number) => (
     <filter
       id={filterId}
       colorInterpolationFilters="sRGB"
@@ -149,17 +150,22 @@ export default function ElectricBorder({
         yChannelSelector="B"
       />
     </filter>
-  );
+    );
+
+    return [
+      createTurbulenceFilter(filter1Id.current, 1, 3, 5, 7, 1.0),
+      createTurbulenceFilter(filter2Id.current, 11, 13, 17, 19, 0.9),
+      createTurbulenceFilter(filter3Id.current, 23, 29, 31, 37, 1.1),
+      createTurbulenceFilter(filter4Id.current, 41, 43, 47, 53, 0.8)
+    ];
+  }, [settings, filter1Id, filter2Id, filter3Id, filter4Id]);
 
   return (
     <>
       {/* SVG Filters with animated turbulence - 4 independent filters */}
       <svg className="absolute w-0 h-0 pointer-events-none">
         <defs>
-          {createTurbulenceFilter(filter1Id.current, 1, 3, 5, 7, 1.0)}
-          {createTurbulenceFilter(filter2Id.current, 11, 13, 17, 19, 0.9)}
-          {createTurbulenceFilter(filter3Id.current, 23, 29, 31, 37, 1.1)}
-          {createTurbulenceFilter(filter4Id.current, 41, 43, 47, 53, 0.8)}
+          {filters}
         </defs>
       </svg>
 
@@ -237,4 +243,6 @@ export default function ElectricBorder({
       />
     </>
   );
-}
+});
+
+export default ElectricBorder;

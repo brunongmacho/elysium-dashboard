@@ -6,12 +6,18 @@
 'use client'
 
 import { ReactNode } from 'react'
+import dynamic from 'next/dynamic'
 import Navbar from '@/components/Navbar'
 import GuildHeader from '@/components/GuildHeader'
 import BackToTop from '@/components/BackToTop'
 import Footer from '@/components/Footer'
-import { BackgroundParticles } from '@/components/BackgroundParticles'
 import { useNotificationTriggers } from '@/hooks/useNotificationTriggers'
+
+// Lazy load BackgroundParticles for performance - reduces initial bundle size
+const BackgroundParticles = dynamic(
+  () => import('@/components/BackgroundParticles').then(mod => ({ default: mod.BackgroundParticles })),
+  { ssr: false }
+)
 
 interface LayoutContentProps {
   children: ReactNode

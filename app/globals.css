@@ -109,6 +109,7 @@ body {
   );
   background-size: 400% 400%;
   animation: gradient-shift 20s ease infinite;
+  will-change: background-position;
 }
 
 /* Radial glow spots for depth */
@@ -415,6 +416,7 @@ body {
 
 .boss-card-pulse {
   animation: boss-card-pulse 2s ease-in-out infinite;
+  will-change: filter;
 }
 
 /* Legacy pulse animations (kept for compatibility) */
@@ -455,6 +457,7 @@ body {
 .card-3d {
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
+  will-change: transform;
 }
 
 .card-3d:hover {
@@ -666,6 +669,7 @@ textarea:focus-visible {
 /* Enhanced card hover */
 .card-interactive {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
 }
 
 .card-interactive:hover {
@@ -770,6 +774,7 @@ textarea:focus-visible {
   /* Subtle scale on hover for interactive elements */
   .hover-lift {
     transition: transform 0.2s ease;
+    will-change: transform;
   }
 
   .hover-lift:hover {
@@ -816,6 +821,7 @@ textarea:focus-visible {
   .interactive {
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   .interactive:hover {

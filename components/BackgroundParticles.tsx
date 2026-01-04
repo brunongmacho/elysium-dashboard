@@ -5,10 +5,9 @@
 
 'use client'
 
-import { useCallback, useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, memo } from 'react'
 import Particles from '@tsparticles/react'
-import { loadSlim } from '@tsparticles/slim'
-import type { Engine, ISourceOptions } from '@tsparticles/engine'
+import type { ISourceOptions } from '@tsparticles/engine'
 import { useTheme } from '@/contexts/ThemeContext'
 
 export interface BackgroundParticlesProps {
@@ -43,7 +42,7 @@ export interface BackgroundParticlesProps {
   zIndex?: number
 }
 
-export function BackgroundParticles({
+export const BackgroundParticles = memo(function BackgroundParticles({
   density = 50,
   speed = 1,
   enableLinks = true,
@@ -187,7 +186,6 @@ export function BackgroundParticles({
     >
       <Particles
         id="background-particles"
-        
         options={particlesOptions}
         style={{
           position: 'absolute',
@@ -197,4 +195,4 @@ export function BackgroundParticles({
       />
     </div>
   )
-}
+})

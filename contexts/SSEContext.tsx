@@ -57,6 +57,7 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
   const eventSourceRef = useRef<EventSource | null>(null)
   const subscribersRef = useRef<Map<SSEEventType, Set<(data: unknown) => void>>>(new Map())
   const reconnectTimeoutRef = useRef<NodeJS.Timeout>()
+  const connectionAttemptsRef = useRef<number>(0)
 
   /**
    * Connect to SSE endpoint
@@ -64,20 +65,9 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
   const connect = useCallback(() => {
     if (!enabled) return
 
-    // Close existing connection and remove event listeners to prevent stacking
+    // Close existing connection
     if (eventSourceRef.current) {
-      const oldSource = eventSourceRef.current
-      // Remove all event listeners before closing
-      oldSource.removeEventListener('connected', handleConnected)
-      oldSource.removeEventListener('heartbeat', handleHeartbeat)
-      oldSource.removeEventListener('boss:killed', handleBossEvent)
-      oldSource.removeEventListener('boss:spawned', handleBossEvent)
-      oldSource.removeEventListener('boss:soon', handleBossEvent)
-      oldSource.removeEventListener('boss:updated', handleBossEvent)
-      oldSource.removeEventListener('event:active', handleBossEvent)
-      oldSource.removeEventListener('event:soon', handleBossEvent)
-      oldSource.removeEventListener('leaderboard:updated', handleBossEvent)
-      oldSource.close()
+      eventSourceRef.current.close()
     }
 
     const eventSource = new EventSource('/api/sse')
@@ -86,6 +76,7 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
     // Handle connection open
     eventSource.onopen = () => {
       console.log('[SSE] Connected')
+      connectionAttemptsRef.current = 0
       setState((prev) => ({
         ...prev,
         connected: true,
@@ -109,16 +100,19 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
     eventSource.onerror = (error) => {
       console.error('[SSE] Connection error:', error)
 
+      connectionAttemptsRef.current += 1
+      const attempts = connectionAttemptsRef.current
+
       setState((prev) => ({
         ...prev,
         connected: false,
         reconnecting: true,
         error: 'Connection lost',
-        connectionAttempts: prev.connectionAttempts + 1,
+        connectionAttempts: attempts,
       }))
 
       // Attempt to reconnect with exponential backoff
-      const backoffDelay = Math.min(1000 * Math.pow(2, state.connectionAttempts), 30000)
+      const backoffDelay = Math.min(1000 * Math.pow(2, attempts), 30000)
 
       reconnectTimeoutRef.current = setTimeout(() => {
         console.log(`[SSE] Reconnecting in ${backoffDelay}ms...`)
@@ -136,7 +130,7 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
     eventSource.addEventListener('event:active', handleBossEvent)
     eventSource.addEventListener('event:soon', handleBossEvent)
     eventSource.addEventListener('leaderboard:updated', handleBossEvent)
-  }, [enabled, state.connectionAttempts])
+  }, [enabled])
 
   /**
    * Handle parsed SSE event
