@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import { LayoutContent } from "@/components/LayoutContent";
 import { THEME_COLORS } from "@/lib/theme-constants";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Fantasy RPG-style fonts for Lordnine Infinite Class theme
 const cinzel = Cinzel({
@@ -44,6 +45,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cinzel.variable} ${cinzelDecorative.variable}`}>
       <head>
+        {/* Resource Hints for Performance */}
+        <link rel="dns-prefetch" href="https://cdn.discordapp.com" />
+        <link rel="preconnect" href="https://cdn.discordapp.com" crossOrigin="anonymous" />
+
         {/* Prevent theme flash by injecting theme CSS before any other styles */}
         <script
           dangerouslySetInnerHTML={{
@@ -80,6 +85,7 @@ export default function RootLayout({
         <Providers>
           <LayoutContent>{children}</LayoutContent>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );

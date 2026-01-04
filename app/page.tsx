@@ -3,8 +3,6 @@
 import { useState, useEffect, useMemo } from "react";
 import useSWR from "swr";
 import { motion } from "framer-motion";
-import memberLore from "@/member-lore.json";
-import guildStats from "@/guild-stats.json";
 import { Section, Stack, Grid } from "@/components/layout";
 import { Typography } from "@/components/ui";
 import { Icon } from "@/components/icons";
@@ -32,6 +30,30 @@ interface GuildStat {
 }
 
 type GuildStatsData = GuildStat[][];
+
+// Helper to get color-specific classes (avoids dynamic Tailwind class generation issues)
+function getColorClasses(color: string) {
+  const colorMap: Record<string, { border: string; text: string; glow: string }> = {
+    primary: { border: 'border-primary/30', text: 'text-primary-bright', glow: 'glow-primary' },
+    accent: { border: 'border-accent/30', text: 'text-accent-bright', glow: 'glow-accent' },
+    danger: { border: 'border-danger/30', text: 'text-danger-bright', glow: 'glow-danger' },
+    success: { border: 'border-success/30', text: 'text-success-bright', glow: 'glow-success' },
+    warning: { border: 'border-warning/30', text: 'text-warning-bright', glow: 'glow-warning' },
+    info: { border: 'border-info/30', text: 'text-info-bright', glow: 'glow-info' },
+  };
+  return colorMap[color] || colorMap.primary;
+}
+
+// Helper to get text color class for rotating content
+function getTextColorClass(index: number, variant: 'icon' | 'text'): string {
+  const iconColors = ['text-success', 'text-primary', 'text-accent', 'text-danger', 'text-success', 'text-primary'];
+  const textColors = ['text-primary-bright', 'text-accent-bright', 'text-danger-bright', 'text-success-bright', 'text-primary-bright'];
+
+  if (variant === 'icon') {
+    return iconColors[index % 6];
+  }
+  return textColors[index % 5];
+}
 
 // Helper to get an icon/emoji based on member specialty
 function getIconForMember(name: string, data: MemberLoreData): string {
@@ -212,7 +234,7 @@ function QuickStats() {
   const { data: bossData } = useSWR<BossTimersResponse>(
     '/api/bosses',
     swrFetcher,
-    { refreshInterval: 30000 }
+    { refreshInterval: 60000 }
   );
 
   const stats = useMemo(() => {
@@ -277,6 +299,19 @@ export default function GuildHomePage() {
   const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
 
+  // Fetch member lore and guild stats from API
+  const { data: memberLore } = useSWR<Record<string, MemberLoreData>>(
+    '/api/lore',
+    swrFetcher,
+    { refreshInterval: 60000 }
+  );
+
+  const { data: guildStats } = useSWR<GuildStatsData>(
+    '/api/guild-stats',
+    swrFetcher,
+    { refreshInterval: 60000 }
+  );
+
   // Scroll animation hooks
   const quickAccessAnim = useScrollAnimation({ threshold: 0.2 });
   const quickStatsAnim = useScrollAnimation({ threshold: 0.2 });
@@ -336,7 +371,7 @@ export default function GuildHomePage() {
 
   // Guild stats rotation data
   const guildStatsRotation = useMemo((): GuildStat[] => {
-    // Fallback stat set in case of import issues
+    // Fallback stat set in case of loading or data issues
     const fallbackStats: GuildStat[] = [
       { value: "100%", label: "Jalo Bot Financial Accuracy", sublabel: "(HesuCrypto: 0%)", color: "primary" },
       { value: "∞/0", label: "HesuCrypto's Net Worth", sublabel: "(Quantum State)", color: "accent" },
@@ -344,29 +379,30 @@ export default function GuildHomePage() {
       { value: "9999", label: "Ztig's Ally Precision Score", sublabel: "", color: "danger" }
     ];
 
-    // Cast imported data with type safety
-    const statsData = guildStats as GuildStatsData;
-
-    // Safety check for guildStats
-    if (!statsData || !Array.isArray(statsData) || statsData.length === 0) {
-      console.warn('Guild stats data not loaded, using fallback');
+    // Safety check for guildStats (data may be undefined while loading)
+    if (!guildStats || !Array.isArray(guildStats) || guildStats.length === 0) {
       return fallbackStats;
     }
 
     // Use shuffled index to select stat set (shuffle with repeat all)
     if (shuffledIndices.length === 0) {
-      const firstStats = statsData[0];
+      const firstStats = guildStats[0];
       return (Array.isArray(firstStats) && firstStats.length > 0) ? firstStats : fallbackStats;
     }
 
     const currentIndex = shuffledIndices[currentShuffleIndex];
-    const selectedStats = statsData[currentIndex];
+    const selectedStats = guildStats[currentIndex];
     return (Array.isArray(selectedStats) && selectedStats.length > 0) ? selectedStats : fallbackStats;
-  }, [shuffledIndices, currentShuffleIndex]);
+  }, [guildStats, shuffledIndices, currentShuffleIndex]);
 
   // Get random members for activities and achievements
   const { currentActivities, legendaryAchievements } = useMemo(() => {
-    const members = Object.entries(memberLore as Record<string, MemberLoreData>);
+    // Return empty arrays if data hasn't loaded yet
+    if (!memberLore) {
+      return { currentActivities: [], legendaryAchievements: [] };
+    }
+
+    const members = Object.entries(memberLore);
 
     // Truly random shuffle using current seed
     const shuffled = [...members].sort(() => Math.random() - 0.5);
@@ -396,7 +432,7 @@ export default function GuildHomePage() {
     });
 
     return { currentActivities: activities, legendaryAchievements: achievements };
-  }, [seed]);
+  }, [memberLore, seed]);
 
   return (
     <Stack gap="xl" className="pb-32">
@@ -603,17 +639,19 @@ export default function GuildHomePage() {
           </motion.div>
 
           <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
-          {guildStatsRotation.map((stat, index) => (
-            <div
-              key={`${stat.label}-${seed}-${index}`}
-              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
-              style={{
-                animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
-              }}
-            >
-              <div className={`text-2xl sm:text-3xl md:text-4xl font-bold text-${stat.color}-bright mb-2 font-game-decorative transition-all duration-500`}>
-                {stat.value}
-              </div>
+          {guildStatsRotation.map((stat, index) => {
+            const colorClasses = getColorClasses(stat.color);
+            return (
+              <div
+                key={`${stat.label}-${seed}-${index}`}
+                className={`glass backdrop-blur-sm rounded-lg border ${colorClasses.border} p-3 sm:p-4 text-center card-3d hover:scale-105 transition-all duration-500 ${colorClasses.glow}`}
+                style={{
+                  animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
+                }}
+              >
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${colorClasses.text} mb-2 font-game-decorative transition-all duration-500`}>
+                  {stat.value}
+                </div>
               <div className="text-xs sm:text-sm text-gray-400 font-game transition-all duration-500">
                 {stat.label}
               </div>
@@ -623,7 +661,8 @@ export default function GuildHomePage() {
                 </div>
               )}
             </div>
-          ))}
+            );
+          })}
         </Grid>
 
           <Typography variant="caption" className="mt-4 text-center italic">
@@ -691,7 +730,7 @@ export default function GuildHomePage() {
           <Grid columns={{ xs: 1, md: 2, lg: 3 }} gap="md" className="text-xs sm:text-sm font-game">
             {currentActivities.map((activity, index) => (
               <div key={activity.name + index} className="flex items-start gap-2">
-                <span className={`text-${['success', 'primary', 'accent', 'danger', 'success', 'primary'][index % 6]}`}>
+                <span className={getTextColorClass(index, 'icon')}>
                   {activity.icon}
                 </span>
                 <span className="text-gray-300">
@@ -761,7 +800,7 @@ export default function GuildHomePage() {
             <ul className="space-y-4 text-gray-300 text-xs sm:text-sm">
               {legendaryAchievements.map((achievement, index) => (
                 <li key={achievement.name + index} className="flex items-start gap-2 leading-relaxed">
-                  <span className={`text-${['primary', 'accent', 'danger', 'success', 'primary'][index % 5]}-bright font-bold text-base sm:text-lg flex-shrink-0`}>
+                  <span className={`${getTextColorClass(index, 'text')} font-bold text-base sm:text-lg flex-shrink-0`}>
                     {achievement.icon}
                   </span>
                   <span className="text-gray-300">
