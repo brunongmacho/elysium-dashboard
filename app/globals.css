@@ -1750,3 +1750,23 @@ textarea:focus-visible {
     }
   }
 }
+
+/* Disable all animations when user preference is set */
+html.no-animations *,
+html.no-animations *::before,
+html.no-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Disable background animations specifically */
+html.no-animations .animated-gradient {
+  animation: none !important;
+}
+
+html.no-animations .animated-gradient::before,
+html.no-animations .animated-gradient::after {
+  animation: none !important;
+}
