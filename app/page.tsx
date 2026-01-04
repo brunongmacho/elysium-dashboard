@@ -435,7 +435,7 @@ export default function GuildHomePage() {
         transition={{ duration: 0.6 }}
       >
         <Section>
-          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
             {/* Boss Timers */}
             <motion.a
               href="/timers"
@@ -594,7 +594,7 @@ export default function GuildHomePage() {
             </Typography>
           </motion.div>
 
-          <Grid columns={{ xs: 1, sm: 2, md: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
           {guildStatsRotation.map((stat, index) => (
             <div
               key={`${stat.label}-${seed}-${index}`}
