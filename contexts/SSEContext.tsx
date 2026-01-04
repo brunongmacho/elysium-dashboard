@@ -64,9 +64,20 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
   const connect = useCallback(() => {
     if (!enabled) return
 
-    // Close existing connection
+    // Close existing connection and remove event listeners to prevent stacking
     if (eventSourceRef.current) {
-      eventSourceRef.current.close()
+      const oldSource = eventSourceRef.current
+      // Remove all event listeners before closing
+      oldSource.removeEventListener('connected', handleConnected)
+      oldSource.removeEventListener('heartbeat', handleHeartbeat)
+      oldSource.removeEventListener('boss:killed', handleBossEvent)
+      oldSource.removeEventListener('boss:spawned', handleBossEvent)
+      oldSource.removeEventListener('boss:soon', handleBossEvent)
+      oldSource.removeEventListener('boss:updated', handleBossEvent)
+      oldSource.removeEventListener('event:active', handleBossEvent)
+      oldSource.removeEventListener('event:soon', handleBossEvent)
+      oldSource.removeEventListener('leaderboard:updated', handleBossEvent)
+      oldSource.close()
     }
 
     const eventSource = new EventSource('/api/sse')
@@ -228,11 +239,22 @@ export function SSEProvider({ children, enabled = true }: SSEProviderProps) {
         clearTimeout(reconnectTimeoutRef.current)
       }
       if (eventSourceRef.current) {
-        eventSourceRef.current.close()
+        const source = eventSourceRef.current
+        // Remove all event listeners before closing
+        source.removeEventListener('connected', handleConnected)
+        source.removeEventListener('heartbeat', handleHeartbeat)
+        source.removeEventListener('boss:killed', handleBossEvent)
+        source.removeEventListener('boss:spawned', handleBossEvent)
+        source.removeEventListener('boss:soon', handleBossEvent)
+        source.removeEventListener('boss:updated', handleBossEvent)
+        source.removeEventListener('event:active', handleBossEvent)
+        source.removeEventListener('event:soon', handleBossEvent)
+        source.removeEventListener('leaderboard:updated', handleBossEvent)
+        source.close()
         eventSourceRef.current = null
       }
     }
-  }, [enabled, connect])
+  }, [enabled, connect, handleConnected, handleHeartbeat, handleBossEvent])
 
   const value: SSEContextValue = {
     state,

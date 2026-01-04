@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import Particles from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
 import type { Engine, ISourceOptions } from '@tsparticles/engine'
@@ -52,27 +52,39 @@ export function BackgroundParticles({
 }: BackgroundParticlesProps) {
   const { currentTheme, themes } = useTheme()
   const theme = themes[currentTheme]
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile devices for performance optimization
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   /**
-   * Initialize particles engine
-   */
-
-  /**
-   * Particle configuration based on current theme
+   * Particle configuration based on current theme and device
    */
   const particlesOptions = useMemo<ISourceOptions>(() => {
     // Get theme colors
     const primaryColor = theme.colors.primary
     const accentColor = theme.colors.accent
 
+    // Reduce particle count and effects on mobile for better performance
+    const mobileDensity = Math.floor(density / 3) // 1/3 particles on mobile
+    const mobileSpeed = speed * 0.5 // Slower movement
+    const mobileFpsLimit = 30 // Lower FPS on mobile
+
     return {
       background: {
         opacity: 0, // Transparent background
       },
-      fpsLimit: 60,
+      fpsLimit: isMobile ? mobileFpsLimit : 60,
       particles: {
         number: {
-          value: density,
+          value: isMobile ? mobileDensity : density,
           density: {
             enable: true,
             width: 1920,
@@ -111,7 +123,7 @@ export function BackgroundParticles({
             sync: false,
           },
         },
-        links: enableLinks
+        links: enableLinks && !isMobile
           ? {
               enable: true,
               color: primaryColor,
@@ -124,7 +136,7 @@ export function BackgroundParticles({
             },
         move: {
           enable: true,
-          speed: speed,
+          speed: isMobile ? mobileSpeed : speed,
           direction: 'none',
           random: true,
           straight: false,
@@ -140,7 +152,7 @@ export function BackgroundParticles({
         detectsOn: 'window',
         events: {
           onHover: {
-            enable: true,
+            enable: !isMobile, // Disable hover effects on mobile
             mode: 'grab',
           },
           resize: {
@@ -159,7 +171,7 @@ export function BackgroundParticles({
       },
       detectRetina: true,
     }
-  }, [theme, density, speed, enableLinks, opacity])
+  }, [theme, density, speed, enableLinks, opacity, isMobile])
 
   return (
     <div

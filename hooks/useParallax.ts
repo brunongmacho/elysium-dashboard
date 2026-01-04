@@ -16,16 +16,29 @@ export function useParallax(options: UseParallaxOptions = {}) {
     const element = ref.current;
     if (!element) return;
 
+    let rafId: number | null = null;
+    let ticking = false;
+
     const handleScroll = () => {
-      const rect = element.getBoundingClientRect();
-      const scrolled = window.scrollY;
-      const elementTop = rect.top + scrolled;
+      // Only request animation frame if one isn't already pending
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(() => {
+          if (!element) return;
 
-      // Calculate parallax offset
-      const parallaxOffset = (scrolled - elementTop) * speed;
-      const finalOffset = direction === 'down' ? parallaxOffset : -parallaxOffset;
+          // Use cached position to avoid layout thrashing
+          const rect = element.getBoundingClientRect();
+          const scrolled = window.scrollY;
+          const elementTop = rect.top + scrolled;
 
-      setOffset(finalOffset);
+          // Calculate parallax offset
+          const parallaxOffset = (scrolled - elementTop) * speed;
+          const finalOffset = direction === 'down' ? parallaxOffset : -parallaxOffset;
+
+          setOffset(finalOffset);
+          ticking = false;
+        });
+      }
     };
 
     handleScroll(); // Initial calculation
@@ -33,6 +46,9 @@ export function useParallax(options: UseParallaxOptions = {}) {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, [speed, direction]);
 

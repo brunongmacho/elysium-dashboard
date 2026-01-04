@@ -11,6 +11,7 @@ import ThemeSelector from "./ThemeSelector";
 import NotificationButton from "./NotificationButton";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
+import { useTimer } from "@/contexts/TimerContext";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
@@ -26,17 +27,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const { currentTime } = useTimer();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-  // Update current time every second for event badge calculation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
