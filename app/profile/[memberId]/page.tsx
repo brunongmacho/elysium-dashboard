@@ -7,6 +7,8 @@ import { formatInGMT8 } from "@/lib/timezone";
 import Image from "next/image";
 import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
+import { Icon } from "@/components/icons";
+import { useRouter } from "next/navigation";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -30,6 +32,8 @@ interface MemberProfile {
   totalMembers: number;
   joinedAt: string;
   lastActive: string;
+  nextMemberId?: string;
+  prevMemberId?: string;
 }
 
 interface MemberLoreData {
@@ -46,6 +50,7 @@ export default function MemberProfilePage() {
   const params = useParams();
   const memberId = params.memberId as string;
   const { data: session } = useSession();
+  const router = useRouter();
   const [profile, setProfile] = useState<MemberProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -247,9 +252,35 @@ export default function MemberProfilePage() {
               {lore.title}
             </Typography>
           )}
-            <Typography variant="body" className="text-primary-light">
-              Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
-            </Typography>
+            <div className="flex items-center gap-3">
+              <Typography variant="body" className="text-primary-light">
+                Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
+              </Typography>
+              <div className="flex items-center gap-1">
+                {/* Previous Member Arrow */}
+                {profile.prevMemberId && (
+                  <button
+                    onClick={() => router.push(`/profile/${profile.prevMemberId}`)}
+                    className="p-1.5 rounded-md text-primary-light hover:text-primary-bright hover:bg-primary/10 transition-all duration-200"
+                    title="Previous member"
+                    aria-label="Navigate to previous member"
+                  >
+                    <Icon name="chevron-left" size="sm" />
+                  </button>
+                )}
+                {/* Next Member Arrow */}
+                {profile.nextMemberId && (
+                  <button
+                    onClick={() => router.push(`/profile/${profile.nextMemberId}`)}
+                    className="p-1.5 rounded-md text-primary-light hover:text-primary-bright hover:bg-primary/10 transition-all duration-200"
+                    title="Next member"
+                    aria-label="Navigate to next member"
+                  >
+                    <Icon name="chevron-right" size="sm" />
+                  </button>
+                )}
+              </div>
+            </div>
           </Stack>
         </ScrollReveal>
 
