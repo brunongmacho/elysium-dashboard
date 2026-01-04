@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useVisualEffects } from "@/contexts/VisualEffectsContext";
 
 interface AnimatedCounterProps {
   value: number;
@@ -13,11 +14,19 @@ export default function AnimatedCounter({
   duration = 1000,
   className = "",
 }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0);
+  const { animationsEnabled } = useVisualEffects();
+  const [count, setCount] = useState(animationsEnabled ? 0 : value);
   const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // Skip animation if animations are disabled
+    if (!animationsEnabled) {
+      setCount(value);
+      setHasAnimated(true);
+      return;
+    }
+
     // Only animate once when the component first appears
     if (hasAnimated) {
       setCount(value);
@@ -66,7 +75,7 @@ export default function AnimatedCounter({
         observer.unobserve(elementRef.current);
       }
     };
-  }, [value, duration, hasAnimated]);
+  }, [value, duration, hasAnimated, animationsEnabled]);
 
   // Update count immediately if value changes after initial animation
   useEffect(() => {

@@ -12,6 +12,7 @@ import NotificationButton from "./NotificationButton";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
 import { useTimer } from "@/contexts/TimerContext";
+import { useVisualEffects } from "@/contexts/VisualEffectsContext";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
@@ -141,6 +142,9 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             {/* Notification Button */}
             <NotificationButton />
+
+            {/* Animations Toggle */}
+            <AnimationsToggle />
 
             {/* Theme Selector */}
             <ThemeSelector />
@@ -276,9 +280,10 @@ export default function Navbar() {
                 Leaderboards
               </MobileNavLink>
 
-            {/* Notification & Theme */}
+            {/* Notification, Animations Toggle & Theme */}
             <div className="px-3 py-2 flex items-center gap-3">
               <NotificationButton />
+              <AnimationsToggle />
               <ThemeSelector />
             </div>
 
@@ -435,6 +440,56 @@ function MobileNavLink({ href, active, icon, badge, children }: NavLinkProps) {
         </span>
       )}
     </a>
+  );
+}
+
+// Animations Toggle Component
+function AnimationsToggle() {
+  const { animationsEnabled, setAnimationsEnabled, isLoaded } = useVisualEffects();
+
+  return (
+    <Tooltip content={animationsEnabled ? "Disable animations" : "Enable animations"} position="bottom">
+      <button
+        onClick={() => setAnimationsEnabled(!animationsEnabled)}
+        disabled={!isLoaded}
+        className={`
+          relative p-2 rounded-md flex-shrink-0
+          ${!isLoaded ? "opacity-50 cursor-wait" : ""}
+          ${animationsEnabled
+            ? "bg-primary/10 text-primary hover:bg-primary/20"
+            : "bg-gray-700/50 text-gray-400 hover:bg-gray-600/50"
+          }
+        `}
+        aria-label={animationsEnabled ? "Disable animations" : "Enable animations"}
+        aria-pressed={animationsEnabled}
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {animationsEnabled ? (
+            // Play icon (animations enabled)
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          ) : (
+            // Pause icon (animations disabled)
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          )}
+        </svg>
+      </button>
+    </Tooltip>
   );
 }
 
