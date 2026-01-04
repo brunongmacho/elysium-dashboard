@@ -291,9 +291,9 @@ export default function LeaderboardPage() {
         initial={{ opacity: 0, y: 30 }}
         animate={filtersAnim.isVisible ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 card-3d hover:scale-[1.01] transition-transform duration-200"
+        className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 card-3d hover:scale-[1.01] transition-transform duration-200"
       >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
             <>
@@ -383,9 +383,9 @@ export default function LeaderboardPage() {
 
           {/* Search */}
           <div className={
-            leaderboardType === "points" ? "md:col-span-3" :
-            period === "all" ? "md:col-span-2" :
-            "md:col-span-1"
+            leaderboardType === "points" ? "sm:col-span-2 lg:col-span-3" :
+            period === "all" ? "sm:col-span-2 lg:col-span-2" :
+            "sm:col-span-2 lg:col-span-1"
           }>
             <label className="block text-sm font-medium text-primary-light mb-2 font-game">
               Search Member
@@ -427,45 +427,45 @@ export default function LeaderboardPage() {
       {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <table className="w-full min-w-[600px] sm:min-w-0">
               <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-28">
                       Rank
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-auto">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-24">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-16 sm:w-20">
                       Kills
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-24">
                       Points
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-32 sm:w-48">
-                      <span className="hidden sm:inline">Attendance </span>Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
+                      Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-28">
                       Rank
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-auto">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-24">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20">
                       Earned
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24">
                       Available
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-24">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-20">
                       Spent
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-32 sm:w-48">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-24">
                       Rate
                     </th>
                   </tr>
@@ -506,23 +506,22 @@ export default function LeaderboardPage() {
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-xs sm:text-base font-game-decorative">
                           <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).totalKills} duration={800} />
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-xs sm:text-base font-game-decorative">
                           +<AnimatedCounter value={(entry as AttendanceLeaderboardEntry).pointsEarned} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3">
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <div className="flex-1 hidden sm:block">
+                          <div className="flex items-center justify-end gap-1 sm:gap-2">
+                            <div className="flex-1 hidden sm:block max-w-[100px]">
                               <ProgressBar
                                 value={(entry as AttendanceLeaderboardEntry).attendanceRate}
                                 color="primary"
                                 showPercentage={false}
-                                className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
+                            <span className="text-primary-bright font-semibold text-xs sm:text-sm whitespace-nowrap font-game-decorative">
                               <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).attendanceRate} duration={800} />%
                             </span>
                           </div>
