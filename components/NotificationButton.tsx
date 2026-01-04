@@ -28,7 +28,7 @@ export default function NotificationButton() {
 
   // Calculate dropdown position when opened
   useEffect(() => {
-    if (showSettings && buttonRef.current) {
+    if (showSettings && buttonRef.current && typeof window !== 'undefined') {
       const rect = buttonRef.current.getBoundingClientRect()
       const isMobile = window.innerWidth < 640 // sm breakpoint
       const dropdownWidth = isMobile ? window.innerWidth - 32 : 320 // Account for w-[calc(100vw-2rem)] or sm:w-80
@@ -167,7 +167,7 @@ export default function NotificationButton() {
       </Tooltip>
 
       {/* Settings Dropdown Portal */}
-      {mounted && showSettings && permission !== 'denied' && createPortal(
+      {mounted && showSettings && permission !== 'denied' && typeof document !== 'undefined' && createPortal(
         <>
           {/* Backdrop */}
           <div

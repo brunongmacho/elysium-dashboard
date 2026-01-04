@@ -19,7 +19,7 @@ export default function ThemeSelector() {
 
   // Calculate dropdown position when opened
   useEffect(() => {
-    if (isOpen && buttonRef.current) {
+    if (isOpen && buttonRef.current && typeof window !== 'undefined') {
       const rect = buttonRef.current.getBoundingClientRect();
       const isMobile = window.innerWidth < 640; // sm breakpoint
       const dropdownWidth = isMobile ? window.innerWidth - 32 : 320; // Account for w-[calc(100vw-2rem)] or sm:w-80
@@ -85,7 +85,7 @@ export default function ThemeSelector() {
       </button>
 
       {/* Theme Dropdown Portal - Renders outside React hierarchy */}
-      {mounted && isOpen && createPortal(
+      {mounted && isOpen && typeof document !== 'undefined' && createPortal(
         <>
           {/* Backdrop */}
           <div
