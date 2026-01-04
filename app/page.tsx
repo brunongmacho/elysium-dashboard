@@ -452,11 +452,11 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div className="min-w-0 flex-1">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
                     Boss Timers
                   </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
+                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                     Track spawn times
                   </Typography>
                 </div>
@@ -479,11 +479,11 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div className="min-w-0 flex-1">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
                     Events
                   </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
+                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                     Daily & weekly events
                   </Typography>
                 </div>
@@ -506,11 +506,11 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div className="min-w-0 flex-1">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
                     Leaderboards
                   </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
+                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                     View rankings
                   </Typography>
                 </div>
@@ -535,11 +535,11 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div className="min-w-0 flex-1">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
                     Discord
                   </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
+                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                     Join the community
                   </Typography>
                 </div>
