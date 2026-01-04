@@ -24,7 +24,7 @@ import { LEADERBOARD, UI } from "@/lib/constants";
 // Helper function to get rank tier styling
 function getRankTier(rank: number) {
   if (rank === 1) return {
-    borderClass: 'border-yellow-500/30 hover:border-yellow-500',
+    borderClass: 'border-yellow-500',
     bgClass: 'hover:bg-yellow-500/10',
     textClass: 'text-yellow-400',
     glow: 'glow-gold',
@@ -32,7 +32,7 @@ function getRankTier(rank: number) {
     badge: '👑'
   };
   if (rank <= 3) return {
-    borderClass: 'border-gray-400/30 hover:border-gray-400',
+    borderClass: 'border-gray-400',
     bgClass: 'hover:bg-gray-400/10',
     textClass: 'text-gray-300',
     glow: 'glow-silver',
@@ -40,7 +40,7 @@ function getRankTier(rank: number) {
     badge: '⚔️'
   };
   if (rank <= 10) return {
-    borderClass: 'border-primary/30 hover:border-primary',
+    borderClass: 'border-primary',
     bgClass: 'hover:bg-primary/10',
     textClass: 'text-primary-light',
     glow: 'glow-primary',
@@ -48,7 +48,7 @@ function getRankTier(rank: number) {
     badge: '🛡️'
   };
   if (rank <= 25) return {
-    borderClass: 'border-accent/30 hover:border-accent',
+    borderClass: 'border-accent',
     bgClass: 'hover:bg-accent/10',
     textClass: 'text-accent-light',
     glow: 'glow-accent',
@@ -56,7 +56,7 @@ function getRankTier(rank: number) {
     badge: '🗡️'
   };
   if (rank <= 50) return {
-    borderClass: 'border-success/30 hover:border-success',
+    borderClass: 'border-success',
     bgClass: 'hover:bg-success/10',
     textClass: 'text-success-light',
     glow: '',
@@ -64,7 +64,7 @@ function getRankTier(rank: number) {
     badge: '⚡'
   };
   return {
-    borderClass: 'border-gray-600/30 hover:border-gray-600',
+    borderClass: 'border-gray-600',
     bgClass: 'hover:bg-gray-600/10',
     textClass: 'text-gray-400',
     glow: '',
@@ -428,44 +428,44 @@ export default function LeaderboardPage() {
       {!isLoading && !error && leaderboardData.length > 0 && (
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full table-fixed">
               <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
                       Rank
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-24">
                       Kills
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24">
                       Points
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-32 sm:w-48">
                       <span className="hidden sm:inline">Attendance </span>Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
                       Rank
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-24">
                       Earned
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24">
                       Available
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-24">
                       Spent
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-32 sm:w-48">
                       Rate
                     </th>
                   </tr>
