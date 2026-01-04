@@ -369,7 +369,7 @@ export default function MemberProfilePage() {
             </div>
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Spent</div>
-              <div className="text-xl sm:text-2xl font-bold text-danger-bright font-game-decorative">-{profile.pointsSpent}</div>
+              <div className="text-xl sm:text-2xl font-bold text-danger-bright font-game-decorative">{profile.pointsSpent}</div>
             </div>
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Available</div>
