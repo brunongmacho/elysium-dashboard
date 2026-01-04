@@ -17,7 +17,7 @@ export default function NotificationButton() {
   const { themes, currentTheme } = useTheme()
   const theme = themes[currentTheme]
   const [showSettings, setShowSettings] = useState(false)
-  const [position, setPosition] = useState({ top: 0, right: 0, isMobile: false })
+  const [position, setPosition] = useState<{ top: number; right: number; isMobile: boolean } | null>(null)
   const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -29,28 +29,36 @@ export default function NotificationButton() {
   // Calculate dropdown position when opened
   useEffect(() => {
     if (showSettings && buttonRef.current && typeof window !== 'undefined') {
-      const rect = buttonRef.current.getBoundingClientRect()
-      const isMobile = window.innerWidth < 640 // sm breakpoint
-      const dropdownWidth = isMobile ? window.innerWidth - 32 : 320 // Account for w-[calc(100vw-2rem)] or sm:w-80
+      // Use requestAnimationFrame to ensure positioning happens before render
+      requestAnimationFrame(() => {
+        if (!buttonRef.current) return
 
-      if (isMobile) {
-        // On mobile, position with margin to keep within viewport
-        setPosition({
-          top: rect.bottom + 8,
-          right: 0,
-          isMobile: true,
-        })
-      } else {
-        // On desktop, ensure dropdown doesn't go off-screen
-        const rightEdge = window.innerWidth - rect.right
-        const maxRight = Math.max(16, Math.min(rightEdge, window.innerWidth - dropdownWidth - 16))
+        const rect = buttonRef.current.getBoundingClientRect()
+        const isMobile = window.innerWidth < 640 // sm breakpoint
+        const dropdownWidth = isMobile ? window.innerWidth - 32 : 320 // Account for w-[calc(100vw-2rem)] or sm:w-80
 
-        setPosition({
-          top: rect.bottom + 8,
-          right: maxRight,
-          isMobile: false,
-        })
-      }
+        if (isMobile) {
+          // On mobile, position with margin to keep within viewport
+          setPosition({
+            top: rect.bottom + 8,
+            right: 0,
+            isMobile: true,
+          })
+        } else {
+          // On desktop, ensure dropdown doesn't go off-screen
+          const rightEdge = window.innerWidth - rect.right
+          const maxRight = Math.max(16, Math.min(rightEdge, window.innerWidth - dropdownWidth - 16))
+
+          setPosition({
+            top: rect.bottom + 8,
+            right: maxRight,
+            isMobile: false,
+          })
+        }
+      })
+    } else if (!showSettings) {
+      // Reset position when closed
+      setPosition(null)
     }
   }, [showSettings])
 
@@ -167,18 +175,18 @@ export default function NotificationButton() {
       </Tooltip>
 
       {/* Settings Dropdown Portal */}
-      {mounted && showSettings && permission !== 'denied' && typeof document !== 'undefined' && createPortal(
+      {mounted && showSettings && position && permission !== 'denied' && typeof document !== 'undefined' && createPortal(
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200"
             style={{ zIndex: 999999 }}
             onClick={() => setShowSettings(false)}
           />
 
           {/* Dropdown Menu - Responsive positioning */}
           <div
-            className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border overflow-hidden"
+            className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
             style={{
               top: `${position.top}px`,
               left: position.isMobile ? '1rem' : 'auto',
