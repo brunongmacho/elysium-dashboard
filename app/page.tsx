@@ -440,7 +440,7 @@ export default function GuildHomePage() {
             <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
               <motion.a
                 href="/timers"
-                className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
                 initial={{ opacity: 0, y: 30 }}
                 animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -469,7 +469,7 @@ export default function GuildHomePage() {
             <Tooltip content="Browse daily and weekly guild events" position="top" fullWidth>
               <motion.a
                 href="/events"
-                className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
                 initial={{ opacity: 0, y: 30 }}
                 animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -498,7 +498,7 @@ export default function GuildHomePage() {
             <Tooltip content="View member attendance and points rankings" position="top" fullWidth>
               <motion.a
                 href="/leaderboard"
-                className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
                 initial={{ opacity: 0, y: 30 }}
                 animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -529,7 +529,7 @@ export default function GuildHomePage() {
                 href="https://discord.gg/EUWXd5tPa7"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
                 initial={{ opacity: 0, y: 30 }}
                 animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.4 }}
