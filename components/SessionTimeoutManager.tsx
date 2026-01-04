@@ -22,23 +22,34 @@ export function SessionTimeoutManager() {
     setIsMounted(true);
   }, []);
 
-  // Load login time from localStorage on mount
+  // Consolidated session timeout logic
   useEffect(() => {
     if (!isMounted) return;
 
-    const savedLoginTime = localStorage.getItem('session_login_time');
-    if (savedLoginTime) {
-      loginTimeRef.current = parseInt(savedLoginTime, 10);
+    // Clear timeout from previous effect run
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
-  }, [isMounted]);
 
-  // Main session timeout logic
-  useEffect(() => {
-    if (!isMounted) return;
+    // Handle unauthenticated state - clear login time
+    if (status === 'unauthenticated') {
+      loginTimeRef.current = null;
+      localStorage.removeItem('session_login_time');
+      return;
+    }
 
     // Only manage timeout for authenticated users
     if (status !== 'authenticated' || !session) {
       return;
+    }
+
+    // Load login time from localStorage if not in ref
+    if (!loginTimeRef.current) {
+      const savedLoginTime = localStorage.getItem('session_login_time');
+      if (savedLoginTime) {
+        loginTimeRef.current = parseInt(savedLoginTime, 10);
+      }
     }
 
     // Get remember me preference
@@ -82,23 +93,14 @@ export function SessionTimeoutManager() {
       }, timeRemaining);
     }
 
-    // Cleanup timeout on unmount
+    // Cleanup timeout on unmount or re-run
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
     };
   }, [session, status, isMounted]);
-
-  // Clear login time when user signs out
-  useEffect(() => {
-    if (!isMounted) return;
-
-    if (status === 'unauthenticated') {
-      loginTimeRef.current = null;
-      localStorage.removeItem('session_login_time');
-    }
-  }, [status, isMounted]);
 
   return null; // This component doesn't render anything
 }

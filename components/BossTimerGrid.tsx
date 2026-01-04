@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, memo } from "react";
 import BossCard from "./BossCard";
 import { FilterChip } from "./ui/FilterChip";
 import type { BossTimerDisplay } from "@/types/database";
@@ -16,7 +16,7 @@ interface BossTimerGridProps {
   onFilterStatusChange?: (status: string | null) => void;
 }
 
-export default function BossTimerGrid({
+const BossTimerGrid = memo(function BossTimerGrid({
   bosses,
   onMarkAsKilled,
   onCancelSpawn,
@@ -68,13 +68,15 @@ export default function BossTimerGrid({
     });
   }, [bosses, searchQuery, filterType, filterStatus]);
 
-  // Count by status
+  // Count by status - optimized single pass
   const statusCounts = useMemo(() => {
-    return {
-      spawned: bosses.filter((b) => b.status === "spawned").length,
-      soon: bosses.filter((b) => b.status === "soon").length,
-      ready: bosses.filter((b) => b.status === "ready").length,
-    };
+    const counts = { spawned: 0, soon: 0, ready: 0 };
+    for (const boss of bosses) {
+      if (boss.status === "spawned") counts.spawned++;
+      else if (boss.status === "soon") counts.soon++;
+      else if (boss.status === "ready") counts.ready++;
+    }
+    return counts;
   }, [bosses]);
 
   return (
@@ -224,4 +226,6 @@ export default function BossTimerGrid({
       )}
     </div>
   );
-}
+});
+
+export default BossTimerGrid;

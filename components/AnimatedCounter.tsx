@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import { useVisualEffects } from "@/contexts/VisualEffectsContext";
 
 interface AnimatedCounterProps {
@@ -9,7 +9,7 @@ interface AnimatedCounterProps {
   className?: string;
 }
 
-export default function AnimatedCounter({
+const AnimatedCounter = memo(function AnimatedCounter({
   value,
   duration = 1000,
   className = "",
@@ -18,7 +18,9 @@ export default function AnimatedCounter({
   const [count, setCount] = useState(animationsEnabled ? 0 : value);
   const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLSpanElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // Create and manage IntersectionObserver
   useEffect(() => {
     // Skip animation if animations are disabled
     if (!animationsEnabled) {
@@ -27,52 +29,55 @@ export default function AnimatedCounter({
       return;
     }
 
-    // Only animate once when the component first appears
+    // Only create observer if we haven't animated yet
     if (hasAnimated) {
       setCount(value);
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
+    // Create observer only once
+    if (!observerRef.current) {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting) {
+            setHasAnimated(true);
 
-          const startTime = Date.now();
-          const startValue = 0;
-          const endValue = value;
+            const startTime = Date.now();
+            const startValue = 0;
+            const endValue = value;
 
-          const animate = () => {
-            const now = Date.now();
-            const progress = Math.min((now - startTime) / duration, 1);
+            const animate = () => {
+              const now = Date.now();
+              const progress = Math.min((now - startTime) / duration, 1);
 
-            // Ease out cubic
-            const easeOut = 1 - Math.pow(1 - progress, 3);
-            const currentCount = Math.floor(startValue + (endValue - startValue) * easeOut);
+              // Ease out cubic
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentCount = Math.floor(startValue + (endValue - startValue) * easeOut);
 
-            setCount(currentCount);
+              setCount(currentCount);
 
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            } else {
-              setCount(endValue);
-            }
-          };
+              if (progress < 1) {
+                requestAnimationFrame(animate);
+              } else {
+                setCount(endValue);
+              }
+            };
 
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.1 }
-    );
+            requestAnimationFrame(animate);
+          }
+        },
+        { threshold: 0.1 }
+      );
+    }
 
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
+    if (elementRef.current && observerRef.current) {
+      observerRef.current.observe(elementRef.current);
     }
 
     return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
+      if (observerRef.current && elementRef.current) {
+        observerRef.current.unobserve(elementRef.current);
       }
     };
   }, [value, duration, hasAnimated, animationsEnabled]);
@@ -89,4 +94,6 @@ export default function AnimatedCounter({
       {count}
     </span>
   );
-}
+});
+
+export default AnimatedCounter;

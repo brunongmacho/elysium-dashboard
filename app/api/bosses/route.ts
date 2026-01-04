@@ -94,7 +94,9 @@ export async function GET() {
     // Create a map for quick lookup of last attendance by boss name
     const lastAttendanceMap = new Map<string, typeof lastAttendanceResults[0]['lastAttendance']>();
     lastAttendanceResults.forEach((result) => {
-      lastAttendanceMap.set(result._id, result.lastAttendance);
+      if (result?._id && result?.lastAttendance) {
+        lastAttendanceMap.set(result._id, result.lastAttendance);
+      }
     });
 
     // Build display data for each boss

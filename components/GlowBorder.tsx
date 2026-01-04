@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo, memo } from "react";
 
 interface GlowBorderProps {
   intensity: 'low' | 'medium' | 'high' | 'extreme';
@@ -12,24 +12,23 @@ interface GlowBorderProps {
  * Alternative to ElectricBorder for users who prefer classic glow
  * Glow that intensifies based on proximity with consistent pulse frequency
  */
-export default function GlowBorder({ intensity, color }: GlowBorderProps) {
+const GlowBorder = memo(function GlowBorder({ intensity, color }: GlowBorderProps) {
   const animationId = useRef(`glow-${Math.random().toString(36).substr(2, 9)}`);
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
   // Map intensity to glow size - all use same animation duration
-  const settings = {
+  const settings = useMemo(() => ({
     low: { blur: 8, spread: 2, opacity: 0.4, borderWidth: 2 },
     medium: { blur: 16, spread: 4, opacity: 0.6, borderWidth: 2.5 },
     high: { blur: 24, spread: 6, opacity: 0.8, borderWidth: 3 },
     extreme: { blur: 32, spread: 8, opacity: 1, borderWidth: 3.5 },
-  }[intensity];
+  }[intensity]), [intensity]);
 
   // Consistent duration across all intensities
   const duration = 4;
 
-  useEffect(() => {
-    // Create ultra-smooth pulsing animation with many gradual transitions
-    const keyframes = `
+  // Memoized keyframes generation
+  const keyframes = useMemo(() => `
       @keyframes ${animationId.current} {
         0% {
           box-shadow:
@@ -95,21 +94,22 @@ export default function GlowBorder({ intensity, color }: GlowBorderProps) {
           border-color: ${color}${Math.round(settings.opacity * 0.7 * 255).toString(16).padStart(2, '0')};
         }
       }
-    `;
+    `, [color, settings.blur, settings.spread, settings.opacity, animationId]);
 
+  useEffect(() => {
     // Inject the style into the document
     const style = document.createElement('style');
     style.textContent = keyframes;
     document.head.appendChild(style);
     styleRef.current = style;
 
-    // Cleanup on unmount or when color changes
+    // Cleanup on unmount or when keyframes change
     return () => {
       if (styleRef.current) {
         document.head.removeChild(styleRef.current);
       }
     };
-  }, [color, intensity, settings.blur, settings.spread, settings.opacity]);
+  }, [keyframes]);
 
   return (
     <>
@@ -137,4 +137,6 @@ export default function GlowBorder({ intensity, color }: GlowBorderProps) {
       />
     </>
   );
-}
+});
+
+export default GlowBorder;

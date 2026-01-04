@@ -109,10 +109,10 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   )
 
   // Subscribe to SSE events
-  useBossSpawned(handleBossSpawned, [handleBossSpawned])
-  useBossSoon(handleBossSoon, [handleBossSoon])
-  useSSEEvent('event:active', handleEventActive, [handleEventActive])
-  useSSEEvent('event:soon', handleEventSoon, [handleEventSoon])
+  useBossSpawned(handleBossSpawned, [isEnabled, settings.bossSpawns, permission])
+  useBossSoon(handleBossSoon, [isEnabled, settings.bossSoon, permission])
+  useSSEEvent('event:active', handleEventActive, [isEnabled, settings.events, permission])
+  useSSEEvent('event:soon', handleEventSoon, [isEnabled, settings.events, permission])
 
   // Request permission
   const handleRequestPermission = useCallback(async () => {

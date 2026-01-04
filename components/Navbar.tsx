@@ -60,28 +60,23 @@ export default function Navbar() {
     return activeCount;
   }, [currentTime]);
 
-  // Close mobile menu on Escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isMobileMenuOpen]);
-
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Close mobile menu when clicking outside
+  // Consolidated event handlers for mobile menu (Escape key and click outside)
   useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
     const handleClickOutside = (event: Event) => {
       if (
-        isMobileMenuOpen &&
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target as Node) &&
         !(event.target as Element).closest('button[aria-label="Toggle mobile menu"]')
@@ -90,15 +85,17 @@ export default function Navbar() {
       }
     };
 
-    if (isMobileMenuOpen) {
-      // Use capture phase to ensure we catch the event before other handlers
-      document.addEventListener('mousedown', handleClickOutside, true);
-      document.addEventListener('touchstart', handleClickOutside, true);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside, true);
-        document.removeEventListener('touchstart', handleClickOutside, true);
-      };
-    }
+    // Add all event listeners
+    document.addEventListener('keydown', handleEscape);
+    // Use capture phase to ensure we catch the event before other handlers
+    document.addEventListener('mousedown', handleClickOutside, true);
+    document.addEventListener('touchstart', handleClickOutside, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside, true);
+      document.removeEventListener('touchstart', handleClickOutside, true);
+    };
   }, [isMobileMenuOpen]);
 
   return (
