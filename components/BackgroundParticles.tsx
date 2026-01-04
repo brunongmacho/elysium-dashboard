@@ -5,10 +5,9 @@
 
 'use client'
 
-import { useCallback, useMemo, useState, useEffect, memo } from 'react'
+import { useMemo, useState, useEffect, memo } from 'react'
 import Particles from '@tsparticles/react'
-import { loadSlim } from '@tsparticles/slim'
-import type { Engine, ISourceOptions } from '@tsparticles/engine'
+import type { ISourceOptions } from '@tsparticles/engine'
 import { useTheme } from '@/contexts/ThemeContext'
 
 export interface BackgroundParticlesProps {
@@ -62,13 +61,6 @@ export const BackgroundParticles = memo(function BackgroundParticles({
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  /**
-   * Initialize particles engine
-   */
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine)
   }, [])
 
   /**
@@ -194,7 +186,6 @@ export const BackgroundParticles = memo(function BackgroundParticles({
     >
       <Particles
         id="background-particles"
-        init={particlesInit}
         options={particlesOptions}
         style={{
           position: 'absolute',
