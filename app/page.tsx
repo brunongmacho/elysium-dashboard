@@ -437,7 +437,7 @@ export default function GuildHomePage() {
         <Section>
           <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
             {/* Boss Timers */}
-            <Tooltip content="View and track all boss spawn timers" position="top">
+            <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
               <motion.a
                 href="/timers"
                 className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
@@ -466,7 +466,7 @@ export default function GuildHomePage() {
             </Tooltip>
 
             {/* Event Schedule */}
-            <Tooltip content="Browse daily and weekly guild events" position="top">
+            <Tooltip content="Browse daily and weekly guild events" position="top" fullWidth>
               <motion.a
                 href="/events"
                 className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
@@ -495,7 +495,7 @@ export default function GuildHomePage() {
             </Tooltip>
 
             {/* Leaderboards */}
-            <Tooltip content="View member attendance and points rankings" position="top">
+            <Tooltip content="View member attendance and points rankings" position="top" fullWidth>
               <motion.a
                 href="/leaderboard"
                 className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
@@ -524,7 +524,7 @@ export default function GuildHomePage() {
             </Tooltip>
 
             {/* Discord Link */}
-            <Tooltip content="Join our Discord community server" position="top">
+            <Tooltip content="Join our Discord community server" position="top" fullWidth>
               <motion.a
                 href="https://discord.gg/EUWXd5tPa7"
                 target="_blank"
