@@ -568,6 +568,7 @@ export default function LeaderboardPage() {
                       key={entry.memberId}
                       onClick={() => window.location.href = `/profile/${entry.memberId}`}
                       className={`${tier.bgClass} transition-colors duration-150 group ${tier.glow} border-l-4 ${tier.borderClass} cursor-pointer`}
+                      title={`Click to view ${entry.username}'s profile`}
                     >
                       <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
                         <div className="flex flex-col items-start gap-1">

@@ -437,114 +437,122 @@ export default function GuildHomePage() {
         <Section>
           <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
             {/* Boss Timers */}
-            <motion.a
-              href="/timers"
-              className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
-              initial={{ opacity: 0, y: 30 }}
-              animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Icon
-                  name="clock"
-                  size="2xl"
-                  className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-                />
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
-                    Boss Timers
-                  </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
-                    Track spawn times
-                  </Typography>
+            <Tooltip content="View and track all boss spawn timers" position="top">
+              <motion.a
+                href="/timers"
+                className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="clock"
+                    size="2xl"
+                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                      Boss Timers
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Track spawn times
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
+              </motion.a>
+            </Tooltip>
 
             {/* Event Schedule */}
-            <motion.a
-              href="/events"
-              className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
-              initial={{ opacity: 0, y: 30 }}
-              animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Icon
-                  name="calendar"
-                  size="2xl"
-                  className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-                />
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
-                    Events
-                  </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
-                    Daily & weekly events
-                  </Typography>
+            <Tooltip content="Browse daily and weekly guild events" position="top">
+              <motion.a
+                href="/events"
+                className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="calendar"
+                    size="2xl"
+                    className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
+                      Events
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Daily & weekly events
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
+              </motion.a>
+            </Tooltip>
 
             {/* Leaderboards */}
-            <motion.a
-              href="/leaderboard"
-              className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
-              initial={{ opacity: 0, y: 30 }}
-              animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Icon
-                  name="trophy"
-                  size="2xl"
-                  className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-                />
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
-                    Leaderboards
-                  </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
-                    View rankings
-                  </Typography>
+            <Tooltip content="View member attendance and points rankings" position="top">
+              <motion.a
+                href="/leaderboard"
+                className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="trophy"
+                    size="2xl"
+                    className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
+                      Leaderboards
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      View rankings
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
+              </motion.a>
+            </Tooltip>
 
             {/* Discord Link */}
-            <motion.a
-              href="https://discord.gg/EUWXd5tPa7"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
-              initial={{ opacity: 0, y: 30 }}
-              animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Icon
-                  name="discord"
-                  size="2xl"
-                  className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-                />
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
-                    Discord
-                  </Typography>
-                  <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
-                    Join the community
-                  </Typography>
+            <Tooltip content="Join our Discord community server" position="top">
+              <motion.a
+                href="https://discord.gg/EUWXd5tPa7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="discord"
+                    size="2xl"
+                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                      Discord
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Join the community
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
+              </motion.a>
+            </Tooltip>
           </Grid>
         </Section>
       </motion.div>
