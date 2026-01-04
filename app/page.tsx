@@ -452,7 +452,7 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div>
+                <div className="min-w-0 flex-1">
                   <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
                     Boss Timers
                   </Typography>
@@ -479,7 +479,7 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div>
+                <div className="min-w-0 flex-1">
                   <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
                     Events
                   </Typography>
@@ -506,7 +506,7 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div>
+                <div className="min-w-0 flex-1">
                   <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
                     Leaderboards
                   </Typography>
@@ -535,7 +535,7 @@ export default function GuildHomePage() {
                   size="2xl"
                   className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
                 />
-                <div>
+                <div className="min-w-0 flex-1">
                   <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
                     Discord
                   </Typography>

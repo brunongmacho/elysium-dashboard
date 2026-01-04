@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -27,6 +27,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(Date.now());
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Update current time every second for event badge calculation
   useEffect(() => {
@@ -82,6 +83,30 @@ export default function Navbar() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        !(event.target as Element).closest('button[aria-label="Toggle mobile menu"]')
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      // Use capture phase to ensure we catch the event before other handlers
+      document.addEventListener('mousedown', handleClickOutside, true);
+      document.addEventListener('touchstart', handleClickOutside, true);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside, true);
+        document.removeEventListener('touchstart', handleClickOutside, true);
+      };
+    }
+  }, [isMobileMenuOpen]);
 
   return (
     <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
@@ -190,16 +215,15 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors will-change-transform flex-shrink-0"
+            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors flex-shrink-0"
             aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
           >
-            <div className="transform-gpu">
-              {isMobileMenuOpen ? (
-                <Icon name="close" size="lg" />
-              ) : (
-                <Icon name="menu" size="lg" />
-              )}
-            </div>
+            {isMobileMenuOpen ? (
+              <Icon name="close" size="lg" />
+            ) : (
+              <Icon name="menu" size="lg" />
+            )}
           </button>
         </div>
       </div>
@@ -223,6 +247,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            ref={mobileMenuRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -234,7 +259,7 @@ export default function Navbar() {
               animate={{ y: 0 }}
               exit={{ y: -20 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="px-2 pt-2 pb-3 space-y-1"
+              className="px-2 pt-2 pb-3 space-y-1 glass backdrop-blur-sm"
             >
               <MobileNavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
                 Home
