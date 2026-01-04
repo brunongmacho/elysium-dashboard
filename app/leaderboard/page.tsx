@@ -73,6 +73,9 @@ function getRankTier(rank: number) {
   };
 }
 
+type SortColumn = "earned" | "available" | "spent";
+type SortDirection = "asc" | "desc";
+
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
@@ -80,6 +83,8 @@ export default function LeaderboardPage() {
   const [selectedWeek, setSelectedWeek] = useState<string>(""); // Format: YYYY-MM-DD (week start date)
   const [limit, setLimit] = useState<number>(LEADERBOARD.DEFAULT_LIMIT);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   // Scroll animation hooks
   const headerAnim = useScrollAnimation({ threshold: 0.2 });
@@ -185,8 +190,54 @@ export default function LeaderboardPage() {
     },
   });
 
-  const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
+  // Handle column sorting for Points leaderboard
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      // Toggle direction if clicking same column
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // New column - default to descending
+      setSortColumn(column);
+      setSortDirection("desc");
+    }
+  };
+
+  // Get raw data from API
+  const rawLeaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     data?.data || [];
+
+  // Apply sorting for Points leaderboard
+  const leaderboardData = useMemo(() => {
+    if (leaderboardType !== "points" || !sortColumn || rawLeaderboardData.length === 0) {
+      return rawLeaderboardData;
+    }
+
+    const pointsData = [...rawLeaderboardData] as PointsLeaderboardEntry[];
+
+    pointsData.sort((a, b) => {
+      let aValue = 0;
+      let bValue = 0;
+
+      switch (sortColumn) {
+        case "earned":
+          aValue = a.pointsEarned;
+          bValue = b.pointsEarned;
+          break;
+        case "available":
+          aValue = a.pointsAvailable;
+          bValue = b.pointsAvailable;
+          break;
+        case "spent":
+          aValue = a.pointsSpent;
+          bValue = b.pointsSpent;
+          break;
+      }
+
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    });
+
+    return pointsData;
+  }, [rawLeaderboardData, leaderboardType, sortColumn, sortDirection]);
 
   const podiumLeaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     podiumResponse?.data || [];
@@ -271,7 +322,12 @@ export default function LeaderboardPage() {
             { value: "points", label: "Points", icon: "💰" },
           ]}
           value={leaderboardType}
-          onChange={(value) => setLeaderboardType(value as "attendance" | "points")}
+          onChange={(value) => {
+            setLeaderboardType(value as "attendance" | "points");
+            // Reset sort when switching leaderboard types
+            setSortColumn(null);
+            setSortDirection("desc");
+          }}
         />
       </div>
 
@@ -456,14 +512,47 @@ export default function LeaderboardPage() {
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-auto">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20">
-                      Earned
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("earned")}
+                      title="Click to sort by Points Earned"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Earned</span>
+                        {sortColumn === "earned" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24">
-                      Available
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("available")}
+                      title="Click to sort by Points Available"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Available</span>
+                        {sortColumn === "available" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-20">
-                      Spent
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-20 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("spent")}
+                      title="Click to sort by Points Spent"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Spent</span>
+                        {sortColumn === "spent" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-24">
                       Rate
