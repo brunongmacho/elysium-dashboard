@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { formatTimeRemaining } from "@/lib/boss-config";
 import { BOSS_TIMER } from "@/lib/constants";
+import { useTimer } from "@/contexts/TimerContext";
 
 interface CountdownProps {
   targetDate: Date;
@@ -10,19 +11,13 @@ interface CountdownProps {
 }
 
 const Countdown = memo(function Countdown({ targetDate, className = "" }: CountdownProps) {
-  const [timeRemaining, setTimeRemaining] = useState<number>(() => {
-    return targetDate.getTime() - Date.now();
-  });
+  // Use shared timer instead of individual setInterval - reduces 50+ intervals to 1
+  const { currentTime } = useTimer();
 
-  useEffect(() => {
-    // Update countdown every second
-    const interval = setInterval(() => {
-      const remaining = targetDate.getTime() - Date.now();
-      setTimeRemaining(remaining);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [targetDate]);
+  // Calculate time remaining based on shared timer updates
+  const timeRemaining = useMemo(() => {
+    return targetDate.getTime() - currentTime;
+  }, [targetDate, currentTime]);
 
   const formatted = useMemo(() => formatTimeRemaining(timeRemaining), [timeRemaining]);
 
