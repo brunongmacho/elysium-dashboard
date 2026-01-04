@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import useSWR from "swr";
+import { motion } from "framer-motion";
 import type {
   AttendanceLeaderboardEntry,
   PointsLeaderboardEntry,
@@ -10,6 +11,7 @@ import type { LeaderboardResponse } from "@/types/api";
 import { toLocaleStringGMT8 } from "@/lib/timezone";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { LeaderboardSkeleton } from "@/components/SkeletonLoader";
 import LeaderboardPodium from "@/components/LeaderboardPodium";
 import ProgressBar from "@/components/ProgressBar";
@@ -19,6 +21,61 @@ import { Breadcrumb, Typography } from "@/components/ui";
 import { Stack } from "@/components/layout";
 import { LEADERBOARD, UI } from "@/lib/constants";
 
+// Helper function to get rank tier styling
+function getRankTier(rank: number) {
+  if (rank === 1) return {
+    borderClass: 'border-yellow-500',
+    bgClass: 'hover:bg-yellow-500/10',
+    textClass: 'text-yellow-400',
+    glow: 'glow-gold',
+    title: 'Guild Champion',
+    badge: '👑'
+  };
+  if (rank <= 3) return {
+    borderClass: 'border-gray-400',
+    bgClass: 'hover:bg-gray-400/10',
+    textClass: 'text-gray-300',
+    glow: 'glow-silver',
+    title: 'Elite Guardian',
+    badge: '⚔️'
+  };
+  if (rank <= 10) return {
+    borderClass: 'border-primary',
+    bgClass: 'hover:bg-primary/10',
+    textClass: 'text-primary-light',
+    glow: 'glow-primary',
+    title: 'Veteran Warrior',
+    badge: '🛡️'
+  };
+  if (rank <= 25) return {
+    borderClass: 'border-accent',
+    bgClass: 'hover:bg-accent/10',
+    textClass: 'text-accent-light',
+    glow: 'glow-accent',
+    title: 'Skilled Fighter',
+    badge: '🗡️'
+  };
+  if (rank <= 50) return {
+    borderClass: 'border-success',
+    bgClass: 'hover:bg-success/10',
+    textClass: 'text-success-light',
+    glow: '',
+    title: 'Brave Adventurer',
+    badge: '⚡'
+  };
+  return {
+    borderClass: 'border-gray-600',
+    bgClass: 'hover:bg-gray-600/10',
+    textClass: 'text-gray-400',
+    glow: '',
+    title: 'Guild Member',
+    badge: '🎯'
+  };
+}
+
+type SortColumn = "earned" | "available" | "spent";
+type SortDirection = "asc" | "desc";
+
 export default function LeaderboardPage() {
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
@@ -26,6 +83,15 @@ export default function LeaderboardPage() {
   const [selectedWeek, setSelectedWeek] = useState<string>(""); // Format: YYYY-MM-DD (week start date)
   const [limit, setLimit] = useState<number>(LEADERBOARD.DEFAULT_LIMIT);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  // Scroll animation hooks
+  const headerAnim = useScrollAnimation({ threshold: 0.2 });
+  const statsAnim = useScrollAnimation({ threshold: 0.2 });
+  const podiumAnim = useScrollAnimation({ threshold: 0.2 });
+  const filtersAnim = useScrollAnimation({ threshold: 0.2 });
+  const tableAnim = useScrollAnimation({ threshold: 0.2 });
 
   // Debounce search query to reduce API calls
   const debouncedSearch = useDebounce(searchQuery, LEADERBOARD.DEBOUNCE_DELAY);
@@ -124,8 +190,54 @@ export default function LeaderboardPage() {
     },
   });
 
-  const leaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
+  // Handle column sorting for Points leaderboard
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      // Toggle direction if clicking same column
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // New column - default to descending
+      setSortColumn(column);
+      setSortDirection("desc");
+    }
+  };
+
+  // Get raw data from API
+  const rawLeaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     data?.data || [];
+
+  // Apply sorting for Points leaderboard
+  const leaderboardData = useMemo(() => {
+    if (leaderboardType !== "points" || !sortColumn || rawLeaderboardData.length === 0) {
+      return rawLeaderboardData;
+    }
+
+    const pointsData = [...rawLeaderboardData] as PointsLeaderboardEntry[];
+
+    pointsData.sort((a, b) => {
+      let aValue = 0;
+      let bValue = 0;
+
+      switch (sortColumn) {
+        case "earned":
+          aValue = a.pointsEarned;
+          bValue = b.pointsEarned;
+          break;
+        case "available":
+          aValue = a.pointsAvailable;
+          bValue = b.pointsAvailable;
+          break;
+        case "spent":
+          aValue = a.pointsSpent;
+          bValue = b.pointsSpent;
+          break;
+      }
+
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    });
+
+    return pointsData;
+  }, [rawLeaderboardData, leaderboardType, sortColumn, sortDirection]);
 
   const podiumLeaderboardData: (AttendanceLeaderboardEntry | PointsLeaderboardEntry)[] =
     podiumResponse?.data || [];
@@ -149,6 +261,31 @@ export default function LeaderboardPage() {
     }));
   }, [podiumLeaderboardData, leaderboardType]);
 
+  // Calculate statistics for cards
+  const stats = useMemo(() => {
+    if (!leaderboardData || leaderboardData.length === 0) {
+      return { total: 0, topValue: 0, perfectCount: 0, avgValue: 0 };
+    }
+
+    if (leaderboardType === "attendance") {
+      const attendanceData = leaderboardData as AttendanceLeaderboardEntry[];
+      const totalKills = attendanceData.reduce((sum, e) => sum + e.totalKills, 0);
+      const perfectAttendance = attendanceData.filter(e => e.attendanceRate === 100).length;
+      const avgKills = Math.round(totalKills / attendanceData.length);
+      const topKills = attendanceData[0]?.totalKills || 0;
+
+      return { total: totalKills, topValue: topKills, perfectCount: perfectAttendance, avgValue: avgKills };
+    } else {
+      const pointsData = leaderboardData as PointsLeaderboardEntry[];
+      const totalPoints = pointsData.reduce((sum, e) => sum + e.pointsEarned, 0);
+      const topPoints = pointsData[0]?.pointsEarned || 0;
+      const avgPoints = Math.round(totalPoints / pointsData.length);
+      const richMembers = pointsData.filter(e => e.pointsAvailable >= 1000).length;
+
+      return { total: totalPoints, topValue: topPoints, perfectCount: richMembers, avgValue: avgPoints };
+    }
+  }, [leaderboardData, leaderboardType]);
+
   return (
     <>
     <Stack gap="lg">
@@ -160,15 +297,22 @@ export default function LeaderboardPage() {
         ]}
       />
 
-      {/* Header - Responsive sizing */}
-      <Stack gap="sm">
-        <Typography variant="h1" className="text-3xl sm:text-4xl text-gold">
-          Leaderboards
-        </Typography>
-        <Typography variant="body" className="text-sm sm:text-base text-gray-300">
-          Top performers in attendance and bidding points
-        </Typography>
-      </Stack>
+      {/* Header - Responsive sizing with animation */}
+      <motion.div
+        ref={headerAnim.ref as any}
+        initial={{ opacity: 0, y: 30 }}
+        animate={headerAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Stack gap="sm">
+          <Typography variant="h1" className="text-3xl sm:text-4xl text-gold">
+            Leaderboards
+          </Typography>
+          <Typography variant="body" className="text-sm sm:text-base text-gray-300">
+            Top performers in attendance and bidding points
+          </Typography>
+        </Stack>
+      </motion.div>
 
       {/* Leaderboard Type Tabs */}
       <div className="flex justify-center">
@@ -178,18 +322,34 @@ export default function LeaderboardPage() {
             { value: "points", label: "Points", icon: "💰" },
           ]}
           value={leaderboardType}
-          onChange={(value) => setLeaderboardType(value as "attendance" | "points")}
+          onChange={(value) => {
+            setLeaderboardType(value as "attendance" | "points");
+            // Reset sort when switching leaderboard types
+            setSortColumn(null);
+            setSortDirection("desc");
+          }}
         />
       </div>
 
+
       {/* Podium for Top 3 */}
       {!isLoading && !error && podiumData.length > 0 && (
-        <LeaderboardPodium entries={podiumData} type={leaderboardType} />
+        <LeaderboardPodium
+          key={leaderboardType}
+          entries={podiumData}
+          type={leaderboardType}
+        />
       )}
 
       {/* Filters */}
-      <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 card-3d hover:scale-[1.01] transition-transform duration-200">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <motion.div
+        ref={filtersAnim.ref as any}
+        initial={{ opacity: 0, y: 30 }}
+        animate={filtersAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+        className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 card-3d hover:scale-[1.01] transition-transform duration-200"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* Period Filter (Attendance only) */}
           {leaderboardType === "attendance" && (
             <>
@@ -279,9 +439,9 @@ export default function LeaderboardPage() {
 
           {/* Search */}
           <div className={
-            leaderboardType === "points" ? "md:col-span-3" :
-            period === "all" ? "md:col-span-2" :
-            "md:col-span-1"
+            leaderboardType === "points" ? "sm:col-span-2 lg:col-span-3" :
+            period === "all" ? "sm:col-span-2 lg:col-span-2" :
+            "sm:col-span-2 lg:col-span-1"
           }>
             <label className="block text-sm font-medium text-primary-light mb-2 font-game">
               Search Member
@@ -303,7 +463,7 @@ export default function LeaderboardPage() {
             Showing {data.count} of {data.total} members
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Loading State */}
       {isLoading && <LeaderboardSkeleton />}
@@ -323,92 +483,135 @@ export default function LeaderboardPage() {
       {/* Leaderboard Table - Mobile optimized */}
       {!isLoading && !error && leaderboardData.length > 0 && (
         <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <table className="w-full min-w-[600px] sm:min-w-0">
               <thead className="bg-primary/20 border-b border-primary/30">
                 {leaderboardType === "attendance" ? (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-28">
                       Rank
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-auto">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-16 sm:w-20">
                       Kills
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-24">
                       Points
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
-                      <span className="hidden sm:inline">Attendance </span>Rate
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-32">
+                      Rate
                     </th>
                   </tr>
                 ) : (
                   <tr>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-20 sm:w-28">
                       Rank
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-primary-light font-game w-24 sm:w-auto">
                       Member
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game">
-                      Earned
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light font-game w-20 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("earned")}
+                      title="Click to sort by Points Earned"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Earned</span>
+                        {sortColumn === "earned" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game">
-                      Available
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden sm:table-cell font-game w-24 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("available")}
+                      title="Click to sort by Points Available"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Available</span>
+                        {sortColumn === "available" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
-                      Spent
+                    <th
+                      className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-20 cursor-pointer hover:text-primary-bright transition-colors select-none"
+                      onClick={() => handleSort("spent")}
+                      title="Click to sort by Points Spent"
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        <span>Spent</span>
+                        {sortColumn === "spent" && (
+                          <span className="text-accent-bright">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </div>
                     </th>
-                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game">
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs sm:text-sm font-semibold text-primary-light hidden md:table-cell font-game w-24">
                       Rate
                     </th>
                   </tr>
                 )}
               </thead>
               <tbody className="divide-y divide-primary/10">
-                {leaderboardData.map((entry, index) => (
-                  <tr
-                    key={entry.memberId}
-                    className="hover:bg-primary/10 transition-all duration-200 group"
-                  >
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
-                      {entry.rank <= 3 ? (
-                        <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-200">
-                          {entry.rank === 1 ? "🥇" : entry.rank === 2 ? "🥈" : "🥉"}
-                        </span>
-                      ) : (
-                        <span className="text-primary-light text-sm sm:text-base font-game-decorative">{entry.rank}</span>
-                      )}
-                    </td>
+                {leaderboardData.map((entry, index) => {
+                  const tier = getRankTier(entry.rank || index + 1);
+                  return (
+                    <tr
+                      key={entry.memberId}
+                      onClick={() => window.location.href = `/profile/${entry.memberId}`}
+                      className={`${tier.bgClass} transition-colors duration-150 group ${tier.glow} border-l-4 ${tier.borderClass} cursor-pointer`}
+                      title={`Click to view ${entry.username}'s profile`}
+                    >
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-white font-semibold">
+                        <div className="flex flex-col items-start gap-1">
+                          <div className="flex items-center gap-2">
+                            {(entry.rank || index + 1) <= 3 ? (
+                              <span className="text-base sm:text-xl inline-block group-hover:scale-110 transition-transform duration-150">
+                                {(entry.rank || index + 1) === 1 ? "🥇" : (entry.rank || index + 1) === 2 ? "🥈" : "🥉"}
+                              </span>
+                            ) : (
+                              <span className={`${tier.textClass} text-sm sm:text-base font-game-decorative flex items-center gap-1`}>
+                                <span className="text-base">{tier.badge}</span>
+                                {entry.rank || index + 1}
+                              </span>
+                            )}
+                          </div>
+                          <div className={`text-xs ${tier.textClass} opacity-70 font-game hidden sm:block`}>
+                            {tier.title}
+                          </div>
+                        </div>
+                      </td>
                     <td className="px-2 sm:px-4 py-2 sm:py-3">
-                      <a
-                        href={`/profile/${entry.memberId}`}
-                        className="text-primary-bright hover:text-accent-bright font-medium hover:underline transition-all duration-200 group-hover:text-accent-bright text-xs sm:text-sm font-game"
-                      >
+                      <div className="text-primary-bright font-medium text-xs sm:text-sm font-game">
                         {entry.username}
-                      </a>
+                      </div>
                     </td>
                     {leaderboardType === "attendance" ? (
                       <>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-sm sm:text-base font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-white font-semibold text-xs sm:text-base font-game-decorative">
                           <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).totalKills} duration={800} />
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-sm sm:text-base hidden sm:table-cell font-game-decorative">
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-right text-accent-bright font-semibold text-xs sm:text-base font-game-decorative">
                           +<AnimatedCounter value={(entry as AttendanceLeaderboardEntry).pointsEarned} duration={800} />
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3">
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <div className="flex-1 hidden sm:block">
+                          <div className="flex items-center justify-end gap-1 sm:gap-2">
+                            <div className="flex-1 hidden sm:block max-w-[100px]">
                               <ProgressBar
                                 value={(entry as AttendanceLeaderboardEntry).attendanceRate}
                                 color="primary"
                                 showPercentage={false}
-                                className="min-w-[100px]"
                               />
                             </div>
-                            <span className="text-primary-bright font-semibold text-xs sm:text-sm min-w-[35px] sm:min-w-[45px] text-right font-game-decorative">
+                            <span className="text-primary-bright font-semibold text-xs sm:text-sm whitespace-nowrap font-game-decorative">
                               <AnimatedCounter value={(entry as AttendanceLeaderboardEntry).attendanceRate} duration={800} />%
                             </span>
                           </div>
@@ -442,8 +645,9 @@ export default function LeaderboardPage() {
                         </td>
                       </>
                     )}
-                  </tr>
-                ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

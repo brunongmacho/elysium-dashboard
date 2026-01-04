@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import useSWR from "swr";
+import { motion } from "framer-motion";
 import memberLore from "@/member-lore.json";
 import guildStats from "@/guild-stats.json";
 import { Section, Stack, Grid } from "@/components/layout";
@@ -11,6 +12,7 @@ import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface MemberLoreData {
   title: string;
@@ -275,6 +277,13 @@ export default function GuildHomePage() {
   const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
 
+  // Scroll animation hooks
+  const quickAccessAnim = useScrollAnimation({ threshold: 0.2 });
+  const quickStatsAnim = useScrollAnimation({ threshold: 0.2 });
+  const guildStatsAnim = useScrollAnimation({ threshold: 0.2 });
+  const activitiesAnim = useScrollAnimation({ threshold: 0.2 });
+  const guildInfoAnim = useScrollAnimation({ threshold: 0.2 });
+
   // Initialize shuffled indices on mount
   useEffect(() => {
     const indices = Array.from({ length: 50 }, (_, i) => i);
@@ -346,11 +355,13 @@ export default function GuildHomePage() {
 
     // Use shuffled index to select stat set (shuffle with repeat all)
     if (shuffledIndices.length === 0) {
-      return statsData[0] || fallbackStats;
+      const firstStats = statsData[0];
+      return (Array.isArray(firstStats) && firstStats.length > 0) ? firstStats : fallbackStats;
     }
 
     const currentIndex = shuffledIndices[currentShuffleIndex];
-    return statsData[currentIndex] || fallbackStats;
+    const selectedStats = statsData[currentIndex];
+    return (Array.isArray(selectedStats) && selectedStats.length > 0) ? selectedStats : fallbackStats;
   }, [shuffledIndices, currentShuffleIndex]);
 
   // Get random members for activities and achievements
@@ -390,26 +401,26 @@ export default function GuildHomePage() {
   return (
     <Stack gap="xl" className="pb-32">
       {/* Hero Section - Guild Welcome */}
-      <section className="relative py-8 sm:py-12 overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-6 sm:py-10 md:py-12 overflow-hidden">
         {/* Background Glow Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-danger/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-danger/20 rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative">
           <Stack gap="md" align="center" className="text-center">
             {/* Guild Name */}
-            <Typography variant="display" className="text-5xl sm:text-6xl md:text-7xl text-gold">
+            <Typography variant="display" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gold">
               ⚔️ ELYSIUM
             </Typography>
-            <Typography variant="h2" className="text-xl sm:text-2xl text-silver">
+            <Typography variant="h2" className="text-lg sm:text-xl md:text-2xl text-silver">
               Where Chaos Becomes Strategy
             </Typography>
-            <Typography variant="body" className="text-base sm:text-lg text-gray-300 max-w-3xl italic">
+            <Typography variant="body" className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl italic px-4">
               "Where stupidity becomes genius and friendly fire is tactical."
             </Typography>
-            <Typography variant="small" className="text-xs sm:text-sm text-gray-400">
+            <Typography variant="small" className="text-xs sm:text-sm text-gray-400 px-4">
               Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
             </Typography>
           </Stack>
@@ -417,119 +428,185 @@ export default function GuildHomePage() {
       </section>
 
       {/* Quick Access Navigation */}
-      <Section>
-        <Grid columns={{ xs: 1, sm: 2, lg: 4 }} gap="md">
-          {/* Boss Timers */}
-          <a
-            href="/timers"
-            className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
-          >
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Icon
-                name="clock"
-                size="2xl"
-                className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-              />
-              <div>
-                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
-                  Boss Timers
-                </Typography>
-                <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
-                  Track spawn times
-                </Typography>
-              </div>
-            </div>
-          </a>
+      <motion.div
+        ref={quickAccessAnim.ref as any}
+        initial={{ opacity: 0, y: 50 }}
+        animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Section>
+          <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
+            {/* Boss Timers */}
+            <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
+              <motion.a
+                href="/timers"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="clock"
+                    size="2xl"
+                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                      Boss Timers
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Track spawn times
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
 
-          {/* Event Schedule */}
-          <a
-            href="/events"
-            className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
-          >
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Icon
-                name="calendar"
-                size="2xl"
-                className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-              />
-              <div>
-                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
-                  Events
-                </Typography>
-                <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
-                  Daily & weekly events
-                </Typography>
-              </div>
-            </div>
-          </a>
+            {/* Event Schedule */}
+            <Tooltip content="Browse daily and weekly guild events" position="top" fullWidth>
+              <motion.a
+                href="/events"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="calendar"
+                    size="2xl"
+                    className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
+                      Events
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Daily & weekly events
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
 
-          {/* Leaderboards */}
-          <a
-            href="/leaderboard"
-            className="group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
-          >
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Icon
-                name="trophy"
-                size="2xl"
-                className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-              />
-              <div>
-                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright">
-                  Leaderboards
-                </Typography>
-                <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
-                  View rankings
-                </Typography>
-              </div>
-            </div>
-          </a>
+            {/* Leaderboards */}
+            <Tooltip content="View member attendance and points rankings" position="top" fullWidth>
+              <motion.a
+                href="/leaderboard"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="trophy"
+                    size="2xl"
+                    className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
+                      Leaderboards
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      View rankings
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
 
-          {/* Discord Link */}
-          <a
-            href="https://discord.gg/EUWXd5tPa7"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
-          >
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Icon
-                name="discord"
-                size="2xl"
-                className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-              />
-              <div>
-                <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright">
-                  Discord
-                </Typography>
-                <Typography variant="caption" className="text-xs sm:text-sm text-gray-400">
-                  Join the community
-                </Typography>
-              </div>
-            </div>
-          </a>
-        </Grid>
-      </Section>
+            {/* Discord Link */}
+            <Tooltip content="Join our Discord community server" position="top" fullWidth>
+              <motion.a
+                href="https://discord.gg/EUWXd5tPa7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="discord"
+                    size="2xl"
+                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                      Discord
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Join the community
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
+          </Grid>
+        </Section>
+      </motion.div>
 
       {/* Quick Stats - Real-time Data */}
-      <Section>
-        <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold mb-6">
-          📊 Live Guild Stats
-        </Typography>
-        <QuickStats />
-      </Section>
+      <motion.div
+        ref={quickStatsAnim.ref as any}
+        initial={{ opacity: 0, y: 50 }}
+        animate={quickStatsAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Section>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={quickStatsAnim.isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold mb-6">
+              📊 Live Guild Stats
+            </Typography>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={quickStatsAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <QuickStats />
+          </motion.div>
+        </Section>
+      </motion.div>
 
       {/* Guild Stats Overview - Dynamic */}
-      <Section>
-        <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold mb-6">
-          Guild Stats (Mostly Accurate)
-        </Typography>
+      <motion.div
+        ref={guildStatsAnim.ref as any}
+        initial={{ opacity: 0, y: 50 }}
+        animate={guildStatsAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Section>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={guildStatsAnim.isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold mb-6">
+              Guild Stats (Mostly Accurate)
+            </Typography>
+          </motion.div>
 
-        <Grid columns={{ xs: 1, sm: 2, lg: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
           {guildStatsRotation.map((stat, index) => (
             <div
               key={`${stat.label}-${seed}-${index}`}
-              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 md:p-6 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
+              className={`glass backdrop-blur-sm rounded-lg border border-${stat.color}/30 p-3 sm:p-4 text-center card-3d hover:scale-105 transition-all duration-500 glow-${stat.color}`}
               style={{
                 animation: `fadeInOutScale 30s ease-in-out ${index * 0.1}s both`,
               }}
@@ -549,55 +626,68 @@ export default function GuildHomePage() {
           ))}
         </Grid>
 
-        <Typography variant="caption" className="mt-4 text-center italic">
-          Rotating every 30 seconds • Live guild statistics
-        </Typography>
+          <Typography variant="caption" className="mt-4 text-center italic">
+            Rotating every 30 seconds • Live guild statistics
+          </Typography>
 
-        <style jsx>{`
-          @keyframes fadeInOutScale {
-            0% {
-              opacity: 0;
-              transform: scale(0.85) translateY(20px);
-            }
-            3% {
-              opacity: 1;
-              transform: scale(1) translateY(0);
-            }
-            93% {
-              opacity: 1;
-              transform: scale(1) translateY(0);
-            }
-            100% {
-              opacity: 0;
-              transform: scale(0.85) translateY(-20px);
-            }
-          }
-
-          @media (prefers-reduced-motion: reduce) {
+          <style jsx>{`
             @keyframes fadeInOutScale {
               0% {
                 opacity: 0;
+                transform: scale(0.85) translateY(20px);
               }
               3% {
                 opacity: 1;
+                transform: scale(1) translateY(0);
               }
               93% {
                 opacity: 1;
+                transform: scale(1) translateY(0);
               }
               100% {
                 opacity: 0;
+                transform: scale(0.85) translateY(-20px);
               }
             }
-          }
-        `}</style>
-      </Section>
+
+            @media (prefers-reduced-motion: reduce) {
+              @keyframes fadeInOutScale {
+                0% {
+                  opacity: 0;
+                }
+                3% {
+                  opacity: 1;
+                }
+                93% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0;
+                }
+              }
+            }
+          `}</style>
+        </Section>
+      </motion.div>
 
       {/* Current Guild Activities - Dynamic */}
-      <Section>
-        <div className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 sm:p-6 card-3d hover:scale-[1.01] transition-transform duration-200">
-          <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
-            📜 Guild Member Chronicles
-          </Typography>
+      <motion.div
+        ref={activitiesAnim.ref as any}
+        initial={{ opacity: 0, y: 50 }}
+        animate={activitiesAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Section>
+          <motion.div
+            className="glass backdrop-blur-sm rounded-lg border border-primary/20 p-4 sm:p-6 card-3d"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={activitiesAnim.isVisible ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ scale: 1.01 }}
+          >
+            <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
+              📜 Guild Member Chronicles
+            </Typography>
           <Grid columns={{ xs: 1, md: 2, lg: 3 }} gap="md" className="text-xs sm:text-sm font-game">
             {currentActivities.map((activity, index) => (
               <div key={activity.name + index} className="flex items-start gap-2">
@@ -615,17 +705,30 @@ export default function GuildHomePage() {
               </div>
             ))}
           </Grid>
-          <Typography variant="caption" className="mt-4 text-center italic">
-            Rotating every 30 seconds • Member reputations and current status
-          </Typography>
-        </div>
-      </Section>
+            <Typography variant="caption" className="mt-4 text-center italic">
+              Rotating every 30 seconds • Member reputations and current status
+            </Typography>
+          </motion.div>
+        </Section>
+      </motion.div>
 
       {/* Guild Info */}
-      <section className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gray-900/30 backdrop-blur-sm">
-        <Grid columns={{ xs: 1, lg: 2 }} gap="lg">
+      <motion.section
+        ref={guildInfoAnim.ref as any}
+        className="py-6 sm:py-8 md:py-10 bg-gray-900/30 backdrop-blur-sm rounded-lg"
+        initial={{ opacity: 0 }}
+        animate={guildInfoAnim.isVisible ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8 }}
+      >
+        <Grid columns={{ xs: 1, md: 2 }} gap="lg">
           {/* About the Guild */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 md:p-8 card-3d hover:scale-[1.01] transition-transform duration-200">
+          <motion.div
+            className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 card-3d"
+            initial={{ opacity: 0, x: -50 }}
+            animate={guildInfoAnim.isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ scale: 1.01 }}
+          >
             <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
               About Elysium
             </Typography>
@@ -642,10 +745,16 @@ export default function GuildHomePage() {
                 "The guild where being wrong becomes being right, allergies become weapons, and friendly fire is just tactical positioning."
               </Typography>
             </Stack>
-          </div>
+          </motion.div>
 
           {/* Guild Legends - Dynamic */}
-          <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 md:p-8 card-3d hover:scale-[1.01] transition-transform duration-200">
+          <motion.div
+            className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 card-3d"
+            initial={{ opacity: 0, x: 50 }}
+            animate={guildInfoAnim.isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            whileHover={{ scale: 1.01 }}
+          >
             <Typography variant="h2" className="text-xl sm:text-2xl md:text-3xl text-gold mb-6">
               ⚔️ Legendary Specialties
             </Typography>
@@ -669,9 +778,9 @@ export default function GuildHomePage() {
             <Typography variant="caption" className="mt-4 text-center italic">
               Rotating every 30 seconds • Showcasing unique member abilities
             </Typography>
-          </div>
+          </motion.div>
         </Grid>
-      </section>
+      </motion.section>
     </Stack>
   );
 }

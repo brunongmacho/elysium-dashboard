@@ -196,6 +196,36 @@ export async function GET(
 
     const rank = membersAbove + 1;
 
+    // Find previous member (rank - 1)
+    let prevMemberId: string | undefined = undefined;
+    if (rank > 1) {
+      const prevMember = await db
+        .collection<Member>("members")
+        .findOne(
+          { pointsAvailable: { $gt: member.pointsAvailable } },
+          {
+            sort: { pointsAvailable: 1 },
+            projection: { _id: 1 }
+          }
+        );
+      prevMemberId = prevMember?._id;
+    }
+
+    // Find next member (rank + 1)
+    let nextMemberId: string | undefined = undefined;
+    if (rank < totalMembers) {
+      const nextMember = await db
+        .collection<Member>("members")
+        .findOne(
+          { pointsAvailable: { $lt: member.pointsAvailable } },
+          {
+            sort: { pointsAvailable: -1 },
+            projection: { _id: 1 }
+          }
+        );
+      nextMemberId = nextMember?._id;
+    }
+
     // Build profile response with calculated attendance values
     const profile = {
       ...member,
@@ -207,7 +237,9 @@ export async function GET(
         streak: member.attendance?.streak || { current: 0, longest: 0 }
       },
       rank,
-      totalMembers
+      totalMembers,
+      prevMemberId,
+      nextMemberId
     };
 
     return NextResponse.json({

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from "react";
 
 interface TimerContextValue {
   currentTime: number;
@@ -20,8 +20,11 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const value = useMemo(() => ({ currentTime }), [currentTime]);
+
   return (
-    <TimerContext.Provider value={{ currentTime }}>
+    <TimerContext.Provider value={value}>
       {children}
     </TimerContext.Provider>
   );

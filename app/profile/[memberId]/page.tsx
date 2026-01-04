@@ -7,6 +7,8 @@ import { formatInGMT8 } from "@/lib/timezone";
 import Image from "next/image";
 import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
+import { Icon } from "@/components/icons";
+import { useRouter } from "next/navigation";
 
 // Import member lore
 import memberLore from "@/member-lore.json";
@@ -30,6 +32,8 @@ interface MemberProfile {
   totalMembers: number;
   joinedAt: string;
   lastActive: string;
+  nextMemberId?: string;
+  prevMemberId?: string;
 }
 
 interface MemberLoreData {
@@ -46,6 +50,7 @@ export default function MemberProfilePage() {
   const params = useParams();
   const memberId = params.memberId as string;
   const { data: session } = useSession();
+  const router = useRouter();
   const [profile, setProfile] = useState<MemberProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +100,7 @@ export default function MemberProfilePage() {
         <div className="flex items-center justify-center min-h-[60vh] pb-32">
           <div className="max-w-2xl w-full space-y-6">
             {/* Error Card */}
-            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-6 sm:p-8 text-center glow-danger card-3d">
+            <div className="glass backdrop-blur-sm rounded-lg border border-danger p-4 sm:p-6 text-center glow-danger card-3d">
               <div className="text-4xl sm:text-5xl mb-4">⚠️</div>
 
               {isSignedIn && isOwnProfile ? (
@@ -247,9 +252,35 @@ export default function MemberProfilePage() {
               {lore.title}
             </Typography>
           )}
-            <Typography variant="body" className="text-primary-light">
-              Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
-            </Typography>
+            <div className="flex items-center gap-3">
+              <Typography variant="body" className="text-primary-light">
+                Rank <span className="text-accent-bright font-semibold">#{profile.rank}</span> of {profile.totalMembers} members
+              </Typography>
+              <div className="flex items-center gap-1">
+                {/* Previous Member Arrow */}
+                {profile.prevMemberId && (
+                  <button
+                    onClick={() => router.push(`/profile/${profile.prevMemberId}`)}
+                    className="p-1.5 rounded-md text-primary-light hover:text-primary-bright hover:bg-primary/10 transition-all duration-200"
+                    title="Previous member"
+                    aria-label="Navigate to previous member"
+                  >
+                    <Icon name="chevron-left" size="sm" />
+                  </button>
+                )}
+                {/* Next Member Arrow */}
+                {profile.nextMemberId && (
+                  <button
+                    onClick={() => router.push(`/profile/${profile.nextMemberId}`)}
+                    className="p-1.5 rounded-md text-primary-light hover:text-primary-bright hover:bg-primary/10 transition-all duration-200"
+                    title="Next member"
+                    aria-label="Navigate to next member"
+                  >
+                    <Icon name="chevron-right" size="sm" />
+                  </button>
+                )}
+              </div>
+            </div>
           </Stack>
         </ScrollReveal>
 
@@ -369,7 +400,7 @@ export default function MemberProfilePage() {
             </div>
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Spent</div>
-              <div className="text-xl sm:text-2xl font-bold text-danger-bright font-game-decorative">-{profile.pointsSpent}</div>
+              <div className="text-xl sm:text-2xl font-bold text-danger-bright font-game-decorative">{profile.pointsSpent}</div>
             </div>
             <div className="glass-strong backdrop-blur-sm rounded-lg border border-primary/20 p-4 text-center">
               <div className="text-xs sm:text-sm text-primary-light font-game mb-1">Points Available</div>

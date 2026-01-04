@@ -212,6 +212,7 @@ function BossCard({
             src={imgSrc}
             alt={boss.bossName}
             fill
+            sizes="(min-width: 640px) 80px, 64px"
             className="object-contain"
             onError={() => {
               // Fallback to placeholder if image doesn't exist

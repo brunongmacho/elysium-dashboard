@@ -4,7 +4,8 @@
 
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useNotifications } from '@/contexts/NotificationContext'
 import { useTheme } from '@/contexts/ThemeContext'
 import { Icon } from './icons'
@@ -16,19 +17,43 @@ export default function NotificationButton() {
   const { themes, currentTheme } = useTheme()
   const theme = themes[currentTheme]
   const [showSettings, setShowSettings] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState<{ top: number; right: number; isMobile: boolean } | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
-  // Close dropdown when clicking outside
+  // Track component mount for SSR compatibility
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowSettings(false)
-      }
-    }
+    setMounted(true)
+  }, [])
 
-    if (showSettings) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+  // Calculate dropdown position when opened - use layout effect to avoid flicker
+  useLayoutEffect(() => {
+    if (showSettings && buttonRef.current && typeof window !== 'undefined') {
+      const rect = buttonRef.current.getBoundingClientRect()
+      const isMobile = window.innerWidth < 640 // sm breakpoint
+      const dropdownWidth = isMobile ? window.innerWidth - 32 : 320 // Account for w-[calc(100vw-2rem)] or sm:w-80
+
+      if (isMobile) {
+        // On mobile, position with margin to keep within viewport
+        setPosition({
+          top: rect.bottom + 8,
+          right: 0,
+          isMobile: true,
+        })
+      } else {
+        // On desktop, ensure dropdown doesn't go off-screen
+        const rightEdge = window.innerWidth - rect.right
+        const maxRight = Math.max(16, Math.min(rightEdge, window.innerWidth - dropdownWidth - 16))
+
+        setPosition({
+          top: rect.bottom + 8,
+          right: maxRight,
+          isMobile: false,
+        })
+      }
+    } else if (!showSettings) {
+      // Reset position when closed
+      setPosition(null)
     }
   }, [showSettings])
 
@@ -112,9 +137,10 @@ export default function NotificationButton() {
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <>
       <Tooltip content={getTooltipText()} position="bottom">
         <button
+          ref={buttonRef}
           onClick={handleButtonClick}
           className={`
             p-2 rounded-md transition-all duration-200 relative
@@ -126,6 +152,8 @@ export default function NotificationButton() {
             ${permission === 'denied' ? 'opacity-50 cursor-not-allowed' : ''}
           `}
           aria-label={enabledCount > 0 ? 'Configure notifications' : 'Enable notifications'}
+          aria-expanded={showSettings}
+          aria-haspopup="menu"
         >
           <Icon
             name={getIconName()}
@@ -141,64 +169,83 @@ export default function NotificationButton() {
         </button>
       </Tooltip>
 
-      {/* Settings Dropdown */}
-      {showSettings && permission !== 'denied' && (
-        <div
-          className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-80 glass backdrop-blur-sm border rounded-lg shadow-lg p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[80vh] overflow-y-auto"
-          style={{
-            borderColor: `${theme.colors.primary}33`,
-            backgroundColor: '#1f2937f0',
-          }}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4 gap-2">
-            <div className="text-white font-semibold font-game text-sm sm:text-base">
-              Notification Settings
+      {/* Settings Dropdown Portal */}
+      {mounted && showSettings && position && permission !== 'denied' && typeof document !== 'undefined' && createPortal(
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-in fade-in duration-200"
+            style={{ zIndex: 999999 }}
+            onClick={() => setShowSettings(false)}
+          />
+
+          {/* Dropdown Menu - Responsive positioning */}
+          <div
+            className="fixed w-[calc(100vw-2rem)] sm:w-80 max-w-md rounded-lg glass-strong shadow-2xl border overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+            style={{
+              top: `${position.top}px`,
+              left: position.isMobile ? '1rem' : 'auto',
+              right: position.isMobile ? '1rem' : `${position.right}px`,
+              zIndex: 1000000,
+              borderColor: `${theme.colors.primary}33`,
+              backgroundColor: '#1f2937f0',
+            }}
+            role="menu"
+            aria-label="Notification settings"
+          >
+            {/* Header */}
+            <div className="p-3 border-b border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-white font-semibold font-game text-sm sm:text-base">
+                  Notification Settings
+                </div>
+                <button
+                  onClick={handleToggleAll}
+                  className={`text-xs transition-colors whitespace-nowrap ${
+                    allEnabled
+                      ? 'text-danger hover:text-danger-light'
+                      : 'text-success hover:text-success-light'
+                  }`}
+                >
+                  {allEnabled ? 'Disable All' : 'Enable All'}
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleToggleAll}
-              className={`text-xs transition-colors whitespace-nowrap ${
-                allEnabled
-                  ? 'text-danger hover:text-danger-light'
-                  : 'text-success hover:text-success-light'
-              }`}
-            >
-              {allEnabled ? 'Disable All' : 'Enable All'}
-            </button>
+
+            {/* Toggle Switches */}
+            <div className="p-4 space-y-3">
+              {/* Boss Spawned */}
+              <ToggleSwitch
+                label="Boss Spawned"
+                description="When a boss spawns"
+                checked={settings.bossSpawns}
+                onChange={(checked) => updateSettings({ bossSpawns: checked })}
+                theme={theme}
+              />
+
+              {/* Boss Soon */}
+              <ToggleSwitch
+                label="Boss Soon"
+                description="Boss spawning within 30 min"
+                checked={settings.bossSoon}
+                onChange={(checked) => updateSettings({ bossSoon: checked })}
+                theme={theme}
+              />
+
+              {/* Events */}
+              <ToggleSwitch
+                label="Events"
+                description="Event starting or active"
+                checked={settings.events}
+                onChange={(checked) => updateSettings({ events: checked })}
+                theme={theme}
+              />
+            </div>
           </div>
-
-          {/* Toggle Switches */}
-          <div className="space-y-3">
-            {/* Boss Spawned */}
-            <ToggleSwitch
-              label="Boss Spawned"
-              description="When a boss spawns"
-              checked={settings.bossSpawns}
-              onChange={(checked) => updateSettings({ bossSpawns: checked })}
-              theme={theme}
-            />
-
-            {/* Boss Soon */}
-            <ToggleSwitch
-              label="Boss Soon"
-              description="Boss spawning within 30 min"
-              checked={settings.bossSoon}
-              onChange={(checked) => updateSettings({ bossSoon: checked })}
-              theme={theme}
-            />
-
-            {/* Events */}
-            <ToggleSwitch
-              label="Events"
-              description="Event starting or active"
-              checked={settings.events}
-              onChange={(checked) => updateSettings({ events: checked })}
-              theme={theme}
-            />
-          </div>
-        </div>
+        </>,
+        document.body
       )}
-    </div>
+    </>
   )
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import ThemeSelector from "./ThemeSelector";
 import NotificationButton from "./NotificationButton";
 import Tooltip from "./Tooltip";
 import { Icon } from "@/components/icons";
+import { useTimer } from "@/contexts/TimerContext";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
@@ -26,16 +27,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(Date.now());
-
-  // Update current time every second for event badge calculation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const { currentTime } = useTimer();
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -83,19 +76,43 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        !(event.target as Element).closest('button[aria-label="Toggle mobile menu"]')
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      // Use capture phase to ensure we catch the event before other handlers
+      document.addEventListener('mousedown', handleClickOutside, true);
+      document.addEventListener('touchstart', handleClickOutside, true);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside, true);
+        document.removeEventListener('touchstart', handleClickOutside, true);
+      };
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center h-16 relative">
+        <div className="flex items-center justify-between h-16">
           {/* Mobile Logo - Only on mobile */}
-          <div className="flex items-center flex-shrink-0 md:hidden absolute left-0">
+          <div className="flex items-center flex-shrink-0 md:hidden">
             <h1 className="text-xl font-bold text-white">
               Dashboard
             </h1>
           </div>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex items-center space-x-1">
+          {/* Desktop Navigation - Centered with proper spacing */}
+          <div className="hidden md:flex items-center space-x-1 flex-1 justify-center max-w-3xl mx-auto">
             <NavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
               Home
             </NavLink>
@@ -121,7 +138,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Side - Theme & Auth */}
-          <div className="hidden md:flex items-center gap-3 absolute right-0">
+          <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             {/* Notification Button */}
             <NotificationButton />
 
@@ -133,11 +150,11 @@ export default function Navbar() {
               {status === "loading" ? (
                 <div className="text-gray-400 text-sm whitespace-nowrap">Loading...</div>
               ) : session ? (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   {/* User Info - Clickable to Profile */}
                   <a
                     href={`/profile/${session.user?.id}`}
-                    className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                    className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
                   >
                     {session.user?.image && (
                       <Image
@@ -145,11 +162,11 @@ export default function Navbar() {
                         alt={session.user.name || "User"}
                         width={32}
                         height={32}
-                        className="rounded-full"
+                        className="rounded-full flex-shrink-0"
                       />
                     )}
-                    <div className="flex flex-col">
-                      <span className="text-white text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-white text-sm font-medium hover:text-primary transition-colors truncate max-w-[120px] lg:max-w-none">
                         {session.user?.name}
                       </span>
                       {!session.isInGuild && (
@@ -168,7 +185,7 @@ export default function Navbar() {
                   {/* Sign Out Button */}
                   <button
                     onClick={() => signOut()}
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium bg-gray-700 hover:bg-gray-600 transition-colors whitespace-nowrap"
+                    className="text-gray-300 hover:text-white px-2 lg:px-3 py-2 rounded-md text-sm font-medium bg-gray-700 hover:bg-gray-600 transition-colors whitespace-nowrap flex-shrink-0"
                   >
                     Sign Out
                   </button>
@@ -176,7 +193,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => setIsLoginModalOpen(true)}
-                  className="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap"
+                  className="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-3 lg:px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0"
                 >
                   <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -190,16 +207,15 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors will-change-transform"
+            className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors flex-shrink-0"
             aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
           >
-            <div className="transform-gpu">
-              {isMobileMenuOpen ? (
-                <Icon name="close" size="lg" />
-              ) : (
-                <Icon name="menu" size="lg" />
-              )}
-            </div>
+            {isMobileMenuOpen ? (
+              <Icon name="close" size="lg" />
+            ) : (
+              <Icon name="menu" size="lg" />
+            )}
           </button>
         </div>
       </div>
@@ -223,6 +239,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            ref={mobileMenuRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -234,7 +251,7 @@ export default function Navbar() {
               animate={{ y: 0 }}
               exit={{ y: -20 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="px-2 pt-2 pb-3 space-y-1"
+              className="px-2 pt-2 pb-3 space-y-1 glass backdrop-blur-sm"
             >
               <MobileNavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
                 Home

@@ -132,7 +132,7 @@ export default function Home() {
         />
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Stack gap="sm">
           <Typography variant="h1" className="text-2xl sm:text-3xl md:text-4xl text-gold">
             Boss Spawn Timers
