@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { formatInGMT8 } from "@/lib/timezone";
 import Image from "next/image";
+import useSWR from "swr";
 import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
 import { Icon } from "@/components/icons";
 import { useRouter } from "next/navigation";
 
-// Import member lore
-import memberLore from "@/member-lore.json";
+// SWR fetcher
+const swrFetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface MemberProfile {
   _id: string;
@@ -51,32 +52,31 @@ export default function MemberProfilePage() {
   const memberId = params.memberId as string;
   const { data: session } = useSession();
   const router = useRouter();
-  const [profile, setProfile] = useState<MemberProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const response = await fetch(`/api/members/${memberId}`);
-        const data = await response.json();
-
-        if (data.success) {
-          setProfile(data.data);
-        } else {
-          setError(data.error || "Failed to load profile");
-        }
-      } catch (err) {
-        setError("Failed to fetch member profile");
-      } finally {
-        setLoading(false);
-      }
+  // Fetch profile data with SWR (auto-caching, revalidation)
+  const { data: profileResponse, error: profileError, isLoading } = useSWR(
+    `/api/members/${memberId}`,
+    swrFetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 10000, // Dedupe requests within 10s
     }
+  );
 
-    fetchProfile();
-  }, [memberId]);
+  // Fetch member lore from API instead of bundling JSON
+  const { data: memberLoreData } = useSWR<Record<string, MemberLoreData>>(
+    '/api/lore',
+    swrFetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60000, // Cache for 60s
+    }
+  );
 
-  if (loading) {
+  const profile = profileResponse?.success ? profileResponse.data : null;
+  const error = profileError || (profileResponse && !profileResponse.success ? profileResponse.error : null);
+
+  if (isLoading) {
     return (
       <Stack gap="lg">
         <Breadcrumb
@@ -223,12 +223,31 @@ export default function MemberProfilePage() {
     );
   }
 
-  const consumptionRate = profile.pointsEarned > 0
-    ? Math.round((profile.pointsSpent / profile.pointsEarned) * 100)
-    : 0;
+  // Memoize expensive calculations
+  const consumptionRate = useMemo(() => {
+    if (!profile) return 0;
+    return profile.pointsEarned > 0
+      ? Math.round((profile.pointsSpent / profile.pointsEarned) * 100)
+      : 0;
+  }, [profile]);
 
-  // Get member lore if available
-  const lore = (memberLore as Record<string, MemberLoreData>)[profile.username];
+  // Get member lore from API data if available
+  const lore = useMemo(() => {
+    if (!memberLoreData || !profile) return null;
+    return memberLoreData[profile.username];
+  }, [memberLoreData, profile]);
+
+  // Prefetch next/prev member data for instant navigation
+  useSWR(
+    profile?.nextMemberId ? `/api/members/${profile.nextMemberId}` : null,
+    swrFetcher,
+    { revalidateOnFocus: false }
+  );
+  useSWR(
+    profile?.prevMemberId ? `/api/members/${profile.prevMemberId}` : null,
+    swrFetcher,
+    { revalidateOnFocus: false }
+  );
 
   return (
     <Stack gap="xl">
