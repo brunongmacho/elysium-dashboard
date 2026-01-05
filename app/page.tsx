@@ -80,7 +80,6 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Jayzzzzzzz': '😴',      // Wakeful Nightmare
     'JeffEpstein': '🍪',     // Nominative Paradox Saint (cookies)
     'ladyhoho': '😂',        // Laughing Abyss
-    'LXRDGRIM': '☠️',        // Reaper Therapist Chancellor
     'M1ssy': '💉',           // Anaphylactic Tactician (epipen)
     'Maria': '📢',           // Decibel Tyrant (loud)
     'Marsha11': '📁',        // Archival Martyr (files)
@@ -88,7 +87,6 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Munchyy': '🗡️',         // Assassination Artist
     'Onirgerep': '⏪',       // Temporal Reversal Anomaly (backwards)
     'PotatoCheese': '🥔',    // Carbohydrate Martyr Saint
-    'Riku': '🔑',            // Keychain Calamity
     'Shawty': '📏',          // Tall Delusion King
     'Skadushy': '🌓',        // Thermodynamic Heretic (shadow/light)
     'Varys': '🕵️',          // Rumor Industrialist (spy)
@@ -102,10 +100,8 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Hayacinth': '🌸',       // Biological Artillery Commander
     'LaxusLawliet': '🍬',    // Disappointed Namesake (sweets)
     'Cogwind': '⚙️',         // Mad Engineer Laureate
-    'DadaXxD': '🐸',         // Meme Hierophant (Pepe)
     'AE28': '🪨',            // Stone Age Supremacist
     '惡1ce': '🧊',           // Benevolent Evil Overlord (ice)
-    'Caera': '🤝',           // Diplomatic Calamity
     'Cutie': '🌺',           // Weaponized Adorableness
   };
 
@@ -483,7 +479,7 @@ export default function GuildHomePage() {
               "Where stupidity becomes genius and friendly fire is tactical."
             </Typography>
             <Typography variant="small" className="text-xs sm:text-sm text-gray-400 px-4">
-              Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Therapy by LXRDGRIM
+              Led by Goblok's Crayon Intelligence | Powered by Organized Apocalypse | Where Chaos Meets Strategy
             </Typography>
           </Stack>
         </div>
@@ -803,8 +799,8 @@ export default function GuildHomePage() {
                 a vegan grillmaster defends fortresses, and our Chrono-Tactician wins battles by showing up late to yesterday.
               </Typography>
               <Typography variant="body" className="leading-relaxed">
-                Led by Goblok's crayon-drawn battle plans (somehow they work), managed by LXRDGRIM's therapy empire
-                (Death & Cookies sessions available), and powered by members who turn their failures into legendary victories.
+                Led by Goblok's crayon-drawn battle plans (somehow they work), managed by organized chaos
+                and powered by members who turn their failures into legendary victories.
               </Typography>
               <Typography variant="small" className="italic text-primary-bright leading-relaxed">
                 "The guild where being wrong becomes being right, allergies become weapons, and friendly fire is just tactical positioning."

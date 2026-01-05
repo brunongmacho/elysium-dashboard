@@ -13,7 +13,21 @@
       "Battle Feast Inspiration"
     ]
   },
-  "Azryth": {
+  "Antzkn": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
+    "skills": [
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
+    ]
+  },
+  "Ayane69": {
     "title": "The Enlightened Nightlight Assassin",
     "lore": "Named after Azrael, the Angel of Death — except this one carries a Hello Kitty nightlight into assassinations. Wrote a 200-page thesis on 'Why Darkness is Overrated' while hiding from his own shadow. LXRDGRIM charges him therapy rates. Once failed an assassination because he stopped to debate the target about Nietzsche. The target joined Elysium out of philosophical exhaustion.",
     "recent_developments": "Azryth has embraced his contradiction — now teaches 'Illuminated Death Studies' at three assassination academies. His Hello Kitty nightlight collection has grown to 89 pieces, each named after a philosopher. The thesis 'Why Darkness is Overrated' became a bestseller in both assassination and self-help genres. LXRDGRIM no longer charges therapy rates; they now co-author papers on 'Existential Combat Psychology.' His recruitment method (philosophical exhaustion) has been weaponized — enemies now surrender pre-emptively to avoid the Nietzsche debates. Accumulates influence and resources with scholarly patience — prefers observation over aggressive action. Shows up religiously to guild activities — attendance is mandatory for academic credibility. The darkness still terrifies him, but now he terrifies it back with academic discourse.",
@@ -123,6 +137,20 @@
       "3-Hour Void",
       "Command Eyebrow",
       "Judgmental Stare Formation"
+    ]
+  },
+  "Etiksss": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
+    "skills": [
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
     ]
   },
   "Evand3r": {
@@ -279,6 +307,20 @@
       "Award-Winning Cognitive Dissonance"
     ]
   },
+  "KingPagpag": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
+    "skills": [
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
+    ]
+  },
   "ladyhoho": {
     "title": "The Laughing Abyss",
     "lore": "The 'hoho' is both her laugh and her emotional support sound. Smiles through trauma like it's a competitive sport. Her laugh is a battlefield weapon — enemies can't tell if it's joy or a cry for help. Neither can she. LXRDGRIM has her on speed dial. Has converted existential dread into a combo multiplier. Once laughed an enemy army into an uncomfortable retreat. They sent a therapist as tribute.",
@@ -291,20 +333,6 @@
       "Smile Weapon",
       "Existential Comedy Burst",
       "Therapeutic Casualty Creation"
-    ]
-  },
-  "LXRDGRIM": {
-    "title": "The Reaper Therapist Chancellor",
-    "lore": "The edgiest name in the guild attached to a certified therapist. His scythe now has TWO 'EMOTIONAL SUPPORT' stickers. Client list has expanded: Azryth (darkness phobia), ladyhoho (everything), AmielJohn & M1ssy (twice-weekly snack war mediation), and AE28 (technology trust issues). Recently added 惡1ce as a CO-THERAPIST after realizing wholesomeness is contagious. Now runs group therapy sessions called 'Death & Cookies.' The enemy army has a waiting list. His 'Emotional Incident Reports' are published as self-help books. The royalties fund the guild's expanding therapy budget.",
-    "recent_developments": "LXRDGRIM's therapy empire has expanded beyond recognition. His scythe now has FIVE 'EMOTIONAL SUPPORT' stickers and one that says 'LICENSED PROFESSIONAL.' Client list grew to 127 (including 47 enemies on a waiting list). Group therapy 'Death & Cookies' is now held twice weekly — co-hosted with 惡1ce, catered by JeffEpstein, mediated by Caera. His self-help books ('Reaping What You Heal,' 'The Edgelord's Guide to Emotions,' 'Scythe Hugs & Shadow Work') are international bestsellers. Opened 'Grim Therapy Clinic' with branch offices in 5 kingdoms. The royalties fund Elysium's entire mental health budget and half the snack budget.",
-    "specialty": "Industrial-scale death therapy & emotional support reaping",
-    "reputation": "The edgelord who accidentally became a healthcare empire",
-    "stats": "Active Clients 127 | Books Published 7 | Clinic Branches 5 | Scythe Hugs Administered 50000+",
-    "skills": [
-      "Empire Therapy",
-      "Published Wisdom",
-      "Franchise Reaping",
-      "Death & Cookies Symposium"
     ]
   },
   "M1ssy": {
@@ -405,18 +433,18 @@
       "Forbidden Fry Transcendence"
     ]
   },
-  "Riku": {
-    "title": "The Keychain Calamity",
-    "lore": "Named after THE Riku from Kingdom Hearts. Lost the Keyblade. LOST IT. Now carries 47 regular keys and hopes one works. Uses them as a jangling weapon that opens wrong doors at wrong times. Once accidentally unlocked a demon's diary — it now writes Elysium fanfiction. Kingdom Hearts lore says he's 'on a side quest.' The side quest has lasted three years. The Keyblade is probably under a couch somewhere.",
-    "recent_developments": "Riku's key collection has exploded to 347 keys (none are correct). His 'Key Jangle' fighting style was classified as psychological warfare — enemies cannot focus through the noise. The demon's diary he accidentally unlocked now writes Elysium fanfiction (currently 89 chapters, surprisingly well-written). His 'side quest' hit 5-year anniversary — Kingdom Hearts lore experts have created 47 theories about his journey. The Keyblade is definitely under a couch. Which couch? Unknown. He's checked 9,999 couches. The jangle continues. Destiny waits. The keys multiply. Cautiously avoids committing to the main quest — side quest is safer, less resource-intensive. Shows up occasionally to check guild furniture for missing keyblades — usually leaves disappointed, jangling mysteriously into the distance.",
-    "specialty": "Destiny postponement through key-based chaos",
-    "reputation": "The chosen one who weaponized his own incompetence, avoidance, and sporadic attendance",
-    "stats": "Keys Owned 347 | Couches Checked 9999 | Demon Fanfiction Chapters 89 | Years on Side Quest 5",
+  "ScarletSnow": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
     "skills": [
-      "347-Key Jangle",
-      "Couch Quest",
-      "Destiny Delay",
-      "Demon Editor"
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
     ]
   },
   "Shawty": {
@@ -473,6 +501,20 @@
       "Villain Frustration",
       "Enlightened Fidget",
       "Pause-Proof Testing"
+    ]
+  },
+  "ZaiQt": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
+    "skills": [
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
     ]
   },
   "Ztig": {
@@ -545,6 +587,20 @@
       "Catastrophe Elegance"
     ]
   },
+  "Taller66": {
+    "title": "The Undefined Disaster",
+    "lore": "A warrior whose legend has yet to unfold within Elysium's chaotic embrace. They will excel at something absurd, fail spectacularly at the obvious, and their contradictions will weave perfectly into the guild's tapestry of beautiful disasters. Goblok awaits their arrival with crayon-drawn plans. The snacks are ready. The chaos is patient.",
+    "recent_developments": "Awaiting their grand entrance into Elysium's chaos.",
+    "specialty": "Undiscovered paradoxes waiting to emerge",
+    "reputation": "Elysium's next legendary contradiction (pending legendary moments)",
+    "stats": "Potential ∞ | Chaos Reserved YES | Guild Integration IN PROGRESS",
+    "skills": [
+      "Unrevealed Weakness",
+      "Hidden Disaster",
+      "Legendary Failure (TBD)",
+      "Elysium Destiny"
+    ]
+  },
   "Tinitira": {
     "title": "The Sightless Oracle",
     "lore": "Name comes from Filipino 'tumingin' (to look). Is blind. The irony writes itself. Navigates through echolocation, gossip vibrations, and the sound of spilled tea. Her stare is intense because she's staring at nothing — enemies don't know that. Once won a staring contest against someone who could see. They blinked from discomfort. Sees more blind than most see with eyes. It's unsettling.",
@@ -601,20 +657,6 @@
       "Profitable Disaster Engineering"
     ]
   },
-  "DadaXxD": {
-    "title": "The Meme Hierophant",
-    "lore": "Communicates EXCLUSIVELY in memes, stickers, and XD faces. Has not spoken actual words in three years. Battle commands are reaction images that somehow work. Once coordinated an entire raid through Pepe variants. Enemy intelligence cannot decode his communications — neither can allies. They just vibe with it. His presence buffs morale through sheer absurdist energy. Linguistics professors have written papers. They understood nothing.",
-    "recent_developments": "DadaXxD's meme communication has achieved religious status. The 'Church of Pepe' was founded by enemies who decoded his battle commands as divine prophecy. Has not spoken words in 5 years — communication is exclusively memes, reaction images, and XD energy. Once coordinated a 12-kingdom alliance through Wojak variants alone. Linguistics professors published 89 papers trying to decode his language. All failed. His presence buffs morale by 500% — the absurdist energy is a tactical asset. Recently became Chunchunmaru's social media manager (the sword's Instagram is his masterwork). Communication is meme. Meme is life. XD is strategy. Deploys meme energy selectively — saves premium formats for critical moments.",
-    "specialty": "Religious meme warfare & format-based command structure",
-    "reputation": "The oracle who speaks only in shared cultural formats, deployed strategically",
-    "stats": "Verbal Communication 0 Years 5 | Church Followers 1200 | Linguistic Papers 89 | Morale Buff 500%",
-    "skills": [
-      "Pepe Prophecy",
-      "12-Kingdom Wojak Alliance",
-      "XD Burst Supreme",
-      "Format Divinity"
-    ]
-  },
   "AE28": {
     "title": "The Stone Age Supremacist",
     "lore": "Named with cutting-edge alphanumeric designation suggesting advanced AI or experimental tech. Writes everything on stone tablets. Distrusts computers so much they carved their guild application into granite. Enemies expect cyber warfare — get hit with rocks instead. Has a carrier pigeon named 'PingBot.' Once hacked a mainframe by throwing a brick through the window. The guild's IT department has banned them from all electronics. Their 'neural network' is literally a web of string connecting cave paintings.",
@@ -641,20 +683,6 @@
       "Guilt Cycle Economics",
       "Aggressive Wholesomeness",
       "Popsicle Emotional Manipulation"
-    ]
-  },
-  "Caera": {
-    "title": "The Diplomatic Calamity",
-    "lore": "A diplomat whose brutal honesty is matched only by her ability to accidentally unite enemies against her. Joined Elysium during a peace negotiation where she insulted all parties so thoroughly they formed a temporary alliance — then immediately joined the guild out of respect for the chaos. Her 'accidentally correct' approach to diplomacy has turned every social disaster into a strategic victory. LXRDGRIM recognized her therapeutic potential immediately.",
-    "recent_developments": "Caera joined Elysium during a peace negotiation — accidentally insulted all parties so thoroughly they united against her, then joined Elysium out of respect for the chaos. Specializes in 'accidentally correct' diplomacy where every wrong thing she says somehow advances negotiations. Once called an emperor 'moderately incompetent' during treaty talks — he appreciated the honesty, signed immediately. Her diplomatic insults are now a formal strategy called 'Caera Protocol.' LXRDGRIM recruited her as CO-THERAPIST (alongside 惡1ce) after realizing her brutal honesty works as therapy. Enemies fear her negotiations. Allies fear her compliments. Both are effective. Still establishing herself in Elysium — deploys honesty carefully while building reputation. New to the guild, appearances are rare but memorable — every showing leaves someone emotionally devastated.",
-    "specialty": "Diplomatic chaos through accidentally effective honesty",
-    "reputation": "The negotiator who insults her way to peace treaties while learning the ropes and appearing rarely",
-    "stats": "Accidental Alliances 12 | Diplomatic Incidents 47 | Peace Treaties (Via Insult) 8 | Therapy Co-Sessions 24",
-    "skills": [
-      "Insult Diplomacy",
-      "Brutal Honesty Protocol",
-      "Accidental Treaty",
-      "Therapeutic Chaos"
     ]
   },
   "Cutie": {
