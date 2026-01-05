@@ -16,7 +16,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config({ path: '.env.local' });
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = process.env.DB_NAME || 'elysium-dashboard';
+const DB_NAME = process.env.MONGODB_DB_NAME || process.env.DB_NAME || 'elysium-dashboard';
 
 if (!MONGODB_URI) {
   console.error('❌ Error: MONGODB_URI not found in environment variables');
@@ -47,7 +47,7 @@ async function createIndexes() {
       {
         collection: 'members',
         indexes: [
-          { key: { memberId: 1 }, name: 'memberId_1', unique: true },
+          { key: { memberId: 1 }, name: 'memberId_1', unique: true, sparse: true },
           { key: { username: 1 }, name: 'username_1' },
           { key: { discordId: 1 }, name: 'discordId_1', sparse: true },
         ]
