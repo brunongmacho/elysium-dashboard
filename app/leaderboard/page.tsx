@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import useSWR from "swr";
 import { motion } from "framer-motion";
 import type {
@@ -77,6 +77,7 @@ type SortColumn = "earned" | "available" | "spent";
 type SortDirection = "asc" | "desc";
 
 export default function LeaderboardPage() {
+  const [isMounted, setIsMounted] = useState(false);
   const [leaderboardType, setLeaderboardType] = useState<"attendance" | "points">("attendance");
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
   const [selectedMonth, setSelectedMonth] = useState<string>(""); // Format: YYYY-MM
@@ -85,6 +86,10 @@ export default function LeaderboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Scroll animation hooks
   const headerAnim = useScrollAnimation({ threshold: 0.2 });
@@ -285,6 +290,23 @@ export default function LeaderboardPage() {
       return { total: totalPoints, topValue: topPoints, perfectCount: richMembers, avgValue: avgPoints };
     }
   }, [leaderboardData, leaderboardType]);
+
+  // Show loading during SSR to prevent hydration errors
+  if (!isMounted) {
+    return (
+      <Stack gap="lg">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Leaderboards', current: true },
+          ]}
+        />
+        <div className="text-center py-12">
+          <div className="text-gray-400">Loading leaderboard...</div>
+        </div>
+      </Stack>
+    );
+  }
 
   return (
     <>
