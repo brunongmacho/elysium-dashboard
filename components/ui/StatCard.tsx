@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Card } from './Card';
 
@@ -36,7 +37,7 @@ const trendIcons = {
   ),
 };
 
-export function StatCard({
+export const StatCard = memo(function StatCard({
   label,
   value,
   change,
@@ -73,4 +74,4 @@ export function StatCard({
       </div>
     </Card>
   );
-}
+});
