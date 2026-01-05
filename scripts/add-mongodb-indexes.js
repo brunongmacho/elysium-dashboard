@@ -47,7 +47,7 @@ async function createIndexes() {
       {
         collection: 'members',
         indexes: [
-          { key: { memberId: 1 }, name: 'memberId_1', unique: true },
+          { key: { memberId: 1 }, name: 'memberId_1', unique: true, sparse: true },
           { key: { username: 1 }, name: 'username_1' },
           { key: { discordId: 1 }, name: 'discordId_1', sparse: true },
         ]
