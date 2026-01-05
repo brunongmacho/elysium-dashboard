@@ -231,7 +231,7 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 // Quick Stats Component with Real-time Data
 function QuickStats() {
   // Fetch boss timers
-  const { data: bossData } = useSWR<BossTimersResponse>(
+  const { data: bossData, error } = useSWR<BossTimersResponse>(
     '/api/bosses',
     swrFetcher,
     { refreshInterval: 60000 }
@@ -254,6 +254,18 @@ function QuickStats() {
       tracking: bossData.bosses.filter((b) => b.status === 'ready').length,
     };
   }, [bossData]);
+
+  // Show error message if API fails
+  if (error) {
+    return (
+      <div className="glass backdrop-blur-sm rounded-lg border border-warning/30 p-4 text-center">
+        <div className="text-warning text-sm mb-2">⚠️ Unable to load live stats</div>
+        <div className="text-gray-400 text-xs">
+          MongoDB connection unavailable. Stats will work in production deployment.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Grid columns={{ xs: 2, md: 4 }} gap="md">
