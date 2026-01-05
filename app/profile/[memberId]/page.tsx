@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { formatInGMT8 } from "@/lib/timezone";
@@ -53,6 +53,13 @@ export default function MemberProfilePage() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  // Track if we're mounted on client (prevents hydration errors)
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Fetch profile data with SWR (auto-caching, revalidation)
   const { data: profileResponse, error: profileError, isLoading } = useSWR(
     `/api/members/${memberId}`,
@@ -90,7 +97,8 @@ export default function MemberProfilePage() {
     return memberLoreData[profile.username];
   }, [memberLoreData, profile]);
 
-  if (isLoading) {
+  // Show loading state during SSR to prevent hydration errors
+  if (!isMounted || isLoading) {
     return (
       <Stack gap="lg">
         <Breadcrumb
