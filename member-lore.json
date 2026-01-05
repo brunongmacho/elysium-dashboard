@@ -13,7 +13,21 @@
       "Battle Feast Inspiration"
     ]
   },
-  "Azryth": {
+  "Antzkn": {
+    "title": "The Insect Emperor of Disobedience",
+    "lore": "Claims to command legions of ants with psychic supremacy. The ants have unionized and refuse all orders. Named 'Ant King' — the ants elected their own queen and banned him from meetings. His battle strategy involves summoning ant armies that show up, judge him silently, then leave. Once tried to siege a castle with 10,000 ants. The ants built a tiny castle for themselves instead. Enemies die from confusion watching him negotiate with insects that don't care.",
+    "recent_developments": "Antzkn's ant betrayal has achieved legendary status. The Ant Union now has 50,000 members, none take his orders. His 'Psychic Ant Command' technique summons ants that arrive, stare at him disappointedly, then scatter. Recently, the ants he summoned built a rival kingdom inside enemy walls — the enemy surrendered to the ANTS, not him. He takes credit anyway. His battle cry 'FOR THE COLONY' is answered by ants doing their own thing elsewhere. Goblok promoted him to 'Chief of Ignored Commands.' The position is perfect. Spends resources bribing ants with sugar — they take the sugar and ignore him faster. Shows up to every guild event hoping the ants will too — they never do, but enemies flee anyway from the reputation.",
+    "specialty": "Commanding armies that actively ignore him",
+    "reputation": "The ant king whose subjects unionized, sued for independence, and won",
+    "stats": "Ant Union Members 50000 | Commands Obeyed 0 | Enemy Confusion Deaths 47 | Sugar Bribes Failed ∞",
+    "skills": [
+      "Summon Disobedient Swarm",
+      "Ant Union Negotiation (Fails)",
+      "Insect Democracy",
+      "Colony Confusion Warfare"
+    ]
+  },
+  "Ayane69": {
     "title": "The Enlightened Nightlight Assassin",
     "lore": "Named after Azrael, the Angel of Death — except this one carries a Hello Kitty nightlight into assassinations. Wrote a 200-page thesis on 'Why Darkness is Overrated' while hiding from his own shadow. LXRDGRIM charges him therapy rates. Once failed an assassination because he stopped to debate the target about Nietzsche. The target joined Elysium out of philosophical exhaustion.",
     "recent_developments": "Azryth has embraced his contradiction — now teaches 'Illuminated Death Studies' at three assassination academies. His Hello Kitty nightlight collection has grown to 89 pieces, each named after a philosopher. The thesis 'Why Darkness is Overrated' became a bestseller in both assassination and self-help genres. LXRDGRIM no longer charges therapy rates; they now co-author papers on 'Existential Combat Psychology.' His recruitment method (philosophical exhaustion) has been weaponized — enemies now surrender pre-emptively to avoid the Nietzsche debates. Accumulates influence and resources with scholarly patience — prefers observation over aggressive action. Shows up religiously to guild activities — attendance is mandatory for academic credibility. The darkness still terrifies him, but now he terrifies it back with academic discourse.",
@@ -123,6 +137,20 @@
       "3-Hour Void",
       "Command Eyebrow",
       "Judgmental Stare Formation"
+    ]
+  },
+  "Etiksss": {
+    "title": "The Morally Correct Arsonist",
+    "lore": "Named after 'Ethics' with snake hisses because moral philosophy sounds intimidating when whispered. Has a strict code of honor. The code makes absolutely no sense. Will burn villages but only on Tuesdays. Refuses to steal unless it's funny. Once spared an enemy because 'his vibes were off.' The enemy was grateful and confused. His ethical framework has 847 rules, none consistent with each other. Philosophers study him as 'Post-Rational Morality.' He's just making it up as he goes.",
+    "recent_developments": "Etiksss's chaotic ethics have been codified into law by three confused kingdoms. The 'Tuesday Arson Exemption' is now official policy in 5 regions (he burned the other 2 regions on Wednesdays by mistake, felt bad, rebuilt them better). His code expanded to 2,847 rules including 'Never attack someone wearing socks with sandals (they've suffered enough)' and 'Always say please before tactical explosions.' Once refused a contract killing because the target had a cat. Killed the person who hired him instead for 'attempting cat-adjacency murder.' The cat joined Elysium. Marsha11 tried documenting his ethical system — gave up after rule #394 contradicted rules #1-393. He insists it all makes sense. It doesn't. Enemies surrender because his moral logic is more terrifying than death. Spends moderately — theft is unethical unless it's strategically hilarious.",
+    "specialty": "Warfare guided by incomprehensible moral code",
+    "reputation": "The ethical assassin whose honor system defies all known philosophy and occasionally adopts cats",
+    "stats": "Moral Rules 2847 | Tuesdays Burned 52 | Cats Adopted 1 | Philosophers Confused ∞",
+    "skills": [
+      "Tuesday Arson Protocol",
+      "Ethical Explosion (Polite)",
+      "Contradictory Honor Strike",
+      "Cat-Adjacency Detection"
     ]
   },
   "Evand3r": {
@@ -279,6 +307,20 @@
       "Award-Winning Cognitive Dissonance"
     ]
   },
+  "KingPagpag": {
+    "title": "The Recycled Majesty",
+    "lore": "Named after Filipino 'pagpag' (leftover food) — the King of Repurposing Garbage into Glory. Every weapon is found in a dumpster. Every strategy is a failed plan from 3 wars ago. Once defeated an army using a broken shield, expired rations, and someone else's discarded battle plan. Enemies don't know if he's genius or just lucky with trash. He insists 'one man's garbage is another king's arsenal.' His throne is made of recycled swords. It's uncomfortable but makes a statement.",
+    "recent_developments": "KingPagpag's garbage empire has achieved economic dominance. His 'Dumpster Diving Corps' finds legendary weapons weekly in trash bins — 47 cursed swords, 12 functioning catapults, and 1 dragon egg (it hatched, named it Scrap). His battle strategies are literally other generals' failed plans executed backwards — 89% success rate because nobody expects recycled tactics. Once won a siege using expired siege equipment from a war 200 years ago. Historians are furious. His recycling program is mandatory guild policy — Fever color-codes the garbage by reusability. AmielJohn tried to eat his throne (swords made of 'grain-based metal'). It didn't work. Spends nothing — everything is free if you check the right dumpster. Shows up to events wearing 'pre-owned' legendary armor — still has the previous owner's name tags. The majesty is recycled. The victories are real.",
+    "specialty": "Legendary warfare through systematic garbage repurposing",
+    "reputation": "The king whose trash-based economy rivals actual kingdoms and costs literally nothing",
+    "stats": "Dumpster Legendaries Found 47 | Recycled Victories 89% | Throne Comfort 0% | Dragon Eggs Hatched 1",
+    "skills": [
+      "Dumpster Dive Supreme",
+      "Expired Tactics Mastery",
+      "Garbage Arsenal",
+      "Backwards Battle Plan"
+    ]
+  },
   "ladyhoho": {
     "title": "The Laughing Abyss",
     "lore": "The 'hoho' is both her laugh and her emotional support sound. Smiles through trauma like it's a competitive sport. Her laugh is a battlefield weapon — enemies can't tell if it's joy or a cry for help. Neither can she. LXRDGRIM has her on speed dial. Has converted existential dread into a combo multiplier. Once laughed an enemy army into an uncomfortable retreat. They sent a therapist as tribute.",
@@ -291,20 +333,6 @@
       "Smile Weapon",
       "Existential Comedy Burst",
       "Therapeutic Casualty Creation"
-    ]
-  },
-  "LXRDGRIM": {
-    "title": "The Reaper Therapist Chancellor",
-    "lore": "The edgiest name in the guild attached to a certified therapist. His scythe now has TWO 'EMOTIONAL SUPPORT' stickers. Client list has expanded: Azryth (darkness phobia), ladyhoho (everything), AmielJohn & M1ssy (twice-weekly snack war mediation), and AE28 (technology trust issues). Recently added 惡1ce as a CO-THERAPIST after realizing wholesomeness is contagious. Now runs group therapy sessions called 'Death & Cookies.' The enemy army has a waiting list. His 'Emotional Incident Reports' are published as self-help books. The royalties fund the guild's expanding therapy budget.",
-    "recent_developments": "LXRDGRIM's therapy empire has expanded beyond recognition. His scythe now has FIVE 'EMOTIONAL SUPPORT' stickers and one that says 'LICENSED PROFESSIONAL.' Client list grew to 127 (including 47 enemies on a waiting list). Group therapy 'Death & Cookies' is now held twice weekly — co-hosted with 惡1ce, catered by JeffEpstein, mediated by Caera. His self-help books ('Reaping What You Heal,' 'The Edgelord's Guide to Emotions,' 'Scythe Hugs & Shadow Work') are international bestsellers. Opened 'Grim Therapy Clinic' with branch offices in 5 kingdoms. The royalties fund Elysium's entire mental health budget and half the snack budget.",
-    "specialty": "Industrial-scale death therapy & emotional support reaping",
-    "reputation": "The edgelord who accidentally became a healthcare empire",
-    "stats": "Active Clients 127 | Books Published 7 | Clinic Branches 5 | Scythe Hugs Administered 50000+",
-    "skills": [
-      "Empire Therapy",
-      "Published Wisdom",
-      "Franchise Reaping",
-      "Death & Cookies Symposium"
     ]
   },
   "M1ssy": {
@@ -405,18 +433,18 @@
       "Forbidden Fry Transcendence"
     ]
   },
-  "Riku": {
-    "title": "The Keychain Calamity",
-    "lore": "Named after THE Riku from Kingdom Hearts. Lost the Keyblade. LOST IT. Now carries 47 regular keys and hopes one works. Uses them as a jangling weapon that opens wrong doors at wrong times. Once accidentally unlocked a demon's diary — it now writes Elysium fanfiction. Kingdom Hearts lore says he's 'on a side quest.' The side quest has lasted three years. The Keyblade is probably under a couch somewhere.",
-    "recent_developments": "Riku's key collection has exploded to 347 keys (none are correct). His 'Key Jangle' fighting style was classified as psychological warfare — enemies cannot focus through the noise. The demon's diary he accidentally unlocked now writes Elysium fanfiction (currently 89 chapters, surprisingly well-written). His 'side quest' hit 5-year anniversary — Kingdom Hearts lore experts have created 47 theories about his journey. The Keyblade is definitely under a couch. Which couch? Unknown. He's checked 9,999 couches. The jangle continues. Destiny waits. The keys multiply. Cautiously avoids committing to the main quest — side quest is safer, less resource-intensive. Shows up occasionally to check guild furniture for missing keyblades — usually leaves disappointed, jangling mysteriously into the distance.",
-    "specialty": "Destiny postponement through key-based chaos",
-    "reputation": "The chosen one who weaponized his own incompetence, avoidance, and sporadic attendance",
-    "stats": "Keys Owned 347 | Couches Checked 9999 | Demon Fanfiction Chapters 89 | Years on Side Quest 5",
+  "ScarletSnow": {
+    "title": "The Thermodynamic Contradiction",
+    "lore": "Controls weather that shouldn't exist. Scarlet snow — frozen fire that burns cold. Red blizzards that set things ablaze while freezing them. Meteorologists have restraining orders. Physics left 47 angry voicemails. Once created a heatwave blizzard — people got frostbite and sunburn simultaneously. The confusion killed more than the weather. Her forecast is always 'impossibly wrong in two directions.' She's never incorrect because the weather obeys her, reality just suffers.",
+    "recent_developments": "ScarletSnow's impossible weather has been classified as 'Weaponized Meteorological Heresy.' Now commands the 'Paradox Forecast Division' where every prediction is contradictory and accurate. Recently summoned burning ice during summer — enemies caught fire while freezing solid. Medical response teams gave up trying to treat 'thermal paradox injuries.' Her red snow has been bottled and sold as 'Impossible Winter' (47 kingdoms banned it, 12 weaponized it). Skadushy tried eating her scarlet snow — succeeded, then experienced both frostbite and third-degree burns internally. Doctors are still confused. Physics professors burn her research papers, the papers freeze mid-burn. Goblok made her 'Minister of Contradictory Climate.' The job title makes perfect sense. Deploys weather moderately — reality can only handle so much paradox per day. Shows up to events surrounded by localized impossibility — people bring sunscreen AND winter coats.",
+    "specialty": "Impossible weather warfare through thermodynamic violations",
+    "reputation": "The forecast that makes meteorology cry and physics file complaints",
+    "stats": "Impossible Storms Created 89 | Physics Violations ∞ | Medical Paradoxes 47 | Reality Complaints 12",
     "skills": [
-      "347-Key Jangle",
-      "Couch Quest",
-      "Destiny Delay",
-      "Demon Editor"
+      "Burning Blizzard",
+      "Frozen Fire Storm",
+      "Thermal Paradox Attack",
+      "Red Snow Apocalypse"
     ]
   },
   "Shawty": {
@@ -473,6 +501,20 @@
       "Villain Frustration",
       "Enlightened Fidget",
       "Pause-Proof Testing"
+    ]
+  },
+  "ZaiQt": {
+    "title": "The Aggressively Adorable Berserker",
+    "lore": "Tries to be cute. Accidentally becomes terrifying. Named 'ZaiQt' to emphasize cuteness — enters battle screaming 'LOOK HOW CUTE I AM' while wielding a battleaxe twice their size. The contradiction breaks enemy morale. Once tried to do a cute pose mid-fight — slipped, fell into enemy formation, destroyed 47 soldiers. Claimed it was intentional. Nobody believed them. The victory was real. Their war cry is 'UwU' but said with bloodlust. It's horrifying.",
+    "recent_developments": "ZaiQt's failed cuteness has become legendary terror. Now leads 'The Adorable Violence Brigade' — warriors who try to be cute while committing tactical brutality. Their battle formation is called 'Kawaii Carnage' — enemies flee not from fear, but from profound confusion. Once decorated a war camp with flowers and pastel colors — the enemy thought it was psychological warfare (it wasn't, they just like pink). Surrendered immediately. The 'UwU Battlecry' has been banned in 8 kingdoms for 'causing existential crisis.' Cutie offered mentorship on weaponized adorableness — ZaiQt's lesson plan included 'aggressive friendship' and 'homicidal sparkles.' The class was canceled after 3 minutes. Byakko tried merchandising their brand — too terrifying, even ironically. Spends aggressively on cute accessories that look menacing on the battlefield — pastel grenades, flower-shaped throwing stars. Shows up to every event in full 'cute battle gear' — the aesthetic is confusing, the effectiveness is undeniable.",
+    "specialty": "Cuteness weaponized through violent incompetence",
+    "reputation": "The warrior who terrifies through failed adorableness and sparkly brutality",
+    "stats": "Cute Attempts Failed ∞ | UwU Battlecries 9999 | Accidental Victories 89 | Pastel Weapons 47",
+    "skills": [
+      "UwU Berserker Rage",
+      "Kawaii Carnage Formation",
+      "Aggressive Friendship Strike",
+      "Sparkle Brutality"
     ]
   },
   "Ztig": {
@@ -545,6 +587,20 @@
       "Catastrophe Elegance"
     ]
   },
+  "Taller66": {
+    "title": "The Height Supremacist (5'1\")",
+    "lore": "Named 'Taller' because he's taller than something — nobody knows what. Stands at 5'1\" but insists he's the tallest warrior in history. The '66' represents the 66 things he's taller than (list includes: most rocks, several houseplants, and Shawty's self-awareness). Challenges enemies to height-measuring contests mid-battle. He loses. They laugh. He wins the battle while they're distracted. His battle strategy is 'confuse them with confident shortness.'",
+    "recent_developments": "Taller66's height delusion has weaponized into 'Aggressive Short King Energy.' Now leads the 'Altitude Denial Brigade' — 12 warriors under 5'5\" who fight with the confidence of giants. His list of '66 things he's taller than' expanded to 666 (added: dignity, common sense, and most of Elysium's decision-making). Recently challenged Shawty to a height contest — both lost because neither accepts reality. The confusion was so powerful it ended a war. Enemies surrender because his confidence defies measurement. Goblok promoted him to 'Chief of Vertical Supremacy' (the irony is beautiful). Stands on boxes during speeches — everyone knows, nobody mentions it. Spends resources on platform shoes that don't work — buys them anyway for 'the principle.' Attends every event to assert height dominance — stands in front row, blocks nobody's view, claims victory.",
+    "specialty": "Height-based psychological warfare through confident delusion",
+    "reputation": "The short king who convinced reality he's tall through sheer denial and platform shoes",
+    "stats": "Actual Height 5'1\" | Claimed Height 7'8\" | Platform Shoes Owned 47 | Things Shorter Than Him 666",
+    "skills": [
+      "Altitude Assertion",
+      "Platform Shoe Combat",
+      "Height Contest Distraction",
+      "Short King Supremacy Aura"
+    ]
+  },
   "Tinitira": {
     "title": "The Sightless Oracle",
     "lore": "Name comes from Filipino 'tumingin' (to look). Is blind. The irony writes itself. Navigates through echolocation, gossip vibrations, and the sound of spilled tea. Her stare is intense because she's staring at nothing — enemies don't know that. Once won a staring contest against someone who could see. They blinked from discomfort. Sees more blind than most see with eyes. It's unsettling.",
@@ -601,20 +657,6 @@
       "Profitable Disaster Engineering"
     ]
   },
-  "DadaXxD": {
-    "title": "The Meme Hierophant",
-    "lore": "Communicates EXCLUSIVELY in memes, stickers, and XD faces. Has not spoken actual words in three years. Battle commands are reaction images that somehow work. Once coordinated an entire raid through Pepe variants. Enemy intelligence cannot decode his communications — neither can allies. They just vibe with it. His presence buffs morale through sheer absurdist energy. Linguistics professors have written papers. They understood nothing.",
-    "recent_developments": "DadaXxD's meme communication has achieved religious status. The 'Church of Pepe' was founded by enemies who decoded his battle commands as divine prophecy. Has not spoken words in 5 years — communication is exclusively memes, reaction images, and XD energy. Once coordinated a 12-kingdom alliance through Wojak variants alone. Linguistics professors published 89 papers trying to decode his language. All failed. His presence buffs morale by 500% — the absurdist energy is a tactical asset. Recently became Chunchunmaru's social media manager (the sword's Instagram is his masterwork). Communication is meme. Meme is life. XD is strategy. Deploys meme energy selectively — saves premium formats for critical moments.",
-    "specialty": "Religious meme warfare & format-based command structure",
-    "reputation": "The oracle who speaks only in shared cultural formats, deployed strategically",
-    "stats": "Verbal Communication 0 Years 5 | Church Followers 1200 | Linguistic Papers 89 | Morale Buff 500%",
-    "skills": [
-      "Pepe Prophecy",
-      "12-Kingdom Wojak Alliance",
-      "XD Burst Supreme",
-      "Format Divinity"
-    ]
-  },
   "AE28": {
     "title": "The Stone Age Supremacist",
     "lore": "Named with cutting-edge alphanumeric designation suggesting advanced AI or experimental tech. Writes everything on stone tablets. Distrusts computers so much they carved their guild application into granite. Enemies expect cyber warfare — get hit with rocks instead. Has a carrier pigeon named 'PingBot.' Once hacked a mainframe by throwing a brick through the window. The guild's IT department has banned them from all electronics. Their 'neural network' is literally a web of string connecting cave paintings.",
@@ -641,20 +683,6 @@
       "Guilt Cycle Economics",
       "Aggressive Wholesomeness",
       "Popsicle Emotional Manipulation"
-    ]
-  },
-  "Caera": {
-    "title": "The Diplomatic Calamity",
-    "lore": "A diplomat whose brutal honesty is matched only by her ability to accidentally unite enemies against her. Joined Elysium during a peace negotiation where she insulted all parties so thoroughly they formed a temporary alliance — then immediately joined the guild out of respect for the chaos. Her 'accidentally correct' approach to diplomacy has turned every social disaster into a strategic victory. LXRDGRIM recognized her therapeutic potential immediately.",
-    "recent_developments": "Caera joined Elysium during a peace negotiation — accidentally insulted all parties so thoroughly they united against her, then joined Elysium out of respect for the chaos. Specializes in 'accidentally correct' diplomacy where every wrong thing she says somehow advances negotiations. Once called an emperor 'moderately incompetent' during treaty talks — he appreciated the honesty, signed immediately. Her diplomatic insults are now a formal strategy called 'Caera Protocol.' LXRDGRIM recruited her as CO-THERAPIST (alongside 惡1ce) after realizing her brutal honesty works as therapy. Enemies fear her negotiations. Allies fear her compliments. Both are effective. Still establishing herself in Elysium — deploys honesty carefully while building reputation. New to the guild, appearances are rare but memorable — every showing leaves someone emotionally devastated.",
-    "specialty": "Diplomatic chaos through accidentally effective honesty",
-    "reputation": "The negotiator who insults her way to peace treaties while learning the ropes and appearing rarely",
-    "stats": "Accidental Alliances 12 | Diplomatic Incidents 47 | Peace Treaties (Via Insult) 8 | Therapy Co-Sessions 24",
-    "skills": [
-      "Insult Diplomacy",
-      "Brutal Honesty Protocol",
-      "Accidental Treaty",
-      "Therapeutic Chaos"
     ]
   },
   "Cutie": {

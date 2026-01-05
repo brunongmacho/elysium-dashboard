@@ -58,7 +58,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="text-xs text-gray-600 font-game mb-1">
-          <p>Managed by Goblok's Crayon Intelligence | Powered by the Jalo Bot | Therapy by LXRDGRIM</p>
+          <p>Managed by Goblok's Crayon Intelligence | Powered by the Jalo Bot | Where Chaos Meets Strategy</p>
         </div>
         <div className="text-xs text-gray-500 font-game">
           <p>© 2025 Elysium Guild. All rights reserved.</p>
