@@ -397,7 +397,7 @@ export default function GuildHomePage() {
     const fallbackStats: GuildStat[] = [
       { value: "100%", label: "Jalo Bot Financial Accuracy", sublabel: "(HesuCrypto: 0%)", color: "primary" },
       { value: "∞/0", label: "HesuCrypto's Net Worth", sublabel: "(Quantum State)", color: "accent" },
-      { value: "127", label: "LXRDGRIM's Therapy Clients", sublabel: "", color: "success" },
+      { value: "50", label: "Elysium's Active Members", sublabel: "(All Legendary)", color: "success" },
       { value: "9999", label: "Ztig's Ally Precision Score", sublabel: "", color: "danger" }
     ];
 

@@ -2,7 +2,7 @@
   [
     { "value": "100%", "label": "Jalo Bot Financial Accuracy", "sublabel": "(HesuCrypto: 0%)", "color": "primary" },
     { "value": "∞/0", "label": "HesuCrypto's Net Worth", "sublabel": "(Quantum State)", "color": "accent" },
-    { "value": "127", "label": "LXRDGRIM's Therapy Clients", "sublabel": "", "color": "success" },
+    { "value": "50", "label": "Elysium's Active Members", "sublabel": "(All Legendary)", "color": "success" },
     { "value": "9999", "label": "Ztig's Ally Precision Score", "sublabel": "", "color": "danger" }
   ],
   [
@@ -32,7 +32,7 @@
   [
     { "value": "9999", "label": "Evand3r's Non-Spoon Weapons Used", "sublabel": "(Still No Spoon)", "color": "primary" },
     { "value": "6'10\"", "label": "Shawty's Actual Height", "sublabel": "(Claims 5'0\")", "color": "accent" },
-    { "value": "347", "label": "Riku's Key Collection", "sublabel": "(None Correct)", "color": "success" },
+    { "value": "89", "label": "Cutie's Cookie Defections", "sublabel": "(Moral Paralysis)", "color": "success" },
     { "value": "∞", "label": "Jayzzzzzzz's Sleep Debt", "sublabel": "(Caffeinated Death)", "color": "danger" }
   ],
   [
@@ -44,14 +44,14 @@
   [
     { "value": "60%", "label": "Varys' Rumor Accuracy", "sublabel": "(40% Fabricated)", "color": "primary" },
     { "value": "9999x", "label": "ladyhoho's Tragic Giggle Combo", "sublabel": "(Send Therapist)", "color": "accent" },
-    { "value": "7", "label": "LXRDGRIM's Self-Help Books", "sublabel": "(Bestsellers)", "color": "success" },
+    { "value": "9999", "label": "Cutie's Adoption Requests", "sublabel": "(Must Protecc)", "color": "success" },
     { "value": "+400%", "label": "Guild Treasury Growth", "sublabel": "(Enaira's Fault)", "color": "danger" }
   ],
   [
     { "value": "100%", "label": "Byakko's Squeak Monetization", "sublabel": "(47 Kingdoms)", "color": "primary" },
     { "value": "3 Years", "label": "Inihaw's Restaurant Waitlist", "sublabel": "(Vegan BBQ)", "color": "accent" },
     { "value": "89", "label": "Cogwind's Safety Violations", "sublabel": "(All Profitable)", "color": "success" },
-    { "value": "5000%", "label": "DadaXxD's Morale Buff", "sublabel": "(XD Energy)", "color": "danger" }
+    { "value": "100%", "label": "Guild's Legendary Status", "sublabel": "(Chaos Perfected)", "color": "danger" }
   ],
   [
     { "value": "0-9999", "label": "Ace's Gambling Record", "sublabel": "(Battle: 9999-0)", "color": "primary" },
@@ -62,18 +62,18 @@
   [
     { "value": "4y 7m", "label": "Evand3r's Spoon Quest Duration", "sublabel": "(Still Missing)", "color": "primary" },
     { "value": "100%", "label": "Hercules' God-Tier Laziness", "sublabel": "(Zeus Blocked)", "color": "accent" },
-    { "value": "50000+", "label": "LXRDGRIM's Scythe Hugs", "sublabel": "(Emotional Support)", "color": "success" },
+    { "value": "50", "label": "Guild's Total Legendary Members", "sublabel": "(Every One Unique)", "color": "success" },
     { "value": "9999", "label": "M1ssy's Epipen Killstreak", "sublabel": "(Medical Legend)", "color": "danger" }
   ],
   [
     { "value": "200", "label": "erwarrr's Eyebrow Dictionary Pages", "sublabel": "(Mute Translation)", "color": "primary" },
-    { "value": "3.2M", "label": "DadaXxD's XD Energy Output", "sublabel": "(Pure Memes)", "color": "accent" },
+    { "value": "47", "label": "Goblok's Battle Strategies", "sublabel": "(All Work Somehow)", "color": "accent" },
     { "value": "147", "label": "Hesucrypto's Spiritual NFTs Sold", "sublabel": "(Analog Blockchain)", "color": "success" },
     { "value": "∞", "label": "PotatoCheese's Tears Bottled", "sublabel": "(Keto Suffering)", "color": "danger" }
   ],
   [
     { "value": "12", "label": "惡1ce's Guilt Empire Branches", "sublabel": "(Wholesome Evil)", "color": "primary" },
-    { "value": "5", "label": "LXRDGRIM's Therapy Clinic Locations", "sublabel": "(Death & Cookies)", "color": "accent" },
+    { "value": "∞", "label": "Guild's Impossible Victories", "sublabel": "(Daily Occurrence)", "color": "accent" },
     { "value": "89", "label": "Helvenica's Kerning Kills", "sublabel": "(Comic Sans)", "color": "success" },
     { "value": "47", "label": "Onirgerep's Backwards Victories", "sublabel": "(Time Crimes)", "color": "danger" }
   ],
@@ -86,7 +86,7 @@
   [
     { "value": "0", "label": "LaxusLawliet's L-Position Effectiveness", "sublabel": "(No Brain Power)", "color": "primary" },
     { "value": "3", "label": "JeffEpstein's Cookie Awards", "sublabel": "(Awkward Ceremony)", "color": "accent" },
-    { "value": "47", "label": "Caera's Diplomatic Insult Treaties", "sublabel": "(Accidentally Effective)", "color": "success" },
+    { "value": "47", "label": "Fever's Color-Coded Apocalypses", "sublabel": "(Beautifully Filed)", "color": "success" },
     { "value": "12", "label": "Cogwind's Sentient Machine Army", "sublabel": "(Chose Violence)", "color": "danger" }
   ],
   [
@@ -109,7 +109,7 @@
   ],
   [
     { "value": "500", "label": "PotatoCheese's Church Followers", "sublabel": "(Saint Status)", "color": "primary" },
-    { "value": "1200", "label": "DadaXxD's Church of Pepe Members", "sublabel": "(Meme Religion)", "color": "accent" },
+    { "value": "1200", "label": "Jalo's Church of Wrong Followers", "sublabel": "(Divine Misinformation)", "color": "accent" },
     { "value": "100%", "label": "Jalo Bot's Treasury Management", "sublabel": "(Sentient AI)", "color": "success" },
     { "value": "34", "label": "Carrera's Successful Paradoxes", "sublabel": "(Einstein's Ghost Joined)", "color": "danger" }
   ],
@@ -138,10 +138,10 @@
     { "value": "12", "label": "Helvenica's Bad Design Brigade", "sublabel": "(Font Warriors)", "color": "danger" }
   ],
   [
-    { "value": "47", "label": "Caera's Enemies Who Joined Elysium", "sublabel": "(Insult Diplomacy)", "color": "primary" },
+    { "value": "100%", "label": "Byakko's Merchandising Success", "sublabel": "(Sacred Squeak Empire)", "color": "primary" },
     { "value": "∞", "label": "Cutie's Adoption Requests", "sublabel": "(Moral Paralysis)", "color": "accent" },
     { "value": "100%", "label": "Ace's Cosmic Spite Effectiveness", "sublabel": "(Universe Hates His Bets)", "color": "success" },
-    { "value": "47", "label": "Riku's Couches Checked for Keyblade", "sublabel": "(9999 Total)", "color": "danger" }
+    { "value": "∞", "label": "Evand3r's Spoon Quest Dedication", "sublabel": "(Never Giving Up)", "color": "danger" }
   ],
   [
     { "value": "12", "label": "Jalo's Dragon Dentistry Converts", "sublabel": "(Floss Prevents Fire)", "color": "primary" },
@@ -165,11 +165,11 @@
     { "value": "12", "label": "Cogwind's Sentient HR Bots", "sublabel": "(Chose Violence)", "color": "primary" },
     { "value": "3", "label": "Economic Collapses Via Tax Bot", "sublabel": "(Cogwind's Creation)", "color": "accent" },
     { "value": "∞", "label": "Cogwind's Safety Regulations Violated", "sublabel": "(Exception Clause)", "color": "success" },
-    { "value": "89", "label": "DadaXxD's Linguistic Papers About Him", "sublabel": "(All Failed)", "color": "danger" }
+    { "value": "89", "label": "Chunchunmaru's Social Media Posts", "sublabel": "(Sword Influencer)", "color": "danger" }
   ],
   [
-    { "value": "5 Yrs", "label": "DadaXxD's Verbal Communication Silence", "sublabel": "(Memes Only)", "color": "primary" },
-    { "value": "12", "label": "Kingdoms Allied Via Wojak Variants", "sublabel": "(DadaXxD's Work)", "color": "accent" },
+    { "value": "5", "label": "erwarrr's Years of Silence", "sublabel": "(Aggressive Staring)", "color": "primary" },
+    { "value": "12", "label": "Helvenica's Font War Victories", "sublabel": "(Comic Sans Terror)", "color": "accent" },
     { "value": "12", "label": "AE28's Pigeon Network Size", "sublabel": "(PingBot Offspring)", "color": "success" },
     { "value": "347", "label": "AE28's Analog NFTs Sold", "sublabel": "(Stone Blockchain)", "color": "danger" }
   ],
