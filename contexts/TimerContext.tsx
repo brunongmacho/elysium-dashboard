@@ -9,9 +9,15 @@ interface TimerContextValue {
 const TimerContext = createContext<TimerContextValue | undefined>(undefined);
 
 export function TimerProvider({ children }: { children: ReactNode }) {
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  // Initialize with 0 to prevent hydration errors (will update immediately on client)
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    // Set actual time on client mount
+    setIsMounted(true);
+    setCurrentTime(Date.now());
+
     // Single interval for all components
     const interval = setInterval(() => {
       setCurrentTime(Date.now());

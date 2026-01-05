@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import EventScheduleCard from "@/components/EventScheduleCard";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
@@ -17,6 +17,11 @@ function EventScheduleContent() {
   const { currentTime } = useTimer();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Calculate event statistics
   const stats = useMemo(() => {
@@ -103,6 +108,23 @@ function EventScheduleContent() {
       return nextA.getTime() - nextB.getTime();
     });
   }, [currentTime, searchQuery, statusFilter]);
+
+  // Show loading during SSR to prevent hydration errors
+  if (!isMounted) {
+    return (
+      <Stack gap="lg">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Event Schedule', current: true },
+          ]}
+        />
+        <div className="text-center py-12">
+          <div className="text-gray-400">Loading events...</div>
+        </div>
+      </Stack>
+    );
+  }
 
   return (
     <Stack gap="lg">
