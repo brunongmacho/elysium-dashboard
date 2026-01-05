@@ -2,10 +2,9 @@
 
 import { useState, useCallback, memo, useMemo, useEffect } from "react";
 import Image from "next/image";
-import confetti from "canvas-confetti";
+import dynamic from "next/dynamic";
 import CircularProgress from "./CircularProgress";
-import MarkAsKilledModal from "./MarkAsKilledModal";
-import { ConfirmationModal, Badge } from "./ui";
+import { Badge } from "./ui";
 import Tooltip from "./Tooltip";
 import BorderEffect from "./BorderEffect";
 import type { BossTimerDisplay } from "@/types/database";
@@ -14,6 +13,14 @@ import { formatTimeRemaining } from "@/lib/boss-config";
 import { useRipple } from "@/hooks/useRipple";
 import { calculateBossGlow } from "@/lib/boss-glow";
 import { useTimer } from "@/contexts/TimerContext";
+
+// Lazy load modals - only load when needed (reduces initial bundle by ~30KB)
+const MarkAsKilledModal = dynamic(() => import("./MarkAsKilledModal"), {
+  ssr: false,
+});
+const ConfirmationModal = dynamic(() => import("./ui").then(mod => ({ default: mod.ConfirmationModal })), {
+  ssr: false,
+});
 
 interface BossCardProps {
   boss: BossTimerDisplay;
@@ -60,6 +67,9 @@ function BossCard({
     setIsMarking(true);
     try {
       await onMarkAsKilled(boss.bossName, killedBy, killTime, spawnTime);
+
+      // Lazy load confetti only when needed (saves ~25KB from initial bundle)
+      const confetti = (await import('canvas-confetti')).default;
 
       // Celebrate with confetti!
       confetti({
