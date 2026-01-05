@@ -76,6 +76,20 @@ export default function MemberProfilePage() {
   const profile = profileResponse?.success ? profileResponse.data : null;
   const error = profileError || (profileResponse && !profileResponse.success ? profileResponse.error : null);
 
+  // Memoize expensive calculations - MUST be before conditional returns (Rules of Hooks)
+  const consumptionRate = useMemo(() => {
+    if (!profile) return 0;
+    return profile.pointsEarned > 0
+      ? Math.round((profile.pointsSpent / profile.pointsEarned) * 100)
+      : 0;
+  }, [profile]);
+
+  // Get member lore from API data if available
+  const lore = useMemo(() => {
+    if (!memberLoreData || !profile) return null;
+    return memberLoreData[profile.username];
+  }, [memberLoreData, profile]);
+
   if (isLoading) {
     return (
       <Stack gap="lg">
@@ -222,20 +236,6 @@ export default function MemberProfilePage() {
       </>
     );
   }
-
-  // Memoize expensive calculations
-  const consumptionRate = useMemo(() => {
-    if (!profile) return 0;
-    return profile.pointsEarned > 0
-      ? Math.round((profile.pointsSpent / profile.pointsEarned) * 100)
-      : 0;
-  }, [profile]);
-
-  // Get member lore from API data if available
-  const lore = useMemo(() => {
-    if (!memberLoreData || !profile) return null;
-    return memberLoreData[profile.username];
-  }, [memberLoreData, profile]);
 
   return (
     <Stack gap="xl">
