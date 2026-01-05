@@ -231,10 +231,10 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 // Quick Stats Component with Real-time Data
 function QuickStats() {
   // Fetch boss timers
-  const { data: bossData } = useSWR<BossTimersResponse>(
+  const { data: bossData, error, isLoading } = useSWR<BossTimersResponse>(
     '/api/bosses',
     swrFetcher,
-    { refreshInterval: 60000 }
+    { refreshInterval: 60000, shouldRetryOnError: false }
   );
 
   const stats = useMemo(() => {
@@ -254,6 +254,32 @@ function QuickStats() {
       tracking: bossData.bosses.filter((b) => b.status === 'ready').length,
     };
   }, [bossData]);
+
+  // Show loading state
+  if (isLoading && !bossData) {
+    return (
+      <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 text-center">
+        <div className="text-primary text-sm animate-pulse">⏳ Loading live stats...</div>
+      </div>
+    );
+  }
+
+  // Show error message if API fails or returns unsuccessful response
+  if (error || (bossData && !bossData.success)) {
+    const errorMessage = bossData?.error || error?.message || 'Connection unavailable';
+    return (
+      <div className="glass backdrop-blur-sm rounded-lg border border-warning/30 p-4 text-center">
+        <div className="text-warning text-sm mb-2">⚠️ Unable to load live stats</div>
+        <div className="text-gray-400 text-xs">
+          {errorMessage}
+          <br />
+          <span className="text-gray-500 mt-1 block">
+            This is expected in development. Stats will work in production deployment.
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Grid columns={{ xs: 2, md: 4 }} gap="md">
