@@ -237,18 +237,6 @@ export default function MemberProfilePage() {
     return memberLoreData[profile.username];
   }, [memberLoreData, profile]);
 
-  // Prefetch next/prev member data for instant navigation
-  useSWR(
-    profile?.nextMemberId ? `/api/members/${profile.nextMemberId}` : null,
-    swrFetcher,
-    { revalidateOnFocus: false }
-  );
-  useSWR(
-    profile?.prevMemberId ? `/api/members/${profile.prevMemberId}` : null,
-    swrFetcher,
-    { revalidateOnFocus: false }
-  );
-
   return (
     <Stack gap="xl">
         {/* Breadcrumb */}
