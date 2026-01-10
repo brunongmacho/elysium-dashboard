@@ -11,7 +11,7 @@ export type CompressedNextResponse = NextResponse;
 
 /**
  * Create a compressed JSON response
- * Vercel automatically applies Brotli/gzip compression when these headers are present
+ * Most hosting platforms automatically apply Brotli/gzip compression when these headers are present
  */
 export function compressedJsonResponse<T = any>(
   data: T,

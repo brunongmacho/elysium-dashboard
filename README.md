@@ -5,7 +5,6 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green)](https://www.mongodb.com/)
-[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://vercel.com)
 
 ## 📖 Table of Contents
 
@@ -97,7 +96,7 @@ The **Elysium Dashboard** is a comprehensive web application that provides guild
 - **[Framer Motion](https://www.framer.com/motion/)** - Animation library
 - **[Recharts](https://recharts.org/)** - Data visualization
 - **[date-fns](https://date-fns.org/)** - Date manipulation and formatting
-- **[SWR](https://swr.vercel.app/)** - Data fetching with stale-while-revalidate
+- **[SWR](https://swr.vercel.app/)** - Data fetching with stale-while-revalidate strategy
 
 ### Backend
 - **[Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)** - Serverless API endpoints
@@ -106,7 +105,7 @@ The **Elysium Dashboard** is a comprehensive web application that provides guild
 - **[Zod](https://zod.dev/)** - Schema validation
 
 ### Development & Deployment
-- **[Vercel](https://vercel.com/)** - Hosting and deployment
+- **[Koyeb](https://koyeb.com/)** - Hosting and deployment
 - **[ESLint](https://eslint.org/)** - Code linting
 - **[Git](https://git-scm.com/)** - Version control
 
@@ -175,7 +174,7 @@ MONGODB_DB_NAME=elysium-bot
 
 **Setup Instructions:**
 1. Create a MongoDB Atlas cluster (free tier available)
-2. Add your IP to the whitelist (or use `0.0.0.0/0` for Vercel)
+2. Add your IP to the whitelist (or use `0.0.0.0/0` for cloud deployments)
 3. Create a database user with read/write permissions
 4. Copy the connection string and replace `<username>` and `<password>`
 
@@ -205,7 +204,7 @@ DISCORD_CORE_ROLE_ID=your_core_role_id
 3. Navigate to OAuth2 → General
 4. Add redirect URLs:
    - Development: `http://localhost:3000/api/auth/callback/discord`
-   - Production: `https://your-domain.vercel.app/api/auth/callback/discord`
+   - Production: `https://your-domain.com/api/auth/callback/discord`
 5. Copy Client ID and Client Secret
 
 See [DISCORD_OAUTH_SETUP.md](./DISCORD_OAUTH_SETUP.md) for detailed instructions.
@@ -218,7 +217,7 @@ NEXTAUTH_SECRET=your_random_secret_key_here
 
 # Application URL
 # Development: http://localhost:3000
-# Production: https://your-domain.vercel.app
+# Production: https://your-domain.com
 NEXTAUTH_URL=http://localhost:3000
 ```
 
@@ -307,56 +306,38 @@ See [STRUCTURE.md](./STRUCTURE.md) for detailed project architecture.
 
 ## 🚢 Deployment
 
-### Deploy to Vercel (Recommended)
+### Deploy to Koyeb (Current Platform)
 
-#### Quick Deploy
+The dashboard is currently deployed on Koyeb. For deployment:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/brunongmacho/elysium-dashboard)
-
-#### Manual Deployment
-
-1. **Install Vercel CLI**
+1. **Build for production**
    ```bash
-   npm i -g vercel
+   npm run build
    ```
 
-2. **Login to Vercel**
-   ```bash
-   vercel login
-   ```
+2. **Configure environment variables**
+   - Set all variables from `.env.example` in your hosting platform
+   - **Important:** Update `NEXTAUTH_URL` to your production URL
 
 3. **Deploy**
-   ```bash
-   vercel
-   ```
-
-4. **Configure environment variables**
-   - Go to Vercel Dashboard → Project Settings → Environment Variables
-   - Add all variables from `.env.example`
-   - **Important:** Update `NEXTAUTH_URL` to your Vercel URL
-
-5. **Deploy to production**
-   ```bash
-   vercel --prod
-   ```
+   - Follow your hosting platform's deployment instructions
+   - Ensure Node.js 18+ is supported
 
 #### Post-Deployment Checklist
 
-- [ ] Update `NEXTAUTH_URL` in Vercel environment variables
+- [ ] Update `NEXTAUTH_URL` in production environment variables
 - [ ] Add production callback URL to Discord OAuth settings
-- [ ] Configure MongoDB Atlas IP whitelist (`0.0.0.0/0` for Vercel)
+- [ ] Configure MongoDB Atlas IP whitelist (`0.0.0.0/0` for cloud deployments)
 - [ ] Test authentication flow
 - [ ] Verify MongoDB connection
 - [ ] Check all features work correctly
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 
 ### Deployment Options
 
 | Platform | Difficulty | Cost | Features |
 |----------|-----------|------|----------|
-| **Vercel** ✅ | Easy | Free tier available | Automatic deployments, edge functions, analytics |
-| **Netlify** | Easy | Free tier available | Similar to Vercel |
+| **Koyeb** ✅ | Easy | Free tier available | Automatic deployments, global edge network |
+| **Netlify** | Easy | Free tier available | Automatic deployments, edge functions |
 | **Railway** | Medium | Pay-as-you-go | Database hosting included |
 | **AWS Amplify** | Medium | Pay-as-you-go | AWS ecosystem integration |
 | **Self-hosted** | Hard | Variable | Full control |
@@ -499,7 +480,6 @@ GET /api/health
 
 Comprehensive documentation is available:
 
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide for Vercel
 - **[IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md)** - Full development roadmap and architecture
 - **[DISCORD_OAUTH_SETUP.md](./DISCORD_OAUTH_SETUP.md)** - Discord OAuth2 configuration guide
 - **[STRUCTURE.md](./STRUCTURE.md)** - Detailed project structure and design system
@@ -558,7 +538,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Elysium Guild** - For being an awesome community
 - **Discord Bot** - [elysium-attendance-bot](https://github.com/brunongmacho/elysium-attendance-bot)
 - **Next.js Team** - For the amazing framework
-- **Vercel** - For free hosting and deployment
+- **Koyeb** - For reliable hosting and deployment
 - **MongoDB Atlas** - For database hosting
 
 ## 📞 Support
@@ -602,6 +582,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ⚔️ Where Chaos Becomes Strategy ⚔️
 
-[Website](https://elysium-dashboard.vercel.app) • [Discord](https://discord.gg/EUWXd5tPa7) • [Report Bug](https://github.com/brunongmacho/elysium-dashboard/issues) • [Request Feature](https://github.com/brunongmacho/elysium-dashboard/issues)
+[Discord](https://discord.gg/EUWXd5tPa7) • [Report Bug](https://github.com/brunongmacho/elysium-dashboard/issues) • [Request Feature](https://github.com/brunongmacho/elysium-dashboard/issues)
 
 </div>

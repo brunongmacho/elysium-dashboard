@@ -7,7 +7,7 @@ import type { SSEEventType } from '@/types/sse'
 
 // Keep track of connected clients
 // Note: This works per serverless instance. For multi-instance deployments,
-// consider using Redis/Vercel KV for pub/sub
+// consider using Redis for pub/sub
 export const sseClients = new Map<string, ReadableStreamDefaultController>()
 
 let eventId = 0
