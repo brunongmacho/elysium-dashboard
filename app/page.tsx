@@ -73,11 +73,13 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Goblok': '🖍️',          // Transcendent Fool Emperor (crayon)
     'Helvenica': '🔤',       // Font War Criminal
     'Hercules': '💪',        // Divine Retirement Plan
+    'HODAKA': '⛅',          // Weather Criminal Weatherboy (forecast)
     'Hesucrypto': '💰',      // Quantum Financier
     'Iguro': '🌀',           // Accidental Recruitment Director (portals)
     'Inihaw': '🥗',          // Ethical Grillmaster General (vegan)
     'Jalo': '🤡',            // Oracle of Incorrectness
     'Jayzzzzzzz': '😴',      // Wakeful Nightmare
+    'JolsQ': '🃏',           // Jester Inquisitor (dad jokes)
     'JeffEpstein': '🍪',     // Nominative Paradox Saint (cookies)
     'ladyhoho': '😂',        // Laughing Abyss
     'M1ssy': '💉',           // Anaphylactic Tactician (epipen)
@@ -87,7 +89,6 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Munchyy': '🗡️',         // Assassination Artist
     'Onirgerep': '⏪',       // Temporal Reversal Anomaly (backwards)
     'PotatoCheese': '🥔',    // Carbohydrate Martyr Saint
-    'Shawty': '📏',          // Tall Delusion King
     'Skadushy': '🌓',        // Thermodynamic Heretic (shadow/light)
     'Varys': '🕵️',          // Rumor Industrialist (spy)
     'xSelah': '💃',          // Perpetual Motion Disaster
@@ -100,9 +101,9 @@ function getIconForMember(name: string, data: MemberLoreData): string {
     'Hayacinth': '🌸',       // Biological Artillery Commander
     'LaxusLawliet': '🍬',    // Disappointed Namesake (sweets)
     'Cogwind': '⚙️',         // Mad Engineer Laureate
-    'AE28': '🪨',            // Stone Age Supremacist
     '惡1ce': '🧊',           // Benevolent Evil Overlord (ice)
     'Cutie': '🌺',           // Weaponized Adorableness
+    '路易丝': '👑',          // Aristocratic Chaos Lord (fake nobility)
   };
 
   // Check for member-specific icon first
