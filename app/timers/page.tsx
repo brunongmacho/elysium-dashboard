@@ -243,8 +243,6 @@ export default function Home() {
           </div>
           <div className="text-gray-500 text-xs mt-2">
             Note: MongoDB connection may not work in sandboxed environments.
-            <br />
-            This will work on your local machine and on Vercel deployment.
           </div>
         </div>
       )}

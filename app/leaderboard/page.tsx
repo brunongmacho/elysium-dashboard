@@ -95,7 +95,6 @@ export default function LeaderboardPage() {
   const headerAnim = useScrollAnimation({ threshold: 0.2 });
   const statsAnim = useScrollAnimation({ threshold: 0.2 });
   const podiumAnim = useScrollAnimation({ threshold: 0.2 });
-  const filtersAnim = useScrollAnimation({ threshold: 0.2 });
   const tableAnim = useScrollAnimation({ threshold: 0.2 });
 
   // Debounce search query to reduce API calls
@@ -364,11 +363,7 @@ export default function LeaderboardPage() {
       )}
 
       {/* Filters */}
-      <motion.div
-        ref={filtersAnim.ref as any}
-        initial={{ opacity: 0, y: 30 }}
-        animate={filtersAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
+      <div
         className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 card-3d hover:scale-[1.01] transition-transform duration-200"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -485,7 +480,7 @@ export default function LeaderboardPage() {
             Showing {data.count} of {data.total} members
           </div>
         )}
-      </motion.div>
+      </div>
 
       {/* Loading State */}
       {isLoading && <LeaderboardSkeleton />}
