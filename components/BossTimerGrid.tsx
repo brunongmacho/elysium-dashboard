@@ -14,6 +14,8 @@ interface BossTimerGridProps {
   userName?: string;
   externalFilterStatus?: string | null;
   onFilterStatusChange?: (status: string | null) => void;
+  elysiumFilter?: boolean;
+  onElysiumFilterChange?: (enabled: boolean) => void;
 }
 
 const BossTimerGrid = memo(function BossTimerGrid({
@@ -25,6 +27,8 @@ const BossTimerGrid = memo(function BossTimerGrid({
   userName = "",
   externalFilterStatus,
   onFilterStatusChange,
+  elysiumFilter = false,
+  onElysiumFilterChange,
 }: BossTimerGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"all" | "timer" | "schedule">("all");
@@ -64,9 +68,14 @@ const BossTimerGrid = memo(function BossTimerGrid({
         return false;
       }
 
+      // Elysium filter - only show rotating bosses where it's Elysium's turn
+      if (elysiumFilter && (!boss.rotation?.isRotating || !boss.rotation.isOurTurn)) {
+        return false;
+      }
+
       return true;
     });
-  }, [bosses, searchQuery, filterType, filterStatus]);
+  }, [bosses, searchQuery, filterType, filterStatus, elysiumFilter]);
 
   // Count by status - optimized single pass
   const statusCounts = useMemo(() => {
@@ -143,8 +152,8 @@ const BossTimerGrid = memo(function BossTimerGrid({
           </div>
         </div>
 
-        {/* Active Filters Chips */}
-        {(searchQuery || filterType !== "all" || filterStatus !== "all") && (
+{/* Active Filters Chips */}
+        {(searchQuery || filterType !== "all" || filterStatus !== "all" || elysiumFilter) && (
           <div className="mt-4 flex flex-wrap gap-2">
             {searchQuery && (
               <FilterChip
@@ -185,6 +194,14 @@ const BossTimerGrid = memo(function BossTimerGrid({
                     ? <span>🟡</span>
                     : <span>🟢</span>
                 }
+              />
+            )}
+            {elysiumFilter && (
+              <FilterChip
+                label="Elysium's Turn"
+                onRemove={() => onElysiumFilterChange?.(false)}
+                color="primary"
+                icon={<span>⚔️</span>}
               />
             )}
           </div>

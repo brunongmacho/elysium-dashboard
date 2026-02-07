@@ -24,6 +24,7 @@ export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [elysiumFilter, setElysiumFilter] = useState(false);
 
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
   const { data, error, isLoading, mutate } = useSWR<BossTimersResponse>(
@@ -143,6 +144,25 @@ export default function Home() {
         </Stack>
 
         <div className="flex items-center gap-3">
+          {/* Elysium Filter Toggle */}
+          <button
+            onClick={() => setElysiumFilter(!elysiumFilter)}
+            className={`group flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 ${
+              elysiumFilter 
+                ? 'bg-primary/20 border-primary text-primary' 
+                : 'bg-gray-800/50 border-gray-700 text-gray-300 hover:border-primary/50 hover:text-primary'
+            }`}
+            title={elysiumFilter ? "Show all bosses" : "Show only Elysium's turn"}
+            aria-label={elysiumFilter ? "Show all bosses" : "Show only Elysium's turn"}
+          >
+            <span className="text-sm font-medium">
+              {elysiumFilter ? "⚔️ Elysium" : "⚔️"}
+            </span>
+            <span className="hidden sm:inline text-xs">
+              {elysiumFilter ? "Filtered" : "Elysium Turn"}
+            </span>
+          </button>
+
           {/* Effect Mode Toggle */}
           <EffectModeToggle />
 
@@ -258,6 +278,8 @@ export default function Home() {
           userName={session?.user?.name || ""}
           externalFilterStatus={statusFilter}
           onFilterStatusChange={setStatusFilter}
+          elysiumFilter={elysiumFilter}
+          onElysiumFilterChange={setElysiumFilter}
         />
       )}
 
