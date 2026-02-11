@@ -102,14 +102,15 @@ export default function RelicCalculator() {
       if (newState[relicId].targetLevel < 1) newState[relicId].targetLevel = 1;
       if (newState[relicId].targetLevel > 100) newState[relicId].targetLevel = 100;
       
-      // Auto-adjust logic
-      if (newState[relicId].targetLevel <= newState[relicId].currentLevel) {
-        newState[relicId].currentLevel = newState[relicId].targetLevel - 1;
-        if (newState[relicId].currentLevel < 1) newState[relicId].currentLevel = 1;
+      // Auto-adjust logic only when both levels are set and valid
+      const current = newState[relicId].currentLevel;
+      const target = newState[relicId].targetLevel;
+      
+      if (target <= current && current > 0 && target > 0) {
+        newState[relicId].currentLevel = Math.max(1, target - 1);
       }
-      if (newState[relicId].currentLevel >= newState[relicId].targetLevel) {
-        newState[relicId].targetLevel = newState[relicId].currentLevel + 1;
-        if (newState[relicId].targetLevel > 100) newState[relicId].targetLevel = 100;
+      if (current >= target && current > 0 && target > 0) {
+        newState[relicId].targetLevel = Math.min(100, current + 1);
       }
       
       return newState;
@@ -211,7 +212,10 @@ export default function RelicCalculator() {
                           min="1"
                           max="100"
                           value={state.currentLevel}
-                          onChange={(e) => updateRelicState(relic.id, { currentLevel: parseInt(e.target.value) || 1 })}
+                          onChange={(e) => {
+                            const value = e.target.value === '' ? 1 : parseInt(e.target.value) || 1;
+                            updateRelicState(relic.id, { currentLevel: value });
+                          }}
                           disabled={!state.enabled}
                           className={`w-full px-3 py-2 rounded-lg bg-gray-800 border ${colorClasses.border} text-white focus:ring-2 focus:ring-gold/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200`}
                         />
@@ -225,7 +229,10 @@ export default function RelicCalculator() {
                           min="1"
                           max="100"
                           value={state.targetLevel}
-                          onChange={(e) => updateRelicState(relic.id, { targetLevel: parseInt(e.target.value) || 1 })}
+                          onChange={(e) => {
+                            const value = e.target.value === '' ? 1 : parseInt(e.target.value) || 1;
+                            updateRelicState(relic.id, { targetLevel: value });
+                          }}
                           disabled={!state.enabled}
                           className={`w-full px-3 py-2 rounded-lg bg-gray-800 border ${colorClasses.border} text-white focus:ring-2 focus:ring-gold/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200`}
                         />
