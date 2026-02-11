@@ -26,7 +26,8 @@ export type IconName =
   | 'calendar'
   | 'bell'
   | 'bell-off'
-  | 'bell-on';
+  | 'bell-on'
+  | 'calculator';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
@@ -131,6 +132,9 @@ const iconPaths: Record<IconName, JSX.Element> = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
       <circle cx="18" cy="8" r="3" fill="currentColor" />
     </>
+  ),
+  calculator: (
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 14h.01M9 11h6m-6 0h.01M12 11h.01M15 11h.01M7 7h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z" />
   ),
 };
 

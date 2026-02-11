@@ -43,6 +43,15 @@ export default function Footer() {
             Leaderboards
           </a>
           <span className="text-gray-600">•</span>
+          <a href="/relic-calculator" className="inline-flex items-center gap-1.5 text-accent hover:text-accent-light font-game transition-colors group">
+            <Icon
+              name="calculator"
+              size="sm"
+              className="text-accent group-hover:text-accent-light transition-colors"
+            />
+            Relic Calculator
+          </a>
+          <span className="text-gray-600">•</span>
           <a
             href="https://discord.gg/EUWXd5tPa7"
             target="_blank"

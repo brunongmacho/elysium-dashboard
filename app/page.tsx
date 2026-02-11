@@ -8,6 +8,7 @@ import { Typography } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Tooltip from "@/components/Tooltip";
+
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -494,7 +495,7 @@ export default function GuildHomePage() {
         transition={{ duration: 0.6 }}
       >
         <Section>
-          <Grid columns={{ xs: 1, sm: 2, xl: 4 }} gap="md">
+          <Grid columns={{ xs: 1, sm: 2, xl: 3 }} gap="md">
             {/* Boss Timers */}
             <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
               <motion.a
@@ -576,6 +577,35 @@ export default function GuildHomePage() {
                     </Typography>
                     <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                       View rankings
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
+
+            {/* Relic Calculator */}
+            <Tooltip content="Calculate relic upgrade costs" position="top" fullWidth>
+              <motion.a
+                href="/relic-calculator"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-accent/30 p-4 sm:p-6 hover:border-accent transition-all duration-200 card-3d hover:scale-105 glow-accent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="calculator"
+                    size="2xl"
+                    className="text-accent group-hover:text-accent-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-accent-bright break-words">
+                      Relic Calculator
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Calculate upgrade costs
                     </Typography>
                   </div>
                 </div>

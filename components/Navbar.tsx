@@ -133,6 +133,9 @@ export default function Navbar() {
             <NavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
               Leaderboards
             </NavLink>
+            <NavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
+              Relic Calculator
+            </NavLink>
           </div>
 
           {/* Right Side - Theme & Auth */}
@@ -275,6 +278,9 @@ export default function Navbar() {
               </MobileNavLink>
               <MobileNavLink href="/leaderboard" active={pathname === '/leaderboard'} icon={<Icon name="trophy" size="sm" />}>
                 Leaderboards
+              </MobileNavLink>
+              <MobileNavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
+                Relic Calculator
               </MobileNavLink>
 
             {/* Notification, Animations Toggle & Theme */}
