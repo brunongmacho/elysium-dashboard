@@ -219,11 +219,12 @@ export async function GET() {
     );
   } catch (error) {
     console.error("Error fetching boss timers:", error);
+    const isDev = process.env.NODE_ENV === 'development';
 
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: isDev && error instanceof Error ? error.message : "Internal server error",
         bosses: [],
       },
       { status: 500 }

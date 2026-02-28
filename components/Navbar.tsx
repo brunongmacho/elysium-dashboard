@@ -17,6 +17,7 @@ import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
 import { calculateNextOccurrence } from "@/lib/event-utils";
+import { LINKS } from "@/lib/constants";
 
 // Dynamically import LoginModal to prevent SSR hydration issues
 const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
@@ -110,7 +111,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation - Centered with proper spacing */}
-          <div className="hidden md:flex items-center space-x-1 flex-1 justify-center max-w-3xl mx-auto">
+          <div className="hidden md:flex items-center space-x-1 flex-1 justify-center max-w-5xl mx-auto">
             <NavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
               Home
             </NavLink>
@@ -135,6 +136,14 @@ export default function Navbar() {
             </NavLink>
             <NavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
               Relic Calculator
+            </NavLink>
+            <NavLink 
+              href={LINKS.APK_DOWNLOAD} 
+              active={false} 
+              icon={<Icon name="smartphone" size="sm" />}
+              external
+            >
+              Mobile App
             </NavLink>
           </div>
 
@@ -282,6 +291,9 @@ export default function Navbar() {
               <MobileNavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
                 Relic Calculator
               </MobileNavLink>
+              <MobileNavLink href={LINKS.APK_DOWNLOAD} active={false} icon={<Icon name="smartphone" size="sm" />} external>
+                Get Mobile App
+              </MobileNavLink>
 
             {/* Notification, Animations Toggle & Theme */}
             <div className="px-3 py-2 flex items-center gap-3">
@@ -375,14 +387,17 @@ interface NavLinkProps {
   icon: React.ReactNode;
   badge?: number;
   children: React.ReactNode;
+  external?: boolean;
 }
 
-function NavLink({ href, active, icon, badge, children }: NavLinkProps) {
+function NavLink({ href, active, icon, badge, children, external }: NavLinkProps) {
   return (
     <a
       href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className={`
-        relative group flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium font-game
+        relative group flex items-center gap-2 px-2 py-2 rounded-md text-sm font-medium font-game whitespace-nowrap
         transition-all duration-200
         ${active
           ? 'text-primary-bright bg-primary/10'
@@ -419,10 +434,12 @@ function NavLink({ href, active, icon, badge, children }: NavLinkProps) {
 }
 
 // Mobile NavLink Component
-function MobileNavLink({ href, active, icon, badge, children }: NavLinkProps) {
+function MobileNavLink({ href, active, icon, badge, children, external }: NavLinkProps) {
   return (
     <a
       href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className={`
         relative flex items-center gap-3 px-3 py-2.5 rounded-md text-base font-medium font-game
         transition-all duration-200

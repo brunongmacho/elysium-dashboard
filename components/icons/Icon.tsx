@@ -27,7 +27,8 @@ export type IconName =
   | 'bell'
   | 'bell-off'
   | 'bell-on'
-  | 'calculator';
+  | 'calculator'
+  | 'smartphone';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
@@ -135,6 +136,9 @@ const iconPaths: Record<IconName, JSX.Element> = {
   ),
   calculator: (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 14h.01M9 11h6m-6 0h.01M12 11h.01M15 11h.01M7 7h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z" />
+  ),
+  smartphone: (
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
   ),
 };
 

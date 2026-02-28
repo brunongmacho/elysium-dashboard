@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/icons";
+import { LINKS } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -53,7 +54,21 @@ export default function Footer() {
           </a>
           <span className="text-gray-600">•</span>
           <a
-            href="https://discord.gg/EUWXd5tPa7"
+            href={LINKS.APK_DOWNLOAD}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group"
+          >
+            <Icon
+              name="smartphone"
+              size="sm"
+              className="text-primary group-hover:text-primary-light transition-colors"
+            />
+            Get Mobile App
+          </a>
+          <span className="text-gray-600">•</span>
+          <a
+            href={LINKS.DISCORD_INVITE}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group"

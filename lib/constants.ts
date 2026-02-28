@@ -62,3 +62,9 @@ export const UI = {
   ERROR_RETRY_COUNT: 3, // maximum retry attempts
   REFRESH_BUTTON_DELAY: 500, // delay to show loading state on manual refresh
 } as const;
+
+// External links
+export const LINKS = {
+  APK_DOWNLOAD: 'https://github.com/brunongmacho/elysium-guild/releases/download/v2.0.4/app-debug.apk',
+  DISCORD_INVITE: 'https://discord.gg/EUWXd5tPa7',
+} as const;

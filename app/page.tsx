@@ -12,6 +12,7 @@ import Tooltip from "@/components/Tooltip";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { LINKS } from "@/lib/constants";
 
 interface MemberLoreData {
   title: string;
@@ -606,6 +607,37 @@ export default function GuildHomePage() {
                     </Typography>
                     <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
                       Calculate upgrade costs
+                    </Typography>
+                  </div>
+                </div>
+              </motion.a>
+            </Tooltip>
+
+            {/* Mobile App */}
+            <Tooltip content="Download the mobile app for on-the-go access" position="top" fullWidth>
+              <motion.a
+                href={LINKS.APK_DOWNLOAD}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                initial={{ opacity: 0, y: 30 }}
+                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Icon
+                    name="smartphone"
+                    size="2xl"
+                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                  />
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                      Mobile App
+                    </Typography>
+                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                      Get the Android app
                     </Typography>
                   </div>
                 </div>

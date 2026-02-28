@@ -195,10 +195,11 @@ export async function GET(request: Request) {
     }
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
+    const isDev = process.env.NODE_ENV === 'development';
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: isDev && error instanceof Error ? error.message : "Internal server error",
         data: [],
       },
       { status: 500 }

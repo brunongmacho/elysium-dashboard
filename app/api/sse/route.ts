@@ -16,8 +16,9 @@ export async function GET(request: NextRequest) {
   const clientId = crypto.randomUUID()
   const encoder = new TextEncoder()
 
-  // Store the client connection
+  // Store the client connection and interval ID
   let controller: ReadableStreamDefaultController
+  let intervalId: NodeJS.Timeout | null = null
 
   const readable = new ReadableStream({
     start(ctrl) {
@@ -38,14 +39,19 @@ export async function GET(request: NextRequest) {
       controller.enqueue(encoder.encode(heartbeat))
     },
     cancel() {
-      // Clean up when client disconnects
+      // Clean up interval when client disconnects
+      if (intervalId) {
+        clearInterval(intervalId)
+        intervalId = null
+      }
+      // Clean up client connection
       sseClients.delete(clientId)
       console.log(`SSE client disconnected: ${clientId}`)
     },
   })
 
   // Set up heartbeat to keep connection alive (every 30 seconds)
-  const heartbeatInterval = setInterval(() => {
+  intervalId = setInterval(() => {
     if (controller && sseClients.has(clientId)) {
       try {
         const heartbeat = formatSSEMessage('heartbeat', {
@@ -54,11 +60,17 @@ export async function GET(request: NextRequest) {
         controller.enqueue(encoder.encode(heartbeat))
       } catch (error) {
         console.error('Heartbeat failed:', error)
-        clearInterval(heartbeatInterval)
+        if (intervalId) {
+          clearInterval(intervalId)
+          intervalId = null
+        }
         sseClients.delete(clientId)
       }
     } else {
-      clearInterval(heartbeatInterval)
+      if (intervalId) {
+        clearInterval(intervalId)
+        intervalId = null
+      }
     }
   }, 30000) // 30 seconds
 

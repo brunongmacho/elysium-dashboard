@@ -149,11 +149,12 @@ export async function POST(
     });
   } catch (error) {
     console.error("Error marking boss as killed:", error);
+    const isDev = process.env.NODE_ENV === 'development';
 
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: isDev && error instanceof Error ? error.message : "Internal server error",
       },
       { status: 500 }
     );
@@ -253,11 +254,12 @@ export async function DELETE(
     });
   } catch (error) {
     console.error("Error cancelling boss spawn:", error);
+    const isDev = process.env.NODE_ENV === 'development';
 
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: isDev && error instanceof Error ? error.message : "Internal server error",
       },
       { status: 500 }
     );
