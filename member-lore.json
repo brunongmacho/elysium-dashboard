@@ -458,6 +458,15 @@
     "stats": "Philosophical Debates Won 89 | Time Lost 7 Years | Correct Answers 9999 | Arrival Success 3",
     "skills": ["Infinite Knowledge", "Scenic Pathfinding", "Philosophical Compass", "Eternal Arrival"]
   },
+  "Wren空": {
+    "title": "The Empty Sky Walker",
+    "lore": "Name combines Wren with the void symbol — literally walks between empty spaces. Moves through battlefields like passing through empty sky. Enemies struggle to find something that is not there. The space between moments is their battlefield.",
+    "recent_developments": "Wren空 has mastered the art of existing between realms. Has walked through 47 dimensional barriers. Recently appeared behind enemy lines by walking through the space between thoughts. Still has not been photographed — cameras cannot capture empty sky.",
+    "specialty": "Void walking with existential presence",
+    "reputation": "The walker who exists in the space enemies cannot target",
+    "stats": "Sky Mastery INFINITY | Void Steps 47 | Realm Crossings 47 | Photographs 0",
+    "skills": ["Empty Step", "Void Walk", "Dimensional Slip", "Untargetable"]
+  },
   "_FUTURE_MEMBER_TEMPLATE": {
     "title": "Awaiting Destiny",
     "lore": "A new member whose story has yet to be written. Their talents are unknown, their exploits legendary-in-waiting. Elysium welcomes all who seek adventure, glory, and questionable decisions.",

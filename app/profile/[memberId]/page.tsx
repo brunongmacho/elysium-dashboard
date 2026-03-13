@@ -6,10 +6,12 @@ import { useSession } from "next-auth/react";
 import { formatInGMT8 } from "@/lib/timezone";
 import Image from "next/image";
 import useSWR from "swr";
+import { motion } from "framer-motion";
 import { Breadcrumb, ProfileSkeleton, StatCard, ScrollReveal, Typography } from "@/components/ui";
 import { Stack, Grid } from "@/components/layout";
 import { Icon } from "@/components/icons";
 import { useRouter } from "next/navigation";
+import { useSpecialUser } from "@/hooks/useSpecialUser";
 
 // SWR fetcher
 const swrFetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -52,6 +54,58 @@ export default function MemberProfilePage() {
   const memberId = params.memberId as string;
   const { data: session } = useSession();
   const router = useRouter();
+  
+  // Check for special user (only applies when THIS user is logged in)
+  const { isSpecialUser, specialConfig } = useSpecialUser();
+  const isStarlight = isSpecialUser && specialConfig?.theme === 'starlight';
+  const isChaos = isSpecialUser && specialConfig?.theme === 'chaos';
+  const isQuantum = isSpecialUser && specialConfig?.theme === 'quantum';
+  const isUnstable = isSpecialUser && specialConfig?.theme === 'unstable';
+  const isPortal = isSpecialUser && specialConfig?.theme === 'portal';
+  const isGrill = isSpecialUser && specialConfig?.theme === 'grill';
+  const isWrong = isSpecialUser && specialConfig?.theme === 'wrong';
+  const isChrono = isSpecialUser && specialConfig?.theme === 'chrono';
+  const isNightlight = isSpecialUser && specialConfig?.theme === 'nightlight';
+  const isOcean = isSpecialUser && specialConfig?.theme === 'ocean';
+  const isSnack = isSpecialUser && specialConfig?.theme === 'snack';
+  const isRoyal = isSpecialUser && specialConfig?.theme === 'royal';
+  const isBlade = isSpecialUser && specialConfig?.theme === 'blade';
+  const isTiger = isSpecialUser && specialConfig?.theme === 'tiger';
+  const isBoss = isSpecialUser && specialConfig?.theme === 'boss';
+  const isVoid = isSpecialUser && specialConfig?.theme === 'void';
+  const isMeme = isSpecialUser && specialConfig?.theme === 'meme';
+  const isShadow = isSpecialUser && specialConfig?.theme === 'shadow';
+  const isNeon = isSpecialUser && specialConfig?.theme === 'neon';
+  const isChaoscoin = isSpecialUser && specialConfig?.theme === 'chaoscoin';
+  const isSpoon = isSpecialUser && specialConfig?.theme === 'spoon';
+  const isBureaucracy = isSpecialUser && specialConfig?.theme === 'bureaucracy';
+  const isStats = isSpecialUser && specialConfig?.theme === 'stats';
+  const isOlympus = isSpecialUser && specialConfig?.theme === 'olympus';
+  const isWeather = isSpecialUser && specialConfig?.theme === 'weather';
+  const isSpeed = isSpecialUser && specialConfig?.theme === 'speed';
+  const isMorale = isSpecialUser && specialConfig?.theme === 'morale';
+  const isRecycle = isSpecialUser && specialConfig?.theme === 'recycle';
+  const isAbyss = isSpecialUser && specialConfig?.theme === 'abyss';
+  const isChaosgun = isSpecialUser && specialConfig?.theme === 'chaosgun';
+  const isLightning = isSpecialUser && specialConfig?.theme === 'lightning';
+  const isSonic = isSpecialUser && specialConfig?.theme === 'sonic';
+  const isArchive = isSpecialUser && specialConfig?.theme === 'archive';
+  const isVintage = isSpecialUser && specialConfig?.theme === 'vintage';
+  const isArt = isSpecialUser && specialConfig?.theme === 'art';
+  const isPancake = isSpecialUser && specialConfig?.theme === 'pancake';
+  const isPharmacy = isSpecialUser && specialConfig?.theme === 'pharmacy';
+  const isHorn = isSpecialUser && specialConfig?.theme === 'horn';
+  const isBook = isSpecialUser && specialConfig?.theme === 'book';
+  const isShadowdance = isSpecialUser && specialConfig?.theme === 'shadowdance';
+  const isTidal = isSpecialUser && specialConfig?.theme === 'tidal';
+  const isRhythm = isSpecialUser && specialConfig?.theme === 'rhythm';
+  const isVanish = isSpecialUser && specialConfig?.theme === 'vanish';
+  const isWisdom = isSpecialUser && specialConfig?.theme === 'wisdom';
+  const isReverse = isSpecialUser && specialConfig?.theme === 'reverse';
+  const isDragon = isSpecialUser && specialConfig?.theme === 'dragon';
+  const isBlur = isSpecialUser && specialConfig?.theme === 'blur';
+  const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
+  const isSky = isSpecialUser && specialConfig?.theme === 'sky';
 
   // Track if we're mounted on client (prevents hydration errors)
   const [isMounted, setIsMounted] = useState(false);
@@ -444,6 +498,28 @@ export default function MemberProfilePage() {
             </div>
           </Grid>
         </div>
+
+        {/* QUOTE OPTION 3: Profile Page Quote - only for logged-in special user viewing their own profile */}
+        {isSpecialUser && specialConfig?.quotes?.profile && (
+          <div className="mt-8 text-center p-4 sm:p-6 glass rounded-lg border border-purple-500/20">
+            <Typography variant="body" className={`italic font-game text-sm sm:text-base px-2 ${
+              isChaos ? 'text-yellow-300/80' : isWrong ? 'text-yellow-300/80' : isChrono ? 'text-blue-300/80' : isNightlight ? 'text-pink-300/80' : isOcean ? 'text-sky-300/80' : isGrill ? 'text-lime-300/80' : isPortal ? 'text-indigo-300/80' : isUnstable ? 'text-teal-300/80' : isStarlight ? 'text-purple-300/80' : isQuantum ? 'text-cyan-300/80' : 'text-cyan-300/80'
+            }`}>
+              &quot;{specialConfig.quotes.profile}&quot;
+            </Typography>
+            <Typography variant="caption" className={`mt-2 block ${
+              isChaos ? 'text-orange-400/60' : isWrong ? 'text-amber-400/60' : isChrono ? 'text-indigo-400/60' : isNightlight ? 'text-yellow-400/60' : isOcean ? 'text-cyan-400/60' : isGrill ? 'text-green-400/60' : isPortal ? 'text-violet-400/60' : isUnstable ? 'text-teal-400/60' : isStarlight ? 'text-pink-400/60' : isQuantum ? 'text-cyan-400/60' : 'text-purple-400/60'
+            }`}>
+              — {specialConfig.name}
+            </Typography>
+            {/* Extra heart for starlight */}
+            {isStarlight && (
+              <div className="mt-2 text-pink-400">
+                💜
+              </div>
+            )}
+          </div>
+        )}
     </Stack>
   );
 }

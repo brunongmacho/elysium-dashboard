@@ -12,6 +12,7 @@ import Tooltip from "@/components/Tooltip";
 import type { BossTimersResponse } from "@/types/api";
 import { swrFetcher } from "@/lib/fetch-utils";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useSpecialUser } from "@/hooks/useSpecialUser";
 import { LINKS } from "@/lib/constants";
 
 interface MemberLoreData {
@@ -324,6 +325,58 @@ export default function GuildHomePage() {
   const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0);
 
+  // Check for special user
+  const { isSpecialUser, specialConfig } = useSpecialUser();
+  const isStarlight = isSpecialUser && specialConfig?.theme === 'starlight';
+  const isChaos = isSpecialUser && specialConfig?.theme === 'chaos';
+  const isQuantum = isSpecialUser && specialConfig?.theme === 'quantum';
+  const isUnstable = isSpecialUser && specialConfig?.theme === 'unstable';
+  const isPortal = isSpecialUser && specialConfig?.theme === 'portal';
+  const isGrill = isSpecialUser && specialConfig?.theme === 'grill';
+  const isWrong = isSpecialUser && specialConfig?.theme === 'wrong';
+  const isChrono = isSpecialUser && specialConfig?.theme === 'chrono';
+  const isNightlight = isSpecialUser && specialConfig?.theme === 'nightlight';
+  const isOcean = isSpecialUser && specialConfig?.theme === 'ocean';
+  const isSnack = isSpecialUser && specialConfig?.theme === 'snack';
+  const isRoyal = isSpecialUser && specialConfig?.theme === 'royal';
+  const isBlade = isSpecialUser && specialConfig?.theme === 'blade';
+  const isTiger = isSpecialUser && specialConfig?.theme === 'tiger';
+  const isBoss = isSpecialUser && specialConfig?.theme === 'boss';
+  const isVoid = isSpecialUser && specialConfig?.theme === 'void';
+  const isMeme = isSpecialUser && specialConfig?.theme === 'meme';
+  const isShadow = isSpecialUser && specialConfig?.theme === 'shadow';
+  const isNeon = isSpecialUser && specialConfig?.theme === 'neon';
+  const isChaoscoin = isSpecialUser && specialConfig?.theme === 'chaoscoin';
+  const isSpoon = isSpecialUser && specialConfig?.theme === 'spoon';
+  const isBureaucracy = isSpecialUser && specialConfig?.theme === 'bureaucracy';
+  const isStats = isSpecialUser && specialConfig?.theme === 'stats';
+  const isOlympus = isSpecialUser && specialConfig?.theme === 'olympus';
+  const isWeather = isSpecialUser && specialConfig?.theme === 'weather';
+  const isSpeed = isSpecialUser && specialConfig?.theme === 'speed';
+  const isMorale = isSpecialUser && specialConfig?.theme === 'morale';
+  const isRecycle = isSpecialUser && specialConfig?.theme === 'recycle';
+  const isAbyss = isSpecialUser && specialConfig?.theme === 'abyss';
+  const isChaosgun = isSpecialUser && specialConfig?.theme === 'chaosgun';
+  const isLightning = isSpecialUser && specialConfig?.theme === 'lightning';
+  const isSonic = isSpecialUser && specialConfig?.theme === 'sonic';
+  const isArchive = isSpecialUser && specialConfig?.theme === 'archive';
+  const isVintage = isSpecialUser && specialConfig?.theme === 'vintage';
+  const isArt = isSpecialUser && specialConfig?.theme === 'art';
+  const isPancake = isSpecialUser && specialConfig?.theme === 'pancake';
+  const isPharmacy = isSpecialUser && specialConfig?.theme === 'pharmacy';
+  const isHorn = isSpecialUser && specialConfig?.theme === 'horn';
+  const isBook = isSpecialUser && specialConfig?.theme === 'book';
+  const isShadowdance = isSpecialUser && specialConfig?.theme === 'shadowdance';
+  const isTidal = isSpecialUser && specialConfig?.theme === 'tidal';
+  const isRhythm = isSpecialUser && specialConfig?.theme === 'rhythm';
+  const isVanish = isSpecialUser && specialConfig?.theme === 'vanish';
+  const isWisdom = isSpecialUser && specialConfig?.theme === 'wisdom';
+  const isReverse = isSpecialUser && specialConfig?.theme === 'reverse';
+  const isDragon = isSpecialUser && specialConfig?.theme === 'dragon';
+  const isBlur = isSpecialUser && specialConfig?.theme === 'blur';
+  const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
+  const isSky = isSpecialUser && specialConfig?.theme === 'sky';
+
   // Fetch member lore and guild stats from API
   const { data: memberLore } = useSWR<Record<string, MemberLoreData>>(
     '/api/lore',
@@ -465,19 +518,78 @@ export default function GuildHomePage() {
       <section className="relative py-6 sm:py-10 md:py-12 overflow-hidden">
         {/* Background Glow Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-danger/20 rounded-full blur-3xl"></div>
+          {isSpecialUser && specialConfig?.theme === 'heart' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-pink-500/30 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-rose-500/30 rounded-full blur-3xl animate-pulse"></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'quantum' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-cyan-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }}></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'starlight' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-indigo-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-purple-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '25s' }}></div>
+            </>
+          ) : (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-danger/20 rounded-full blur-3xl"></div>
+            </>
+          )}
         </div>
 
         <div className="relative">
           <Stack gap="md" align="center" className="text-center">
+            {/* Special user greeting */}
+            {isSpecialUser && specialConfig?.customGreeting && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className={`text-2xl sm:text-3xl md:text-4xl animate-pulse ${
+                  specialConfig.theme === 'unstable' ? 'text-teal-400' :
+                  specialConfig.theme === 'quantum' ? 'text-cyan-400' : 
+                  specialConfig.theme === 'heart' ? 'text-pink-400' : 
+                  specialConfig.theme === 'starlight' ? 'text-purple-400' : 'text-gold'
+                }`}
+              >
+                {specialConfig.customGreeting}
+              </motion.div>
+            )}
             {/* Guild Name */}
-            <Typography variant="display" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gold">
-              ⚔️ ELYSIUM
+            <Typography variant="display" className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl ${
+              isSpecialUser && specialConfig?.theme === 'heart' ? 'text-pink-400' :
+              isSpecialUser && specialConfig?.theme === 'unstable' ? 'text-teal-300' :
+              isSpecialUser && specialConfig?.theme === 'quantum' ? 'text-cyan-300' :
+              isSpecialUser && specialConfig?.theme === 'starlight' ? 'text-purple-300' :
+              isSpecialUser && specialConfig?.theme === 'chaos' ? 'text-orange-400' :
+              'text-gold'
+            }`}>
+              {isSpecialUser && specialConfig?.theme === 'heart' ? '❤️ ELYSIUM ❤️' : 
+               isSpecialUser && specialConfig?.theme === 'unstable' ? '❓ ELYSIUM ❓' :
+               isSpecialUser && specialConfig?.theme === 'quantum' ? '∞ ELYSIUM ∞' :
+               isSpecialUser && specialConfig?.theme === 'starlight' ? '💜 ELYSIUM 💜' :
+               isSpecialUser && specialConfig?.theme === 'chaos' ? '🖍️ ELYSIUM 🖍️' :
+               '⚔️ ELYSIUM'}
             </Typography>
-            <Typography variant="h2" className="text-lg sm:text-xl md:text-2xl text-silver">
-              Where Chaos Becomes Strategy
-            </Typography>
+            {/* Special user subtitle */}
+            {isSpecialUser && specialConfig?.subtitle ? (
+              <Typography variant="h2" className={`text-lg sm:text-xl md:text-2xl ${
+                specialConfig.theme === 'chaos' ? 'text-yellow-300' :
+                specialConfig.theme === 'unstable' ? 'text-cyan-300' :
+                specialConfig.theme === 'starlight' ? 'text-indigo-200' : 'text-purple-300'
+              }`}>
+                {specialConfig.subtitle}
+              </Typography>
+            ) : (
+              <Typography variant="h2" className="text-lg sm:text-xl md:text-2xl text-silver">
+                {isSpecialUser && specialConfig?.message ? specialConfig.message : 'Where Chaos Becomes Strategy'}
+              </Typography>
+            )}
             <Typography variant="body" className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl italic px-4">
               "Where stupidity becomes genius and friendly fire is tactical."
             </Typography>
@@ -868,6 +980,14 @@ export default function GuildHomePage() {
               <Typography variant="small" className="italic text-primary-bright leading-relaxed">
                 "The guild where being wrong becomes being right, allergies become weapons, and friendly fire is just tactical positioning."
               </Typography>
+              {/* QUOTE OPTION 1: About Section Quote - only for logged-in special user */}
+              {isSpecialUser && specialConfig?.quotes?.homeAbout && (
+                <Typography variant="small" className={`italic mt-4 text-xs sm:text-sm px-2 ${
+                  isChaos ? 'text-yellow-400/70' : isWrong ? 'text-yellow-400/70' : isChrono ? 'text-blue-400/70' : isNightlight ? 'text-pink-400/70' : isOcean ? 'text-sky-400/70' : isGrill ? 'text-lime-400/70' : isPortal ? 'text-indigo-400/70' : isUnstable ? 'text-teal-400/70' : isStarlight ? 'text-purple-300/70' : isQuantum ? 'text-cyan-400/70' : 'text-cyan-400/70'
+                }`}>
+                  &quot;{specialConfig.quotes.homeAbout}&quot;
+                </Typography>
+              )}
             </Stack>
           </motion.div>
 

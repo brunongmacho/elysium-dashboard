@@ -18,6 +18,7 @@ import { swrFetcher } from "@/lib/fetch-utils";
 import { ALL_EVENTS } from "@/data/eventSchedules";
 import { calculateNextOccurrence } from "@/lib/event-utils";
 import { LINKS } from "@/lib/constants";
+import { useSpecialUser } from "@/hooks/useSpecialUser";
 
 // Dynamically import LoginModal to prevent SSR hydration issues
 const LoginModal = dynamic(() => import("./LoginModal").then(mod => ({ default: mod.LoginModal })), {
@@ -31,6 +32,19 @@ export default function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { currentTime } = useTimer();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Check for special user (only applies when THIS user is logged in)
+  const { isSpecialUser, specialConfig } = useSpecialUser();
+  const isQuantum = isSpecialUser && specialConfig?.theme === 'quantum';
+  const isUnstable = isSpecialUser && specialConfig?.theme === 'unstable';
+  const isStarlight = isSpecialUser && specialConfig?.theme === 'starlight';
+  const isChaos = isSpecialUser && specialConfig?.theme === 'chaos';
+  const isPortal = isSpecialUser && specialConfig?.theme === 'portal';
+  const isGrill = isSpecialUser && specialConfig?.theme === 'grill';
+  const isWrong = isSpecialUser && specialConfig?.theme === 'wrong';
+  const isChrono = isSpecialUser && specialConfig?.theme === 'chrono';
+  const isNightlight = isSpecialUser && specialConfig?.theme === 'nightlight';
+  const isOcean = isSpecialUser && specialConfig?.theme === 'ocean';
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -100,13 +114,15 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="glass backdrop-blur-sm border-b border-primary/20 sticky top-0 z-50">
+    <nav className={`glass backdrop-blur-sm border-b sticky top-0 z-50 ${
+      isGrill ? 'border-lime-500/20' : isPortal ? 'border-indigo-500/20' : isUnstable ? 'border-teal-500/20' : isQuantum ? 'border-cyan-500/20' : isStarlight ? 'border-purple-500/20' : isChaos ? 'border-orange-500/20' : 'border-primary/20'
+    }`}>
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Mobile Logo - Only on mobile */}
           <div className="flex items-center flex-shrink-0 md:hidden">
-            <h1 className="text-xl font-bold text-white">
-              Dashboard
+            <h1 className={`text-xl font-bold ${isGrill ? 'text-lime-300' : isPortal ? 'text-indigo-300' : isUnstable ? 'text-teal-300' : isQuantum ? 'text-cyan-300' : isStarlight ? 'text-purple-300' : isChaos ? 'text-orange-300' : 'text-white'}`}>
+              {isGrill ? '🔥 Dashboard' : isPortal ? '🌀 Dashboard' : isUnstable ? '❓ Dashboard' : isQuantum ? '∞ Dashboard' : isStarlight ? '💜 Dashboard' : isChaos ? '🖍️ Dashboard' : 'Dashboard'}
             </h1>
           </div>
 
@@ -155,8 +171,8 @@ export default function Navbar() {
             {/* Animations Toggle */}
             <AnimationsToggle />
 
-            {/* Theme Selector */}
-            <ThemeSelector />
+            {/* Theme Selector - hidden for special users */}
+            {!isSpecialUser && <ThemeSelector />}
 
             {/* Auth Section */}
             <div className="flex items-center">
@@ -164,22 +180,71 @@ export default function Navbar() {
                 <div className="text-gray-400 text-sm whitespace-nowrap">Loading...</div>
               ) : session ? (
                 <div className="flex items-center gap-2">
+                  {/* Special user badge */}
+                  {(isUnstable || isQuantum || isStarlight || isChaos) && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className={`hidden lg:flex items-center gap-1 px-2 py-1 rounded-full ${
+                        isChaos 
+                          ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30'
+                          : isPortal
+                          ? 'bg-gradient-to-r from-indigo-500/20 to-violet-500/20 border border-indigo-500/30'
+                          : isUnstable
+                          ? 'bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-500/30'
+                          : isQuantum 
+                          ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30' 
+                          : isStarlight
+                          ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30'
+                          : 'bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/30'
+                      }`}
+                    >
+                      <span className={isChaos ? 'text-orange-400' : isGrill ? 'text-lime-400' : isPortal ? 'text-indigo-400' : isUnstable ? 'text-teal-400' : isQuantum ? 'text-cyan-400' : isStarlight ? 'text-pink-400' : 'text-purple-400'}>
+                        {isChaos ? '🖍️' : isGrill ? '🔥' : isPortal ? '🌀' : isUnstable ? '❓' : isQuantum ? '∞' : isStarlight ? '💜' : '✨'}
+                      </span>
+                      <span className={isChaos ? 'text-orange-300' : isGrill ? 'text-lime-300' : isPortal ? 'text-indigo-300' : isUnstable ? 'text-teal-300' : isQuantum ? 'text-cyan-300' : isStarlight ? 'text-purple-300' : 'text-purple-300'} text-xs font-game>
+                        {isGrill ? 'Grillmaster' : isPortal ? 'Dimensional' : isUnstable ? 'Uncertain' : isStarlight ? 'Beloved' : 'VIP'}
+                      </span>
+                    </motion.div>
+                  )}
                   {/* User Info - Clickable to Profile */}
                   <a
                     href={`/profile/${session.user?.id}`}
                     className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
                   >
                     {session.user?.image && (
-                      <Image
-                        src={session.user.image}
-                        alt={session.user.name || "User"}
-                        width={32}
-                        height={32}
-                        className="rounded-full flex-shrink-0"
-                      />
+                      <motion.div
+                        animate={isPortal || isUnstable || isQuantum || isStarlight ? { 
+                          boxShadow: isPortal 
+                            ? ['0 0 5px rgba(99,102,241,0.5)', '0 0 10px rgba(139,92,246,0.5)', '0 0 5px rgba(99,102,241,0.5)']
+                            : isUnstable 
+                            ? ['0 0 5px rgba(20,184,166,0.5)', '0 0 10px rgba(45,212,191,0.5)', '0 0 5px rgba(20,184,166,0.5)']
+                            : isQuantum 
+                            ? ['0 0 5px rgba(6,182,212,0.5)', '0 0 10px rgba(168,85,247,0.5)', '0 0 5px rgba(6,182,212,0.5)']
+                            : ['0 0 5px rgba(168,85,247,0.5)', '0 0 10px rgba(199,210,254,0.5)', '0 0 5px rgba(168,85,247,0.5)']
+                        } : {}}
+                        transition={isPortal || isUnstable || isQuantum || isStarlight ? { duration: 3, repeat: Infinity } : {}}
+                        className="relative"
+                      >
+                        <Image
+                          src={session.user.image}
+                          alt={session.user.name || "User"}
+                          width={32}
+                          height={32}
+                          className={`rounded-full flex-shrink-0 ${isGrill ? 'ring-2 ring-lime-500/50' : isPortal ? 'ring-2 ring-indigo-500/50' : isUnstable ? 'ring-2 ring-teal-500/50' : isQuantum ? 'ring-2 ring-cyan-500/50' : isStarlight ? 'ring-2 ring-purple-500/50' : ''}`}
+                        />
+                      </motion.div>
                     )}
                     <div className="flex flex-col min-w-0">
-                      <span className="text-white text-sm font-medium hover:text-primary transition-colors truncate max-w-[120px] lg:max-w-none">
+                      <span className={`text-sm font-medium hover:transition-colors truncate max-w-[120px] lg:max-w-none ${
+                        isChaos ? 'text-orange-300 hover:text-orange-200' :
+                        isGrill ? 'text-lime-300 hover:text-lime-200' :
+                        isPortal ? 'text-indigo-300 hover:text-indigo-200' :
+                        isUnstable ? 'text-teal-300 hover:text-teal-200' :
+                        isQuantum ? 'text-cyan-300 hover:text-cyan-200' : 
+                        isStarlight ? 'text-purple-300 hover:text-purple-200' : 
+                        'text-white hover:text-primary'
+                      }`}>
                         {session.user?.name}
                       </span>
                       {!session.isInGuild && (
@@ -188,7 +253,7 @@ export default function Navbar() {
                         </span>
                       )}
                       {session.roleBadge && (
-                        <span className="text-success text-xs whitespace-nowrap">
+                        <span className={`text-xs whitespace-nowrap ${isGrill ? 'text-green-400' : isPortal ? 'text-violet-400' : isUnstable ? 'text-cyan-400' : isQuantum ? 'text-purple-400' : isStarlight ? 'text-indigo-400' : 'text-success'}`}>
                           {session.roleBadge}
                         </span>
                       )}
@@ -299,7 +364,7 @@ export default function Navbar() {
             <div className="px-3 py-2 flex items-center gap-3">
               <NotificationButton />
               <AnimationsToggle />
-              <ThemeSelector />
+              {!isSpecialUser && <ThemeSelector />}
             </div>
 
             {/* Auth Section Mobile */}
