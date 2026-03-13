@@ -235,7 +235,50 @@ export function LayoutContent({ children }: LayoutContentProps) {
               isChaosTheme ? 'via-orange-900/30' : 
               isUnstableTheme ? 'via-teal-900/30' : 
               isPortalTheme ? 'via-indigo-900/30' : 
-              isGrillTheme ? 'via-lime-900/30' : 
+              isGrillTheme ? 'via-red-900/30' : 
+              isWrongTheme ? 'via-yellow-900/30' : 
+              isChronoTheme ? 'via-blue-900/30' : 
+              isNightlightTheme ? 'via-pink-900/30' : 
+              isOceanTheme ? 'via-sky-900/30' : 
+              isSnackTheme ? 'via-rose-900/30' : 
+              isRoyalTheme ? 'via-purple-900/30' : 
+              isBladeTheme ? 'via-rose-900/30' : 
+              isTigerTheme ? 'via-orange-900/30' : 
+              isBossTheme ? 'via-red-900/30' : 
+              isVoidTheme ? 'via-violet-900/30' : 
+              isMemeTheme ? 'via-cyan-900/30' : 
+              isShadowTheme ? 'via-slate-800/30' : 
+              isNeonTheme ? 'via-green-900/30' : 
+              isChaoscoinTheme ? 'via-emerald-900/30' : 
+              isSpoonTheme ? 'via-slate-600/30' : 
+              isBureaucracyTheme ? 'via-slate-700/30' : 
+              isStatsTheme ? 'via-cyan-900/30' : 
+              isOlympusTheme ? 'via-yellow-900/30' : 
+              isWeatherTheme ? 'via-sky-900/30' : 
+              isSpeedTheme ? 'via-violet-900/30' : 
+              isMoraleTheme ? 'via-pink-900/30' : 
+              isRecycleTheme ? 'via-lime-900/30' : 
+              isAbyssTheme ? 'via-purple-900/30' : 
+              isChaosgunTheme ? 'via-purple-900/30' : 
+              isLightningTheme ? 'via-yellow-900/30' : 
+              isSonicTheme ? 'via-rose-900/30' : 
+              isArchiveTheme ? 'via-stone-700/30' : 
+              isVintageTheme ? 'via-amber-900/30' : 
+              isArtTheme ? 'via-pink-900/30' : 
+              isPancakeTheme ? 'via-orange-900/30' : 
+              isPharmacyTheme ? 'via-cyan-900/30' : 
+              isHornTheme ? 'via-fuchsia-900/30' : 
+              isBookTheme ? 'via-amber-900/30' : 
+              isShadowdanceTheme ? 'via-blue-900/30' : 
+              isTidalTheme ? 'via-teal-900/30' : 
+              isRhythmTheme ? 'via-fuchsia-900/30' : 
+              isVanishTheme ? 'via-slate-600/30' : 
+              isWisdomTheme ? 'via-indigo-900/30' : 
+              isReverseTheme ? 'via-green-900/30' : 
+              isDragonTheme ? 'via-green-900/30' : 
+              isBlurTheme ? 'via-purple-400/30' : 
+              isEleganceTheme ? 'via-pink-300/30' : 
+              isSkyTheme ? 'via-sky-900/30' : 
               'via-primary/20'
             } to-transparent`}
           >
@@ -245,11 +288,50 @@ export function LayoutContent({ children }: LayoutContentProps) {
               isChaosTheme ? 'text-orange-300' : 
               isUnstableTheme ? 'text-teal-300' : 
               isPortalTheme ? 'text-indigo-300' : 
-              isGrillTheme ? 'text-lime-300' : 
+              isGrillTheme ? 'text-red-300' : 
               isWrongTheme ? 'text-yellow-300' : 
               isChronoTheme ? 'text-blue-300' : 
               isNightlightTheme ? 'text-pink-300' : 
               isOceanTheme ? 'text-sky-300' : 
+              isSnackTheme ? 'text-rose-300' : 
+              isRoyalTheme ? 'text-purple-300' : 
+              isBladeTheme ? 'text-rose-300' : 
+              isTigerTheme ? 'text-orange-300' : 
+              isBossTheme ? 'text-red-300' : 
+              isVoidTheme ? 'text-violet-300' : 
+              isMemeTheme ? 'text-cyan-300' : 
+              isShadowTheme ? 'text-slate-300' : 
+              isNeonTheme ? 'text-green-300' : 
+              isChaoscoinTheme ? 'text-emerald-300' : 
+              isSpoonTheme ? 'text-slate-300' : 
+              isBureaucracyTheme ? 'text-slate-300' : 
+              isStatsTheme ? 'text-cyan-300' : 
+              isOlympusTheme ? 'text-yellow-300' : 
+              isWeatherTheme ? 'text-sky-300' : 
+              isSpeedTheme ? 'text-violet-300' : 
+              isMoraleTheme ? 'text-pink-300' : 
+              isRecycleTheme ? 'text-lime-300' : 
+              isAbyssTheme ? 'text-purple-300' : 
+              isChaosgunTheme ? 'text-purple-300' : 
+              isLightningTheme ? 'text-yellow-300' : 
+              isSonicTheme ? 'text-rose-300' : 
+              isArchiveTheme ? 'text-stone-300' : 
+              isVintageTheme ? 'text-amber-300' : 
+              isArtTheme ? 'text-pink-300' : 
+              isPancakeTheme ? 'text-orange-300' : 
+              isPharmacyTheme ? 'text-cyan-300' : 
+              isHornTheme ? 'text-fuchsia-300' : 
+              isBookTheme ? 'text-amber-300' : 
+              isShadowdanceTheme ? 'text-blue-300' : 
+              isTidalTheme ? 'text-teal-300' : 
+              isRhythmTheme ? 'text-fuchsia-300' : 
+              isVanishTheme ? 'text-slate-300' : 
+              isWisdomTheme ? 'text-indigo-300' : 
+              isReverseTheme ? 'text-green-300' : 
+              isDragonTheme ? 'text-green-300' : 
+              isBlurTheme ? 'text-purple-300' : 
+              isEleganceTheme ? 'text-pink-300' : 
+              isSkyTheme ? 'text-sky-300' : 
               'text-primary'
             } animate-pulse`}>
               {specialConfig.customGreeting}
@@ -266,14 +348,53 @@ export function LayoutContent({ children }: LayoutContentProps) {
           >
             <Typography variant="caption" className={`italic font-game block px-2 ${
               isStarlightTheme ? 'text-purple-300/80' : 
-              isChaosTheme ? 'text-yellow-300/80' : 
+              isChaosTheme ? 'text-orange-300/80' : 
               isUnstableTheme ? 'text-teal-300/80' : 
               isPortalTheme ? 'text-indigo-300/80' : 
-              isGrillTheme ? 'text-lime-300/80' : 
-              isWrongTheme ? 'text-amber-300/80' : 
+              isGrillTheme ? 'text-red-300/80' : 
+              isWrongTheme ? 'text-yellow-300/80' : 
               isChronoTheme ? 'text-blue-300/80' : 
               isNightlightTheme ? 'text-pink-300/80' : 
               isOceanTheme ? 'text-cyan-300/80' : 
+              isSnackTheme ? 'text-rose-300/80' : 
+              isRoyalTheme ? 'text-purple-300/80' : 
+              isBladeTheme ? 'text-rose-300/80' : 
+              isTigerTheme ? 'text-orange-300/80' : 
+              isBossTheme ? 'text-red-300/80' : 
+              isVoidTheme ? 'text-violet-300/80' : 
+              isMemeTheme ? 'text-cyan-300/80' : 
+              isShadowTheme ? 'text-slate-300/80' : 
+              isNeonTheme ? 'text-green-300/80' : 
+              isChaoscoinTheme ? 'text-emerald-300/80' : 
+              isSpoonTheme ? 'text-slate-300/80' : 
+              isBureaucracyTheme ? 'text-slate-300/80' : 
+              isStatsTheme ? 'text-cyan-300/80' : 
+              isOlympusTheme ? 'text-yellow-300/80' : 
+              isWeatherTheme ? 'text-sky-300/80' : 
+              isSpeedTheme ? 'text-violet-300/80' : 
+              isMoraleTheme ? 'text-pink-300/80' : 
+              isRecycleTheme ? 'text-lime-300/80' : 
+              isAbyssTheme ? 'text-purple-300/80' : 
+              isChaosgunTheme ? 'text-purple-300/80' : 
+              isLightningTheme ? 'text-yellow-300/80' : 
+              isSonicTheme ? 'text-rose-300/80' : 
+              isArchiveTheme ? 'text-stone-300/80' : 
+              isVintageTheme ? 'text-amber-300/80' : 
+              isArtTheme ? 'text-pink-300/80' : 
+              isPancakeTheme ? 'text-orange-300/80' : 
+              isPharmacyTheme ? 'text-cyan-300/80' : 
+              isHornTheme ? 'text-fuchsia-300/80' : 
+              isBookTheme ? 'text-amber-300/80' : 
+              isShadowdanceTheme ? 'text-blue-300/80' : 
+              isTidalTheme ? 'text-teal-300/80' : 
+              isRhythmTheme ? 'text-fuchsia-300/80' : 
+              isVanishTheme ? 'text-slate-300/80' : 
+              isWisdomTheme ? 'text-indigo-300/80' : 
+              isReverseTheme ? 'text-green-300/80' : 
+              isDragonTheme ? 'text-green-300/80' : 
+              isBlurTheme ? 'text-purple-300/80' : 
+              isEleganceTheme ? 'text-pink-300/80' : 
+              isSkyTheme ? 'text-sky-300/80' : 
               'text-cyan-300/80'
             } text-xs sm:text-sm`}>
               &quot;{specialConfig.quotes.floatingBanner}&quot;
@@ -445,7 +566,7 @@ export function LayoutContent({ children }: LayoutContentProps) {
           background: linear-gradient(135deg, rgba(120, 53, 15, 0.08) 0%, rgba(217, 119, 6, 0.08) 100%);
         }
         .shadowdance-glow {
-          background: linear-gradient(135deg, rgba(49, 46, 129, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+          background: linear-gradient(135deg, rgba(30, 58, 138, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
         }
         .tidal-glow {
           background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%);

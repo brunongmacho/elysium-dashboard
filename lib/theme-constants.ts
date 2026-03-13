@@ -759,18 +759,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#78350f',
   },
 
-  // Shadowdance theme for Skadushy - deep violet/navy
+  // Shadowdance theme for Skadushy - dark blue and yellow
   shadowdance: {
-    primary: '#312e81',      // Indigo Dark
-    primaryDark: '#1e1b4b',
-    primaryLight: '#4338ca',
-    accent: '#6366f1',        // Indigo
-    accentDark: '#4f46e5',
-    accentLight: '#818cf8',
+    primary: '#1e3a8a',      // Dark Blue
+    primaryDark: '#1e40af',
+    primaryLight: '#3b82f6',
+    accent: '#fbbf24',        // Yellow
+    accentDark: '#f59e0b',
+    accentLight: '#fcd34d',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#312e81',
+    info: '#1e3a8a',
   },
 
   // Tidal theme for Tinitira - teal/ocean based
