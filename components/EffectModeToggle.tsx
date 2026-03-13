@@ -6,7 +6,6 @@ export default function EffectModeToggle() {
   const { effectMode, setEffectMode, isLoaded } = useVisualEffects();
 
   const modes: { value: EffectMode; label: string; icon: string }[] = [
-    { value: "electric", label: "Electric", icon: "⚡" },
     { value: "glow", label: "Glow", icon: "✨" },
     { value: "off", label: "Off", icon: "○" },
   ];

@@ -1,7 +1,6 @@
 "use client";
 
 import { useVisualEffects } from "@/contexts/VisualEffectsContext";
-import ElectricBorder from "./ElectricBorder";
 import GlowBorder from "./GlowBorder";
 
 interface BorderEffectProps {
@@ -11,7 +10,7 @@ interface BorderEffectProps {
 
 /**
  * BorderEffect - Wrapper component that renders the appropriate effect based on user preference
- * Switches between ElectricBorder, GlowBorder, or nothing based on context
+ * Switches between GlowBorder or nothing based on context
  * Waits for preferences to load to prevent flickering on navigation
  */
 export default function BorderEffect({ intensity, color }: BorderEffectProps) {
@@ -26,10 +25,6 @@ export default function BorderEffect({ intensity, color }: BorderEffectProps) {
     return null;
   }
 
-  if (effectMode === "glow") {
-    return <GlowBorder intensity={intensity} color={color} />;
-  }
-
-  // Default to electric
-  return <ElectricBorder intensity={intensity} color={color} />;
+  // Always use glow effect - electric removed due to performance
+  return <GlowBorder intensity={intensity} color={color} />;
 }
