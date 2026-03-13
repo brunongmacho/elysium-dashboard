@@ -45,6 +45,45 @@ export default function Navbar() {
   const isChrono = isSpecialUser && specialConfig?.theme === 'chrono';
   const isNightlight = isSpecialUser && specialConfig?.theme === 'nightlight';
   const isOcean = isSpecialUser && specialConfig?.theme === 'ocean';
+  const isSnack = isSpecialUser && specialConfig?.theme === 'snack';
+  const isRoyal = isSpecialUser && specialConfig?.theme === 'royal';
+  const isBlade = isSpecialUser && specialConfig?.theme === 'blade';
+  const isTiger = isSpecialUser && specialConfig?.theme === 'tiger';
+  const isBoss = isSpecialUser && specialConfig?.theme === 'boss';
+  const isVoid = isSpecialUser && specialConfig?.theme === 'void';
+  const isMeme = isSpecialUser && specialConfig?.theme === 'meme';
+  const isShadow = isSpecialUser && specialConfig?.theme === 'shadow';
+  const isNeon = isSpecialUser && specialConfig?.theme === 'neon';
+  const isChaoscoin = isSpecialUser && specialConfig?.theme === 'chaoscoin';
+  const isSpoon = isSpecialUser && specialConfig?.theme === 'spoon';
+  const isBureaucracy = isSpecialUser && specialConfig?.theme === 'bureaucracy';
+  const isStats = isSpecialUser && specialConfig?.theme === 'stats';
+  const isOlympus = isSpecialUser && specialConfig?.theme === 'olympus';
+  const isWeather = isSpecialUser && specialConfig?.theme === 'weather';
+  const isSpeed = isSpecialUser && specialConfig?.theme === 'speed';
+  const isMorale = isSpecialUser && specialConfig?.theme === 'morale';
+  const isRecycle = isSpecialUser && specialConfig?.theme === 'recycle';
+  const isAbyss = isSpecialUser && specialConfig?.theme === 'abyss';
+  const isChaosgun = isSpecialUser && specialConfig?.theme === 'chaosgun';
+  const isLightning = isSpecialUser && specialConfig?.theme === 'lightning';
+  const isSonic = isSpecialUser && specialConfig?.theme === 'sonic';
+  const isArchive = isSpecialUser && specialConfig?.theme === 'archive';
+  const isVintage = isSpecialUser && specialConfig?.theme === 'vintage';
+  const isArt = isSpecialUser && specialConfig?.theme === 'art';
+  const isPancake = isSpecialUser && specialConfig?.theme === 'pancake';
+  const isPharmacy = isSpecialUser && specialConfig?.theme === 'pharmacy';
+  const isHorn = isSpecialUser && specialConfig?.theme === 'horn';
+  const isBook = isSpecialUser && specialConfig?.theme === 'book';
+  const isShadowdance = isSpecialUser && specialConfig?.theme === 'shadowdance';
+  const isTidal = isSpecialUser && specialConfig?.theme === 'tidal';
+  const isRhythm = isSpecialUser && specialConfig?.theme === 'rhythm';
+  const isVanish = isSpecialUser && specialConfig?.theme === 'vanish';
+  const isWisdom = isSpecialUser && specialConfig?.theme === 'wisdom';
+  const isReverse = isSpecialUser && specialConfig?.theme === 'reverse';
+  const isDragon = isSpecialUser && specialConfig?.theme === 'dragon';
+  const isBlur = isSpecialUser && specialConfig?.theme === 'blur';
+  const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
+  const isSky = isSpecialUser && specialConfig?.theme === 'sky';
 
   // Fetch boss timers to show notification badge
   const { data: bossData } = useSWR<BossTimersResponse>(
@@ -180,8 +219,8 @@ export default function Navbar() {
                 <div className="text-gray-400 text-sm whitespace-nowrap">Loading...</div>
               ) : session ? (
                 <div className="flex items-center gap-2">
-                  {/* Special user badge */}
-                  {(isUnstable || isQuantum || isStarlight || isChaos) && (
+                  {/* Special user badge - VIP banner for all special themes */}
+                  {(isUnstable || isQuantum || isStarlight || isChaos || isPortal || isGrill || isWrong || isChrono || isNightlight || isOcean || isSnack || isRoyal || isBlade || isTiger || isBoss || isVoid || isMeme || isShadow || isNeon || isChaoscoin || isSpoon || isBureaucracy || isStats || isOlympus || isWeather || isSpeed || isMorale || isRecycle || isAbyss || isChaosgun || isLightning || isSonic || isArchive || isVintage || isArt || isPancake || isPharmacy || isHorn || isBook || isShadowdance || isTidal || isRhythm || isVanish || isWisdom || isReverse || isDragon || isBlur || isElegance || isSky) && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
@@ -196,14 +235,102 @@ export default function Navbar() {
                           ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30' 
                           : isStarlight
                           ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30'
+                          : isGrill
+                          ? 'bg-gradient-to-r from-lime-500/20 to-green-500/20 border border-lime-500/30'
+                          : isWrong
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30'
+                          : isChrono
+                          ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-500/30'
+                          : isNightlight
+                          ? 'bg-gradient-to-r from-pink-500/20 to-yellow-500/20 border border-pink-500/30'
+                          : isOcean
+                          ? 'bg-gradient-to-r from-sky-500/20 to-cyan-500/20 border border-sky-500/30'
+                          : isSnack
+                          ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30'
+                          : isRoyal
+                          ? 'bg-gradient-to-r from-purple-500/20 to-yellow-500/20 border border-purple-500/30'
+                          : isBlade
+                          ? 'bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/30'
+                          : isTiger
+                          ? 'bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30'
+                          : isBoss
+                          ? 'bg-gradient-to-r from-red-500/20 to-yellow-500/20 border border-red-500/30'
+                          : isVoid
+                          ? 'bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/30'
+                          : isMeme
+                          ? 'bg-gradient-to-r from-cyan-500/20 to-pink-500/20 border border-cyan-500/30'
+                          : isShadow
+                          ? 'bg-gradient-to-r from-slate-500/20 to-indigo-500/20 border border-slate-500/30'
+                          : isNeon
+                          ? 'bg-gradient-to-r from-green-500/20 to-teal-500/20 border border-green-500/30'
+                          : isChaoscoin
+                          ? 'bg-gradient-to-r from-amber-500/20 to-lime-500/20 border border-amber-500/30'
+                          : isSpoon
+                          ? 'bg-gradient-to-r from-slate-400/20 to-white/20 border border-slate-400/30'
+                          : isBureaucracy
+                          ? 'bg-gradient-to-r from-slate-500/20 to-orange-500/20 border border-slate-500/30'
+                          : isStats
+                          ? 'bg-gradient-to-r from-blue-500/20 to-violet-500/20 border border-blue-500/30'
+                          : isOlympus
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-500/30'
+                          : isWeather
+                          ? 'bg-gradient-to-r from-sky-500/20 to-purple-500/20 border border-sky-500/30'
+                          : isSpeed
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-red-500/20 border border-yellow-500/30'
+                          : isMorale
+                          ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30'
+                          : isRecycle
+                          ? 'bg-gradient-to-r from-olive-500/20 to-lime-500/20 border border-olive-500/30'
+                          : isAbyss
+                          ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30'
+                          : isChaosgun
+                          ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30'
+                          : isLightning
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-sky-500/20 border border-yellow-500/30'
+                          : isSonic
+                          ? 'bg-gradient-to-r from-rose-500/20 to-orange-500/20 border border-rose-500/30'
+                          : isArchive
+                          ? 'bg-gradient-to-r from-stone-500/20 to-sky-500/20 border border-stone-500/30'
+                          : isVintage
+                          ? 'bg-gradient-to-r from-amber-700/20 to-yellow-600/20 border border-amber-700/30'
+                          : isArt
+                          ? 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30'
+                          : isPancake
+                          ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30'
+                          : isPharmacy
+                          ? 'bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30'
+                          : isHorn
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30'
+                          : isBook
+                          ? 'bg-gradient-to-r from-amber-800/20 to-yellow-500/20 border border-amber-800/30'
+                          : isShadowdance
+                          ? 'bg-gradient-to-r from-slate-500/20 to-purple-500/20 border border-slate-500/30'
+                          : isTidal
+                          ? 'bg-gradient-to-r from-sky-500/20 to-cyan-500/20 border border-sky-500/30'
+                          : isRhythm
+                          ? 'bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 border border-fuchsia-500/30'
+                          : isVanish
+                          ? 'bg-gradient-to-r from-slate-400/20 to-indigo-500/20 border border-slate-400/30'
+                          : isWisdom
+                          ? 'bg-gradient-to-r from-indigo-500/20 to-violet-500/20 border border-indigo-500/30'
+                          : isReverse
+                          ? 'bg-gradient-to-r from-green-500/20 to-red-500/20 border border-green-500/30'
+                          : isDragon
+                          ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30'
+                          : isBlur
+                          ? 'bg-gradient-to-r from-yellow-500/20 to-lime-500/20 border border-yellow-500/30'
+                          : isElegance
+                          ? 'bg-gradient-to-r from-pink-300/20 to-lavender-500/20 border border-pink-300/30'
+                          : isSky
+                          ? 'bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-500/30'
                           : 'bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/30'
                       }`}
                     >
-                      <span className={isChaos ? 'text-orange-400' : isGrill ? 'text-lime-400' : isPortal ? 'text-indigo-400' : isUnstable ? 'text-teal-400' : isQuantum ? 'text-cyan-400' : isStarlight ? 'text-pink-400' : 'text-purple-400'}>
-                        {isChaos ? '🖍️' : isGrill ? '🔥' : isPortal ? '🌀' : isUnstable ? '❓' : isQuantum ? '∞' : isStarlight ? '💜' : '✨'}
+                      <span className={isChaos ? 'text-orange-400' : isGrill ? 'text-lime-400' : isPortal ? 'text-indigo-400' : isUnstable ? 'text-teal-400' : isQuantum ? 'text-cyan-400' : isStarlight ? 'text-pink-400' : isWrong ? 'text-yellow-400' : isChrono ? 'text-blue-400' : isNightlight ? 'text-pink-400' : isOcean ? 'text-sky-400' : isSnack ? 'text-amber-400' : isRoyal ? 'text-violet-400' : isBlade ? 'text-rose-400' : isTiger ? 'text-orange-400' : isBoss ? 'text-red-400' : isVoid ? 'text-violet-400' : isMeme ? 'text-cyan-400' : isShadow ? 'text-indigo-400' : isNeon ? 'text-green-400' : isChaoscoin ? 'text-amber-400' : isSpoon ? 'text-slate-300' : isBureaucracy ? 'text-orange-400' : isStats ? 'text-blue-400' : isOlympus ? 'text-yellow-400' : isWeather ? 'text-sky-400' : isSpeed ? 'text-yellow-400' : isMorale ? 'text-orange-400' : isRecycle ? 'text-lime-400' : isAbyss ? 'text-pink-400' : isChaosgun ? 'text-red-400' : isLightning ? 'text-yellow-400' : isSonic ? 'text-rose-400' : isArchive ? 'text-stone-400' : isVintage ? 'text-amber-600' : isArt ? 'text-pink-400' : isPancake ? 'text-amber-400' : isPharmacy ? 'text-cyan-400' : isHorn ? 'text-yellow-400' : isBook ? 'text-amber-700' : isShadowdance ? 'text-indigo-400' : isTidal ? 'text-sky-400' : isRhythm ? 'text-fuchsia-400' : isVanish ? 'text-indigo-400' : isWisdom ? 'text-indigo-400' : isReverse ? 'text-green-400' : isDragon ? 'text-red-400' : isBlur ? 'text-yellow-400' : isElegance ? 'text-pink-300' : isSky ? 'text-sky-400' : 'text-purple-400'}>
+                        {isChaos ? '🖍️' : isGrill ? '🔥' : isPortal ? '🌀' : isUnstable ? '❓' : isQuantum ? '∞' : isStarlight ? '💜' : isWrong ? '🔮' : isChrono ? '⏰' : isNightlight ? '🌟' : isOcean ? '⚓' : isSnack ? '🍖' : isRoyal ? '👑' : isBlade ? '⚔️' : isTiger ? '🐯' : isBoss ? '💰' : isVoid ? '🕳️' : isMeme ? '📱' : isShadow ? '🌑' : isNeon ? '💚' : isChaoscoin ? '💸' : isSpoon ? '🥄' : isBureaucracy ? '📋' : isStats ? '📊' : isOlympus ? '🏛️' : isWeather ? '🌤️' : isSpeed ? '⚡' : isMorale ? '💪' : isRecycle ? '♻️' : isAbyss ? '😈' : isChaosgun ? '🎯' : isLightning ? '⚡' : isSonic ? '🔊' : isArchive ? '📁' : isVintage ? '📻' : isArt ? '🎨' : isPancake ? '🥞' : isPharmacy ? '💊' : isHorn ? '📯' : isBook ? '📚' : isShadowdance ? '🌑' : isTidal ? '🌊' : isRhythm ? '🎵' : isVanish ? '💨' : isWisdom ? '🏛️' : isReverse ? '🔄' : isDragon ? '🐉' : isBlur ? '💨' : isElegance ? '🌸' : isSky ? '🌌' : '✨'}
                       </span>
-                      <span className={isChaos ? 'text-orange-300' : isGrill ? 'text-lime-300' : isPortal ? 'text-indigo-300' : isUnstable ? 'text-teal-300' : isQuantum ? 'text-cyan-300' : isStarlight ? 'text-purple-300' : 'text-purple-300'} text-xs font-game>
-                        {isGrill ? 'Grillmaster' : isPortal ? 'Dimensional' : isUnstable ? 'Uncertain' : isStarlight ? 'Beloved' : 'VIP'}
+                      <span className={isChaos ? 'text-orange-300' : isGrill ? 'text-lime-300' : isPortal ? 'text-indigo-300' : isUnstable ? 'text-teal-300' : isQuantum ? 'text-cyan-300' : isStarlight ? 'text-purple-300' : isWrong ? 'text-yellow-300' : isChrono ? 'text-blue-300' : isNightlight ? 'text-pink-300' : isOcean ? 'text-sky-300' : isSnack ? 'text-amber-300' : isRoyal ? 'text-violet-300' : isBlade ? 'text-rose-300' : isTiger ? 'text-orange-300' : isBoss ? 'text-red-300' : isVoid ? 'text-violet-300' : isMeme ? 'text-cyan-300' : isShadow ? 'text-indigo-300' : isNeon ? 'text-green-300' : isChaoscoin ? 'text-amber-300' : isSpoon ? 'text-slate-200' : isBureaucracy ? 'text-orange-300' : isStats ? 'text-blue-300' : isOlympus ? 'text-yellow-300' : isWeather ? 'text-sky-300' : isSpeed ? 'text-yellow-300' : isMorale ? 'text-orange-300' : isRecycle ? 'text-lime-300' : isAbyss ? 'text-pink-300' : isChaosgun ? 'text-red-300' : isLightning ? 'text-yellow-300' : isSonic ? 'text-rose-300' : isArchive ? 'text-stone-300' : isVintage ? 'text-amber-200' : isArt ? 'text-pink-300' : isPancake ? 'text-amber-300' : isPharmacy ? 'text-cyan-300' : isHorn ? 'text-yellow-300' : isBook ? 'text-amber-300' : isShadowdance ? 'text-indigo-300' : isTidal ? 'text-sky-300' : isRhythm ? 'text-fuchsia-300' : isVanish ? 'text-indigo-300' : isWisdom ? 'text-indigo-300' : isReverse ? 'text-green-300' : isDragon ? 'text-red-300' : isBlur ? 'text-yellow-300' : isElegance ? 'text-pink-200' : isSky ? 'text-sky-300' : 'text-purple-300'} text-xs font-game>
+                        {specialConfig?.name || 'VIP'}
                       </span>
                     </motion.div>
                   )}
