@@ -357,6 +357,123 @@ export function LayoutContent({ children }: LayoutContentProps) {
         .ocean-glow {
           background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
         }
+        .snack-glow {
+          background: linear-gradient(135deg, rgba(225, 29, 72, 0.08) 0%, rgba(244, 63, 94, 0.08) 100%);
+        }
+        .royal-glow {
+          background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .blade-glow {
+          background: linear-gradient(135deg, rgba(190, 18, 60, 0.08) 0%, rgba(251, 113, 133, 0.08) 100%);
+        }
+        .tiger-glow {
+          background: linear-gradient(135deg, rgba(234, 88, 12, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .boss-glow {
+          background: linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .void-glow {
+          background: linear-gradient(135deg, rgba(76, 29, 149, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+        }
+        .meme-glow {
+          background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(244, 114, 182, 0.08) 100%);
+        }
+        .shadow-glow {
+          background: linear-gradient(135deg, rgba(51, 65, 85, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .neon-glow {
+          background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%);
+        }
+        .chaoscoin-glow {
+          background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+        }
+        .spoon-glow {
+          background: linear-gradient(135deg, rgba(148, 163, 184, 0.08) 0%, rgba(248, 250, 252, 0.08) 100%);
+        }
+        .bureaucracy-glow {
+          background: linear-gradient(135deg, rgba(71, 85, 105, 0.08) 0%, rgba(251, 146, 60, 0.08) 100%);
+        }
+        .stats-glow {
+          background: linear-gradient(135deg, rgba(8, 145, 178, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+        }
+        .olympus-glow {
+          background: linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .weather-glow {
+          background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+        }
+        .speed-glow {
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(217, 70, 239, 0.08) 100%);
+        }
+        .morale-glow {
+          background: linear-gradient(135deg, rgba(244, 114, 182, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+        }
+        .recycle-glow {
+          background: linear-gradient(135deg, rgba(101, 163, 13, 0.08) 0%, rgba(132, 204, 22, 0.08) 100%);
+        }
+        .abyss-glow {
+          background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(236, 72, 153, 0.08) 100%);
+        }
+        .chaosgun-glow {
+          background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(244, 63, 94, 0.08) 100%);
+        }
+        .lightning-glow {
+          background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(56, 189, 248, 0.08) 100%);
+        }
+        .sonic-glow {
+          background: linear-gradient(135deg, rgba(244, 63, 94, 0.08) 0%, rgba(251, 146, 60, 0.08) 100%);
+        }
+        .archive-glow {
+          background: linear-gradient(135deg, rgba(120, 113, 108, 0.08) 0%, rgba(14, 165, 233, 0.08) 100%);
+        }
+        .vintage-glow {
+          background: linear-gradient(135deg, rgba(180, 83, 9, 0.08) 0%, rgba(161, 98, 7, 0.08) 100%);
+        }
+        .art-glow {
+          background: linear-gradient(135deg, rgba(236, 72, 153, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        }
+        .pancake-glow {
+          background: linear-gradient(135deg, rgba(234, 88, 12, 0.08) 0%, rgba(254, 215, 170, 0.08) 100%);
+        }
+        .pharmacy-glow {
+          background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+        }
+        .horn-glow {
+          background: linear-gradient(135deg, rgba(232, 121, 249, 0.08) 0%, rgba(244, 114, 182, 0.08) 100%);
+        }
+        .book-glow {
+          background: linear-gradient(135deg, rgba(120, 53, 15, 0.08) 0%, rgba(217, 119, 6, 0.08) 100%);
+        }
+        .shadowdance-glow {
+          background: linear-gradient(135deg, rgba(49, 46, 129, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+        }
+        .tidal-glow {
+          background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%);
+        }
+        .rhythm-glow {
+          background: linear-gradient(135deg, rgba(217, 70, 239, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        }
+        .vanish-glow {
+          background: linear-gradient(135deg, rgba(148, 163, 184, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+        }
+        .wisdom-glow {
+          background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        }
+        .reverse-glow {
+          background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(239, 68, 68, 0.08) 100%);
+        }
+        .dragon-glow {
+          background: linear-gradient(135deg, rgba(22, 163, 74, 0.08) 0%, rgba(249, 115, 22, 0.08) 100%);
+        }
+        .blur-glow {
+          background: linear-gradient(135deg, rgba(192, 132, 252, 0.08) 0%, rgba(244, 114, 182, 0.08) 100%);
+        }
+        .elegance-glow {
+          background: linear-gradient(135deg, rgba(249, 168, 212, 0.08) 0%, rgba(196, 181, 253, 0.08) 100%);
+        }
+        .sky-glow {
+          background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
+        }
       `}</style>
     </>
   )
