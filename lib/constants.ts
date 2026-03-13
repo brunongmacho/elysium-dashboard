@@ -75,6 +75,7 @@ export interface SpecialUserConfig {
   theme: string;
   customGreeting?: string;
   subtitle?: string;
+  badge?: string;
   message?: string;
   quotes?: {
     homeAbout?: string;
@@ -94,6 +95,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'quantum',
     customGreeting: '∞ Finance War Chaos ∞',
     subtitle: 'The Hopeless Romantic Quantum Financier',
+    badge: 'Finance',
     message: 'Net Worth: BOTH ZERO AND INFINITE',
     quotes: {
       homeAbout: 'Net Worth: BOTH ZERO AND INFINITE | Vice Leader Status | Jalo Bot Dependency: 99%',
@@ -112,6 +114,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'starlight',
     customGreeting: '✨ Eternal Moments ✨',
     subtitle: 'The Time-Touched Princess of Eternal Moments',
+    badge: 'Princess',
     message: 'Some endings are more beautiful than beginnings',
     quotes: {
       homeAbout: 'Age: BEYOND MEASURE | Times Time Stopped During Confession: 1',
@@ -130,6 +133,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'chaos',
     customGreeting: '🖍️ Transcendent Fool 🖍️',
     subtitle: 'The Transcendent Fool Emperor',
+    badge: 'Fool',
     message: 'The stupider the plan, the more genius it becomes',
     quotes: {
       homeAbout: 'The stupider the plan, the more genius it becomes',
@@ -145,6 +149,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'unstable',
     customGreeting: '❓ Exponential Uncertainty ❓',
     subtitle: 'The Exponentially Unstable Mage',
+    badge: 'Mage',
     message: 'Has not cast the same spell twice successfully',
     quotes: {
       homeAbout: 'Has not cast the same spell twice successfully',
@@ -160,6 +165,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'portal',
     customGreeting: '🌀 Dimensional Disaster 🌀',
     subtitle: 'The Accidental Recruitment Director',
+    badge: 'Recruiter',
     message: 'Portals never go where intended — but the guild keeps growing',
     quotes: {
       homeAbout: 'Portal accuracy: 0% | Recruitment success: 1200%',
@@ -175,6 +181,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'grill',
     customGreeting: '🔥 Ethical BBQ Paradox 🔥',
     subtitle: 'The Ethical Grillmaster General',
+    badge: 'Grill',
     message: 'Vegan BBQ paradox: The more you grill, the more you convert',
     quotes: {
       homeAbout: 'Vegan BBQ: The more you grill, the more you convert',
@@ -190,6 +197,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'wrong',
     customGreeting: '🔮 Oracle of Incorrectness 🔮',
     subtitle: 'The Strategic Inversion Expert',
+    badge: 'Strategist',
     message: 'Strategic inversion rate: 100%',
     quotes: {
       homeAbout: 'Strategic inversion rate: 100%',
@@ -205,6 +213,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'chrono',
     customGreeting: '⏰ Temporal Warrior ⏰',
     subtitle: 'The Weaponized Temporal Displacement Expert',
+    badge: 'Time',
     message: 'Weaponized temporal displacement',
     quotes: {
       homeAbout: 'Time crimes: 892 (700 tactical)',
@@ -220,6 +229,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'nightlight',
     customGreeting: '🌟 Illuminated Assassin 🌟',
     subtitle: 'The Enlightened Nightlight Assassin',
+    badge: 'Assassin',
     message: 'Academic assassination with Hello Kitty',
     quotes: {
       homeAbout: 'Academic assassination with Hello Kitty',
@@ -235,6 +245,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'ocean',
     customGreeting: '⚓ Admiral of None ⚓',
     subtitle: 'The Self-Declared Maritime Authority',
+    badge: 'Maritime',
     message: 'Sea claims: Infinity | Naval Knowledge: 0%',
     quotes: {
       homeAbout: 'Sea claims: Infinity | Naval Knowledge: 0%',
@@ -251,6 +262,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'snack',
     customGreeting: '🍖 The Caloric Warlord 🍖',
     subtitle: 'The Caloric Warlord Supreme',
+    badge: 'Warlord',
     message: 'Hunger 12000 | Strategic Digestion Active',
     quotes: {
       homeAbout: 'Hunger: 12000 | Culinary Warfare: 850 | Treaty Compliance: 92',
@@ -266,6 +278,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'royal',
     customGreeting: '👑 Puddle Empire 👑',
     subtitle: 'The Royal Recovery Specialist',
+    badge: 'Recovery',
     message: 'Territories ruled: 14 | Subjects (Real): 1 Gnome',
     quotes: {
       homeAbout: 'Territories Ruled: 14 | Subjects (Real): 1 Gnome',
@@ -281,6 +294,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'blade',
     customGreeting: '⚔️ The Thorned Blade ⚔️',
     subtitle: 'The Rose Thorn Duelist',
+    badge: 'Duelist',
     message: 'Elegance meets lethality in perfect harmony',
     quotes: {
       homeAbout: 'Philosophy: 47 papers | Duel Precision: MAX',
@@ -296,6 +310,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'tiger',
     customGreeting: '🐯 Divine Squeak 🐯',
     subtitle: 'The Marketing Divine Tiger',
+    badge: 'Tiger',
     message: 'Divine cuteness MONOPOLIZED',
     quotes: {
       homeAbout: 'Licensing Deals: 47 | Merchandise Sales: INFINITY',
@@ -312,6 +327,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'boss',
     customGreeting: '💰 The Boss Basher 💰',
     subtitle: 'The Opportunistic Boss Killer',
+    badge: 'BossKiller',
     message: 'Bosses Killed 999+ | Hiding Time: INFINITY',
     quotes: {
       homeAbout: 'Bosses Killed: 999+ | Final Blows Stolen: 89',
@@ -327,6 +343,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'void',
     customGreeting: '🕳️ The Void Channeler 🕳️',
     subtitle: 'The Emotional Void Weaver',
+    badge: 'Weaver',
     message: 'Channeled Emotions: 47 | Black Holes Created: 3',
     quotes: {
       homeAbout: 'Channeled Emotions: 47 | Black Holes Created: 3',
@@ -342,6 +359,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'meme',
     customGreeting: '📱 Meme Legend 📱',
     subtitle: 'The Self-Aware Meme Legend',
+    badge: 'Meme',
     message: 'Followers: 3.2M | Sword has its own social media',
     quotes: {
       homeAbout: 'Followers: 3.2M | Academic Papers: 23',
@@ -357,6 +375,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'shadow',
     customGreeting: '🌑 Shadow Humor 🌑',
     subtitle: 'The Shadow Humor',
+    badge: 'Humor',
     message: 'Owl Impressions: 89 | Fear Actually Caused: 0',
     quotes: {
       homeAbout: 'Shadow Comedy Sets: 12 | Owl Impressions: 89',
@@ -373,6 +392,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'neon',
     customGreeting: '💚 Neon Glow 💚',
     subtitle: 'The Neon Glow Striker',
+    badge: 'Striker',
     message: 'Neon aesthetics: MAX | Visibility: 100%',
     quotes: {
       homeAbout: 'Neon Aesthetics: MAX | Visibility: 100%',
@@ -388,6 +408,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'chaoscoin',
     customGreeting: '💸 Financial Paradox 💸',
     subtitle: 'The Economic Singularity',
+    badge: 'Economy',
     message: 'Kingdoms Affected: 7 | Elysium Profit: +400%',
     quotes: {
       homeAbout: 'Kingdoms Affected: 7 | Paradox Radius: 50m',
@@ -403,6 +424,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'spoon',
     customGreeting: '🥄 The Spoon Seeker 🥄',
     subtitle: 'The Legendary Spoon Seeker',
+    badge: 'Spoon',
     message: 'Quest Duration: 4y 7m 23d | Spoon Status: MISSING',
     quotes: {
       homeAbout: 'Quest Duration: 4y 7m 23d | Improvised Kills: 9999',
@@ -418,6 +440,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'bureaucracy',
     customGreeting: '📋 Organized Chaos 📋',
     subtitle: 'The Apocalypse Administrator',
+    badge: 'Admin',
     message: 'Apocalypses Filed: 12 | Pending Dooms: 1',
     quotes: {
       homeAbout: 'Apocalypses Filed: 12 | Workshop Waitlist: 9 Months',
@@ -434,6 +457,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'stats',
     customGreeting: '📊 The Number Navigator 📊',
     subtitle: 'The Number Navigator',
+    badge: 'Stats',
     message: 'Spreadsheets: 47 | Understanding: 0%',
     quotes: {
       homeAbout: 'Spreadsheets: 47 | Color Codes: 12',
@@ -449,6 +473,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'olympus',
     customGreeting: '🏛️ Divine Lazy 🏛️',
     subtitle: 'The Divine Retirement Plan',
+    badge: 'Retire',
     message: 'Strength: GODLIKE | Heroism: 0',
     quotes: {
       homeAbout: 'Strength: GODLIKE | Heroism: 0',
@@ -464,6 +489,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'weather',
     customGreeting: '🌤️ Weather Criminal 🌤️',
     subtitle: 'The Weather Criminal Weatherboy',
+    badge: 'Weather',
     message: 'Kingdoms Affected: 47 | Productivity Drops: 89%',
     quotes: {
       homeAbout: 'Kingdoms Affected: 47 | Coudy Merch: INFINITY',
@@ -479,6 +505,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'speed',
     customGreeting: '⚡ Hyperactive Haste ⚡',
     subtitle: 'The Hyperactive Haste',
+    badge: 'Haste',
     message: 'Speed Multiplier: 4x | Comprehension: 0%',
     quotes: {
       homeAbout: 'Speed Multiplier: 4x | Quests Pre-Completed: 89',
@@ -495,6 +522,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'morale',
     customGreeting: '💪 Maximum Effort 💪',
     subtitle: 'The Maximum Effort',
+    badge: 'Effort',
     message: 'Enthusiasm: 1000% | Coordination: 0%',
     quotes: {
       homeAbout: 'Enthusiasm: 1000% | Coordination: 0%',
@@ -510,6 +538,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'recycle',
     customGreeting: '♻️ Dumpster King ♻️',
     subtitle: 'The Recycled Majesty',
+    badge: 'Majesty',
     message: 'Dumpster Legendaries: 47 | Recycled Victories: 89%',
     quotes: {
       homeAbout: 'Dumpster Legendaries: 47 | Dragon Eggs: 1',
@@ -525,6 +554,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'abyss',
     customGreeting: '😈 Laughing Abyss 😈',
     subtitle: 'The Laughing Abyss',
+    badge: 'Abyss',
     message: 'Combo Multiplier: 9999x | Therapists Defeated: 6',
     quotes: {
       homeAbout: 'Therapy Days: 4/week | Combo Multiplier: 9999x',
@@ -540,6 +570,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'chaosgun',
     customGreeting: '🎯 Calculated Chaos 🎯',
     subtitle: 'The Laser Precision',
+    badge: 'Precision',
     message: 'Intentional Misses: 89 | Calculated Chaos: 9000',
     quotes: {
       homeAbout: 'Intentional Misses: 89 | Ally Near-Misses: 47',
@@ -554,6 +585,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'lightning',
     customGreeting: '⚡ Lightning Lord ⚡',
     subtitle: 'The Lightning Lord',
+    badge: 'Lightning',
     message: 'Watts Generated: INFINITY | Property Damage: 8900 GOLD',
     quotes: {
       homeAbout: 'Watts Generated: INFINITY | Blackouts Caused: 47',
@@ -568,6 +600,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'sonic',
     customGreeting: '🔊 Decibel Tyrant 🔊',
     subtitle: 'The Decibel Tyrant',
+    badge: 'Sonic',
     message: 'Decibel Level: 189 | Victory Rate: 100%',
     quotes: {
       homeAbout: 'Decibel Level: 189 | Fortress Walls Destroyed: 3',
@@ -582,6 +615,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'archive',
     customGreeting: '📁 Archive Fortress 📁',
     subtitle: 'The Archival Martyr',
+    badge: 'Archive',
     message: 'Filing Cabinets: 47 | Arguments Won: 3',
     quotes: {
       homeAbout: 'Filing Cabinets: 47 | Backup Drives: 12',
@@ -597,6 +631,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'vintage',
     customGreeting: '📻 Vintage Virtuoso 📻',
     subtitle: 'The Vintage Virtuoso',
+    badge: 'Vintage',
     message: 'Years Active: 58 | Vintage Gear Value: INFINITY',
     quotes: {
       homeAbout: 'Years Active: 58 | Guilds Witnessed: 47',
@@ -611,6 +646,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'art',
     customGreeting: '🎨 Assassination Artist 🎨',
     subtitle: 'The Assassination Artist',
+    badge: 'Art',
     message: 'Gallery Exhibits: 3 | Note Value: 5000 GOLD',
     quotes: {
       homeAbout: 'Gallery Exhibits: 3 | Note Value: 5000 GOLD',
@@ -625,6 +661,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'pancake',
     customGreeting: '🥞 Pancake Commander 🥞',
     subtitle: 'The Pancake Commander',
+    badge: 'Pancake',
     message: 'Pancakes Flipped: 9999 | Battle Breakfasts: 47',
     quotes: {
       homeAbout: 'Pancakes Flipped: 9999 | Battle Breakfasts: 47',
@@ -639,6 +676,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'pharmacy',
     customGreeting: '💊 Pharmacy Phantom 💊',
     subtitle: 'The Pharmacy Phantom',
+    badge: 'Pharmacy',
     message: 'Potions Stocked: 500+ | Cures Invented: 47',
     quotes: {
       homeAbout: 'Potions Stocked: 500+ | Organized By Vibe',
@@ -654,6 +692,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'horn',
     customGreeting: '📯 Horn Hero 📯',
     subtitle: 'The Horn Hero',
+    badge: 'Horn',
     message: 'Confusion Deployments: 89 | Successful Summons: 3',
     quotes: {
       homeAbout: 'Confusion Deployments: 89 | Name Laughs: INFINITY',
@@ -668,6 +707,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'book',
     customGreeting: '📚 Literary Launcher 📚',
     subtitle: 'The Literary Launcher',
+    badge: 'Book',
     message: 'Books Thrown: 500+ | Genre Coverage: INFINITY',
     quotes: {
       homeAbout: 'Books Thrown: 500+ | Combat Effectiveness: 89%',
@@ -682,6 +722,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'shadowdance',
     customGreeting: '🌑 Shadow Dancer 🌑',
     subtitle: 'The Shadow Dancer',
+    badge: 'Shadow',
     message: 'Angles Conquered: INFINITY | Captured on Film: 0',
     quotes: {
       homeAbout: 'Angles Conquered: INFINITY | Enemy Testimonies: 89',
@@ -696,6 +737,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'tidal',
     customGreeting: '🌊 Tidal Terror 🌊',
     subtitle: 'The Tidal Terror',
+    badge: 'Terror',
     message: 'Floods Caused: 12 | Tears Stored: INFINITY',
     quotes: {
       homeAbout: 'Floods Caused: 12 | Fortress Damage: 9999',
@@ -711,6 +753,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'rhythm',
     customGreeting: '🎵 Rhythmic Rambler 🎵',
     subtitle: 'The Rhythmic Rambler',
+    badge: 'Rhythm',
     message: 'Beats Per Minute: 180 | Rave Raids Won: 47',
     quotes: {
       homeAbout: 'Beats Per Minute: 180 | Rave Raids Won: 47',
@@ -725,6 +768,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'vanish',
     customGreeting: '💨 Tactical Vanish 💨',
     subtitle: 'The Instant Escape Artist',
+    badge: 'Escape',
     message: 'Tactical Disappearances: 89 | Presence Issues: PERMANENT',
     quotes: {
       homeAbout: 'Tactical Disappearances: 89 | Default Victory: 100%',
@@ -739,6 +783,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'wisdom',
     customGreeting: '🏛️ Wisdom Warrior 🏛️',
     subtitle: 'The Strategic Wisdom',
+    badge: 'Wisdom',
     message: 'Strategy Sessions: 47 | Tactical Insight: MAX',
     quotes: {
       homeAbout: 'Strategy Sessions: 47 | Tactical Insight: MAX',
@@ -753,6 +798,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'reverse',
     customGreeting: '🔄 Yak Attack 🔄',
     subtitle: 'The Yak Attack',
+    badge: 'Reverse',
     message: 'Reverse Success: 89% | Confusion Kills: INFINITY',
     quotes: {
       homeAbout: 'Reverse Success: 89% | Backwards Arrows: 47',
@@ -768,6 +814,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'dragon',
     customGreeting: '🐉 Dragon Warrior 🐉',
     subtitle: 'The Dragon Warrior',
+    badge: 'Dragon',
     message: 'Dragon Flames: 89 | Scales Forged: 47',
     quotes: {
       homeAbout: 'Dragon Flames: 89 | Scales Forged: 47',
@@ -782,6 +829,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'blur',
     customGreeting: '💨 Lightning Speedster 💨',
     subtitle: 'The Lightning Speedster',
+    badge: 'Speedster',
     message: 'Speedrun Records: 47 | Server Complaints: INFINITY',
     quotes: {
       homeAbout: 'Speedrun Records: 47 | Server Complaints: INFINITY',
@@ -796,6 +844,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'elegance',
     customGreeting: '🌸 Elegant Enigma 🌸',
     subtitle: 'The Elegant Enigma',
+    badge: 'Enigma',
     message: 'Elegance Rating: 9999 | Combat Ballets: 12',
     quotes: {
       homeAbout: 'Elegance Rating: 9999 | Combat Ballets: 12',
@@ -811,6 +860,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'sky',
     customGreeting: '🌌 Sky Walker 🌌',
     subtitle: 'The Empty Sky Walker',
+    badge: 'Sky',
     message: 'Sky Mastery: INFINITY | Void Steps: 47',
     quotes: {
       homeAbout: 'Sky Mastery: INFINITY | Void Steps: 47',
