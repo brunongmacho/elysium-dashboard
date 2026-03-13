@@ -283,18 +283,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#6366f1',
   },
 
-  // Grill theme for Inihaw
+  // Grill theme for Inihaw - fiery red/orange BBQ
   grill: {
-    primary: '#84cc16',      // Lime Green
-    primaryDark: '#65a30d',
-    primaryLight: '#bef264',
-    accent: '#a3e635',        // Light Lime
-    accentDark: '#65a30d',
-    accentLight: '#d9f99d',
+    primary: '#dc2626',      // Red Fire
+    primaryDark: '#991b1b',
+    primaryLight: '#f87171',
+    accent: '#fbbf24',        // Fire Gold
+    accentDark: '#f59e0b',
+    accentLight: '#fcd34d',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#84cc16',
+    info: '#dc2626',
   },
 
   // Wrong theme for Jalo
@@ -353,18 +353,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#0ea5e9',
   },
 
-  // Snack theme for AmielJohn
+  // Snack theme for AmielJohn - rose/red hunger
   snack: {
-    primary: '#b45309',      // Brown/Amber
-    primaryDark: '#92400e',
-    primaryLight: '#d97706',
-    accent: '#f59e0b',        // Gold
-    accentDark: '#d97706',
-    accentLight: '#fbbf24',
+    primary: '#e11d48',      // Rose Red
+    primaryDark: '#be123c',
+    primaryLight: '#fb7185',
+    accent: '#f43f5e',        // Pink Red
+    accentDark: '#e11d48',
+    accentLight: '#fda4af',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#b45309',
+    info: '#e11d48',
   },
 
   // Royal theme for AndyVI
@@ -451,18 +451,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#06b6d4',
   },
 
-  // Shadow theme for DarKOwLZ
+  // Shadow theme for DarKOwLZ - dark gray/blue comedy
   shadow: {
-    primary: '#1e293b',      // Slate Dark
-    primaryDark: '#0f172a',
-    primaryLight: '#334155',
-    accent: '#6366f1',        // Indigo
-    accentDark: '#4f46e5',
-    accentLight: '#818cf8',
+    primary: '#334155',      // Slate Medium
+    primaryDark: '#1e293b',
+    primaryLight: '#475569',
+    accent: '#fbbf24',        // Gold for owl eyes
+    accentDark: '#f59e0b',
+    accentLight: '#fcd34d',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#1e293b',
+    info: '#334155',
   },
 
   // Neon theme for Deeyon
@@ -479,18 +479,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#22c55e',
   },
 
-  // Chaoscoin theme for Enaira
+  // Chaoscoin theme for Enaira - emerald/green financial
   chaoscoin: {
-    primary: '#f59e0b',      // Amber
-    primaryDark: '#d97706',
-    primaryLight: '#fbbf24',
-    accent: '#84cc16',        // Lime
-    accentDark: '#65a30d',
-    accentLight: '#bef264',
+    primary: '#059669',      // Emerald
+    primaryDark: '#047857',
+    primaryLight: '#34d399',
+    accent: '#10b981',        // Green
+    accentDark: '#059669',
+    accentLight: '#6ee7b7',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#f59e0b',
+    info: '#059669',
   },
 
   // Spoon theme for Evand3r
@@ -521,18 +521,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#475569',
   },
 
-  // Stats theme for Gnohaij03
+  // Stats theme for Gnohaij03 - cyan/tech based
   stats: {
-    primary: '#3b82f6',      // Blue
-    primaryDark: '#1d4ed8',
-    primaryLight: '#93c5fd',
-    accent: '#8b5cf6',        // Violet
-    accentDark: '#7c3aed',
-    accentLight: '#c4b5fd',
+    primary: '#0891b2',      // Cyan Dark
+    primaryDark: '#0e7490',
+    primaryLight: '#22d3ee',
+    accent: '#06b6d4',        // Cyan
+    accentDark: '#0891b2',
+    accentLight: '#67e8f9',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#3b82f6',
+    info: '#0891b2',
   },
 
   // Olympus theme for Hercules
@@ -563,32 +563,32 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#38bdf8',
   },
 
-  // Speed theme for Hytrz
+  // Speed theme for Hytrz - purple/violet fast theme
   speed: {
-    primary: '#facc15',      // Yellow
-    primaryDark: '#eab308',
-    primaryLight: '#fde047',
-    accent: '#ef4444',        // Red
-    accentDark: '#dc2626',
-    accentLight: '#fca5a5',
+    primary: '#8b5cf6',      // Violet
+    primaryDark: '#7c3aed',
+    primaryLight: '#a78bfa',
+    accent: '#d946ef',        // Fuchsia
+    accentDark: '#c026d3',
+    accentLight: '#e879f9',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#facc15',
+    info: '#8b5cf6',
   },
 
-  // Morale theme for JudeMaximus
+  // Morale theme for JudeMaximus - vibrant pink/rose energy
   morale: {
-    primary: '#f97316',      // Orange
-    primaryDark: '#ea580c',
-    primaryLight: '#fb923c',
+    primary: '#f472b6',      // Pink
+    primaryDark: '#ec4899',
+    primaryLight: '#f9a8d4',
     accent: '#fbbf24',        // Gold
     accentDark: '#f59e0b',
     accentLight: '#fcd34d',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#f97316',
+    info: '#f472b6',
   },
 
   // Recycle theme for KingPagpag
@@ -619,18 +619,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#7c3aed',
   },
 
-  // Chaosgun theme for lanZ6
+  // Chaosgun theme for lanZ6 - violet/purple precision
   chaosgun: {
-    primary: '#ef4444',      // Red
-    primaryDark: '#dc2626',
-    primaryLight: '#fca5a5',
-    accent: '#f97316',        // Orange
-    accentDark: '#ea580c',
-    accentLight: '#fdba74',
+    primary: '#7c3aed',      // Purple
+    primaryDark: '#6d28d9',
+    primaryLight: '#a78bfa',
+    accent: '#f43f5e',        // Rose
+    accentDark: '#e11d48',
+    accentLight: '#fb7185',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#ef4444',
+    info: '#7c3aed',
   },
 
   // Lightning theme for LaxusLawliet
@@ -703,18 +703,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#ec4899',
   },
 
-  // Pancake theme for PanCoco
+  // Pancake theme for PanCoco - warm orange/brown breakfast
   pancake: {
-    primary: '#d97706',      // Amber
-    primaryDark: '#b45309',
-    primaryLight: '#fbbf24',
-    accent: '#f97316',        // Orange
-    accentDark: '#ea580c',
-    accentLight: '#fdba74',
+    primary: '#ea580c',      // Burnt Orange
+    primaryDark: '#c2410c',
+    primaryLight: '#fb923c',
+    accent: '#fed7aa',        // Peach
+    accentDark: '#fb923c',
+    accentLight: '#ffedd5',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#d97706',
+    info: '#ea580c',
   },
 
   // Pharmacy theme for Pedsrow
@@ -731,18 +731,18 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#06b6d4',
   },
 
-  // Horn theme for PHorns
+  // Horn theme for PHorns - rose/magenta confusion
   horn: {
-    primary: '#eab308',      // Yellow
-    primaryDark: '#ca8a04',
-    primaryLight: '#fde047',
-    accent: '#f97316',        // Orange
-    accentDark: '#ea580c',
-    accentLight: '#fdba74',
+    primary: '#e879f9',      // Magenta
+    primaryDark: '#c026d3',
+    primaryLight: '#f0abfc',
+    accent: '#f472b6',        // Pink
+    accentDark: '#ec4899',
+    accentLight: '#f9a8d4',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#eab308',
+    info: '#e879f9',
   },
 
   // Book theme for Rileyread
@@ -759,32 +759,32 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#78350f',
   },
 
-  // Shadowdance theme for Skadushy
+  // Shadowdance theme for Skadushy - deep violet/navy
   shadowdance: {
-    primary: '#1e293b',      // Slate Dark
-    primaryDark: '#0f172a',
-    primaryLight: '#334155',
-    accent: '#a855f7',        // Purple
-    accentDark: '#9333ea',
-    accentLight: '#c4b5fd',
+    primary: '#312e81',      // Indigo Dark
+    primaryDark: '#1e1b4b',
+    primaryLight: '#4338ca',
+    accent: '#6366f1',        // Indigo
+    accentDark: '#4f46e5',
+    accentLight: '#818cf8',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#1e293b',
+    info: '#312e81',
   },
 
-  // Tidal theme for Tinitira
+  // Tidal theme for Tinitira - teal/ocean based
   tidal: {
-    primary: '#0ea5e9',      // Sky Blue
-    primaryDark: '#0284c7',
-    primaryLight: '#7dd3fc',
-    accent: '#06b6d4',        // Cyan
-    accentDark: '#0891b2',
-    accentLight: '#67e8f9',
+    primary: '#0d9488',      // Teal
+    primaryDark: '#0f766e',
+    primaryLight: '#2dd4bf',
+    accent: '#14b8a6',        // Light Teal
+    accentDark: '#0d9488',
+    accentLight: '#5eead4',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#0ea5e9',
+    info: '#0d9488',
   },
 
   // Rhythm theme for UmpaUmpa
@@ -843,32 +843,32 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#22c55e',
   },
 
-  // Dragon theme for zog
+  // Dragon theme for zog - emerald/fiery green
   dragon: {
-    primary: '#dc2626',      // Red
-    primaryDark: '#991b1b',
-    primaryLight: '#fca5a5',
-    accent: '#f97316',        // Orange
+    primary: '#16a34a',      // Green Dragon
+    primaryDark: '#15803d',
+    primaryLight: '#4ade80',
+    accent: '#f97316',        // Orange Fire
     accentDark: '#ea580c',
     accentLight: '#fdba74',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#dc2626',
+    info: '#16a34a',
   },
 
-  // Blur theme for Ztig
+  // Blur theme for Ztig - violet/pink speed theme
   blur: {
-    primary: '#fbbf24',      // Yellow
-    primaryDark: '#f59e0b',
-    primaryLight: '#fcd34d',
-    accent: '#facc15',        // Lime Yellow
-    accentDark: '#eab308',
-    accentLight: '#fde047',
+    primary: '#c084fc',      // Purple Light
+    primaryDark: '#a855f7',
+    primaryLight: '#d8b4fe',
+    accent: '#f472b6',        // Pink
+    accentDark: '#ec4899',
+    accentLight: '#f9a8d4',
     success: '#22c55e',
     warning: '#f59e0b',
     danger: '#ef4444',
-    info: '#fbbf24',
+    info: '#c084fc',
   },
 
   // Elegance theme for 路易丝

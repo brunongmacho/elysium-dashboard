@@ -179,7 +179,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
   '328428790931783680': {
     name: 'Inihaw',
     theme: 'grill',
-    customGreeting: '🔥 Ethical BBQ Paradox 🔥',
+    customGreeting: '🔥 Inferno Chef 🔥',
     subtitle: 'The Ethical Grillmaster General',
     badge: 'Grill',
     message: 'Vegan BBQ paradox: The more you grill, the more you convert',
