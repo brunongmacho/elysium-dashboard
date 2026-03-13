@@ -3,10 +3,18 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSpecialUser } from '@/hooks/useSpecialUser';
 import { Icon } from '@/components/icons';
+
+const DEFAULT_THEMES = [
+  'crimson', 'wine', 'magenta', 'peach', 'sunset', 'golden', 
+  'lime', 'olive', 'emerald', 'forest', 'mint', 'default', 
+  'navy', 'arctic', 'cyber', 'purple'
+];
 
 export default function ThemeSelector() {
   const { currentTheme, setTheme, themes } = useTheme();
+  const { isSpecialUser } = useSpecialUser();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; right: number; isMobile: boolean } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -115,7 +123,9 @@ export default function ThemeSelector() {
             </div>
 
             <div className="p-2 max-h-[60vh] sm:max-h-96 overflow-y-auto">
-              {Object.values(themes).map((theme) => (
+              {Object.values(themes)
+                .filter((theme) => DEFAULT_THEMES.includes(theme.name))
+                .map((theme) => (
                 <button
                   key={theme.name}
                   onClick={() => {
