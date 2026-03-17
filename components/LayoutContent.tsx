@@ -99,7 +99,16 @@ export function LayoutContent({ children }: LayoutContentProps) {
       {/* Starlight animated background */}
       {isStarlightTheme && (
         <div className="fixed inset-0 pointer-events-none z-[-2] overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900/30 via-gray-900 to-black"></div>
+          {/* Frieren background image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ 
+              backgroundImage: 'url(/background/frieren.jpg)',
+              opacity: 0.4,
+            }}
+          />
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-gray-900/70 to-black/80"></div>
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-purple-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '40s' }}></div>

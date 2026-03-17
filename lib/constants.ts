@@ -114,7 +114,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     theme: 'starlight',
     customGreeting: '✨ Eternal Moments ✨',
     subtitle: 'The Time-Touched Princess of Eternal Moments',
-    badge: 'Princess',
+    badge: 'Lilith',
     message: 'Some endings are more beautiful than beginnings',
     quotes: {
       homeAbout: 'Age: BEYOND MEASURE | Times Time Stopped During Confession: 1',
