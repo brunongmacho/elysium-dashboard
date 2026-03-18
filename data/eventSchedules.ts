@@ -37,7 +37,7 @@ export const GAME_EVENTS: EventSchedule[] = [
     name: 'Guild Boss',
     icon: '👹',
     days: [1], // Monday only
-    startTime: { hour: 21, minute: 0 },
+    startTime: { hour: 21, minute: 30 },
     durationMinutes: 5,
     color: '#e74c3c',
     reminderOffsetMinutes: 20,
@@ -77,4 +77,29 @@ export const DAILY_EVENTS: EventSchedule[] = [
   },
 ];
 
-export const ALL_EVENTS: EventSchedule[] = [...GAME_EVENTS, ...DAILY_EVENTS];
+// Ancient Citadel - Different boss each day, 2 times per day
+export const ANCIENT_CITADEL_EVENTS: EventSchedule[] = [
+  // Monday
+  { id: 'ancient-citadel-mon-morning', name: 'Ancient Citadel - Duplican', icon: '🏰', days: [1], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-mon-evening', name: 'Ancient Citadel - Wannitas', icon: '🏰', days: [1], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Tuesday
+  { id: 'ancient-citadel-tue-morning', name: 'Ancient Citadel - Metus', icon: '🏰', days: [2], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-tue-evening', name: 'Ancient Citadel - Saphirus', icon: '🏰', days: [2], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Wednesday
+  { id: 'ancient-citadel-wed-morning', name: 'Ancient Citadel - Clemantis', icon: '🏰', days: [3], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-wed-evening', name: 'Ancient Citadel - Secreta', icon: '🏰', days: [3], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Thursday
+  { id: 'ancient-citadel-thu-morning', name: 'Ancient Citadel - Neutro', icon: '🏰', days: [4], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-thu-evening', name: 'Ancient Citadel - Roderick', icon: '🏰', days: [4], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Friday
+  { id: 'ancient-citadel-fri-morning', name: 'Ancient Citadel - Auraq', icon: '🏰', days: [5], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-fri-evening', name: 'Ancient Citadel - Thymele', icon: '🏰', days: [5], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Saturday
+  { id: 'ancient-citadel-sat-morning', name: 'Ancient Citadel - Titore', icon: '🏰', days: [6], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-sat-evening', name: 'Ancient Citadel - Ringor', icon: '🏰', days: [6], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  // Sunday
+  { id: 'ancient-citadel-sun-morning', name: 'Ancient Citadel - Chaiflock', icon: '🏰', days: [0], startTime: { hour: 12, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+  { id: 'ancient-citadel-sun-evening', name: 'Ancient Citadel - Benji', icon: '🏰', days: [0], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
+];
+
+export const ALL_EVENTS: EventSchedule[] = [...GAME_EVENTS, ...DAILY_EVENTS, ...ANCIENT_CITADEL_EVENTS];
