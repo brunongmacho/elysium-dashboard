@@ -376,6 +376,8 @@ export default function GuildHomePage() {
   const isBlur = isSpecialUser && specialConfig?.theme === 'blur';
   const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
   const isSky = isSpecialUser && specialConfig?.theme === 'sky';
+  const isCat = isSpecialUser && specialConfig?.theme === 'cat';
+  const isCasino = isSpecialUser && specialConfig?.theme === 'casino';
 
   // Fetch member lore and guild stats from API
   const { data: memberLore } = useSWR<Record<string, MemberLoreData>>(
@@ -518,10 +520,35 @@ export default function GuildHomePage() {
       <section className="relative py-6 sm:py-10 md:py-12 overflow-hidden">
         {/* Background Glow Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {isSpecialUser && specialConfig?.theme === 'heart' ? (
+          {isSpecialUser && specialConfig?.theme === 'starlight' ? (
             <>
-              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-pink-500/30 rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-rose-500/30 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-indigo-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-purple-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '25s' }}></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'chaos' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-orange-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-yellow-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-orange-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '15s' }}></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'unstable' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-teal-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-teal-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '8s' }}></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'portal' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-indigo-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-violet-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-indigo-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '30s' }}></div>
+            </>
+          ) : isSpecialUser && specialConfig?.theme === 'grill' ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-red-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-orange-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-red-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '10s' }}></div>
             </>
           ) : isSpecialUser && specialConfig?.theme === 'quantum' ? (
             <>
@@ -529,11 +556,23 @@ export default function GuildHomePage() {
               <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-cyan-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }}></div>
             </>
-          ) : isSpecialUser && specialConfig?.theme === 'starlight' ? (
+          ) : isCasino ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-red-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-yellow-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-yellow-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '15s' }}></div>
+            </>
+          ) : isCat ? (
             <>
               <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/25 rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-indigo-500/25 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-pink-500/25 rounded-full blur-3xl animate-pulse"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-purple-500/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '25s' }}></div>
+            </>
+          ) : isSpecialUser ? (
+            <>
+              <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-accent/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] bg-gradient-radial from-primary/10 to-transparent rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }}></div>
             </>
           ) : (
             <>
@@ -551,10 +590,58 @@ export default function GuildHomePage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className={`text-2xl sm:text-3xl md:text-4xl animate-pulse ${
-                  specialConfig.theme === 'unstable' ? 'text-teal-400' :
+                  specialConfig.theme === 'starlight' ? 'text-purple-400' :
                   specialConfig.theme === 'quantum' ? 'text-cyan-400' : 
-                  specialConfig.theme === 'heart' ? 'text-pink-400' : 
-                  specialConfig.theme === 'starlight' ? 'text-purple-400' : 'text-gold'
+                  specialConfig.theme === 'chaos' ? 'text-orange-400' :
+                  specialConfig.theme === 'unstable' ? 'text-teal-400' :
+                  specialConfig.theme === 'portal' ? 'text-indigo-400' :
+                  specialConfig.theme === 'grill' ? 'text-red-400' :
+                  specialConfig.theme === 'wrong' ? 'text-yellow-400' :
+                  specialConfig.theme === 'chrono' ? 'text-blue-400' :
+                  specialConfig.theme === 'nightlight' ? 'text-pink-400' :
+                  specialConfig.theme === 'ocean' ? 'text-sky-400' :
+                  specialConfig.theme === 'snack' ? 'text-rose-400' :
+                  specialConfig.theme === 'royal' ? 'text-violet-400' :
+                  specialConfig.theme === 'blade' ? 'text-rose-400' :
+                  specialConfig.theme === 'tiger' ? 'text-orange-400' :
+                  specialConfig.theme === 'boss' ? 'text-red-400' :
+                  specialConfig.theme === 'void' ? 'text-purple-400' :
+                  specialConfig.theme === 'meme' ? 'text-cyan-400' :
+                  specialConfig.theme === 'shadow' ? 'text-slate-400' :
+                  specialConfig.theme === 'neon' ? 'text-green-400' :
+                  specialConfig.theme === 'chaoscoin' ? 'text-emerald-400' :
+                  specialConfig.theme === 'spoon' ? 'text-slate-400' :
+                  specialConfig.theme === 'bureaucracy' ? 'text-slate-400' :
+                  specialConfig.theme === 'stats' ? 'text-cyan-400' :
+                  specialConfig.theme === 'olympus' ? 'text-yellow-400' :
+                  specialConfig.theme === 'weather' ? 'text-sky-400' :
+                  specialConfig.theme === 'speed' ? 'text-purple-400' :
+                  specialConfig.theme === 'morale' ? 'text-pink-400' :
+                  specialConfig.theme === 'recycle' ? 'text-lime-400' :
+                  specialConfig.theme === 'abyss' ? 'text-purple-400' :
+                  specialConfig.theme === 'chaosgun' ? 'text-violet-400' :
+                  specialConfig.theme === 'lightning' ? 'text-yellow-400' :
+                  specialConfig.theme === 'sonic' ? 'text-rose-400' :
+                  specialConfig.theme === 'archive' ? 'text-stone-400' :
+                  specialConfig.theme === 'vintage' ? 'text-amber-400' :
+                  specialConfig.theme === 'art' ? 'text-pink-400' :
+                  specialConfig.theme === 'pancake' ? 'text-orange-400' :
+                  specialConfig.theme === 'pharmacy' ? 'text-cyan-400' :
+                  specialConfig.theme === 'horn' ? 'text-fuchsia-400' :
+                  specialConfig.theme === 'book' ? 'text-amber-400' :
+                  specialConfig.theme === 'shadowdance' ? 'text-blue-400' :
+                  specialConfig.theme === 'tidal' ? 'text-teal-400' :
+                  specialConfig.theme === 'rhythm' ? 'text-fuchsia-400' :
+                  specialConfig.theme === 'vanish' ? 'text-slate-400' :
+                  specialConfig.theme === 'wisdom' ? 'text-indigo-400' :
+                  specialConfig.theme === 'reverse' ? 'text-green-400' :
+                  specialConfig.theme === 'dragon' ? 'text-green-400' :
+                  specialConfig.theme === 'blur' ? 'text-purple-400' :
+                  specialConfig.theme === 'elegance' ? 'text-pink-400' :
+                  specialConfig.theme === 'sky' ? 'text-sky-400' :
+                  specialConfig.theme === 'cat' ? 'text-purple-400' :
+                  specialConfig.theme === 'casino' ? 'text-red-400' :
+                  'text-gold'
                 }`}
               >
                 {specialConfig.customGreeting}
@@ -562,26 +649,167 @@ export default function GuildHomePage() {
             )}
             {/* Guild Name */}
             <Typography variant="display" className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl ${
-              isSpecialUser && specialConfig?.theme === 'heart' ? 'text-pink-400' :
-              isSpecialUser && specialConfig?.theme === 'unstable' ? 'text-teal-300' :
-              isSpecialUser && specialConfig?.theme === 'quantum' ? 'text-cyan-300' :
-              isSpecialUser && specialConfig?.theme === 'starlight' ? 'text-purple-300' :
-              isSpecialUser && specialConfig?.theme === 'chaos' ? 'text-orange-400' :
+              isStarlight ? 'text-purple-300' :
+              isQuantum ? 'text-cyan-300' :
+              isChaos ? 'text-orange-300' :
+              isUnstable ? 'text-teal-300' :
+              isPortal ? 'text-indigo-300' :
+              isGrill ? 'text-red-300' :
+              isWrong ? 'text-yellow-300' :
+              isChrono ? 'text-blue-300' :
+              isNightlight ? 'text-pink-300' :
+              isOcean ? 'text-sky-300' :
+              isSnack ? 'text-rose-300' :
+              isRoyal ? 'text-violet-300' :
+              isBlade ? 'text-rose-300' :
+              isTiger ? 'text-orange-300' :
+              isBoss ? 'text-red-300' :
+              isVoid ? 'text-purple-300' :
+              isMeme ? 'text-cyan-300' :
+              isShadow ? 'text-slate-300' :
+              isNeon ? 'text-green-300' :
+              isChaoscoin ? 'text-emerald-300' :
+              isSpoon ? 'text-slate-300' :
+              isBureaucracy ? 'text-slate-300' :
+              isStats ? 'text-cyan-300' :
+              isOlympus ? 'text-yellow-300' :
+              isWeather ? 'text-sky-300' :
+              isSpeed ? 'text-purple-300' :
+              isMorale ? 'text-pink-300' :
+              isRecycle ? 'text-lime-300' :
+              isAbyss ? 'text-purple-300' :
+              isChaosgun ? 'text-violet-300' :
+              isLightning ? 'text-yellow-300' :
+              isSonic ? 'text-rose-300' :
+              isArchive ? 'text-stone-300' :
+              isVintage ? 'text-amber-300' :
+              isArt ? 'text-pink-300' :
+              isPancake ? 'text-orange-300' :
+              isPharmacy ? 'text-cyan-300' :
+              isHorn ? 'text-fuchsia-300' :
+              isBook ? 'text-amber-300' :
+              isShadowdance ? 'text-blue-300' :
+              isTidal ? 'text-teal-300' :
+              isRhythm ? 'text-fuchsia-300' :
+              isVanish ? 'text-slate-300' :
+              isWisdom ? 'text-indigo-300' :
+              isReverse ? 'text-green-300' :
+              isDragon ? 'text-green-300' :
+              isBlur ? 'text-purple-300' :
+              isElegance ? 'text-pink-300' :
+              isSky ? 'text-sky-300' :
+              isCat ? 'text-purple-300' :
+              isCasino ? 'text-red-300' :
               'text-gold'
             }`}>
-              {isSpecialUser && specialConfig?.theme === 'heart' ? '❤️ ELYSIUM ❤️' : 
-               isSpecialUser && specialConfig?.theme === 'unstable' ? '❓ ELYSIUM ❓' :
-               isSpecialUser && specialConfig?.theme === 'quantum' ? '∞ ELYSIUM ∞' :
-               isSpecialUser && specialConfig?.theme === 'starlight' ? '💜 ELYSIUM 💜' :
-               isSpecialUser && specialConfig?.theme === 'chaos' ? '🖍️ ELYSIUM 🖍️' :
+              {isStarlight ? '💜 ELYSIUM 💜' : 
+               isQuantum ? '∞ ELYSIUM ∞' :
+               isChaos ? '🖍️ ELYSIUM 🖍️' :
+               isUnstable ? '❓ ELYSIUM ❓' :
+               isPortal ? '🌀 ELYSIUM 🌀' :
+               isGrill ? '🔥 ELYSIUM 🔥' :
+               isWrong ? '❌ ELYSIUM ❌' :
+               isChrono ? '⏰ ELYSIUM ⏰' :
+               isNightlight ? '🌙 ELYSIUM 🌙' :
+               isOcean ? '🌊 ELYSIUM 🌊' :
+               isSnack ? '🍖 ELYSIUM 🍖' :
+               isRoyal ? '👑 ELYSIUM 👑' :
+               isBlade ? '⚔️ ELYSIUM ⚔️' :
+               isTiger ? '🐯 ELYSIUM 🐯' :
+               isBoss ? '👹 ELYSIUM 👹' :
+               isVoid ? '🕳️ ELYSIUM 🕳️' :
+               isMeme ? '📱 ELYSIUM 📱' :
+               isShadow ? '🌑 ELYSIUM 🌑' :
+               isNeon ? '💚 ELYSIUM 💚' :
+               isChaoscoin ? '💰 ELYSIUM 💰' :
+               isSpoon ? '🥄 ELYSIUM 🥄' :
+               isBureaucracy ? '📋 ELYSIUM 📋' :
+               isStats ? '📊 ELYSIUM 📊' :
+               isOlympus ? '🏛️ ELYSIUM 🏛️' :
+               isWeather ? '🌤️ ELYSIUM 🌤️' :
+               isSpeed ? '⚡ ELYSIUM ⚡' :
+               isMorale ? '💪 ELYSIUM 💪' :
+               isRecycle ? '♻️ ELYSIUM ♻️' :
+               isAbyss ? '😈 ELYSIUM 😈' :
+               isChaosgun ? '🔫 ELYSIUM 🔫' :
+               isLightning ? '⚡ ELYSIUM ⚡' :
+               isSonic ? '🔊 ELYSIUM 🔊' :
+               isArchive ? '📁 ELYSIUM 📁' :
+               isVintage ? '📻 ELYSIUM 📻' :
+               isArt ? '🎨 ELYSIUM 🎨' :
+               isPancake ? '🥞 ELYSIUM 🥞' :
+               isPharmacy ? '💊 ELYSIUM 💊' :
+               isHorn ? '📯 ELYSIUM 📯' :
+               isBook ? '📚 ELYSIUM 📚' :
+               isShadowdance ? '🌑 ELYSIUM 🌑' :
+               isTidal ? '🌊 ELYSIUM 🌊' :
+               isRhythm ? '🎵 ELYSIUM 🎵' :
+               isVanish ? '💨 ELYSIUM 💨' :
+               isWisdom ? '🏛️ ELYSIUM 🏛️' :
+               isReverse ? '🔄 ELYSIUM 🔄' :
+               isDragon ? '🐉 ELYSIUM 🐉' :
+               isBlur ? '💨 ELYSIUM 💨' :
+               isElegance ? '🌸 ELYSIUM 🌸' :
+               isSky ? '🌌 ELYSIUM 🌌' :
+               isCat ? '🐱 ELYSIUM 🐱' :
+               isCasino ? '🎰 ELYSIUM 🎰' :
                '⚔️ ELYSIUM'}
             </Typography>
             {/* Special user subtitle */}
             {isSpecialUser && specialConfig?.subtitle ? (
               <Typography variant="h2" className={`text-lg sm:text-xl md:text-2xl ${
+                specialConfig.theme === 'starlight' ? 'text-indigo-200' :
+                specialConfig.theme === 'quantum' ? 'text-cyan-300' :
                 specialConfig.theme === 'chaos' ? 'text-yellow-300' :
-                specialConfig.theme === 'unstable' ? 'text-cyan-300' :
-                specialConfig.theme === 'starlight' ? 'text-indigo-200' : 'text-purple-300'
+                specialConfig.theme === 'unstable' ? 'text-teal-300' :
+                specialConfig.theme === 'portal' ? 'text-indigo-300' :
+                specialConfig.theme === 'grill' ? 'text-red-300' :
+                specialConfig.theme === 'wrong' ? 'text-yellow-300' :
+                specialConfig.theme === 'chrono' ? 'text-blue-300' :
+                specialConfig.theme === 'nightlight' ? 'text-pink-300' :
+                specialConfig.theme === 'ocean' ? 'text-sky-300' :
+                specialConfig.theme === 'snack' ? 'text-rose-300' :
+                specialConfig.theme === 'royal' ? 'text-violet-300' :
+                specialConfig.theme === 'blade' ? 'text-rose-300' :
+                specialConfig.theme === 'tiger' ? 'text-orange-300' :
+                specialConfig.theme === 'boss' ? 'text-red-300' :
+                specialConfig.theme === 'void' ? 'text-purple-300' :
+                specialConfig.theme === 'meme' ? 'text-cyan-300' :
+                specialConfig.theme === 'shadow' ? 'text-slate-300' :
+                specialConfig.theme === 'neon' ? 'text-green-300' :
+                specialConfig.theme === 'chaoscoin' ? 'text-emerald-300' :
+                specialConfig.theme === 'spoon' ? 'text-slate-300' :
+                specialConfig.theme === 'bureaucracy' ? 'text-slate-300' :
+                specialConfig.theme === 'stats' ? 'text-cyan-300' :
+                specialConfig.theme === 'olympus' ? 'text-yellow-300' :
+                specialConfig.theme === 'weather' ? 'text-sky-300' :
+                specialConfig.theme === 'speed' ? 'text-purple-300' :
+                specialConfig.theme === 'morale' ? 'text-pink-300' :
+                specialConfig.theme === 'recycle' ? 'text-lime-300' :
+                specialConfig.theme === 'abyss' ? 'text-purple-300' :
+                specialConfig.theme === 'chaosgun' ? 'text-violet-300' :
+                specialConfig.theme === 'lightning' ? 'text-yellow-300' :
+                specialConfig.theme === 'sonic' ? 'text-rose-300' :
+                specialConfig.theme === 'archive' ? 'text-stone-300' :
+                specialConfig.theme === 'vintage' ? 'text-amber-300' :
+                specialConfig.theme === 'art' ? 'text-pink-300' :
+                specialConfig.theme === 'pancake' ? 'text-orange-300' :
+                specialConfig.theme === 'pharmacy' ? 'text-cyan-300' :
+                specialConfig.theme === 'horn' ? 'text-fuchsia-300' :
+                specialConfig.theme === 'book' ? 'text-amber-300' :
+                specialConfig.theme === 'shadowdance' ? 'text-blue-300' :
+                specialConfig.theme === 'tidal' ? 'text-teal-300' :
+                specialConfig.theme === 'rhythm' ? 'text-fuchsia-300' :
+                specialConfig.theme === 'vanish' ? 'text-slate-300' :
+                specialConfig.theme === 'wisdom' ? 'text-indigo-300' :
+                specialConfig.theme === 'reverse' ? 'text-green-300' :
+                specialConfig.theme === 'dragon' ? 'text-green-300' :
+                specialConfig.theme === 'blur' ? 'text-purple-300' :
+                specialConfig.theme === 'elegance' ? 'text-pink-300' :
+                specialConfig.theme === 'sky' ? 'text-sky-300' :
+                specialConfig.theme === 'cat' ? 'text-purple-300' :
+                specialConfig.theme === 'casino' ? 'text-red-300' :
+                'text-purple-300'
               }`}>
                 {specialConfig.subtitle}
               </Typography>
@@ -983,7 +1211,57 @@ export default function GuildHomePage() {
               {/* QUOTE OPTION 1: About Section Quote - only for logged-in special user */}
               {isSpecialUser && specialConfig?.quotes?.homeAbout && (
                 <Typography variant="small" className={`italic mt-4 text-xs sm:text-sm px-2 ${
-                  isChaos ? 'text-yellow-400/70' : isWrong ? 'text-yellow-400/70' : isChrono ? 'text-blue-400/70' : isNightlight ? 'text-pink-400/70' : isOcean ? 'text-sky-400/70' : isGrill ? 'text-lime-400/70' : isPortal ? 'text-indigo-400/70' : isUnstable ? 'text-teal-400/70' : isStarlight ? 'text-purple-300/70' : isQuantum ? 'text-cyan-400/70' : 'text-cyan-400/70'
+                  isStarlight ? 'text-purple-300/70' :
+                  isChaos ? 'text-orange-400/70' :
+                  isUnstable ? 'text-teal-400/70' :
+                  isPortal ? 'text-indigo-400/70' :
+                  isGrill ? 'text-red-400/70' :
+                  isWrong ? 'text-yellow-400/70' :
+                  isChrono ? 'text-blue-400/70' :
+                  isNightlight ? 'text-pink-400/70' :
+                  isOcean ? 'text-sky-400/70' :
+                  isSnack ? 'text-rose-400/70' :
+                  isRoyal ? 'text-violet-400/70' :
+                  isBlade ? 'text-rose-400/70' :
+                  isTiger ? 'text-orange-400/70' :
+                  isBoss ? 'text-red-400/70' :
+                  isVoid ? 'text-purple-400/70' :
+                  isMeme ? 'text-cyan-400/70' :
+                  isShadow ? 'text-slate-400/70' :
+                  isNeon ? 'text-green-400/70' :
+                  isChaoscoin ? 'text-emerald-400/70' :
+                  isSpoon ? 'text-slate-400/70' :
+                  isBureaucracy ? 'text-slate-400/70' :
+                  isStats ? 'text-cyan-400/70' :
+                  isOlympus ? 'text-yellow-400/70' :
+                  isWeather ? 'text-sky-400/70' :
+                  isSpeed ? 'text-purple-400/70' :
+                  isMorale ? 'text-pink-400/70' :
+                  isRecycle ? 'text-lime-400/70' :
+                  isAbyss ? 'text-purple-400/70' :
+                  isChaosgun ? 'text-violet-400/70' :
+                  isLightning ? 'text-yellow-400/70' :
+                  isSonic ? 'text-rose-400/70' :
+                  isArchive ? 'text-stone-400/70' :
+                  isVintage ? 'text-amber-400/70' :
+                  isArt ? 'text-pink-400/70' :
+                  isPancake ? 'text-orange-400/70' :
+                  isPharmacy ? 'text-cyan-400/70' :
+                  isHorn ? 'text-fuchsia-400/70' :
+                  isBook ? 'text-amber-400/70' :
+                  isShadowdance ? 'text-blue-400/70' :
+                  isTidal ? 'text-teal-400/70' :
+                  isRhythm ? 'text-fuchsia-400/70' :
+                  isVanish ? 'text-slate-400/70' :
+                  isWisdom ? 'text-indigo-400/70' :
+                  isReverse ? 'text-green-400/70' :
+                  isDragon ? 'text-green-400/70' :
+                  isBlur ? 'text-purple-400/70' :
+                  isElegance ? 'text-pink-400/70' :
+                  isSky ? 'text-sky-400/70' :
+                  isCat ? 'text-purple-400/70' :
+                  isCasino ? 'text-red-400/70' :
+                  isQuantum ? 'text-cyan-400/70' : 'text-cyan-400/70'
                 }`}>
                   &quot;{specialConfig.quotes.homeAbout}&quot;
                 </Typography>

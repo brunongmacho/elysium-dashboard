@@ -885,6 +885,34 @@ export const THEME_COLORS: Record<string, ThemeColors> = {
     info: '#f9a8d4',
   },
 
+  // Cat theme for nyawtz - purple/lavender feline
+  cat: {
+    primary: '#a855f7',      // Purple
+    primaryDark: '#7c3aed',
+    primaryLight: '#c4b5fd',
+    accent: '#f472b6',        // Pink
+    accentDark: '#db2777',
+    accentLight: '#f9a8d4',
+    success: '#22c55e',
+    warning: '#f59e0b',
+    danger: '#ef4444',
+    info: '#a855f7',
+  },
+
+  // Casino theme for YumekoJabami - gold/red gambling
+  casino: {
+    primary: '#dc2626',      // Red
+    primaryDark: '#991b1b',
+    primaryLight: '#fca5a5',
+    accent: '#fbbf24',        // Gold
+    accentDark: '#f59e0b',
+    accentLight: '#fcd34d',
+    success: '#22c55e',
+    warning: '#f59e0b',
+    danger: '#dc2626',
+    info: '#dc2626',
+  },
+
   // Sky theme for Wren空
   sky: {
     primary: '#38bdf8',      // Sky Blue

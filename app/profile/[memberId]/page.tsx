@@ -106,6 +106,8 @@ export default function MemberProfilePage() {
   const isBlur = isSpecialUser && specialConfig?.theme === 'blur';
   const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
   const isSky = isSpecialUser && specialConfig?.theme === 'sky';
+  const isCat = isSpecialUser && specialConfig?.theme === 'cat';
+  const isCasino = isSpecialUser && specialConfig?.theme === 'casino';
 
   // Track if we're mounted on client (prevents hydration errors)
   const [isMounted, setIsMounted] = useState(false);
@@ -503,12 +505,112 @@ export default function MemberProfilePage() {
         {isSpecialUser && specialConfig?.quotes?.profile && (
           <div className="mt-8 text-center p-4 sm:p-6 glass rounded-lg border border-purple-500/20">
             <Typography variant="body" className={`italic font-game text-sm sm:text-base px-2 ${
-              isChaos ? 'text-yellow-300/80' : isWrong ? 'text-yellow-300/80' : isChrono ? 'text-blue-300/80' : isNightlight ? 'text-pink-300/80' : isOcean ? 'text-sky-300/80' : isGrill ? 'text-lime-300/80' : isPortal ? 'text-indigo-300/80' : isUnstable ? 'text-teal-300/80' : isStarlight ? 'text-purple-300/80' : isQuantum ? 'text-cyan-300/80' : 'text-cyan-300/80'
+              isStarlight ? 'text-purple-300/80' :
+              isChaos ? 'text-orange-300/80' :
+              isUnstable ? 'text-teal-300/80' :
+              isPortal ? 'text-indigo-300/80' :
+              isGrill ? 'text-red-300/80' :
+              isWrong ? 'text-yellow-300/80' :
+              isChrono ? 'text-blue-300/80' :
+              isNightlight ? 'text-pink-300/80' :
+              isOcean ? 'text-sky-300/80' :
+              isSnack ? 'text-rose-300/80' :
+              isRoyal ? 'text-violet-300/80' :
+              isBlade ? 'text-rose-300/80' :
+              isTiger ? 'text-orange-300/80' :
+              isBoss ? 'text-red-300/80' :
+              isVoid ? 'text-purple-300/80' :
+              isMeme ? 'text-cyan-300/80' :
+              isShadow ? 'text-slate-300/80' :
+              isNeon ? 'text-green-300/80' :
+              isChaoscoin ? 'text-emerald-300/80' :
+              isSpoon ? 'text-slate-300/80' :
+              isBureaucracy ? 'text-slate-300/80' :
+              isStats ? 'text-cyan-300/80' :
+              isOlympus ? 'text-yellow-300/80' :
+              isWeather ? 'text-sky-300/80' :
+              isSpeed ? 'text-purple-300/80' :
+              isMorale ? 'text-pink-300/80' :
+              isRecycle ? 'text-lime-300/80' :
+              isAbyss ? 'text-purple-300/80' :
+              isChaosgun ? 'text-violet-300/80' :
+              isLightning ? 'text-yellow-300/80' :
+              isSonic ? 'text-rose-300/80' :
+              isArchive ? 'text-stone-300/80' :
+              isVintage ? 'text-amber-300/80' :
+              isArt ? 'text-pink-300/80' :
+              isPancake ? 'text-orange-300/80' :
+              isPharmacy ? 'text-cyan-300/80' :
+              isHorn ? 'text-fuchsia-300/80' :
+              isBook ? 'text-amber-300/80' :
+              isShadowdance ? 'text-blue-300/80' :
+              isTidal ? 'text-teal-300/80' :
+              isRhythm ? 'text-fuchsia-300/80' :
+              isVanish ? 'text-slate-300/80' :
+              isWisdom ? 'text-indigo-300/80' :
+              isReverse ? 'text-green-300/80' :
+              isDragon ? 'text-green-300/80' :
+              isBlur ? 'text-purple-300/80' :
+              isElegance ? 'text-pink-300/80' :
+              isSky ? 'text-sky-300/80' :
+              isCat ? 'text-purple-300/80' :
+              isCasino ? 'text-red-300/80' :
+              isQuantum ? 'text-cyan-300/80' : 'text-cyan-300/80'
             }`}>
               &quot;{specialConfig.quotes.profile}&quot;
             </Typography>
             <Typography variant="caption" className={`mt-2 block ${
-              isChaos ? 'text-orange-400/60' : isWrong ? 'text-amber-400/60' : isChrono ? 'text-indigo-400/60' : isNightlight ? 'text-yellow-400/60' : isOcean ? 'text-cyan-400/60' : isGrill ? 'text-green-400/60' : isPortal ? 'text-violet-400/60' : isUnstable ? 'text-teal-400/60' : isStarlight ? 'text-pink-400/60' : isQuantum ? 'text-cyan-400/60' : 'text-purple-400/60'
+              isStarlight ? 'text-pink-400/60' :
+              isChaos ? 'text-orange-400/60' :
+              isUnstable ? 'text-teal-400/60' :
+              isPortal ? 'text-violet-400/60' :
+              isGrill ? 'text-red-400/60' :
+              isWrong ? 'text-amber-400/60' :
+              isChrono ? 'text-indigo-400/60' :
+              isNightlight ? 'text-yellow-400/60' :
+              isOcean ? 'text-cyan-400/60' :
+              isSnack ? 'text-rose-400/60' :
+              isRoyal ? 'text-violet-400/60' :
+              isBlade ? 'text-rose-400/60' :
+              isTiger ? 'text-orange-400/60' :
+              isBoss ? 'text-red-400/60' :
+              isVoid ? 'text-purple-400/60' :
+              isMeme ? 'text-cyan-400/60' :
+              isShadow ? 'text-slate-400/60' :
+              isNeon ? 'text-green-400/60' :
+              isChaoscoin ? 'text-emerald-400/60' :
+              isSpoon ? 'text-slate-400/60' :
+              isBureaucracy ? 'text-slate-400/60' :
+              isStats ? 'text-cyan-400/60' :
+              isOlympus ? 'text-yellow-400/60' :
+              isWeather ? 'text-sky-400/60' :
+              isSpeed ? 'text-purple-400/60' :
+              isMorale ? 'text-pink-400/60' :
+              isRecycle ? 'text-lime-400/60' :
+              isAbyss ? 'text-purple-400/60' :
+              isChaosgun ? 'text-violet-400/60' :
+              isLightning ? 'text-yellow-400/60' :
+              isSonic ? 'text-rose-400/60' :
+              isArchive ? 'text-stone-400/60' :
+              isVintage ? 'text-amber-400/60' :
+              isArt ? 'text-pink-400/60' :
+              isPancake ? 'text-orange-400/60' :
+              isPharmacy ? 'text-cyan-400/60' :
+              isHorn ? 'text-fuchsia-400/60' :
+              isBook ? 'text-amber-400/60' :
+              isShadowdance ? 'text-blue-400/60' :
+              isTidal ? 'text-teal-400/60' :
+              isRhythm ? 'text-fuchsia-400/60' :
+              isVanish ? 'text-slate-400/60' :
+              isWisdom ? 'text-indigo-400/60' :
+              isReverse ? 'text-green-400/60' :
+              isDragon ? 'text-green-400/60' :
+              isBlur ? 'text-purple-400/60' :
+              isElegance ? 'text-pink-400/60' :
+              isSky ? 'text-sky-400/60' :
+              isCat ? 'text-purple-400/60' :
+              isCasino ? 'text-red-400/60' :
+              isQuantum ? 'text-cyan-400/60' : 'text-purple-400/60'
             }`}>
               — {specialConfig.name}
             </Typography>

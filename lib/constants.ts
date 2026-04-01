@@ -85,13 +85,14 @@ export interface SpecialUserConfig {
   };
   extraQuotes?: {
     subtitle?: string;
+    banner?: string;
   };
 }
 
 export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
   // HesuCrypto - Quantum Theme
   '182081219062661120': {
-    name: 'HesuCrypto',
+    name: 'Hesucrypto',
     theme: 'quantum',
     customGreeting: '∞ Finance War Chaos ∞',
     subtitle: 'The Hopeless Romantic Quantum Financier',
@@ -611,7 +612,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
   },
 
   '352851532880019456': {
-    name: 'Marsha11',
+    name: 'Marzhall',
     theme: 'archive',
     customGreeting: '📁 Archive Fortress 📁',
     subtitle: 'The Archival Martyr',
@@ -625,7 +626,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
     },
   },
 
-  // Batch 7: Mielle1968, Munchyy, PanCoco, Pedsrow
+  // Batch 7: Mielle1968, MochiP, PanCoco, Pedsrow
   '1178337129768702043': {
     name: 'Mielle1968',
     theme: 'vintage',
@@ -642,7 +643,7 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
   },
 
   '1301351696395407400': {
-    name: 'Munchyy',
+    name: 'MochiP',
     theme: 'art',
     customGreeting: '🎨 Assassination Artist 🎨',
     subtitle: 'The Assassination Artist',
@@ -867,6 +868,38 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
       floatingBanner: 'Walks between realms like empty sky',
       profile: 'The void walker who exists between dimensions',
       footer: 'Realm Crossings: 47 | Sky Control: INFINITY',
+    },
+  },
+
+  // nyawtz - Cat Theme
+  '865516220638691352': {
+    name: 'nyawtz',
+    theme: 'cat',
+    customGreeting: '🐱 Nine-Tailed Phantom 🐱',
+    subtitle: 'The Nine-Tailed Phantom',
+    badge: 'Cat',
+    message: 'Tails: Nine | Judgmental Stares: 9999',
+    quotes: {
+      homeAbout: 'Tails: Nine | Ice Cream Demands: INFINITY',
+      floatingBanner: 'The feline who judges silently',
+      profile: 'The cat who judges you and purrs threateningly',
+      footer: 'Judgmental Stares: 9999 | Purrs: 47 | Ice Cream: INFINITY',
+    },
+  },
+
+  // YumekoJabami - Casino Theme
+  '1114111908165996605': {
+    name: 'YumekoJabami',
+    theme: 'casino',
+    customGreeting: '🎰 Risk Sovereign 🎰',
+    subtitle: 'The Risk Sovereign',
+    badge: 'Gambler',
+    message: 'Bets Won: 47 | Impossible Wins: 12',
+    quotes: {
+      homeAbout: 'Bets: Won 47 | Lost 89 | Impossible: 12',
+      floatingBanner: 'The House Always Wins',
+      profile: 'The gambler who risks everything and wins through impossible probability',
+      footer: 'Bets Won: 47 | Lost: 89 | Impossible Wins: 12',
     },
   },
 } as const;
