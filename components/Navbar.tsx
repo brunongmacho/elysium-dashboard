@@ -85,9 +85,9 @@ export default function Navbar() {
   const isElegance = isSpecialUser && specialConfig?.theme === 'elegance';
   const isSky = isSpecialUser && specialConfig?.theme === 'sky';
 
-  // Fetch boss timers to show notification badge
+  // Fetch boss timers to show notification badge (only if user can access)
   const { data: bossData } = useSWR<BossTimersResponse>(
-    '/api/bosses',
+    session?.canAccessBossTimers ? '/api/bosses' : undefined,
     swrFetcher,
     { refreshInterval: 30000 }
   );

@@ -231,12 +231,19 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 
 // Quick Stats Component with Real-time Data
 function QuickStats() {
-  // Fetch boss timers
+  const { data: session } = useSession();
+  
+  // Fetch boss timers only if user has access
   const { data: bossData, error, isLoading } = useSWR<BossTimersResponse>(
-    '/api/bosses',
+    session?.canAccessBossTimers ? '/api/bosses' : undefined,
     swrFetcher,
     { refreshInterval: 60000, shouldRetryOnError: false }
   );
+
+  // If user doesn't have access, return empty stats
+  if (!session?.canAccessBossTimers) {
+    return null;
+  }
 
   const stats = useMemo(() => {
     if (!bossData?.bosses) {

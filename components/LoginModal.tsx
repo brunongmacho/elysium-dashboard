@@ -140,7 +140,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 id="modal-description"
                 className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8 text-center font-game leading-relaxed px-2"
               >
-                Connect with your Discord account to access guild features and boss timers
+                Connect with your Discord account to access guild features
               </p>
 
               {/* Remember Me Checkbox */}

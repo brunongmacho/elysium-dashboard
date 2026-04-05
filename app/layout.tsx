@@ -21,9 +21,9 @@ const cinzelDecorative = Cinzel_Decorative({
 });
 
 export const metadata: Metadata = {
-  title: "Elysium Dashboard - Guild Management & Boss Timers",
-  description: "Real-time boss timer tracking, leaderboards, and guild management for Elysium guild members",
-  keywords: "Elysium, guild, boss timers, leaderboard, dashboard",
+  title: "Elysium Dashboard - Guild Management",
+  description: "Real-time guild management and member tracking for Elysium guild members",
+  keywords: "Elysium, guild, leaderboard, dashboard",
   authors: [{ name: "Elysium Guild" }],
   icons: {
     icon: [
