@@ -2,29 +2,36 @@
 
 import { Icon } from "@/components/icons";
 import { LINKS } from "@/lib/constants";
+import { useSession } from "next-auth/react";
 
 export default function Footer() {
+  const { data: session } = useSession();
+  
   return (
     <footer className="mt-auto glass backdrop-blur-sm border-t border-primary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
-        <div className="flex flex-wrap justify-center items-center gap-3 text-xs mb-2">
-          <a href="/" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
-            <Icon
-              name="home"
-              size="sm"
-              className="text-primary group-hover:text-primary-light transition-colors"
-            />
-            Home
-          </a>
-          <span className="text-gray-600">•</span>
-          <a href="/timers" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
-            <Icon
-              name="clock"
-              size="sm"
-              className="text-primary group-hover:text-primary-light transition-colors"
-            />
-            Boss Timers
-          </a>
+          <div className="flex flex-wrap justify-center items-center gap-3 text-xs mb-2">
+            <a href="/" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
+              <Icon
+                name="home"
+                size="sm"
+                className="text-primary group-hover:text-primary-light transition-colors"
+              />
+              Home
+            </a>
+            {session?.canAccessBossTimers && (
+              <>
+                <span className="text-gray-600">•</span>
+                <a href="/timers" className="inline-flex items-center gap-1.5 text-primary hover:text-primary-light font-game transition-colors group">
+                  <Icon
+                    name="clock"
+                    size="sm"
+                    className="text-primary group-hover:text-primary-light transition-colors"
+                  />
+                  Boss Timers
+                </a>
+              </>
+            )}
           <span className="text-gray-600">•</span>
           <a href="/events" className="inline-flex items-center gap-1.5 text-accent hover:text-accent-light font-game transition-colors group">
             <Icon

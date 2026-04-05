@@ -170,14 +170,16 @@ export default function Navbar() {
             <NavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
               Home
             </NavLink>
-            <NavLink
-              href="/timers"
-              active={pathname === '/timers'}
-              icon={<Icon name="clock" size="sm" />}
-              badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
-            >
-              Boss Timers
-            </NavLink>
+            {session?.canAccessBossTimers && (
+              <NavLink
+                href="/timers"
+                active={pathname === '/timers'}
+                icon={<Icon name="clock" size="sm" />}
+                badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
+              >
+                Boss Timers
+              </NavLink>
+            )}
             <NavLink
               href="/events"
               active={pathname === '/events'}
@@ -461,14 +463,16 @@ export default function Navbar() {
               <MobileNavLink href="/" active={pathname === '/'} icon={<Icon name="home" size="sm" />}>
                 Home
               </MobileNavLink>
-              <MobileNavLink
-                href="/timers"
-                active={pathname === '/timers'}
-                icon={<Icon name="clock" size="sm" />}
-                badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
-              >
-                Boss Timers
-              </MobileNavLink>
+              {session?.canAccessBossTimers && (
+                <MobileNavLink
+                  href="/timers"
+                  active={pathname === '/timers'}
+                  icon={<Icon name="clock" size="sm" />}
+                  badge={spawnedBossCount > 0 ? spawnedBossCount : undefined}
+                >
+                  Boss Timers
+                </MobileNavLink>
+              )}
               <MobileNavLink
                 href="/events"
                 active={pathname === '/events'}

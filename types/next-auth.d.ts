@@ -20,6 +20,7 @@ declare module "next-auth" {
     canMarkAsKilled: boolean;
     isAdmin: boolean;
     roleBadge?: string;
+    canAccessBossTimers?: boolean;
   }
 
   interface User {
@@ -40,6 +41,7 @@ declare module "next-auth/jwt" {
     cachedRoleBadge?: string;
     cachedCanMarkAsKilled?: boolean;
     cachedIsAdmin?: boolean;
+    cachedCanAccessBossTimers?: boolean;
     lastFetched?: number; // Timestamp of last Discord API fetch
   }
 }

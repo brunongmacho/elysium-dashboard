@@ -79,8 +79,28 @@ export const authOptions: NextAuthOptions = {
                   ? adminRoleIds.split(',').some((id: string) => member.roles.includes(id.trim()))
                   : false;
 
+                // Check if can access boss timers (Elysium, Core, Neto, Elite, Leader, XXX, or admin)
+                const eliteRoleId = process.env.DISCORD_ELITE_ROLE_ID;
+                const specialAdminRoleId = process.env.DISCORD_SPECIAL_ADMIN_ROLE_ID;
+                const netoRoleId = process.env.DISCORD_NETO_ROLE_ID;
+                
+                const visitorRoleId = '1415320794141032448';
+                const isVisitorOnly = member.roles.length === 1 && member.roles.includes(visitorRoleId);
+                
+                const hasCoreRole = coreRoleId && member.roles.includes(coreRoleId);
+                const hasNetoRole = netoRoleId && member.roles.includes(netoRoleId);
+                const hasEliteRole = eliteRoleId && member.roles.includes(eliteRoleId);
+                const hasLeaderRole = leaderRoleId && member.roles.includes(leaderRoleId);
+                const hasSpecialAdminRole = specialAdminRoleId && member.roles.includes(specialAdminRoleId);
+                
+                const canAccessBossTimers = !isVisitorOnly && (
+                  hasElysiumRole || hasCoreRole || hasNetoRole || hasEliteRole || 
+                  hasLeaderRole || hasSpecialAdminRole || hasAdminRole
+                );
+
                 token.cachedCanMarkAsKilled = hasElysiumRole || hasAdminRole;
                 token.cachedIsAdmin = hasAdminRole;
+                token.cachedCanAccessBossTimers = canAccessBossTimers;
 
                 if (leaderRoleId && member.roles.includes(leaderRoleId)) {
                   token.cachedRoleBadge = "Elysium Leader";
@@ -123,6 +143,7 @@ export const authOptions: NextAuthOptions = {
       session.canMarkAsKilled = token.cachedCanMarkAsKilled || false;
       session.isAdmin = token.cachedIsAdmin || false;
       session.roleBadge = token.cachedRoleBadge;
+      session.canAccessBossTimers = token.cachedCanAccessBossTimers ?? false;
 
       return session;
     },

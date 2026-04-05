@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import useSWR from "swr";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 import { Section, Stack, Grid } from "@/components/layout";
 import { Typography } from "@/components/ui";
 import { Icon } from "@/components/icons";
@@ -320,6 +321,7 @@ function QuickStats() {
 }
 
 export default function GuildHomePage() {
+  const { data: session } = useSession();
   const [seed, setSeed] = useState(0);
   const [memberIdMap, setMemberIdMap] = useState<Record<string, string>>({});
   const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
@@ -837,34 +839,36 @@ export default function GuildHomePage() {
       >
         <Section>
           <Grid columns={{ xs: 1, sm: 2, xl: 3 }} gap="md">
-            {/* Boss Timers */}
-            <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
-              <motion.a
-                href="/timers"
-                className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
-                initial={{ opacity: 0, y: 30 }}
-                animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <Icon
-                    name="clock"
-                    size="2xl"
-                    className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
-                  />
-                  <div className="min-w-0 flex-1 overflow-hidden">
-                    <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
-                      Boss Timers
-                    </Typography>
-                    <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
-                      Track spawn times
-                    </Typography>
+            {/* Boss Timers - Only show for members with access */}
+            {session?.canAccessBossTimers && (
+              <Tooltip content="View and track all boss spawn timers" position="top" fullWidth>
+                <motion.a
+                  href="/timers"
+                  className="block w-full group glass backdrop-blur-sm rounded-lg border border-primary/30 p-4 sm:p-6 hover:border-primary transition-all duration-200 card-3d hover:scale-105 glow-primary"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={quickAccessAnim.isVisible ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <Icon
+                      name="clock"
+                      size="2xl"
+                      className="text-primary group-hover:text-primary-light transition-all duration-200 group-hover:scale-110 flex-shrink-0"
+                    />
+                    <div className="min-w-0 flex-1 overflow-hidden">
+                      <Typography variant="h3" className="text-lg sm:text-xl font-bold text-primary-bright break-words">
+                        Boss Timers
+                      </Typography>
+                      <Typography variant="caption" className="text-xs sm:text-sm text-gray-400 break-words">
+                        Track spawn times
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-              </motion.a>
-            </Tooltip>
+                </motion.a>
+              </Tooltip>
+            )}
 
             {/* Event Schedule */}
             <Tooltip content="Browse daily and weekly guild events" position="top" fullWidth>

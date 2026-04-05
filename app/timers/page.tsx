@@ -26,6 +26,21 @@ export default function Home() {
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [elysiumFilter, setElysiumFilter] = useState(false);
 
+  // Access check - redirect if not allowed
+  if (session && !session.canAccessBossTimers) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="text-center glass p-8 rounded-lg border border-red-500/30">
+          <div className="text-4xl mb-4">🔒</div>
+          <Typography variant="h2" className="text-red-400 mb-2">Access Denied</Typography>
+          <Typography variant="body" className="text-gray-400">
+            You need an Elysium, Core, Neto, Elite, Leader, or Admin role to view boss timers.
+          </Typography>
+        </div>
+      </div>
+    );
+  }
+
   // Fetch boss timers with SWR (auto-refresh every 30 seconds)
   const { data, error, isLoading, mutate } = useSWR<BossTimersResponse>(
     `/api/bosses?t=${refreshKey}`,
