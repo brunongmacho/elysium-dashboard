@@ -102,4 +102,6 @@ export const ANCIENT_CITADEL_EVENTS: EventSchedule[] = [
   { id: 'ancient-citadel-sun-evening', name: 'Ancient Citadel - Benji', icon: '🏰', days: [0], startTime: { hour: 21, minute: 0 }, durationMinutes: 60, color: '#3498db', reminderOffsetMinutes: 10 },
 ];
 
-export const ALL_EVENTS: EventSchedule[] = [...GAME_EVENTS, ...DAILY_EVENTS, ...ANCIENT_CITADEL_EVENTS];
+// TODO: Re-enable Ancient Citadel events when needed
+// export const ALL_EVENTS: EventSchedule[] = [...GAME_EVENTS, ...DAILY_EVENTS, ...ANCIENT_CITADEL_EVENTS];
+export const ALL_EVENTS: EventSchedule[] = [...GAME_EVENTS, ...DAILY_EVENTS];
