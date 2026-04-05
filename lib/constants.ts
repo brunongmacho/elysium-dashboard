@@ -90,9 +90,9 @@ export interface SpecialUserConfig {
 }
 
 export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
-  // HesuCrypto - Quantum Theme
+  // Rohypnol - Quantum Theme
   '182081219062661120': {
-    name: 'Hesucrypto',
+    name: 'Rohypnol',
     theme: 'quantum',
     customGreeting: '∞ Finance War Chaos ∞',
     subtitle: 'The Hopeless Romantic Quantum Financier',
