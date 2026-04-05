@@ -231,7 +231,12 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 
 // Quick Stats Component with Real-time Data
 function QuickStats() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  
+  // Wait for session to load before rendering
+  if (status === 'loading') {
+    return null;
+  }
   
   // Fetch boss timers only if user has access
   const { data: bossData, error, isLoading } = useSWR<BossTimersResponse>(
