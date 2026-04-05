@@ -231,27 +231,18 @@ function getIconForMember(name: string, data: MemberLoreData): string {
 
 // Quick Stats Component with Real-time Data
 function QuickStats() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   
-  // Wait for session to load before rendering
-  if (status === 'loading') {
-    return null;
-  }
-  
-  // Fetch boss timers only if user has access
+  // Fetch boss timers (always call hooks unconditionally)
   const { data: bossData, error, isLoading } = useSWR<BossTimersResponse>(
-    session?.canAccessBossTimers ? '/api/bosses' : undefined,
+    '/api/bosses',
     swrFetcher,
     { refreshInterval: 60000, shouldRetryOnError: false }
   );
 
-  // If user doesn't have access, return empty stats
-  if (!session?.canAccessBossTimers) {
-    return null;
-  }
-
   const stats = useMemo(() => {
-    if (!bossData?.bosses) {
+    // If no access, show zeros
+    if (!session?.canAccessBossTimers || !bossData?.bosses) {
       return {
         total: 0,
         spawned: 0,
@@ -266,7 +257,31 @@ function QuickStats() {
       soon: bossData.bosses.filter((b) => b.status === 'soon').length,
       tracking: bossData.bosses.filter((b) => b.status === 'ready').length,
     };
-  }, [bossData]);
+  }, [bossData, session]);
+
+  // If user doesn't have access, render empty stats
+  if (!session?.canAccessBossTimers) {
+    return (
+      <Grid columns={{ xs: 2, sm: 4 }} gap="sm">
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">0</div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Total</div>
+        </div>
+        <div className="glass backdrop-blur-sm rounded-lg border border-danger/30 p-3 sm:p-4 text-center">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-danger font-game-decorative">0</div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Spawned</div>
+        </div>
+        <div className="glass backdrop-blur-sm rounded-lg border border-accent/30 p-3 sm:p-4 text-center">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-accent font-game-decorative">0</div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Soon</div>
+        </div>
+        <div className="glass backdrop-blur-sm rounded-lg border border-primary/30 p-3 sm:p-4 text-center">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary font-game-decorative">0</div>
+          <div className="text-xs sm:text-sm text-gray-400 font-game">Tracking</div>
+        </div>
+      </Grid>
+    );
+  }
 
   // Show loading state
   if (isLoading && !bossData) {
