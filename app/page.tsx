@@ -984,9 +984,10 @@ export default function GuildHomePage() {
               </motion.a>
             </Tooltip>
 
-            {/* Mobile App */}
-            <Tooltip content="Download the mobile app for on-the-go access" position="top" fullWidth>
-              <motion.a
+            {/* Mobile App - Only show for members with access */}
+            {session?.canAccessBossTimers && (
+              <Tooltip content="Download the mobile app for on-the-go access" position="top" fullWidth>
+                <motion.a
                 href={LINKS.APK_DOWNLOAD}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1013,7 +1014,8 @@ export default function GuildHomePage() {
                   </div>
                 </div>
               </motion.a>
-            </Tooltip>
+              </Tooltip>
+            )}
 
             {/* Discord Link */}
             <Tooltip content="Join our Discord community server" position="top" fullWidth>

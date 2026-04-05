@@ -194,14 +194,16 @@ export default function Navbar() {
             <NavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
               Relic Calculator
             </NavLink>
-            <NavLink 
-              href={LINKS.APK_DOWNLOAD} 
-              active={false} 
-              icon={<Icon name="smartphone" size="sm" />}
-              external
-            >
-              Mobile App
-            </NavLink>
+            {session?.canAccessBossTimers && (
+              <NavLink 
+                href={LINKS.APK_DOWNLOAD} 
+                active={false} 
+                icon={<Icon name="smartphone" size="sm" />}
+                external
+              >
+                Mobile App
+              </NavLink>
+            )}
           </div>
 
           {/* Right Side - Theme & Auth */}
@@ -487,9 +489,11 @@ export default function Navbar() {
               <MobileNavLink href="/relic-calculator" active={pathname === '/relic-calculator'} icon={<Icon name="calculator" size="sm" />}>
                 Relic Calculator
               </MobileNavLink>
-              <MobileNavLink href={LINKS.APK_DOWNLOAD} active={false} icon={<Icon name="smartphone" size="sm" />} external>
-                Get Mobile App
-              </MobileNavLink>
+              {session?.canAccessBossTimers && (
+                <MobileNavLink href={LINKS.APK_DOWNLOAD} active={false} icon={<Icon name="smartphone" size="sm" />} external>
+                  Get Mobile App
+                </MobileNavLink>
+              )}
 
             {/* Notification, Animations Toggle & Theme */}
             <div className="px-3 py-2 flex items-center gap-3">
