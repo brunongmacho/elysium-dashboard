@@ -6,7 +6,7 @@
 
 | # | Discord ID | Username | Theme | Colors |
 |---|------------|----------|-------|--------|
-| 1 | 182081219062661120 | HesuCrypto | quantum | Cyan/Purple |
+| 1 | 182081219062661120 | Rohypnol | quantum | Cyan/Purple |
 | 2 | 517653312783253505 | AlterFrieren | starlight | Purple/Silver + ✨sparkles✨ |
 | 3 | 410748017457496065 | Goblok | chaos | Orange/Yellow |
 | 4 | 274256814693023745 | xAustinx | unstable | Teal/Cyan |
