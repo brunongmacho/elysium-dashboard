@@ -94,18 +94,18 @@ export const SPECIAL_USERS: Record<string, SpecialUserConfig> = {
   '182081219062661120': {
     name: 'Rohypnol',
     theme: 'quantum',
-    customGreeting: '∞ Finance War Chaos ∞',
-    subtitle: 'The Hopeless Romantic Quantum Financier',
+    customGreeting: '💊 The Amnesiac Adorer 💊',
+    subtitle: 'The Amnesiac Adorer',
     badge: 'Finance',
-    message: 'Net Worth: BOTH ZERO AND INFINITE',
+    message: 'Forget Attempts: INFINITY | Memory of Her: STRONGER',
     quotes: {
-      homeAbout: 'Net Worth: BOTH ZERO AND INFINITE | Vice Leader Status | Jalo Bot Dependency: 99%',
-      floatingBanner: 'Every glance is a confession. Every smile is a victory.',
-      profile: 'Vice Leader who found peace in silence and beauty in what\'s never said',
-      footer: 'Net Worth: BOTH ZERO AND INFINITE | Confessions Made: 1 | Peace Chosen: 1',
+      homeAbout: 'Forget Attempts: INFINITY | Memory of Her: STRONGER | Vice Leader Status',
+      floatingBanner: 'Some memories are not meant to be erased',
+      profile: 'The sedated vice leader who remembers what he is supposed to forget',
+      footer: 'Forget Attempts: INFINITY | Memory STRONGER | Jalo Bot: 99%',
     },
     extraQuotes: {
-      subtitle: 'Some treasures dont need to be held. Some are worth simply admiring.',
+      subtitle: 'Some feelings are the only thing keeping him awake',
     },
   },
 
